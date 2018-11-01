@@ -9,4 +9,4 @@ function sum(a, b) {
   return a + b + text.length();
 }
 
-sum(numberOne, numberTwo);
+sum(numberOne, numberTwo)
