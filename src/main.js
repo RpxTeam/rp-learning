@@ -1,4 +1,4 @@
-const a = 12
+const a = 12;
 
 var b;
 
