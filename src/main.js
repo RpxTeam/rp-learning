@@ -1,7 +1,12 @@
-const a = 12;
+const numberOne = 12;
+const numberTwo = 2;
 
-var b;
+const trab = 'asoijaiossaoasa';
 
-console.log(a)
+function sum(a, b) {
+  const text = trab;
 
-let trab = "asoijaiossaoasa";
+  return a + b + text.length();
+}
+
+sum(numberOne, numberTwo);
