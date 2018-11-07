@@ -5,6 +5,7 @@ import ForgotPassword from '../pages/forgotPassword'
 import ResetPassword from '../pages/resetPassword'
 import Dashboard from '../pages/dashboard'
 import NoMatch from '../pages/noMatch'
+import Courses from '../pages/courses'
 
 const routes = [
     {
@@ -54,6 +55,12 @@ const routes = [
         exact: true,
         auth: false,
         component: NoMatch
+    },
+    {
+        path: '/courses',
+        exact: true,
+        auth: false,
+        component: Courses
     }
 ];
 
