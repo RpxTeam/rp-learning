@@ -29,3 +29,7 @@ Route::middleware(['jwt_auth'])->group(function(){
        return "Cool dude";
    });
 });
+
+Route::resource('course', 'Api\CoursesController');
+Route::post('course/{course}','Api\CoursesController@store');
+Route::put('course/{id}', 'Api\CoursesController@update');
