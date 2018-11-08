@@ -4,8 +4,9 @@ import Register from '../pages/register'
 import ForgotPassword from '../pages/forgotPassword'
 import ResetPassword from '../pages/resetPassword'
 import Dashboard from '../pages/dashboard'
-import NoMatch from '../pages/noMatch'
 import Courses from '../pages/courses'
+import MyCourses from '../pages/myCourses'
+import NoMatch from '../pages/noMatch'
 
 const routes = [
     {
@@ -51,17 +52,23 @@ const routes = [
         component: Dashboard
     },
     {
+        path: '/courses',
+        exact: true,
+        auth: false,
+        component: Courses
+    },
+    {
+        path: '/my-courses',
+        exact: true,
+        auth: true,
+        component: MyCourses
+    },
+    {
         path: '',
         exact: true,
         auth: false,
         component: NoMatch
     },
-    {
-        path: '/courses',
-        exact: true,
-        auth: false,
-        component: Courses
-    }
 ];
 
 export default routes;

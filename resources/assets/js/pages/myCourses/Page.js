@@ -19,7 +19,7 @@ class Page extends React.Component {
     render() {
         return (
             <div>
-                <PageHeader heading="Courses"/>
+                <PageHeader heading="My Courses"/>
                 <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
                     <Header as='h1'>Courses</Header>
                     <Container>

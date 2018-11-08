@@ -19,9 +19,9 @@ class Page extends React.Component {
     render() {
         return (
             <div>
-                <PageHeader heading="Dashboard"/>
+                <PageHeader heading="Painel"/>
                 <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
-                    <Header as='h1'>Dashboard</Header>
+                    <Header as='h1'>Painel</Header>
                 </Segment>
             </div>
         );

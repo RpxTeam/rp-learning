@@ -65,8 +65,11 @@ class Page extends React.Component {
                                     <Dropdown.Menu className='bounceIn animated'>
                                         {this.props.isAuthenticated
                                             ?
-                                            <Dropdown.Item onClick={this.handleLogout} text="logout" icon='sign out'
-                                                           key='logout'/>
+                                            <Dropdown.Item
+                                                onClick={this.handleLogout}
+                                                text="logout"
+                                                icon='sign out'
+                                                key='logout'/>
                                             :
                                             <div>
                                                 <Dropdown.Item as={NavLink} to="/login" text="login"/>
@@ -88,7 +91,11 @@ class Page extends React.Component {
                                     <img src={require('../../../images/theme/logo.png')} alt="infoTiq" />
                                 </Logo>
                                 <Menu.Item as={NavLink} to="/courses">Cursos</Menu.Item>
-                                <Menu.Item position='center right'>
+
+                                {this.props.isAuthenticated ?
+                                    <Menu.Item as={NavLink} to="/my-courses">Meus Cursos</Menu.Item>
+                                : null}
+                                <Menu.Item position='right'>
                                     {this.props.isAuthenticated
                                         ? <Dropdown trigger={this.avatar} pointing='top right' className='user-dropdown'>
                                             <Dropdown.Menu className='bounceIn animated'>
