@@ -119,7 +119,7 @@ class Page extends React.Component {
                     verticalAlign='middle'
                     className='login-form'
                 >
-                    <Grid.Column style={{maxWidth: '450px'}}>
+                    <Grid.Column style={{paddingTop: '100px', maxWidth: '450px'}}>
                         <Header as='h2' color='teal' textAlign='center'>
                             Login to your account
                         </Header>
