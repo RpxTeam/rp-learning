@@ -16,5 +16,8 @@ class Course extends Model
         'description',
     ];
 
-    
+    public function lessons()
+    {
+        return $this->belongsToMany(Lesson::class, 'course_lesson')->withTrashed();
+    }
 }
