@@ -1,6 +1,3 @@
-/**
- * Created by Sumit-Yadav on 06-10-2017.
- */
 import React from 'react'
 import {NavLink, Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -22,7 +19,7 @@ const Logo = styled.a`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 15px;
+    margin-left: 15px;
     &:hover {
         background: transparent;
     }
@@ -84,42 +81,26 @@ class Page extends React.Component {
                     </Menu>
                 </Responsive>
                 <Responsive className="navbar" minWidth={769}>
-                    <Segment>
-                        <Menu secondary size='large'>
-                            <Container>
-                                <Logo as={Link} to="/" className="logo" replace>
-                                    <img src={require('../../../images/theme/logo.png')} alt="infoTiq" />
-                                </Logo>
-                                <Menu.Item as={NavLink} to="/courses">Cursos</Menu.Item>
-
-                                {this.props.isAuthenticated ?
-                                    <Menu.Item as={NavLink} to="/my-courses">Meus Cursos</Menu.Item>
-                                : null}
-                                <Menu.Item position='right'>
-                                    {this.props.isAuthenticated
-                                        ? <Dropdown trigger={this.avatar} pointing='top right' className='user-dropdown'>
-                                            <Dropdown.Menu className='bounceIn animated'>
-                                                <Dropdown.Item
-                                                    text={"Está logado como " + this.props.userName}
-                                                    disabled key='user'/>
-                                                <Dropdown.Item as={Link} to="/dashboard" text="Painel" icon='dashboard' />
-                                                <Dropdown.Divider />
-                                                <Dropdown.Item onClick={this.handleLogout} text="logout" icon='sign out'
-                                                            key='logout'/>
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                        : <Button.Group>
-                                            <Button as={Link} to="/login" replace positive compact
-                                                    style={{lineHeight: '2em'}}>Login</Button>
-                                            <Button.Or />
-                                            <Button as={Link} to="/register" replace color='blue' compact
-                                                    style={{lineHeight: '2em'}}>Register</Button>
-                                        </Button.Group>
-                                    }
-                                </Menu.Item>
-                            </Container>
-                        </Menu>
-                    </Segment>
+                    <Menu size='small' inverted style={{marginLeft: '150px', borderRadius: '0'}}>
+                        <Container fluid>
+                            <Logo as={Link} to="/" className="logo" replace>
+                                <img src={require('../../../images/theme/logo.png')} alt="infoTiq" />
+                            </Logo>
+                            <Menu.Item position='right'>
+                                <Dropdown trigger={this.avatar} pointing='top right' className='user-dropdown'>
+                                    <Dropdown.Menu className='bounceIn animated'>
+                                        <Dropdown.Item
+                                            text={"Está logado como " + this.props.userName}
+                                            disabled key='user'/>
+                                        <Dropdown.Item as={Link} to="/dashboard" text="Profile" icon='user' />
+                                        <Dropdown.Divider />
+                                        <Dropdown.Item onClick={this.handleLogout} text="logout" icon='sign out'
+                                                    key='logout'/>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Menu.Item>
+                        </Container>
+                    </Menu>
                 </Responsive>
             </div>
         );

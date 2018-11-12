@@ -23,7 +23,6 @@ class Footer extends React.Component {
         return (
             <div className="footer">
                 <Container>
-
                     <Grid columns="equal" verticalAlign="middle" className="foobar" stackable>
                         <Grid.Row>
                             <Grid.Column>
