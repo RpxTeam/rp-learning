@@ -1,8 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Navigation from './common/navigation'
-import Footer from './common/mainFooter'
-import {NavLink, Link} from 'react-router-dom'
 
 class Main extends React.Component {
     constructor(props) {
@@ -12,11 +9,7 @@ class Main extends React.Component {
     render() {
         return (
             <div>
-                <Navigation/>
-                <main className="fadeIn animated">
-                    {this.props.children}
-                </main>
-                <Footer/>
+                {this.props.children}
             </div>
         );
     }

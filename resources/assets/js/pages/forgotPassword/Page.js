@@ -15,6 +15,8 @@ import PropTypes from 'prop-types'
 import ReeValidate from 'ree-validate'
 import AuthService from '../../services'
 import PageHeader from '../../common/pageHeader'
+import Navigation from '../../common/navigation'
+import Footer from '../../common/mainFooter'
 
 class Page extends React.Component {
     constructor(props) {
@@ -109,54 +111,58 @@ class Page extends React.Component {
 
         return (
             <div>
-                <PageHeader heading="login"/>
-                <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
-                    <Dimmer active inverted>
-                        <Loader size='large'>Resetting Password...</Loader>
-                    </Dimmer>
-                </Segment>
+                <Navigation/>
+                <main className="fadeIn animated">
+                    <PageHeader heading="login"/>
+                    <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
+                        <Dimmer active inverted>
+                            <Loader size='large'>Resetting Password...</Loader>
+                        </Dimmer>
+                    </Segment>
 
-                <Grid
-                    textAlign='center'
-                    verticalAlign='middle'
-                    className='login-form'
-                >
-                    <Grid.Column style={{maxWidth: '450px'}}>
-                        <Header as='h2' color='teal' textAlign='center'>
-                            Reset your password
-                        </Header>
-                        {this.state.responseError.isError && <Message negative>
-                            <Message.Content>
-                                {this.state.responseError.text}
-                            </Message.Content>
-                        </Message>}
-                        {this.state.isSuccess && <Message positive>
-                            <Message.Content>
-                                If the email you entered exists, a reset link has been sent !
-                            </Message.Content>
-                        </Message>}
-                        <Form size='large'>
-                            <Segment stacked>
-                                <Form.Input
-                                    fluid
-                                    icon='user'
-                                    iconPosition='left'
-                                    name='email'
-                                    placeholder='E-mail address'
-                                    onChange={this.handleChange}
-                                    error={errors.has('email')}
-                                />
-                                {errors.has('email') && <Header size='tiny' className='custom-error' color='red'>
-                                    {errors.first('email')}
-                                </Header>}
-                                <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Reset Password</Button>
-                            </Segment>
-                        </Form>
-                        <Message>
-                            New to us? <Link to='/register' replace>Register</Link>
-                        </Message>
-                    </Grid.Column>
-                </Grid>
+                    <Grid
+                        textAlign='center'
+                        verticalAlign='middle'
+                        className='login-form'
+                    >
+                        <Grid.Column style={{maxWidth: '450px'}}>
+                            <Header as='h2' color='teal' textAlign='center'>
+                                Reset your password
+                            </Header>
+                            {this.state.responseError.isError && <Message negative>
+                                <Message.Content>
+                                    {this.state.responseError.text}
+                                </Message.Content>
+                            </Message>}
+                            {this.state.isSuccess && <Message positive>
+                                <Message.Content>
+                                    If the email you entered exists, a reset link has been sent !
+                                </Message.Content>
+                            </Message>}
+                            <Form size='large'>
+                                <Segment stacked>
+                                    <Form.Input
+                                        fluid
+                                        icon='user'
+                                        iconPosition='left'
+                                        name='email'
+                                        placeholder='E-mail address'
+                                        onChange={this.handleChange}
+                                        error={errors.has('email')}
+                                    />
+                                    {errors.has('email') && <Header size='tiny' className='custom-error' color='red'>
+                                        {errors.first('email')}
+                                    </Header>}
+                                    <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Reset Password</Button>
+                                </Segment>
+                            </Form>
+                            <Message>
+                                New to us? <Link to='/register' replace>Register</Link>
+                            </Message>
+                        </Grid.Column>
+                    </Grid>
+                </main>
+                <Footer/>
             </div>
         );
     }

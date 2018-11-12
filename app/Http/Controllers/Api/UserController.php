@@ -81,23 +81,24 @@ class UserController extends Controller
         //200: OK. The standard success code and default option.
     }
 
-    // /**
-    //  * Store a newly created resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function store(Request $request)
-    // {
-    //     try{
-    //         $user = User::create($request->all());
-    //     }catch(ModelNotFoundException $e){
-    //         return response()->json(400);
-    //         //400: Bad request. The standard option for requests that fail to pass validation.
-    //     }
-    //     return response()->json(201);
-    //     //201: Object created. Useful for the store actions.
-    // }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        // try{
+        //     $user = User::create($request->all());
+        // }catch(ModelNotFoundException $e){
+        //     return response()->json(400);
+        //     //400: Bad request. The standard option for requests that fail to pass validation.
+        // }
+        // return response()->json(201);
+        // //201: Object created. Useful for the store actions.
+        return register($request);
+    }
 
     /**
      * Update the specified resource in storage.
