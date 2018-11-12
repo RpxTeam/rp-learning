@@ -17,12 +17,10 @@ class LessonController extends Controller
      */
     public function index($course)
     {
-        $lessons = DB::table('course_lesson')
-        ->leftJoin('lessons','course_lesson.lesson_id','=','lessons.id')
-        ->where('course_lesson.course_id','=',$course)
-        ->get();
+        $course = Course::findOrFail($course);
+        $lessons = Lesson::courseLessons($course);
 
-        return response()->json($lessons,200);
+        return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
         //200: OK. The standard success code and default option.
     }
     
@@ -34,17 +32,16 @@ class LessonController extends Controller
      */
     public function show($course,$lesson)
     {
-        $lessons = DB::table('course_lesson')
-        ->leftJoin('lessons','course_lesson.lesson_id','=','lessons.id')
-        ->where('course_lesson.course_id','=',$course)
-        ->where('course_lesson.lesson_id','=',$lesson)
-        ->get();
+        $course = Course::findOrFail($course);
 
-        if($lessons->isEmpty()){
+        $lesson = Lesson::courseLessons($course)
+        ->where('lesson_id','=',$lesson);
+        
+        if($lesson->isEmpty()){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
         }else{
-            return response()->json($lessons,200);
+            return response()->json(array('course'=>$course,'lesson'=>$lesson),200);
         //200: OK. The standard success code and default option.
         }
     }
