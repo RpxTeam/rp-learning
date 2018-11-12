@@ -89,15 +89,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // try{
-        //     $user = User::create($request->all());
-        // }catch(ModelNotFoundException $e){
-        //     return response()->json(400);
-        //     //400: Bad request. The standard option for requests that fail to pass validation.
-        // }
-        // return response()->json(201);
-        // //201: Object created. Useful for the store actions.
-        return register($request);
+        try{
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+        }catch(ModelNotFoundException $e){
+            return response()->json(400);
+            //400: Bad request. The standard option for requests that fail to pass validation.
+        }
+        return response()->json(201);
+        //201: Object created. Useful for the store actions.
     }
 
     /**
