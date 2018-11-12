@@ -41,6 +41,4 @@ Route::post('user/{user}','Api\UserController@store');
 Route::put('user/{id}', 'Api\UserController@update');
 
 //lesson routes
-Route::resource('lessons', 'Api\LessonController');
-Route::post('lesson/{lesson}','Api\LessonController@store');
-Route::put('lesson/{id}', 'Api\LessonController@update');
+Route::resource('course/{id}/lesson', 'Api\LessonController');
