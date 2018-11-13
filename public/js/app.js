@@ -82313,7 +82313,7 @@ var Page = function (_React$Component) {
                     this.state.edit ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["g" /* Form */].Field, {
                         id: 'button-control-confirm',
                         control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["a" /* Button */],
-                        content: 'Create',
+                        content: 'Update',
                         positive: true
                     }) : null
                 )

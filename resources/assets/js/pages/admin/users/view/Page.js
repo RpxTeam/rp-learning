@@ -147,7 +147,7 @@ class Page extends React.Component {
                         <Form.Field
                             id='button-control-confirm'
                             control={Button}
-                            content='Create'
+                            content='Update'
                             positive
                         />
                     : null }
