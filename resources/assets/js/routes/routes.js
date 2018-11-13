@@ -8,6 +8,9 @@ import MyCourses from '../pages/myCourses'
 import Dashboard from '../pages/admin/dashboard'
 import AdminCourses from '../pages/admin/courses/list'
 import CreateCourses from '../pages/admin/courses/create'
+import AdminUsers from '../pages/admin/users/list'
+import CreateUser from '../pages/admin/users/create'
+import ViewUser from '../pages/admin/users/view'
 import NoMatch from '../pages/noMatch'
 
 const routes = [
@@ -76,6 +79,24 @@ const routes = [
         exact: true,
         auth: true,
         component: CreateCourses
+    },
+    {
+        path: '/admin/users',
+        exact: true,
+        auth: true,
+        component: AdminUsers
+    },
+    {
+        path: '/admin/users/create',
+        exact: true,
+        auth: true,
+        component: CreateUser
+    },
+    {
+        path: '/admin/users/:id',
+        exact: true,
+        auth: true,
+        component: ViewUser
     },
     {
         path: '',
