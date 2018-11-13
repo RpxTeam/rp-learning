@@ -37,7 +37,7 @@ Route::resource('courses', 'Api\CoursesController');
 Route::resource('users', 'Api\UserController');
 
 //lesson routes
-Route::resource('courses/{id}/lesson', 'Api\LessonController');
+Route::resource('courses/{id}/lessons', 'Api\LessonController');
 
 //lesson routes
 Route::resource('mycourses', 'Api\DataCourseController');

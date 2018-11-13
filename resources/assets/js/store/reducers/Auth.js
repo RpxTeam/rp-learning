@@ -37,6 +37,7 @@ const authLogin = (state,payload) => {
         localStorage.setItem('is_admin',false);
     }
     localStorage.setItem('jwt_token',jwtToken);
+    localStorage.setItem('userId', user.id);
     Http.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
     state = Object.assign({}, state, {
         isAuthenticated: true,
@@ -51,6 +52,7 @@ const checkAuth = (state) =>{
     state =Object.assign({},state,{
         isAuthenticated : !!localStorage.getItem('jwt_token'),
         isAdmin : localStorage.getItem('is_admin'),
+        user: localStorage.getItem('userId')
     });
     if(state.isAuthenticated){
         Http.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwt_token')}`;

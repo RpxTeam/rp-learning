@@ -114,7 +114,11 @@ class UserController extends Controller
     {
         try{
             $user = User::findOrFail($id);
-            $user->update($request->all());
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
