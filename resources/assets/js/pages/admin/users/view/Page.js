@@ -9,8 +9,9 @@ import {
     Segment,
     Step
 } from 'semantic-ui-react'
-import PageHeader from '../../common/pageHeader'
-import Sidebar from '../../common/sidebar'
+import Footer from '../../../common/mainFooter'
+import Topbar from '../../../common/topbar'
+import Sidebar from '../../../common/sidebar'
 
 class Page extends React.Component {
     constructor(props) {
@@ -20,11 +21,12 @@ class Page extends React.Component {
     render() {
         return (
             <div>
-                <PageHeader heading="Painel"/>
+                <Topbar></Topbar>
                 <Sidebar></Sidebar>
-                <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
-                    <Header as='h1'>Painel</Header>
-                </Segment>
+                <main className="fadeIn animated">
+                    
+                </main>
+                <Footer/>
             </div>
         );
     }

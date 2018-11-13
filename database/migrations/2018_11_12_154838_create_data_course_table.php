@@ -23,7 +23,6 @@ class CreateDataCourseTable extends Migration
             $table->text('testimonal')->nullable();
             $table->boolean('favorite')->nullable();
             
-            $table->timestamps();
             $table->softDeletes();
 
             $table->index(['deleted_at']);

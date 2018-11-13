@@ -100,64 +100,68 @@ class Page extends React.Component {
         const {errors} = this.state;
         return (
             <div>
-                <PageHeader heading="Register"/>
-                <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
-                    <Dimmer active inverted>
-                        <Loader size='large'>Resetting Password...</Loader>
-                    </Dimmer>
-                </Segment>
+                <Navigation/>
+                <main className="fadeIn animated">
+                    <PageHeader heading="Register"/>
+                    <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
+                        <Dimmer active inverted>
+                            <Loader size='large'>Resetting Password...</Loader>
+                        </Dimmer>
+                    </Segment>
 
-                <Grid
-                    textAlign='center'
-                    verticalAlign='middle'
-                    className='login-form'
-                >
-                    <Grid.Column style={{maxWidth: '450px'}}>
-                        <Header as='h2' color='teal' textAlign='center'>
-                            Reset your password
-                        </Header>
-                        {this.state.responseError.isError && <Message negative>
-                            <Message.Content>
-                                {this.state.responseError.text}
-                            </Message.Content>
-                        </Message>}
-                        {this.state.isSuccess && <Message positive>
-                            <Message.Content>
-                                Reset Successfully ! <Link to='/login' replace>Login</Link> here
-                            </Message.Content>
-                        </Message>}
-                        <Form size='large'>
-                            <Segment stacked>
-                                <Form.Input
-                                    fluid
-                                    icon='lock'
-                                    iconPosition='left'
-                                    name='password'
-                                    placeholder='New password'
-                                    type='password'
-                                    onChange={this.handleChange}
-                                />
-                                {errors.has('password') && <Header size='tiny' className='custom-error' color='red'>
-                                    {errors.first('password')}
-                                </Header>}
-                                <Form.Input
-                                    fluid
-                                    icon='refresh'
-                                    iconPosition='left'
-                                    name='password_confirmation'
-                                    placeholder='Confirm new password'
-                                    type='password'
-                                    onChange={this.handleChange}
-                                />
-                                {errors.has('password_confirmation') &&
-                                <Header size='tiny' className='custom-error' color='red'>
-                                    {errors.first('password_confirmation')}
-                                </Header>}
-                                <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Change Password</Button>
-                            </Segment>
-                        </Form>
-                    </Grid.Column>
-                </Grid>
+                    <Grid
+                        textAlign='center'
+                        verticalAlign='middle'
+                        className='login-form'
+                    >
+                        <Grid.Column style={{maxWidth: '450px'}}>
+                            <Header as='h2' color='teal' textAlign='center'>
+                                Reset your password
+                            </Header>
+                            {this.state.responseError.isError && <Message negative>
+                                <Message.Content>
+                                    {this.state.responseError.text}
+                                </Message.Content>
+                            </Message>}
+                            {this.state.isSuccess && <Message positive>
+                                <Message.Content>
+                                    Reset Successfully ! <Link to='/login' replace>Login</Link> here
+                                </Message.Content>
+                            </Message>}
+                            <Form size='large'>
+                                <Segment stacked>
+                                    <Form.Input
+                                        fluid
+                                        icon='lock'
+                                        iconPosition='left'
+                                        name='password'
+                                        placeholder='New password'
+                                        type='password'
+                                        onChange={this.handleChange}
+                                    />
+                                    {errors.has('password') && <Header size='tiny' className='custom-error' color='red'>
+                                        {errors.first('password')}
+                                    </Header>}
+                                    <Form.Input
+                                        fluid
+                                        icon='refresh'
+                                        iconPosition='left'
+                                        name='password_confirmation'
+                                        placeholder='Confirm new password'
+                                        type='password'
+                                        onChange={this.handleChange}
+                                    />
+                                    {errors.has('password_confirmation') &&
+                                    <Header size='tiny' className='custom-error' color='red'>
+                                        {errors.first('password_confirmation')}
+                                    </Header>}
+                                    <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Change Password</Button>
+                                </Segment>
+                            </Form>
+                        </Grid.Column>
+                    </Grid>
+                </main>
+                <Footer/>
             </div>
         );
     }

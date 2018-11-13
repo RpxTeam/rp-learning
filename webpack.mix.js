@@ -11,7 +11,17 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css')
+mix
+    .react('resources/assets/js/app.js', 'public/js')
+    .sass('resources/assets/sass/app.scss', 'public/css')
     .styles(['resources/assets/css/semantic-ui.css',
-        'resources/assets/css/animate.css'],'public/css/all.css');
+        'resources/assets/css/animate.css'],'public/css/all.css')
+    .browserSync({
+        proxy: 'localhost:8000',
+        port:  '3000',
+        files: [
+            'public/js/**/*.js',
+            'public/css/**/*.css'
+        ]
+    })
+    .disableNotifications();
