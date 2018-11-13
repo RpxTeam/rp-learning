@@ -28,7 +28,8 @@ class Page extends React.Component {
             password: this.state.password
         };
 
-        axios.post(`http://localhost:3000/api/users`, { user })
+        console.log(user);
+        axios.post(`http://127.0.0.1:8000/api/users`, { user })
             .then(res => {
             console.log(res);
             console.log(res.data);

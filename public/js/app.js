@@ -17957,7 +17957,7 @@ function isStyledComponent(target) {
 // 
 
 
-var SC_ATTR = typeof process !== 'undefined' && Object({"NODE_ENV":"development"}).SC_ATTR || 'data-styled';
+var SC_ATTR = typeof process !== 'undefined' && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).SC_ATTR || 'data-styled';
 
 var SC_VERSION_ATTR = 'data-styled-version';
 
@@ -81491,7 +81491,7 @@ var Page = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get('http://localhost:3000/api/users').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get('http://127.0.0.1:8000/api/users').then(function (res) {
                 var users = res.data;
                 console.log(users);
                 _this2.setState({ users: users });
@@ -81634,7 +81634,8 @@ var Page = function (_React$Component) {
                 password: _this.state.password
             };
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('http://localhost:3000/api/users', { user: user }).then(function (res) {
+            console.log(user);
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('http://127.0.0.1:8000/api/users', { user: user }).then(function (res) {
                 console.log(res);
                 console.log(res.data);
             }).catch(function (error) {
