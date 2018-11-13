@@ -31,13 +31,13 @@ Route::middleware(['jwt_auth'])->group(function(){
 });
 
 //Course routes
-Route::resource('course', 'Api\CoursesController');
+Route::resource('courses', 'Api\CoursesController');
 
 //user routes
-Route::resource('user', 'Api\UserController');
+Route::resource('users', 'Api\UserController');
 
 //lesson routes
-Route::resource('course/{id}/lesson', 'Api\LessonController');
+Route::resource('courses/{id}/lesson', 'Api\LessonController');
 
 //lesson routes
-Route::resource('mycourse', 'Api\DataCourseController');
+Route::resource('mycourses', 'Api\DataCourseController');

@@ -81634,7 +81634,13 @@ var Page = function (_React$Component) {
                 password: _this.state.password
             };
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('http://localhost:3000/api/users', { user: user }).then(function (res) {
+            console.log(user.name);
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('http://localhost:8000/api/users', {
+                name: _this.state.name,
+                email: _this.state.email,
+                password: _this.state.password
+            }).then(function (res) {
                 console.log(res);
                 console.log(res.data);
             }).catch(function (error) {
