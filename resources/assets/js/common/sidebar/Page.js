@@ -1,6 +1,3 @@
-/**
- * Created by Sumit-Yadav on 06-10-2017.
- */
 import React from 'react'
 import {NavLink, Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -59,15 +56,15 @@ class Page extends React.Component {
                 <Sidebar as={Menu} animation='overlay' icon='labeled' inverted vertical visible width='thin' animation="slide along">
                     <Menu.Item as={NavLink} to="/dashboard">
                     <Icon name='dashboard' />
-                        Dashboard
+                        Painel
                     </Menu.Item>
                     <Menu.Item as={NavLink} to="/admin/users">
                     <Icon name='users' />
-                        Users
+                        Usuários
                     </Menu.Item>
                     <Menu.Item as={NavLink} to="/admin/courses">
                     <Icon name='book' />
-                        Courses
+                        Cursos
                     </Menu.Item>
                 </Sidebar>
             </div>

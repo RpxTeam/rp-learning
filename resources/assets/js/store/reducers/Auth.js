@@ -37,6 +37,7 @@ const authLogin = (state,payload) => {
         localStorage.setItem('is_admin',false);
     }
     localStorage.setItem('jwt_token',jwtToken);
+    localStorage.setItem('userId', user.id);
     Http.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
     state = Object.assign({}, state, {
         isAuthenticated: true,

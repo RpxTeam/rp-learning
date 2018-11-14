@@ -1,6 +1,3 @@
-/**
- * Created by Sumit-Yadav on 06-10-2017.
- */
 import React from 'react'
 import {NavLink, Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -104,7 +101,7 @@ class Page extends React.Component {
                                                     disabled key='user'/>
                                                 <Dropdown.Item as={Link} to="/dashboard" text="Painel" icon='dashboard' />
                                                 <Dropdown.Divider />
-                                                <Dropdown.Item onClick={this.handleLogout} text="logout" icon='sign out'
+                                                <Dropdown.Item onClick={this.handleLogout} text="Sair" icon='sign out'
                                                             key='logout'/>
                                             </Dropdown.Menu>
                                         </Dropdown>
@@ -113,7 +110,7 @@ class Page extends React.Component {
                                                     style={{lineHeight: '2em'}}>Login</Button>
                                             <Button.Or />
                                             <Button as={Link} to="/register" replace color='blue' compact
-                                                    style={{lineHeight: '2em'}}>Register</Button>
+                                                    style={{lineHeight: '2em'}}>Registrar</Button>
                                         </Button.Group>
                                     }
                                 </Menu.Item>

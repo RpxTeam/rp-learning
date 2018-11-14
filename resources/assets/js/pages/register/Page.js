@@ -137,10 +137,10 @@ class Page extends React.Component {
             <div>
                 <Navigation/>
                 <main className="fadeIn animated">
-                    <PageHeader heading="Register"/>
+                    <PageHeader heading="Registro"/>
                     <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
                         <Dimmer active inverted>
-                            <Loader size='large'>Registering...</Loader>
+                            <Loader size='large'>Registrando...</Loader>
                         </Dimmer>
                     </Segment>
 
@@ -149,9 +149,9 @@ class Page extends React.Component {
                         verticalAlign='middle'
                         className='login-form'
                     >
-                        <Grid.Column style={{maxWidth: '450px'}}>
+                        <Grid.Column style={{paddingTop: '100px', maxWidth: '450px'}}>
                             <Header as='h2' color='teal' textAlign='center'>
-                                Register for new account
+                                Registrar uma nova conta
                             </Header>
                             {this.state.responseError.isError && <Message negative>
                                 <Message.Content>
@@ -160,7 +160,7 @@ class Page extends React.Component {
                             </Message>}
                             {this.state.isSuccess && <Message positive>
                                 <Message.Content>
-                                    Registered Successfully ! <Link to='/login' replace>Login</Link> here
+                                    Registro feito com sucesso ! <Link to='/login' replace>Login</Link> aqui
                                 </Message.Content>
                             </Message>}
                             <Form size='large'>
@@ -170,7 +170,7 @@ class Page extends React.Component {
                                         icon='user'
                                         iconPosition='left'
                                         name='name'
-                                        placeholder='Name'
+                                        placeholder='Nome'
                                         onChange={this.handleChange}
                                     />
                                     {errors.has('name') && <Header size='tiny' className='custom-error' color='red'>
@@ -181,7 +181,7 @@ class Page extends React.Component {
                                         icon='mail'
                                         iconPosition='left'
                                         name='email'
-                                        placeholder='E-mail address'
+                                        placeholder='E-mail'
                                         onChange={this.handleChange}
                                     />
                                     {errors.has('email') && <Header size='tiny' className='custom-error' color='red'>
@@ -192,7 +192,7 @@ class Page extends React.Component {
                                         icon='lock'
                                         iconPosition='left'
                                         name='password'
-                                        placeholder='Password'
+                                        placeholder='Senha'
                                         type='password'
                                         onChange={this.handleChange}
                                     />
@@ -204,7 +204,7 @@ class Page extends React.Component {
                                         icon='refresh'
                                         iconPosition='left'
                                         name='password_confirmation'
-                                        placeholder='Confirm password'
+                                        placeholder='Confirmar senha'
                                         type='password'
                                         onChange={this.handleChange}
                                     />
@@ -212,11 +212,11 @@ class Page extends React.Component {
                                     <Header size='tiny' className='custom-error' color='red'>
                                         {errors.first('password_confirmation')}
                                     </Header>}
-                                    <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Register</Button>
+                                    <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Registrar</Button>
                                 </Segment>
                             </Form>
                             <Message>
-                                Already register ? <Link to='/login' replace>Login</Link>
+                                Já é registrado ? <Link to='/login' replace>Login</Link>
                             </Message>
                         </Grid.Column>
                     </Grid>

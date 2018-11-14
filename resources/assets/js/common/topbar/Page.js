@@ -92,9 +92,9 @@ class Page extends React.Component {
                                         <Dropdown.Item
                                             text={"Está logado como " + this.props.userName}
                                             disabled key='user'/>
-                                        <Dropdown.Item as={Link} to="/dashboard" text="Profile" icon='user' />
+                                        <Dropdown.Item as={Link} to="/dashboard" text="Perfil" icon='user' />
                                         <Dropdown.Divider />
-                                        <Dropdown.Item onClick={this.handleLogout} text="logout" icon='sign out'
+                                        <Dropdown.Item onClick={this.handleLogout} text="Sair" icon='sign out'
                                                     key='logout'/>
                                     </Dropdown.Menu>
                                 </Dropdown>
