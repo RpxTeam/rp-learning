@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class DataCourseSeed extends Seeder
 {
@@ -17,7 +18,7 @@ class DataCourseSeed extends Seeder
             \App\DataCourse::insert([
                 'view' => $faker->numberBetween(0,1),
                 'progress' => $faker->numberBetween(0,100),
-                'finish'=> $faker->numberBetween(0,1),
+                'finish'=> Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 days', 'now')->getTimestamp())->format('Y/m/d'),
                 'rating' => $faker->numberBetween(1,5),
                 'testimonal' => $faker->word,
                 'favorite'=> $faker->numberBetween(0,1),

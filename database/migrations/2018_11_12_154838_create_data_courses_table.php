@@ -17,7 +17,7 @@ class CreateDataCoursesTable extends Migration
 
             $table->integer('view')->nullable();
             $table->float('progress', 10 , 5)->nullable();
-            $table->integer('finish')->nullable();
+            $table->date('finish')->nullable();
             $table->integer('rating')->nullable();
             $table->text('testimonal')->nullable();
             $table->boolean('favorite')->nullable();
