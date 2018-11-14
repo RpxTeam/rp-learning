@@ -33,7 +33,7 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        axios.post(`http://127.0.0.1:8000/api/users`, { 
+        axios.post(`http://rplearning-homolog.siteseguro.ws/api/users`, { 
             name: this.state.name,
             email: this.state.email,
             password: this.state.password
@@ -107,7 +107,7 @@ class Page extends React.Component {
                     <Form.Field
                         id='button-control-confirm'
                         control={Button}
-                        content='Create'
+                        content='Criar'
                         positive
                     />
                 </Form>

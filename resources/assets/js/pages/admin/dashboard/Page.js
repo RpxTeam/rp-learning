@@ -9,7 +9,7 @@ class Page extends React.Component {
     render() {
         return (
             <Admin>
-                Dashboard
+                Painel
             </Admin>
         );
     }

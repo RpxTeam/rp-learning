@@ -114,7 +114,7 @@ class Page extends React.Component {
                     <PageHeader heading="login"/>
                     <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
                         <Dimmer active inverted>
-                            <Loader size='large'>Authenticating...</Loader>
+                            <Loader size='large'>Autenticando...</Loader>
                         </Dimmer>
                     </Segment>
 
@@ -125,7 +125,7 @@ class Page extends React.Component {
                     >
                         <Grid.Column style={{paddingTop: '100px', maxWidth: '450px'}}>
                             <Header as='h2' color='teal' textAlign='center'>
-                                Login to your account
+                                Acessar sua conta
                             </Header>
                             {this.state.responseError.isError && <Message negative>
                                 <Message.Content>
@@ -139,7 +139,7 @@ class Page extends React.Component {
                                         icon='user'
                                         iconPosition='left'
                                         name='email'
-                                        placeholder='E-mail address'
+                                        placeholder='E-mail'
                                         onChange={this.handleChange}
                                         error={errors.has('email')}
                                     />
@@ -151,7 +151,7 @@ class Page extends React.Component {
                                         icon='lock'
                                         iconPosition='left'
                                         name='password'
-                                        placeholder='Password'
+                                        placeholder='Senha'
                                         type='password'
                                         onChange={this.handleChange}
                                         error={errors.has('password')}
@@ -160,8 +160,8 @@ class Page extends React.Component {
                                         {errors.first('password')}
                                     </Header>}
                                     <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Login</Button>
-                                    <Link to='/forgot-password' replace>Forgot your password?</Link>
-                                    <div className="ui divider"></div>
+                                    {/* <Link to='/forgot-password' replace>Perdeu sua senha?</Link> */}
+                                    {/* <div className="ui divider"></div>
                                     <div>Or login with:</div><br/>
                                     <Button onClick={this.onSocialClick.bind(this)} service="facebook" className="ui circular facebook icon button">
                                     <Icon className="facebook icon" />
@@ -174,7 +174,7 @@ class Page extends React.Component {
                                     </Button>
                                     <Button onClick={this.onSocialClick.bind(this)} service="google" className="ui circular google plus icon button">
                                     <Icon className="google plus icon" />
-                                    </Button>
+                                    </Button> */}
                                 </Segment>
                             </Form>
                             <Message>

@@ -23,9 +23,9 @@ class Page extends React.Component {
             <div>
                 <Navigation/>
                 <main className="fadeIn animated">
-                    <PageHeader heading="My Courses"/>
+                    <PageHeader heading="Meus Cursos"/>
                     <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
-                        <Header as='h1'>Courses</Header>
+                        <Header as='h1'>Cursos</Header>
                         <Container>
                             <Card.Group>
                                 <Card color='red'>
@@ -33,17 +33,17 @@ class Page extends React.Component {
                                     <Card.Content>
                                         <Card.Header>Curso 1</Card.Header>
                                         <Card.Meta>
-                                        <span className='date'>Joined in 2015</span>
+                                        <span className='date'>Criado em 2015</span>
                                         </Card.Meta>
                                         <Card.Description>Descrição do Curso.</Card.Description>
                                     </Card.Content>
                                     <Card.Content extra>
                                     <div className='ui two buttons'>
                                         <Button basic color='green'>
-                                            Approve
+                                            Executar
                                         </Button>
                                         <Button basic color='red'>
-                                            Decline
+                                            Excluir
                                         </Button>
                                         </div>
                                     </Card.Content>
