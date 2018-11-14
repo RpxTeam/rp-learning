@@ -39,5 +39,7 @@ Route::resource('users', 'Api\UserController');
 //lesson routes
 Route::resource('courses/{id}/lessons', 'Api\LessonController');
 
-//lesson routes
-Route::resource('mycourses', 'Api\DataCourseController');
+//DataCourse routes
+Route::resource('users/{user}/courses', 'Api\DataCourseController');
+Route::post('users/{user}/courses/{course}', 'Api\DataCourseController@store');
+Route::put('users/{user}/courses/{course}', 'Api\DataCourseController@update');

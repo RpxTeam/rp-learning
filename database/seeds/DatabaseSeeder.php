@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
 
         //relation seeds
         $this->call(CourseLessonSeed::class);
+        $this->call(DataCourseSeed::class);
     }
 }

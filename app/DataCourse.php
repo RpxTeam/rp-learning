@@ -10,6 +10,24 @@ class DataCourse extends Model
     protected $hidden = [];
     public static $searchable = [
     ];
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setUserIdAttribute($input)
+    {
+        $this->attributes['user_id'] = $input ? $input : null;
+    }
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setCourseIdAttribute($input)
+    {
+        $this->attributes['course_id'] = $input ? $input : null;
+    }
+
     
     public function user()
     {

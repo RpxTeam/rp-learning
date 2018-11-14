@@ -7,6 +7,7 @@ Use App\User;
 Use App\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class DataCourseController extends Controller
 {
@@ -15,30 +16,11 @@ class DataCourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($user)
     {
-        //
-    }
+        $mycourses = Course::userCourse($user);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return response()->json($mycourses);
     }
 
     /**
@@ -47,21 +29,37 @@ class DataCourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($user,$course)
     {
-        //
+        $course = Course::findOrFail($course);
+        $mycourse = Course::userCourse($user)
+        ->where('course_id','=',$course->id);
+        
+        return response()->json($mycourse);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Store a newly created resource in storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function store($user,$course)
     {
-        //
+        try{
+            $course = Course::findOrFail($course);
+            DB::table('data_courses')->insert([
+                'user_id' => $user,
+                'course_id' => $course->id,
+            ]);
+        }catch(ModelNotFoundException $e){
+            return response()->json(400);
+            //400: Bad request. The standard option for requests that fail to pass validation.
+        }
+        return response()->json(201);
+        //201: Object created. Useful for the store actions.
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -70,9 +68,27 @@ class DataCourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$user,$course)
     {
-        //
+        try{
+            $course = Course::findOrFail($course);
+            DB::table('data_courses')
+            ->where('data_courses.user_id','=',$user)
+            ->where('data_courses.course_id','=',$course->id)
+            ->update([
+                'view' => $request->view,
+                'progress' => $request->progress,
+                'finish' => $request->finish,
+                'rating' => $request->rating, 
+                'testimonal' => $request->testimonal, 
+                'favorite' => $request->favorite,
+            ]);
+        }catch(ModelNotFoundException $e){
+            return response()->json(400);
+            //400: Bad request. The standard option for requests that fail to pass validation.
+        }
+        return response()->json(204);
+        //204: No content. When an action was executed successfully, but there is no content to return.
     }
 
     /**
@@ -83,6 +99,6 @@ class DataCourseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return response()->json(405);
     }
 }
