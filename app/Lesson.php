@@ -23,4 +23,14 @@ class Lesson extends Model
         ->get();
         return $lessons;
     }
+
+    public static function userLessons($user,$course){
+        $lessons = DB::table('data_lessons')
+        ->leftJoin('lessons','data_lessons.lesson_id','=','lessons.id')
+        ->where('data_lessons.user_id','=',$user)
+        ->where('data_lessons.course_id','=',$course)
+        ->get();
+
+        return $lessons;
+    }
 }

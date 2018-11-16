@@ -30,11 +30,11 @@ Route::middleware(['jwt_auth'])->group(function(){
    });
 });
 
-//Course routes
-Route::resource('courses', 'Api\CoursesController');
-
 //user routes
 Route::resource('users', 'Api\UserController');
+
+//Course routes
+Route::resource('courses', 'Api\CoursesController');
 
 //lesson routes
 Route::resource('courses/{id}/lessons', 'Api\LessonController');
@@ -43,3 +43,8 @@ Route::resource('courses/{id}/lessons', 'Api\LessonController');
 Route::resource('users/{user}/courses', 'Api\DataCourseController');
 Route::post('users/{user}/courses/{course}', 'Api\DataCourseController@store');
 Route::put('users/{user}/courses/{course}', 'Api\DataCourseController@update');
+
+//DataLesson routes
+Route::resource('users/{user}/courses/{course}/lessons', 'Api\DataLessonController');
+Route::post('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@store');
+Route::put('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@update');
