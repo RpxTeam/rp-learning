@@ -29,7 +29,7 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://127.0.0.1:8000/api/users`)
+        axios.get(`http://rplearning-homolog.siteseguro.ws/api/users`)
           .then(res => {
             const users = res.data;
             this.setState({ users: users });
@@ -40,7 +40,7 @@ class Page extends React.Component {
     handleDelete = (event) => {
         let userID = event.target.value;
         if(confirm('Tem certeza que deseja deletar?')) {
-            axios.delete(`http://127.0.0.1:8000/api/users/${userID}`)
+            axios.delete(`http://rplearning-homolog.siteseguro.ws/api/users/${userID}`)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -77,18 +77,18 @@ class Page extends React.Component {
                 : null }
                 <Grid>
                     <Grid.Column floated='left' width={5}>
-                        Users
+                        Usuários
                     </Grid.Column>
                     <Grid.Column floated='right' width={2}>
-                        <Button as={Link} to="/admin/users/create">Create</Button>
+                        <Button as={Link} to="/admin/users/create">Criar usuário</Button>
                     </Grid.Column>
                 </Grid>
                 <Table celled>
                     <Table.Header>
                         <Table.Row>
-                        <Table.HeaderCell>Name</Table.HeaderCell>
+                        <Table.HeaderCell>Nome</Table.HeaderCell>
+                        <Table.HeaderCell>Email</Table.HeaderCell>
                         <Table.HeaderCell>Status</Table.HeaderCell>
-                        <Table.HeaderCell>Notes</Table.HeaderCell>
                         <Table.HeaderCell>  </Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
@@ -104,12 +104,12 @@ class Page extends React.Component {
                                 <Table.Cell>{user.email}</Table.Cell>
                                 <Table.Cell positive>
                                     <Icon name='checkmark' />
-                                    Approved
+                                    Aprovado
                                 </Table.Cell>
                                 <Table.Cell textAlign="right">
                                     {this.props.currentUser.id === user.id ? null : 
                                         <Button icon onClick={this.handleDelete} value={user.id}>
-                                            Delete
+                                            Excluir
                                         </Button>
                                     }
                                 </Table.Cell>

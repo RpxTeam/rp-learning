@@ -10,7 +10,7 @@ class Page extends React.Component {
 
     render() {
         return(
-            <h1>Lost in space !</h1>
+            <h1>Página não encontrada !</h1>
         );
     }
 }

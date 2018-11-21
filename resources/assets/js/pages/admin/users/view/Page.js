@@ -26,7 +26,7 @@ class Page extends React.Component {
     componentDidMount () {
         const userID = this.props.match.params.id
 
-        axios.get(`http://127.0.0.1:8000/api/users/${userID}`)
+        axios.get(`http://rplearning-homolog.siteseguro.ws/api/users/${userID}`)
           .then(res => {
             const user = res.data;
             this.setState({ user: user });
@@ -56,7 +56,7 @@ class Page extends React.Component {
 
         console.log(this.state.password);
 
-        axios.put(`http://127.0.0.1:8000/api/users/${userID}`, { 
+        axios.put(`http://rplearning-homolog.siteseguro.ws/api/users/${userID}`, { 
             name: this.state.name,
             email: this.state.email,
             password: this.state.password
@@ -92,7 +92,7 @@ class Page extends React.Component {
                 : null }
                 <Grid>
                     <Grid.Column floated='left' width={5}>
-                        Users
+                        Usuários
                     </Grid.Column>
                     <Grid.Column floated='right' width={2}>
                         <Button onClick={this.handleEdit} icon>
@@ -109,8 +109,8 @@ class Page extends React.Component {
                             placeholder={this.state.user.name}
                             name="name"
                             onChange={this.handleChange}
-                            // value={this.state.user.name}
-                            readOnly={this.state.edit === true ? false : true}
+                            value={this.state.user.name}
+                            // readOnly={this.state.edit === true ? false : true}
                         />
                         <Form.Field
                             id='input-control-email'
@@ -119,8 +119,8 @@ class Page extends React.Component {
                             name="email"
                             placeholder={this.state.user.email}
                             onChange={this.handleChange}
-                            // value={this.state.user.email}
-                            readOnly={this.state.edit === true ? false : true}
+                            value={this.state.user.email}
+                            // readOnly={this.state.edit === true ? false : true}
                         />
                         <Form.Field
                             id='input-control-password'
@@ -131,7 +131,7 @@ class Page extends React.Component {
                             placeholder={this.state.user.password}
                             // value={this.state.user.password}
                             onChange={this.handleChange}
-                            readOnly={this.state.edit === true ? false : true}
+                            // readOnly={this.state.edit === true ? false : true}
                         />
                         {/* <Form.Field
                             id='input-control-confirmpassword'
@@ -143,14 +143,12 @@ class Page extends React.Component {
                             onChange={this.handleChange}
                         /> */}
                     </Form.Group>
-                    {this.state.edit ?
-                        <Form.Field
-                            id='button-control-confirm'
-                            control={Button}
-                            content='Update'
-                            positive
-                        />
-                    : null }
+                    <Form.Field
+                        id='button-control-confirm'
+                        control={Button}
+                        content='Atualizar'
+                        positive
+                    />
                 </Form>
             </Admin>
         );
