@@ -9,14 +9,6 @@ import Dashboard from '../pages/admin/dashboard'
 import AdminUsers from '../pages/admin/users/list'
 import CreateUsers from '../pages/admin/users/create'
 import ViewUsers from '../pages/admin/users/view'
-import AdminCourses from '../pages/admin/courses/list'
-<<<<<<< HEAD
-import CreateCourses from '../pages/admin/courses/create'
-import AdminUsers from '../pages/admin/users/list'
-import CreateUser from '../pages/admin/users/create'
-import ViewUser from '../pages/admin/users/view'
-=======
->>>>>>> test
 import NoMatch from '../pages/noMatch'
 
 const routes = [
@@ -91,30 +83,6 @@ const routes = [
         exact: true,
         auth: true,
         component: ViewUsers
-    },
-    {
-        path: '/admin/courses/',
-        exact: true,
-        auth: true,
-        component: AdminCourses
-    },
-    {
-        path: '/admin/users',
-        exact: true,
-        auth: true,
-        component: AdminUsers
-    },
-    {
-        path: '/admin/users/create',
-        exact: true,
-        auth: true,
-        component: CreateUser
-    },
-    {
-        path: '/admin/users/:id',
-        exact: true,
-        auth: true,
-        component: ViewUser
     },
     {
         path: '',
