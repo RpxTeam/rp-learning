@@ -26,11 +26,11 @@ class Page extends React.Component {
     componentDidMount () {
         const courseID = this.props.match.params.id
 
-        axios.get(`http://localhost:8000/api/courses/${courseID}`)
-          .then(res => {
-            const course = res.data;
-            this.setState({ course: course });
-        })
+        // axios.get(`http://localhost:8000/api/courses/${courseID}`)
+        //   .then(res => {
+        //     const course = res.data;
+        //     this.setState({ course: course });
+        // })
     }
 
     handleEdit = (event) => {

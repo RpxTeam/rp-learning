@@ -106,6 +106,12 @@ const routes = [
         component: ViewCourses
     },
     {
+        path: '/admin/courses/:courseId/lesson/:lessonId',
+        exact: true,
+        auth: true,
+        component: ViewCourses
+    },
+    {
         path: '',
         exact: true,
         auth: false,

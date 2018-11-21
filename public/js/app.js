@@ -29178,6 +29178,11 @@ var routes = [{
     auth: true,
     component: __WEBPACK_IMPORTED_MODULE_13__pages_admin_courses_view__["a" /* default */]
 }, {
+    path: '/admin/courses/:courseId/lesson/:lessonId',
+    exact: true,
+    auth: true,
+    component: __WEBPACK_IMPORTED_MODULE_13__pages_admin_courses_view__["a" /* default */]
+}, {
     path: '',
     exact: true,
     auth: false,
@@ -82683,14 +82688,13 @@ var Page = function (_React$Component) {
     _createClass(Page, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this2 = this;
-
             var courseID = this.props.match.params.id;
 
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('http://localhost:8000/api/courses/' + courseID).then(function (res) {
-                var course = res.data;
-                _this2.setState({ course: course });
-            });
+            // axios.get(`http://localhost:8000/api/courses/${courseID}`)
+            //   .then(res => {
+            //     const course = res.data;
+            //     this.setState({ course: course });
+            // })
         }
     }, {
         key: 'render',
