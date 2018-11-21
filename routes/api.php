@@ -40,7 +40,6 @@ Route::resource('courses', 'Api\CoursesController');
 //lesson routes
 Route::resource('courses/{id}/lessons', 'Api\LessonController');
 
-
 //DataCourse routes
 Route::resource('users/{user}/courses', 'Api\DataCourseController');
 Route::post('users/{user}/courses/{course}', 'Api\DataCourseController@store');
@@ -50,3 +49,4 @@ Route::put('users/{user}/courses/{course}', 'Api\DataCourseController@update');
 Route::resource('users/{user}/courses/{course}/lessons', 'Api\DataLessonController');
 Route::post('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@store');
 Route::put('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@update');
+
