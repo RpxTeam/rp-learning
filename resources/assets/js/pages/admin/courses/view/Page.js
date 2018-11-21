@@ -1,18 +1,48 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import axios from 'axios'
-import { Form, Input, TextArea, Button, Select } from 'semantic-ui-react'
+import {
+    Grid,
+    Form,
+    Input,
+    TextArea,
+    Button,
+    Icon,
+    Select,
+    Message
+} from 'semantic-ui-react'
 import Admin from '../../Admin'
-
-const genderOptions = [
-    { key: 'm', text: 'Male', value: 'male' },
-    { key: 'f', text: 'Female', value: 'female' },
-]
 
 class Page extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            course: [],
+            edit: false
+        }
+
+        this.handleEdit = this.handleEdit.bind(this)
+    }
+
+    componentDidMount () {
+        const courseID = this.props.match.params.id
+
+        axios.get(`http://localhost:8000/api/courses/${courseID}`)
+          .then(res => {
+            const course = res.data;
+            this.setState({ course: course });
+        })
+    }
+
+    handleEdit = (event) => {
+        if(this.state.edit) {
+            this.setState({
+                edit: false
+            })
+        } else {
+            this.setState({
+                edit: true
+            })
+        }
     }
 
     handleChange = event => {
@@ -22,67 +52,116 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        const user = {
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password
-        };
+        const courseID = this.props.match.params.id
 
-        axios.post(`http://localhost:3000/api/user/`, { user })
+        console.log(this.state.password);
+
+        axios.put(`http://localhost:8000/api/courses/${courseID}`, { 
+            title: this.state.title,
+            slug: this.state.slug,
+            description: this.state.description,
+            start_date: this.state.startdate,
+            end_date: this.state.enddate,
+            duration: this.state.duration
+         })
             .then(res => {
             console.log(res);
             console.log(res.data);
+            this.setState({
+                message: 'Curso atualizado com sucesso',
+                error: false,
+                success: true,
+            });
         }).catch(error => {
             console.log(error.message)
+            this.setState({
+                message: error.message,
+                error: true,
+                success: false
+            })
         })
     }
 
     render() {
         return (
-            <Admin heading="Create">
+            <Admin>
+                {this.state.message ?
+                <Message success={this.state.success} negative={this.state.error}>
+                    <Message.Header>{this.state.success ? 'Sucesso' : "Erro" }</Message.Header>
+                    <p>
+                        {this.state.message}
+                    </p>
+                </Message>
+                : null }
+                <Grid style={{paddingBottom: '10px'}}>
+                    <Grid.Column floated='left' width={5}>
+                        Cursos
+                    </Grid.Column>
+                    {/* <Grid.Column floated='right' width={2}>
+                        <Button onClick={this.handleEdit} icon>
+                            <Icon name="pencil"></Icon>
+                        </Button>
+                    </Grid.Column> */}
+                </Grid>
                 <Form onSubmit={this.handleSubmit}>
-                <Form.Group widths='equal'>
+                    <Form.Group widths='equal'>
+                        <Form.Field
+                            id='input-control-title'
+                            control={Input}
+                            label='Título'
+                            placeholder={this.state.course.title}
+                            name="title"
+                            onChange={this.handleChange}
+                        />
+                        <Form.Field
+                            id='input-control-slug'
+                            control={Input}
+                            label='Slug'
+                            name="slug"
+                            placeholder={this.state.course.slug}
+                            onChange={this.handleChange}
+                        />
+                        <Form.Field
+                            id='input-control-description'
+                            control={Input}
+                            label='Descrição'
+                            name="description"
+                            placeholder={this.state.course.description}
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Field
+                            id='input-control-duration'
+                            control={Input}
+                            label='Duração'
+                            name="duration"
+                            placeholder={this.state.course.duration}
+                            onChange={this.handleChange}
+                        />
+                        <Form.Field
+                            id='input-control-startdate'
+                            control={Input}
+                            label='Data de Início'
+                            name="startdate"
+                            placeholder={this.state.course.start_date}
+                            onChange={this.handleChange}
+                        />
+                        <Form.Field
+                            id='input-control-enddate'
+                            control={Input}
+                            label='Data de Término'
+                            name="enddate"
+                            placeholder={this.state.course.end_date}
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>
                     <Form.Field
-                        id='input-control-name'
-                        control={Input}
-                        label='Nome Completo'
-                        placeholder='Nome Completo'
-                        name="name"
-                        onChange={this.handleChange}
+                        id='button-control-confirm'
+                        control={Button}
+                        content='Atualizar'
+                        positive
                     />
-                    <Form.Field
-                        id='input-control-email'
-                        control={Input}
-                        label='Email'
-                        name="email"
-                        placeholder='Email'
-                        onChange={this.handleChange}
-                    />
-                    <Form.Field
-                        id='input-control-password'
-                        type='password'
-                        control={Input}
-                        label='Senha'
-                        name="password"
-                        placeholder='Senha'
-                        onChange={this.handleChange}
-                    />
-                    {/* <Form.Field
-                        id='input-control-confirmpassword'
-                        type='password'
-                        control={Input}
-                        label='Confirmar senha'
-                        name="confirm-password"
-                        placeholder='Confirmar Senha'
-                        onChange={this.handleChange}
-                    /> */}
-                </Form.Group>
-                <Form.Field
-                    id='button-control-confirm'
-                    control={Button}
-                    content='Create'
-                    positive
-                />
                 </Form>
             </Admin>
         );

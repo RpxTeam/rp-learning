@@ -16,20 +16,24 @@ class Page extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: [],
+            user: {
+                name: 'dasdsadas'
+            },
             edit: false
         }
 
         this.handleEdit = this.handleEdit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
     }
 
     componentDidMount () {
         const userID = this.props.match.params.id
 
-        axios.get(`http://rplearning-homolog.siteseguro.ws/api/users/${userID}`)
+        axios.get(`http://localhost:8000/api/users/${userID}`)
           .then(res => {
             const user = res.data;
             this.setState({ user: user });
+            console.log(this.state.user)
         })
     }
 
@@ -51,17 +55,13 @@ class Page extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-
         const userID = this.props.match.params.id
 
-        console.log(this.state.password);
-
-        axios.put(`http://rplearning-homolog.siteseguro.ws/api/users/${userID}`, { 
+        axios.put(`http://localhost:8000/api/users/${userID}`, { 
             name: this.state.name,
             email: this.state.email,
             password: this.state.password
-         })
-            .then(res => {
+        }).then(res => {
             console.log(res);
             console.log(res.data);
             this.setState({
@@ -110,7 +110,6 @@ class Page extends React.Component {
                             name="name"
                             onChange={this.handleChange}
                             value={this.state.user.name}
-                            // readOnly={this.state.edit === true ? false : true}
                         />
                         <Form.Field
                             id='input-control-email'
@@ -119,8 +118,13 @@ class Page extends React.Component {
                             name="email"
                             placeholder={this.state.user.email}
                             onChange={this.handleChange}
-                            value={this.state.user.email}
-                            // readOnly={this.state.edit === true ? false : true}
+                            defaultValue={this.state.user.email}
+                        />
+                        <Input
+                            placeholder='Name'
+                            value={this.state.user.name}
+                            onChange={this.handleChange}
+                            name="name"
                         />
                         <Form.Field
                             id='input-control-password'
@@ -128,10 +132,9 @@ class Page extends React.Component {
                             control={Input}
                             label='Senha'
                             name="password"
-                            placeholder={this.state.user.password}
-                            // value={this.state.user.password}
+                            // placeholder={this.state.user.password}
+                            value={this.state.user.password}
                             onChange={this.handleChange}
-                            // readOnly={this.state.edit === true ? false : true}
                         />
                         {/* <Form.Field
                             id='input-control-confirmpassword'

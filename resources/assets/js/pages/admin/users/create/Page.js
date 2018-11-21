@@ -33,7 +33,7 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        axios.post(`http://rplearning-homolog.siteseguro.ws/api/users`, { 
+        axios.post(`http://localhost:8000/api/users`, { 
             name: this.state.name,
             email: this.state.email,
             password: this.state.password

@@ -29,7 +29,7 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://rplearning-homolog.siteseguro.ws/api/users`)
+        axios.get(`http://localhost:8000/api/users`)
           .then(res => {
             const users = res.data;
             this.setState({ users: users });
@@ -40,7 +40,7 @@ class Page extends React.Component {
     handleDelete = (event) => {
         let userID = event.target.value;
         if(confirm('Tem certeza que deseja deletar?')) {
-            axios.delete(`http://rplearning-homolog.siteseguro.ws/api/users/${userID}`)
+            axios.delete(`http://localhost:8000/api/users/${userID}`)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
