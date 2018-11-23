@@ -17,8 +17,11 @@ class CreateCoursesTable extends Migration
             $table->increments('id');
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
+            $table->text('introduction')->nullable();
             $table->text('description')->nullable();
             $table->integer('duration')->nullable();
+            $table->binary('image')->nullable();
+            $table->string('instructor')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             

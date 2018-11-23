@@ -2,40 +2,40 @@
 
 namespace App\Http\Controllers\Api;
 
-Use App\DataCourse;
 Use App\User;
 Use App\Course;
+Use App\Lesson;
+use App\DataLesson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class DataCourseController extends Controller
+class DataLessonController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($user)
+    public function index($user,$course)
     {
-        $mycourses = Course::userCourse($user);
+        $lessons = Lesson::userLessons($user,$course);
 
-        return response()->json($mycourses);
+        return response()->json($lessons);
     }
-
+    
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\DataLesson  $dataLesson
      * @return \Illuminate\Http\Response
      */
-    public function show($user,$course)
+    public function show($user,$course,$lesson)
     {
-        $course = Course::findOrFail($course);
-        $mycourse = Course::userCourse($user)
-        ->where('course_id','=',$course->id);
+        $lessons = Lesson::userLessons($user,$course)
+        ->where('lesson_id','=',$lesson);
         
-        return response()->json($mycourse);
+        return response()->json($lessons);
     }
 
     /**
@@ -44,13 +44,15 @@ class DataCourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($user,$course)
+    public function store($user,$course,$lesson)
     {
         try{
             $course = Course::findOrFail($course);
-            DB::table('data_courses')->insert([
+            $lesson = Lesson::findOrFail($lesson);
+            DB::table('data_lessons')->insert([
                 'user_id' => $user,
                 'course_id' => $course->id,
+                'lesson_id' => $lesson->id,
             ]);
         }catch(ModelNotFoundException $e){
             return response()->json(400);
@@ -60,28 +62,26 @@ class DataCourseController extends Controller
         //201: Object created. Useful for the store actions.
     }
 
-
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\DataLesson  $dataLesson
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$user,$course)
+    public function update(Request $request,$user,$course,$lesson)
     {
         try{
             $course = Course::findOrFail($course);
-            DB::table('data_courses')
-            ->where('data_courses.user_id','=',$user)
-            ->where('data_courses.course_id','=',$course->id)
+            $lesson = Course::findOrFail($lesson);
+            DB::table('data_lessons')
+            ->where('data_lessons.user_id','=',$user)
+            ->where('data_lessons.course_id','=',$course->id)
+            ->where('data_lessons.lesson_id','=',$lesson->id)
             ->update([
                 'view' => $request->view,
                 'progress' => $request->progress,
-                'finish' => $request->finish,
-                'rating' => $request->rating, 
-                'testimonal' => $request->testimonal, 
-                'favorite' => $request->favorite,
+                'finish' => $request->finish,                
             ]);
         }catch(ModelNotFoundException $e){
             return response()->json(400);
@@ -94,7 +94,7 @@ class DataCourseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\DataLesson  $dataLesson
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
