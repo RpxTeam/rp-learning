@@ -19,9 +19,10 @@ class DataLessonController extends Controller
      */
     public function index($user,$course)
     {
-        $lessons = Lesson::userLessons($user,$course);
+        $course = Course::findOrFail($course);
+        $lessons = Lesson::userLessons($user,$course->id);
 
-        return response()->json($lessons);
+        return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
     }
     
     /**
@@ -32,10 +33,11 @@ class DataLessonController extends Controller
      */
     public function show($user,$course,$lesson)
     {
-        $lessons = Lesson::userLessons($user,$course)
+        $course = Course::findOrFail($course);
+        $lessons = Lesson::userLessons($user,$course->id)
         ->where('lesson_id','=',$lesson);
         
-        return response()->json($lessons);
+        return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
     }
 
     /**
