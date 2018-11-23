@@ -26,11 +26,11 @@ class Page extends React.Component {
     componentDidMount () {
         const courseID = this.props.match.params.id
 
-        // axios.get(`http://localhost:8000/api/courses/${courseID}`)
-        //   .then(res => {
-        //     const course = res.data;
-        //     this.setState({ course: course });
-        // })
+        axios.get(`http://localhost:8000/api/courses/${courseID}`)
+          .then(res => {
+            const course = res.data;
+            this.setState({ course: course });
+        })
     }
 
     handleEdit = (event) => {
@@ -84,7 +84,7 @@ class Page extends React.Component {
 
     render() {
         return (
-            <Admin>
+            <Admin heading={"Cursos"}>
                 {this.state.message ?
                 <Message success={this.state.success} negative={this.state.error}>
                     <Message.Header>{this.state.success ? 'Sucesso' : "Erro" }</Message.Header>
@@ -93,76 +93,70 @@ class Page extends React.Component {
                     </p>
                 </Message>
                 : null }
-                <Grid style={{paddingBottom: '10px'}}>
-                    <Grid.Column floated='left' width={5}>
-                        Cursos
+                <Grid.Row>
+                    <Grid.Column width={16}>
+                        <Form onSubmit={this.handleSubmit}>
+                            <Form.Group widths='equal'>
+                                <Form.Field
+                                    id='input-control-title'
+                                    control={Input}
+                                    label='Título'
+                                    placeholder={this.state.course.title}
+                                    name="title"
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Field
+                                    id='input-control-slug'
+                                    control={Input}
+                                    label='Slug'
+                                    name="slug"
+                                    placeholder={this.state.course.slug}
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Field
+                                    id='input-control-description'
+                                    control={Input}
+                                    label='Descrição'
+                                    name="description"
+                                    placeholder={this.state.course.description}
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Field
+                                    id='input-control-duration'
+                                    control={Input}
+                                    label='Duração'
+                                    name="duration"
+                                    placeholder={this.state.course.duration}
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Field
+                                    id='input-control-startdate'
+                                    control={Input}
+                                    label='Data de Início'
+                                    name="startdate"
+                                    placeholder={this.state.course.start_date}
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Field
+                                    id='input-control-enddate'
+                                    control={Input}
+                                    label='Data de Término'
+                                    name="enddate"
+                                    placeholder={this.state.course.end_date}
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Field
+                                id='button-control-confirm'
+                                control={Button}
+                                content='Atualizar'
+                                positive
+                            />
+                        </Form>
                     </Grid.Column>
-                    {/* <Grid.Column floated='right' width={2}>
-                        <Button onClick={this.handleEdit} icon>
-                            <Icon name="pencil"></Icon>
-                        </Button>
-                    </Grid.Column> */}
-                </Grid>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Group widths='equal'>
-                        <Form.Field
-                            id='input-control-title'
-                            control={Input}
-                            label='Título'
-                            placeholder={this.state.course.title}
-                            name="title"
-                            onChange={this.handleChange}
-                        />
-                        <Form.Field
-                            id='input-control-slug'
-                            control={Input}
-                            label='Slug'
-                            name="slug"
-                            placeholder={this.state.course.slug}
-                            onChange={this.handleChange}
-                        />
-                        <Form.Field
-                            id='input-control-description'
-                            control={Input}
-                            label='Descrição'
-                            name="description"
-                            placeholder={this.state.course.description}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Field
-                            id='input-control-duration'
-                            control={Input}
-                            label='Duração'
-                            name="duration"
-                            placeholder={this.state.course.duration}
-                            onChange={this.handleChange}
-                        />
-                        <Form.Field
-                            id='input-control-startdate'
-                            control={Input}
-                            label='Data de Início'
-                            name="startdate"
-                            placeholder={this.state.course.start_date}
-                            onChange={this.handleChange}
-                        />
-                        <Form.Field
-                            id='input-control-enddate'
-                            control={Input}
-                            label='Data de Término'
-                            name="enddate"
-                            placeholder={this.state.course.end_date}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Field
-                        id='button-control-confirm'
-                        control={Button}
-                        content='Atualizar'
-                        positive
-                    />
-                </Form>
+                </Grid.Row>
             </Admin>
         );
     }

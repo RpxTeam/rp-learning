@@ -7,7 +7,8 @@ import {
     TextArea,
     Button,
     Select,
-    Message
+    Message,
+    Grid
 } from 'semantic-ui-react'
 import Admin from '../../Admin'
 
@@ -67,50 +68,54 @@ class Page extends React.Component {
                     </p>
                 </Message>
                 : null }
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Group widths='equal'>
-                        <Form.Field
-                            id='input-control-name'
-                            control={Input}
-                            label='Nome Completo'
-                            placeholder='Nome Completo'
-                            name="name"
-                            onChange={this.handleChange}
-                        />
-                        <Form.Field
-                            id='input-control-email'
-                            control={Input}
-                            label='Email'
-                            name="email"
-                            placeholder='Email'
-                            onChange={this.handleChange}
-                        />
-                        <Form.Field
-                            id='input-control-password'
-                            type='password'
-                            control={Input}
-                            label='Senha'
-                            name="password"
-                            placeholder='Senha'
-                            onChange={this.handleChange}
-                        />
-                        {/* <Form.Field
-                            id='input-control-confirmpassword'
-                            type='password'
-                            control={Input}
-                            label='Confirmar senha'
-                            name="confirm-password"
-                            placeholder='Confirmar Senha'
-                            onChange={this.handleChange}
-                        /> */}
-                    </Form.Group>
-                    <Form.Field
-                        id='button-control-confirm'
-                        control={Button}
-                        content='Criar'
-                        positive
-                    />
-                </Form>
+                <Grid.Row>
+                    <Grid.Column width={16}>
+                        <Form onSubmit={this.handleSubmit}>
+                            <Form.Group widths='equal'>
+                                <Form.Field
+                                    id='input-control-name'
+                                    control={Input}
+                                    label='Nome Completo'
+                                    placeholder='Nome Completo'
+                                    name="name"
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Field
+                                    id='input-control-email'
+                                    control={Input}
+                                    label='Email'
+                                    name="email"
+                                    placeholder='Email'
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Field
+                                    id='input-control-password'
+                                    type='password'
+                                    control={Input}
+                                    label='Senha'
+                                    name="password"
+                                    placeholder='Senha'
+                                    onChange={this.handleChange}
+                                />
+                                {/* <Form.Field
+                                    id='input-control-confirmpassword'
+                                    type='password'
+                                    control={Input}
+                                    label='Confirmar senha'
+                                    name="confirm-password"
+                                    placeholder='Confirmar Senha'
+                                    onChange={this.handleChange}
+                                /> */}
+                            </Form.Group>
+                            <Form.Field
+                                id='button-control-confirm'
+                                control={Button}
+                                content='Criar'
+                                positive
+                            />
+                        </Form>
+                    </Grid.Column>
+                </Grid.Row>
             </Admin>
         );
     }

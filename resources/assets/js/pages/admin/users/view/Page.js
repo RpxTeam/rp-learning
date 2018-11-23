@@ -81,7 +81,7 @@ class Page extends React.Component {
 
     render() {
         return (
-            <Admin>
+            <Admin heading={"Usuários"}>
                 {this.state.message ?
                 <Message success={this.state.success} negative={this.state.error}>
                     <Message.Header>{this.state.success ? 'Sucesso' : "Erro" }</Message.Header>
@@ -90,69 +90,63 @@ class Page extends React.Component {
                     </p>
                 </Message>
                 : null }
-                <Grid>
-                    <Grid.Column floated='left' width={5}>
-                        Usuários
+                <Grid.Row>
+                    <Grid.Column width={16}>
+                        <Form onSubmit={this.handleSubmit}>
+                            <Form.Group widths='equal'>
+                                <Form.Field
+                                    id='input-control-name'
+                                    control={Input}
+                                    label='Nome Completo'
+                                    placeholder={this.state.user.name}
+                                    name="name"
+                                    onChange={this.handleChange}
+                                    value={this.state.user.name}
+                                />
+                                <Form.Field
+                                    id='input-control-email'
+                                    control={Input}
+                                    label='Email'
+                                    name="email"
+                                    placeholder={this.state.user.email}
+                                    onChange={this.handleChange}
+                                    defaultValue={this.state.user.email}
+                                />
+                                <Input
+                                    placeholder='Name'
+                                    value={this.state.user.name}
+                                    onChange={this.handleChange}
+                                    name="name"
+                                />
+                                <Form.Field
+                                    id='input-control-password'
+                                    type='password'
+                                    control={Input}
+                                    label='Senha'
+                                    name="password"
+                                    // placeholder={this.state.user.password}
+                                    value={this.state.user.password}
+                                    onChange={this.handleChange}
+                                />
+                                {/* <Form.Field
+                                    id='input-control-confirmpassword'
+                                    type='password'
+                                    control={Input}
+                                    label='Confirmar senha'
+                                    name="confirm-password"
+                                    placeholder='Confirmar Senha'
+                                    onChange={this.handleChange}
+                                /> */}
+                            </Form.Group>
+                            <Form.Field
+                                id='button-control-confirm'
+                                control={Button}
+                                content='Atualizar'
+                                positive
+                            />
+                        </Form>
                     </Grid.Column>
-                    <Grid.Column floated='right' width={2}>
-                        <Button onClick={this.handleEdit} icon>
-                            <Icon name="pencil"></Icon>
-                        </Button>
-                    </Grid.Column>
-                </Grid>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Group widths='equal'>
-                        <Form.Field
-                            id='input-control-name'
-                            control={Input}
-                            label='Nome Completo'
-                            placeholder={this.state.user.name}
-                            name="name"
-                            onChange={this.handleChange}
-                            value={this.state.user.name}
-                        />
-                        <Form.Field
-                            id='input-control-email'
-                            control={Input}
-                            label='Email'
-                            name="email"
-                            placeholder={this.state.user.email}
-                            onChange={this.handleChange}
-                            defaultValue={this.state.user.email}
-                        />
-                        <Input
-                            placeholder='Name'
-                            value={this.state.user.name}
-                            onChange={this.handleChange}
-                            name="name"
-                        />
-                        <Form.Field
-                            id='input-control-password'
-                            type='password'
-                            control={Input}
-                            label='Senha'
-                            name="password"
-                            // placeholder={this.state.user.password}
-                            value={this.state.user.password}
-                            onChange={this.handleChange}
-                        />
-                        {/* <Form.Field
-                            id='input-control-confirmpassword'
-                            type='password'
-                            control={Input}
-                            label='Confirmar senha'
-                            name="confirm-password"
-                            placeholder='Confirmar Senha'
-                            onChange={this.handleChange}
-                        /> */}
-                    </Form.Group>
-                    <Form.Field
-                        id='button-control-confirm'
-                        control={Button}
-                        content='Atualizar'
-                        positive
-                    />
-                </Form>
+                </Grid.Row>
             </Admin>
         );
     }

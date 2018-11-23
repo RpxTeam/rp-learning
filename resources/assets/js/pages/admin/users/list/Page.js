@@ -66,7 +66,7 @@ class Page extends React.Component {
     render() {
         const users = this.state.users;
         return (
-            <Admin>
+            <Admin heading='Usuários' createLink='/admin/users/create'>
                 {this.state.message ?
                 <Message success={this.state.success} negative={this.state.error}>
                     {/* <Message.Header>{this.state.success ? 'Sucesso' : "Erro" }</Message.Header> */}
@@ -75,49 +75,46 @@ class Page extends React.Component {
                     </p>
                 </Message>
                 : null }
-                <Grid>
-                    <Grid.Column floated='left' width={5}>
-                        Usuários
+                <Grid.Row>
+                    <Grid.Column width={16}>
+                        <Table celled>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell colSpan='4'>Lista</Table.HeaderCell>
+                                </Table.Row>
+                                <Table.Row>
+                                <Table.HeaderCell>Nome</Table.HeaderCell>
+                                <Table.HeaderCell>Email</Table.HeaderCell>
+                                <Table.HeaderCell>Status</Table.HeaderCell>
+                                <Table.HeaderCell>  </Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
+
+                            <Table.Body>
+                                { users.map((user) =>
+                                    <Table.Row key={user.id}>
+                                        <Table.Cell>
+                                        <Menu.Item as={ Link } to={'/admin/users/' + user.id}>
+                                            {user.name}
+                                        </Menu.Item>
+                                        </Table.Cell>
+                                        <Table.Cell>{user.email}</Table.Cell>
+                                        <Table.Cell positive>
+                                            <Icon name='checkmark' />
+                                            Aprovado
+                                        </Table.Cell>
+                                        <Table.Cell collapsing textAlign="right">
+                                            {this.props.currentUser.id === user.id ? null :
+                                                <Button icon='trash alternate outline' onClick={this.handleDelete} value={user.id} />
+                                            }
+                                        </Table.Cell>
+                                    </Table.Row>
+                                    )
+                                }
+                            </Table.Body>
+                        </Table>
                     </Grid.Column>
-                    <Grid.Column floated='right' width={2}>
-                        <Button as={Link} to="/admin/users/create">Criar usuário</Button>
-                    </Grid.Column>
-                </Grid>
-                <Table celled>
-                    <Table.Header>
-                        <Table.Row>
-                        <Table.HeaderCell>Nome</Table.HeaderCell>
-                        <Table.HeaderCell>Email</Table.HeaderCell>
-                        <Table.HeaderCell>Status</Table.HeaderCell>
-                        <Table.HeaderCell>  </Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                
-                    <Table.Body>
-                        { users.map((user) => 
-                            <Table.Row key={user.id}>
-                                <Table.Cell>
-                                <Menu.Item as={ Link } to={'/admin/users/' + user.id}>
-                                    {user.name}
-                                </Menu.Item>
-                                </Table.Cell>
-                                <Table.Cell>{user.email}</Table.Cell>
-                                <Table.Cell positive>
-                                    <Icon name='checkmark' />
-                                    Aprovado
-                                </Table.Cell>
-                                <Table.Cell textAlign="right">
-                                    {this.props.currentUser.id === user.id ? null : 
-                                        <Button icon onClick={this.handleDelete} value={user.id}>
-                                            Excluir
-                                        </Button>
-                                    }
-                                </Table.Cell>
-                            </Table.Row>
-                            )
-                        }
-                    </Table.Body>
-                </Table>
+                </Grid.Row>
             </Admin>
         );
     }

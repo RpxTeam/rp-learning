@@ -1,4 +1,6 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import axios from 'axios'
 import {
     Button,
     Container,
@@ -16,9 +18,23 @@ import Footer from '../../common/mainFooter'
 class Page extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            courses: [],
+            message: '',
+        }
+    }
+
+    componentDidMount() {
+        axios.get(`http://localhost:8000/api/courses`)
+          .then(res => {
+            const courses = res.data;
+            this.setState({ courses: courses });
+        })
     }
 
     render() {
+        const courses = this.state.courses;
+        const { isAuthenticated } = this.props;
         return (
             <div>
                 <Navigation/>
@@ -28,26 +44,31 @@ class Page extends React.Component {
                         <Header as='h1'>Cursos</Header>
                         <Container>
                             <Card.Group>
-                                <Card color='red'>
+                                { courses.map((course) => 
+                                <Card color='red' key={course.id}>
                                     <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
                                     <Card.Content>
-                                        <Card.Header>Curso 1</Card.Header>
+                                        <Card.Header>{ course.title }</Card.Header>
                                         <Card.Meta>
-                                        <span className='date'>Criado em 2015</span>
+                                        <span className='date'>Criado em { course.created_at }</span>
                                         </Card.Meta>
-                                        <Card.Description>Descrição do Curso.</Card.Description>
+                                        <Card.Description>{ course.description }</Card.Description>
                                     </Card.Content>
                                     <Card.Content extra>
                                     <div className='ui two buttons'>
                                         <Button basic color='green'>
                                             Executar
                                         </Button>
+                                        { isAuthenticated ?
                                         <Button basic color='red'>
                                             Excluir
                                         </Button>
+                                        : null }
                                         </div>
                                     </Card.Content>
                                 </Card>
+                                    )
+                                }
                             </Card.Group>
                         </Container>
                     </Segment>
@@ -58,4 +79,10 @@ class Page extends React.Component {
     }
 }
 
-export default Page;
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated : state.Auth.isAuthenticated,
+    }
+};
+
+export default connect(mapStateToProps)(Page);

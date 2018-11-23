@@ -16,7 +16,6 @@ import axios from 'axios'
 class Page extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
         this.state = {
             courses: [],
             message: '',
@@ -67,53 +66,48 @@ class Page extends React.Component {
     render() {
         const courses = this.state.courses;
         return (
-            <Admin>
-                {this.state.message ?
-                <Message success={this.state.success} negative={this.state.error}>
-                    {/* <Message.Header>{this.state.success ? 'Sucesso' : "Erro" }</Message.Header> */}
-                    <p>
-                        {this.state.message}
-                    </p>
-                </Message>
-                : null }
-                <Grid style={{paddingBottom: '30px'}}>
-                    <Grid.Column floated='left' width={5}>
-                        Cursos
-                    </Grid.Column>
-                    <Grid.Column floated='right' width={2}>
-                        <Button as={Link} to="/admin/courses/create">Criar curso</Button>
-                    </Grid.Column>
-                </Grid>
-                <Table celled>
-                    <Table.Header>
-                        <Table.Row>
-                        <Table.HeaderCell>Título</Table.HeaderCell>
-                        <Table.HeaderCell>Duração</Table.HeaderCell>
-                        <Table.HeaderCell>Descrição</Table.HeaderCell>
-                        <Table.HeaderCell>  </Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                
-                    <Table.Body>
-                        { courses.map((course) => 
-                            <Table.Row key={course.id}>
-                                <Table.Cell>
-                                <Menu.Item as={ Link } to={'/admin/courses/' + course.id}>
-                                    {course.title}
-                                </Menu.Item>
-                                </Table.Cell>
-                                <Table.Cell>{course.duration}</Table.Cell>
-                                <Table.Cell>{course.description}</Table.Cell>
-                                <Table.Cell textAlign="right">
-                                    <Button icon onClick={this.handleDelete} value={course.id}>
-                                        Excluir
-                                    </Button>
-                                </Table.Cell>
+            <Admin heading='Cursos' createLink='/admin/courses/create'>
+                <Grid.Column width={16}>
+                    {this.state.message ?
+                    <Message success={this.state.success} negative={this.state.error}>
+                        {/* <Message.Header>{this.state.success ? 'Sucesso' : "Erro" }</Message.Header> */}
+                        <p>
+                            {this.state.message}
+                        </p>
+                    </Message>
+                    : null }
+                    <Table celled>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell colSpan='4'>Lista</Table.HeaderCell>
                             </Table.Row>
-                            )
-                        }
-                    </Table.Body>
-                </Table>
+                            <Table.Row>
+                                <Table.HeaderCell>Título</Table.HeaderCell>
+                                <Table.HeaderCell>Duração</Table.HeaderCell>
+                                <Table.HeaderCell>Descrição</Table.HeaderCell>
+                                <Table.HeaderCell>  </Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+                    
+                        <Table.Body>
+                            { courses.map((course) => 
+                                <Table.Row key={course.id}>
+                                    <Table.Cell>
+                                        <Menu.Item as={ Link } to={'/admin/courses/' + course.id}>
+                                            {course.title}
+                                        </Menu.Item>
+                                    </Table.Cell>
+                                    <Table.Cell>{course.duration}</Table.Cell>
+                                    <Table.Cell>{course.description}</Table.Cell>
+                                    <Table.Cell collapsing textAlign="right">
+                                        <Button icon='trash alternate outline' onClick={this.handleDelete} value={course.id} />
+                                    </Table.Cell>
+                                </Table.Row>
+                                )
+                            }
+                        </Table.Body>
+                    </Table>
+                </Grid.Column>
             </Admin>
         );
     }
