@@ -80,11 +80,7 @@ class DataLessonController extends Controller
             ->where('data_lessons.user_id','=',$user)
             ->where('data_lessons.course_id','=',$course->id)
             ->where('data_lessons.lesson_id','=',$lesson->id)
-            ->update([
-                'view' => $request->view,
-                'progress' => $request->progress,
-                'finish' => $request->finish,                
-            ]);
+            ->update($request->all());
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.

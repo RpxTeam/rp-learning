@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class Course extends Model
 {
-    protected $fillable = [ 'title', 'slug', 'description', 'duration', 'start_date', 'end_date'];
+    protected $fillable = [ 'title', 'slug','introduction', 'description', 'duration', 'image', 'instructor', 'start_date', 'end_date'];
     protected $hidden = [];
     public static $searchable = [
         'title',

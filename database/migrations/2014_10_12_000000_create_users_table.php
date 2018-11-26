@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->date('birthday')->nullable();
             $table->string('adress')->nullable();
             $table->integer('age')->nullable();
+            $table->binary('image')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
