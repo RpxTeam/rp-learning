@@ -100,7 +100,7 @@ class Page extends React.Component {
                                     <Table.Cell>{course.duration}</Table.Cell>
                                     <Table.Cell>{course.description}</Table.Cell>
                                     <Table.Cell collapsing textAlign="right">
-                                        <Button icon='trash alternate outline' onClick={this.handleDelete} value={course.id} />
+                                        <Button icon='trash' onClick={this.handleDelete} value={course.id} />
                                     </Table.Cell>
                                 </Table.Row>
                                 )

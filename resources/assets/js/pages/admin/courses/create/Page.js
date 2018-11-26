@@ -16,6 +16,8 @@ import {
     Divider,
     Table
 } from 'semantic-ui-react'
+import ModalManager from "../../../../common/ModalManager";
+import { openModal } from "../../../../store/actions";
 import Admin from '../../Admin'
 
 const genderOptions = [
@@ -53,8 +55,7 @@ class Page extends React.Component {
             start_date: this.state.start_date,
             end_date: this.state.end_date,
             duration: this.state.duration
-         })
-            .then(res => {
+         }).then(res => {
             console.log(res);
             console.log(res.data);
             this.setState({
@@ -79,6 +80,7 @@ class Page extends React.Component {
     render() {
         return (
             <Admin heading="Create">
+                <ModalManager />
                 <Grid.Row>
                     {this.state.message ?
                     <Message success={this.state.success} negative={this.state.error}>
@@ -126,7 +128,10 @@ class Page extends React.Component {
                                                 <Dropdown text='Adicionar Lição' icon='file text' floating floated='right' labeled button className='icon'>
                                                     <Dropdown.Menu>
                                                         <Dropdown.Header content='Selecione tipo de conteúdo' />
-                                                        <Dropdown.Item text="Texto" onClick={this.handleDelete} />
+                                                        <Dropdown.Item text="Texto" onClick={() => this.props.openModal({
+                                                            header: "Test content",
+                                                            content: "Test content 2"
+                                                        })} />
                                                         <Dropdown.Item text="Web content" />
                                                         <Dropdown.Item text="Vídeo" />
                                                         <Dropdown.Item text="Áudio" />
