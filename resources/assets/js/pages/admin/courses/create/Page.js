@@ -16,8 +16,8 @@ import {
     Divider,
     Table
 } from 'semantic-ui-react'
-import ModalManager from "../../../../common/ModalManager";
-import { openModal } from "../../../../store/actions";
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Admin from '../../Admin'
 
 const genderOptions = [
@@ -80,7 +80,6 @@ class Page extends React.Component {
     render() {
         return (
             <Admin heading="Create">
-                <ModalManager />
                 <Grid.Row>
                     {this.state.message ?
                     <Message success={this.state.success} negative={this.state.error}>
@@ -120,6 +119,19 @@ class Page extends React.Component {
                                             </Form.Field>
                                         </Segment>
                                         <Divider />
+                                        <CKEditor
+                                            editor={ ClassicEditor }
+                                            data="<p>Hello from CKEditor 5!</p>"
+                                            onInit={ editor => {
+                                                // You can store the "editor" and use when it is needed.
+                                                console.log( 'Editor is ready to use!', editor );
+                                            } }
+                                            onChange={ ( event, editor ) => {
+                                                const data = editor.getData();
+                                                console.log( { event, editor, data } );
+                                            } }
+                                        />
+                                        <Divider />
                                         <Grid verticalAlign='middle'>
                                             <Grid.Column width={14}>
                                                 <h3>Lições</h3>
@@ -128,10 +140,7 @@ class Page extends React.Component {
                                                 <Dropdown text='Adicionar Lição' icon='file text' floating floated='right' labeled button className='icon'>
                                                     <Dropdown.Menu>
                                                         <Dropdown.Header content='Selecione tipo de conteúdo' />
-                                                        <Dropdown.Item text="Texto" onClick={() => this.props.openModal({
-                                                            header: "Test content",
-                                                            content: "Test content 2"
-                                                        })} />
+                                                        <Dropdown.Item text="Texto" />
                                                         <Dropdown.Item text="Web content" />
                                                         <Dropdown.Item text="Vídeo" />
                                                         <Dropdown.Item text="Áudio" />
