@@ -20,7 +20,8 @@ class CreateCoursesTable extends Migration
             $table->text('introduction')->nullable();
             $table->text('description')->nullable();
             $table->integer('duration')->nullable();
-            $table->binary('image')->nullable();
+            $table->string('image')->nullable();
+            $table->string('mime')->nullable();
             $table->string('instructor')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();

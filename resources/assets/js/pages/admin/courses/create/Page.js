@@ -60,7 +60,7 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        axios.post(`http://localhost:8000/api/courses`, {
+        axios.post(`http://rplearning-homolog.siteseguro.ws/api/courses`, {
             title: this.state.title,
             slug: this.state.slug,
             description: this.state.description,
@@ -86,7 +86,7 @@ class Page extends React.Component {
     };
 
     handleSubmitLesson = (event) => {
-        axios.post(`http://localhost:8000/api/courses/2/lessons`, {
+        axios.post(`http://rplearning-homolog.siteseguro.ws/api/courses/2/lessons`, {
             title: 'Lição 1',
             content: this.state.lesson.content,
         }).then(res => {

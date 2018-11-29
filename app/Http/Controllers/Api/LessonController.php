@@ -20,7 +20,8 @@ class LessonController extends Controller
         $course = Course::findOrFail($course);
         $lessons = Lesson::courseLessons($course);
 
-        return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
+        return response()->json($lessons,200);
+        // return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
         //200: OK. The standard success code and default option.
     }
     

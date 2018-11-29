@@ -19,9 +19,10 @@ class DataLessonController extends Controller
      */
     public function index($user,$course)
     {
-        $lessons = Lesson::userLessons($user,$course);
+        $course = Course::findOrFail($course);
+        $lessons = Lesson::userLessons($user,$course->id);
 
-        return response()->json($lessons);
+        return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
     }
     
     /**
@@ -32,10 +33,11 @@ class DataLessonController extends Controller
      */
     public function show($user,$course,$lesson)
     {
-        $lessons = Lesson::userLessons($user,$course)
+        $course = Course::findOrFail($course);
+        $lessons = Lesson::userLessons($user,$course->id)
         ->where('lesson_id','=',$lesson);
         
-        return response()->json($lessons);
+        return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
     }
 
     /**
@@ -78,11 +80,7 @@ class DataLessonController extends Controller
             ->where('data_lessons.user_id','=',$user)
             ->where('data_lessons.course_id','=',$course->id)
             ->where('data_lessons.lesson_id','=',$lesson->id)
-            ->update([
-                'view' => $request->view,
-                'progress' => $request->progress,
-                'finish' => $request->finish,                
-            ]);
+            ->update($request->all());
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.

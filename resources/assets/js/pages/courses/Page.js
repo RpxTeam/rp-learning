@@ -25,7 +25,7 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8000/api/courses`)
+        axios.get(`http://rplearning-homolog.siteseguro.ws/api/courses`)
           .then(res => {
             const courses = res.data;
             this.setState({ courses: courses });

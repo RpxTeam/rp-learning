@@ -29,7 +29,7 @@ class Page extends React.Component {
     componentDidMount () {
         const userID = this.props.match.params.id
 
-        axios.get(`http://localhost:8000/api/users/${userID}`)
+        axios.get(`http://rplearning-homolog.siteseguro.ws/api/users/${userID}`)
         .then(res => {
             const user = res.data;
             this.setState({ user: user });

@@ -14,7 +14,7 @@ class DataLessonSeed extends Seeder
     {
         $faker = Faker\Factory::create();
 
-        for($i=0;$i<20;$i++){
+        for($i=0;$i<30;$i++){
             \App\DataLesson::insert([
                 'view' => $faker->numberBetween(0,1),
                 'progress' => $faker->numberBetween(0,100),

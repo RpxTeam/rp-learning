@@ -32,15 +32,15 @@ class Page extends React.Component {
     componentDidMount () {
         const courseID = this.props.match.params.id
 
-        axios.get(`http://localhost:8000/api/courses/${courseID}`)
+        axios.get(`http://rplearning-homolog.siteseguro.ws/api/courses/${courseID}`)
         .then(res => {
             const course = res.data;
             this.setState({ course: course });
         });
 
-        axios.get(`http://localhost:8000/api/courses/${courseID}/lessons/`)
+        axios.get(`http://rplearning-homolog.siteseguro.ws/api/courses/${courseID}/lessons/`)
         .then(res => {
-            const lessons = res.data.lessons;
+            const lessons = res.data;
             this.setState({ lessons: lessons });
             console.log(this.state.lessons);
         });
@@ -74,7 +74,7 @@ class Page extends React.Component {
 
         const courseID = this.props.match.params.id
 
-        axios.put(`http://localhost:8000/api/courses/${courseID}`, { 
+        axios.put(`http://rplearning-homolog.siteseguro.ws/api/courses/${courseID}`, {
             title: this.state.course.title,
             slug: this.state.course.slug,
             description: this.state.course.description,

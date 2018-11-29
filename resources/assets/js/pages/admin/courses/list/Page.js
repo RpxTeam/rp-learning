@@ -31,7 +31,7 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8000/api/courses`)
+        axios.get(`http://rplearning-homolog.siteseguro.ws/api/courses`)
           .then(res => {
             const courses = res.data;
             this.setState({ courses: courses });
@@ -53,7 +53,7 @@ class Page extends React.Component {
 
     handleDelete = () => {
         let courseID = this.state.course;
-        axios.delete(`http://localhost:8000/api/courses/${courseID}`)
+        axios.delete(`http://rplearning-homolog.siteseguro.ws/api/courses/${courseID}`)
         .then(res => {
             console.log(res);
             console.log(res.data);
