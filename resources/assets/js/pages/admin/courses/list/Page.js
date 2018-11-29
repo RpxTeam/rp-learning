@@ -8,7 +8,8 @@ import {
     Table,
     Grid,
     Menu,
-    Message
+    Message,
+    Confirm
 } from 'semantic-ui-react'
 import Admin from '../../Admin'
 import axios from 'axios'
@@ -17,12 +18,14 @@ class Page extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            course: '',
             courses: [],
             message: '',
             error: false,
             success: false,
-            redirect: false
-        }
+            redirect: false,
+            open: false,
+        };
 
         this.handleDelete = this.handleDelete.bind(this)
     }
@@ -33,35 +36,45 @@ class Page extends React.Component {
             const courses = res.data;
             this.setState({ courses: courses });
             console.log(res.data);
-        })
+        });
         console.log(this.state.courses);
     }
 
-    handleDelete = (event) => {
-        let courseID = event.target.value;
-        if(confirm('Tem certeza que deseja deletar?')) {
-            axios.delete(`http://localhost:8000/api/courses/${courseID}`)
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
-                this.setState({
-                    message: 'Curso deletado',
-                    error: false,
-                    success: true,
-                });
-            })
+    show = () => this.setState({ open: true });
+    close = () => this.setState({ open: false });
 
-            const courses = this.state.courses;
-            let newCourses = courses.filter(course => {
-                if (course.id != courseID) {
-                    return courses != courseID 
-                }
-            });
+    handleConfirm = (event) => {
+        let courseID = event.target.value;
+        this.setState({
+            course: courseID,
+            open: true
+        })
+    };
+
+    handleDelete = () => {
+        let courseID = this.state.course;
+        axios.delete(`http://localhost:8000/api/courses/${courseID}`)
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
             this.setState({
-                courses: newCourses
-            })
-        }
-    }
+                message: 'Curso deletado',
+                error: false,
+                success: true,
+            });
+        });
+
+        const courses = this.state.courses;
+        let newCourses = courses.filter(course => {
+            if (course.id != courseID) {
+                return courses != courseID
+            }
+        });
+        this.setState({
+            courses: newCourses,
+            open: false
+        })
+    };
 
     render() {
         const courses = this.state.courses;
@@ -100,11 +113,12 @@ class Page extends React.Component {
                                     <Table.Cell>{course.duration}</Table.Cell>
                                     <Table.Cell>{course.description}</Table.Cell>
                                     <Table.Cell collapsing textAlign="right">
-                                        <Button icon='trash' onClick={this.handleDelete} value={course.id} />
+                                        <Button icon='trash' onClick={this.handleConfirm} value={course.id}/>
                                     </Table.Cell>
-                                </Table.Row>
-                                )
-                            }
+                                    </Table.Row>
+                                    )
+                                }
+                            <Confirm open={this.state.open} onCancel={this.close} onConfirm={this.handleDelete} />
                         </Table.Body>
                     </Table>
                 </Grid.Column>
