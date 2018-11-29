@@ -11,6 +11,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
+use Faker\Provider\File;
 
 
 class UserController extends Controller
@@ -58,6 +59,11 @@ class UserController extends Controller
     {
         try{
             $users = User::All();
+            foreach ($users as $user) {
+                if($user->image != null){
+                    $user->image = Storage::url($user->image);
+                }
+            }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -76,6 +82,9 @@ class UserController extends Controller
     {
         try{
             $user = User::findOrFail($id);
+            if($user->image != null){
+                $user->image = Storage::url($user->image);
+            }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -96,9 +105,9 @@ class UserController extends Controller
             if($request->hasFile('image') && $request->file('image')->isValid()) {
                 $request['password'] = Hash::make($request->password);
                 $user = User::create($request->all());
-                $filename = $user->id . '-' .str_slug($user->name) . '.' . $request->file('image')->getClientOriginalExtension();
+                $filename = $user->id . '-' . str_slug($user->name) . '.' . $request->file('image')->getClientOriginalExtension();
                 $request->file('image')->storeAs('users/images', $filename);
-                $user->image =str_replace('\\','/', storage_path('app\\public\\users\\images\\' . $filename));
+                $user->image = 'users/images/' . $filename;
                 $user->mime = $request->file('image')->getClientOriginalExtension();
                 $user->save();
             }else{
@@ -124,9 +133,24 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try{
-            $user = User::findOrFail($id);
-            $request['password'] = Hash::make($request->password);
-            $user = User::update($request->all());
+            if($request->hasFile('image') && $request->file('image')->isValid()) {
+                $user = User::findOrFail($id);
+                $request['password'] = Hash::make($request->password);
+                User::whereId($user->id)->update($request->except(['_method','image']));
+                $filename = $user->id . '-' . str_slug($user->name) . '.' . $request->file('image')->getClientOriginalExtension();
+                $filepath = 'users/images/' . $filename;
+                if(Storage::exists($filepath)){
+                    Storage::delete($filepath);
+                }
+                $request->file('image')->storeAs('users/images', $filename);
+                $user->image =  $filepath;
+                $user->mime = $request->file('image')->getClientOriginalExtension();
+                $user->save();
+            }else{
+                $user = User::findOrFail($id);
+                $request['password'] = Hash::make($request->password);
+                User::whereId($user->id)->update($request->except(['_method','image']));
+            }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -145,6 +169,9 @@ class UserController extends Controller
     {
         try{
             $user = User::findOrFail($id);
+            if(Storage::exists($user->image)){
+                Storage::delete($user->image);
+            }
             $user->delete();
         }catch(ModelNotFoundException $e){
             return response()->json(400);
