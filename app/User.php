@@ -6,6 +6,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -51,5 +53,25 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public static function uploadImageUser(Request $request, User $user){
+        $filename = $user->id . '-' . str_slug($user->name) . '.' . $request->file('image')->getClientOriginalExtension();
+        $request->file('image')->storeAs('users/images', $filename);
+        $user->image = 'users/images/' . $filename;
+        $user->mime = $request->file('image')->getClientOriginalExtension();
+        $user->save();
+    }
+
+    public static function updateImageUser(Request $request, User $user){
+        $filename = $user->id . '-' . str_slug($user->name) . '.' . $request->file('image')->getClientOriginalExtension();
+        $filepath = 'users/images/' . $filename;
+        if(Storage::exists($filepath)){
+            Storage::delete($filepath);
+        }
+        $request->file('image')->storeAs('users/images', $filename);
+        $user->image =  $filepath;
+        $user->mime = $request->file('image')->getClientOriginalExtension();
+        $user->save();
     }
 }
