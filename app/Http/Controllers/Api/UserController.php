@@ -101,12 +101,12 @@ class UserController extends Controller
         try{
             if($request->hasFile('image') && $request->file('image')->isValid()) {
                 $request['password'] = Hash::make($request->password);
-                $user = User::create($request->all());
+                $user = User::create($request->except('image'));
                 User::uploadImageUser($request , $user);
             }else{
                 $request['image'] = null;
                 $request['password'] = Hash::make($request->password);
-                $user = User::create($request->all());
+                $user = User::create($request->except('image'));
             }
         }catch(ModelNotFoundException $e){
             return response()->json(400);

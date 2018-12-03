@@ -8,6 +8,7 @@ use App\Notifications\ResetPassword as ResetPasswordNotification;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -59,7 +60,7 @@ class User extends Authenticatable implements JWTSubject
         $filename = $user->id . '-' . str_slug($user->name) . '.' . $request->file('image')->getClientOriginalExtension();
         $request->file('image')->storeAs('users/images', $filename);
         $user->image = 'users/images/' . $filename;
-        $user->mime = $request->file('image')->getClientOriginalExtension();
+        $user->mime = $request->file('image')->getClientMimeType();
         $user->save();
     }
 
@@ -71,7 +72,7 @@ class User extends Authenticatable implements JWTSubject
         }
         $request->file('image')->storeAs('users/images', $filename);
         $user->image =  $filepath;
-        $user->mime = $request->file('image')->getClientOriginalExtension();
+        $user->mime = $request->file('image')->getClientMimeType();
         $user->save();
     }
 }
