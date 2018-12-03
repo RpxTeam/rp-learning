@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import { API_URL } from "../../../../common/url-types";
 import axios from 'axios'
 import {
     Form,
@@ -34,7 +35,7 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        axios.post(`http://rplearning-homolog.siteseguro.ws/api/users`, {
+        axios.post(`${ API_URL }/api/users`, {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password

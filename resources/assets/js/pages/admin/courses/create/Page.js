@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { API_URL } from "../../../../common/url-types";
 import axios from 'axios'
 import {
     Label,
@@ -10,9 +10,6 @@ import {
     Segment,
     Message,
     TextArea,
-    Dropdown,
-    List,
-    Image,
     Divider,
     Table,
     Icon
@@ -20,11 +17,6 @@ import {
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Admin from '../../Admin'
-
-const genderOptions = [
-    { key: 'm', text: 'Male', value: 'male' },
-    { key: 'f', text: 'Female', value: 'female' },
-]
 
 class Page extends React.Component {
     constructor(props) {
@@ -60,7 +52,7 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        axios.post(`http://rplearning-homolog.siteseguro.ws/api/courses`, {
+        axios.post(`${ API_URL }/api/courses`, {
             title: this.state.title,
             slug: this.state.slug,
             description: this.state.description,
@@ -86,7 +78,7 @@ class Page extends React.Component {
     };
 
     handleSubmitLesson = (event) => {
-        axios.post(`http://rplearning-homolog.siteseguro.ws/api/courses/2/lessons`, {
+        axios.post(`${ API_URL }/api/courses/2/lessons`, {
             title: 'Lição 1',
             content: this.state.lesson.content,
         }).then(res => {
@@ -118,7 +110,6 @@ class Page extends React.Component {
                 content: data
             }
         });
-        console.log( { event, editor, data } );
     };
 
     render() {

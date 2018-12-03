@@ -81584,12 +81584,13 @@ Page.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Admin__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_url_types__ = __webpack_require__(957);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Admin__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -81597,6 +81598,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -81617,7 +81619,7 @@ var Page = function (_React$Component) {
         _this.handleDelete = function (event) {
             var userID = event.target.value;
             if (confirm('Tem certeza que deseja deletar?')) {
-                __WEBPACK_IMPORTED_MODULE_6_axios___default.a.delete('http://rplearning-homolog.siteseguro.ws/api/users/' + userID).then(function (res) {
+                __WEBPACK_IMPORTED_MODULE_7_axios___default.a.delete(__WEBPACK_IMPORTED_MODULE_3__common_url_types__["a" /* API_URL */] + '/api/users/' + userID).then(function (res) {
                     console.log(res);
                     console.log(res.data);
                     _this.setState({
@@ -81657,7 +81659,7 @@ var Page = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_6_axios___default.a.get('http://localhost:8000/api/users').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.get('http://localhost:8000/api/users').then(function (res) {
                 var users = res.data;
                 _this2.setState({ users: users });
             });
@@ -81670,10 +81672,10 @@ var Page = function (_React$Component) {
 
             var users = this.state.users;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_5__Admin__["a" /* default */],
+                __WEBPACK_IMPORTED_MODULE_6__Admin__["a" /* default */],
                 { heading: 'Usu\xE1rios', createLink: '/admin/users/create' },
                 this.state.message ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["q" /* Message */],
+                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["q" /* Message */],
                     { success: this.state.success, negative: this.state.error },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'p',
@@ -81682,82 +81684,82 @@ var Page = function (_React$Component) {
                     )
                 ) : null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Row,
+                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["i" /* Grid */].Row,
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
+                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["i" /* Grid */].Column,
                         { width: 16 },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */],
+                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */],
                             { celled: true },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Header,
+                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Header,
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Row,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Row,
                                     null,
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].HeaderCell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].HeaderCell,
                                         { colSpan: '4' },
                                         'Lista'
                                     )
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Row,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Row,
                                     null,
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].HeaderCell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].HeaderCell,
                                         null,
                                         'Nome'
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].HeaderCell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].HeaderCell,
                                         null,
                                         'Email'
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].HeaderCell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].HeaderCell,
                                         null,
                                         'Status'
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].HeaderCell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].HeaderCell,
                                         null,
                                         '  '
                                     )
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Body,
+                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Body,
                                 null,
                                 users.map(function (user) {
                                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Row,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Row,
                                         { key: user.id },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Cell,
+                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Cell,
                                             null,
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["p" /* Menu */].Item,
+                                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["p" /* Menu */].Item,
                                                 { as: __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */], to: '/admin/users/' + user.id },
                                                 user.name
                                             )
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Cell,
+                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Cell,
                                             null,
                                             user.email
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Cell,
+                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Cell,
                                             { positive: true },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["k" /* Icon */], { name: 'checkmark' }),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["k" /* Icon */], { name: 'checkmark' }),
                                             'Aprovado'
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Cell,
+                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Cell,
                                             { collapsing: true, textAlign: 'right' },
-                                            _this3.props.currentUser.id === user.id ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["a" /* Button */], { icon: 'trash alternate outline', onClick: _this3.handleDelete, value: user.id })
+                                            _this3.props.currentUser.id === user.id ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["a" /* Button */], { icon: 'trash alternate outline', onClick: _this3.handleDelete, value: user.id })
                                         )
                                     );
                                 })
@@ -81801,10 +81803,11 @@ var mapStateToProps = function mapStateToProps(state) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Admin__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_url_types__ = __webpack_require__(957);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Admin__ = __webpack_require__(63);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -81814,6 +81817,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -81838,7 +81842,7 @@ var Page = function (_React$Component) {
         _this.handleSubmit = function (event) {
             event.preventDefault();
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('http://rplearning-homolog.siteseguro.ws/api/users', {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_2__common_url_types__["a" /* API_URL */] + '/api/users', {
                 name: _this.state.name,
                 email: _this.state.email,
                 password: _this.state.password
@@ -81872,13 +81876,13 @@ var Page = function (_React$Component) {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_4__Admin__["a" /* default */],
+                __WEBPACK_IMPORTED_MODULE_5__Admin__["a" /* default */],
                 { heading: 'Create' },
                 this.state.message ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Message */],
+                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["q" /* Message */],
                     { success: this.state.success, negative: this.state.error },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Message */].Header,
+                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["q" /* Message */].Header,
                         null,
                         this.state.success ? 'Sucesso' : "Erro"
                     ),
@@ -81889,46 +81893,46 @@ var Page = function (_React$Component) {
                     )
                 ) : null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Row,
+                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Row,
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
+                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
                         { width: 16 },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */],
+                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["h" /* Form */],
                             { onSubmit: this.handleSubmit },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Group,
+                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["h" /* Form */].Group,
                                 { widths: 'equal' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["h" /* Form */].Field, {
                                     id: 'input-control-name',
-                                    control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
+                                    control: __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["m" /* Input */],
                                     label: 'Nome Completo',
                                     placeholder: 'Nome Completo',
                                     name: 'name',
                                     onChange: this.handleChange
                                 }),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["h" /* Form */].Field, {
                                     id: 'input-control-email',
-                                    control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
+                                    control: __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["m" /* Input */],
                                     label: 'Email',
                                     name: 'email',
                                     placeholder: 'Email',
                                     onChange: this.handleChange
                                 }),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["h" /* Form */].Field, {
                                     id: 'input-control-password',
                                     type: 'password',
-                                    control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
+                                    control: __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["m" /* Input */],
                                     label: 'Senha',
                                     name: 'password',
                                     placeholder: 'Senha',
                                     onChange: this.handleChange
                                 })
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["h" /* Form */].Field, {
                                 id: 'button-control-confirm',
-                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */],
+                                control: __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["a" /* Button */],
                                 content: 'Criar',
                                 positive: true
                             })
@@ -81965,8 +81969,9 @@ var Page = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Admin__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_url_types__ = __webpack_require__(957);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Admin__ = __webpack_require__(63);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -81976,6 +81981,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -82051,7 +82057,7 @@ var Page = function (_React$Component) {
 
             var userID = this.props.match.params.id;
 
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('http://rplearning-homolog.siteseguro.ws/api/users/' + userID).then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_2__common_url_types__["a" /* API_URL */] + '/api/users/' + userID).then(function (res) {
                 var user = res.data;
                 _this2.setState({ user: user });
                 console.log(_this2.state.user);
@@ -82061,13 +82067,13 @@ var Page = function (_React$Component) {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_3__Admin__["a" /* default */],
+                __WEBPACK_IMPORTED_MODULE_4__Admin__["a" /* default */],
                 { heading: "Usuários" },
                 this.state.message ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["q" /* Message */],
+                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Message */],
                     { success: this.state.success, negative: this.state.error },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["q" /* Message */].Header,
+                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Message */].Header,
                         null,
                         this.state.success ? 'Sucesso' : "Erro"
                     ),
@@ -82078,45 +82084,45 @@ var Page = function (_React$Component) {
                     )
                 ) : null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */].Row,
+                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Row,
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */].Column,
+                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
                         { width: 16 },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */],
+                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */],
                             { onSubmit: this.handleSubmit },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Group,
+                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Group,
                                 { widths: 'equal' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                     id: 'input-control-name',
-                                    control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["m" /* Input */],
+                                    control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
                                     label: 'Nome Completo',
                                     placeholder: this.state.user.name,
                                     name: 'name',
                                     onChange: this.handleChange,
                                     value: this.state.user.name
                                 }),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                     id: 'input-control-email',
-                                    control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["m" /* Input */],
+                                    control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
                                     label: 'Email',
                                     name: 'email',
                                     placeholder: this.state.user.email,
                                     onChange: this.handleChange,
                                     defaultValue: this.state.user.email
                                 }),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["m" /* Input */], {
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */], {
                                     placeholder: 'Name',
                                     value: this.state.user.name,
                                     onChange: this.handleChange,
                                     name: 'name'
                                 }),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                     id: 'input-control-password',
                                     type: 'password',
-                                    control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["m" /* Input */],
+                                    control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
                                     label: 'Senha',
                                     name: 'password'
                                     // placeholder={this.state.user.password}
@@ -82124,9 +82130,9 @@ var Page = function (_React$Component) {
                                     onChange: this.handleChange
                                 })
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                 id: 'button-control-confirm',
-                                control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["a" /* Button */],
+                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */],
                                 content: 'Atualizar',
                                 positive: true
                             })
@@ -82163,12 +82169,13 @@ var Page = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Admin__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_url_types__ = __webpack_require__(957);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Admin__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -82176,6 +82183,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -82211,7 +82219,7 @@ var Page = function (_React$Component) {
 
         _this.handleDelete = function () {
             var courseID = _this.state.course;
-            __WEBPACK_IMPORTED_MODULE_6_axios___default.a.delete('http://rplearning-homolog.siteseguro.ws/api/courses/' + courseID).then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.delete(__WEBPACK_IMPORTED_MODULE_3__common_url_types__["a" /* API_URL */] + '/api/courses/' + courseID).then(function (res) {
                 console.log(res);
                 console.log(res.data);
                 _this.setState({
@@ -82252,7 +82260,7 @@ var Page = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_6_axios___default.a.get('http://rplearning-homolog.siteseguro.ws/api/courses').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_3__common_url_types__["a" /* API_URL */] + '/api/courses').then(function (res) {
                 var courses = res.data;
                 _this2.setState({ courses: courses });
                 console.log(res.data);
@@ -82266,13 +82274,13 @@ var Page = function (_React$Component) {
 
             var courses = this.state.courses;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_5__Admin__["a" /* default */],
+                __WEBPACK_IMPORTED_MODULE_6__Admin__["a" /* default */],
                 { heading: 'Cursos', createLink: '/admin/courses/create' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
+                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["i" /* Grid */].Column,
                     { width: 16 },
                     this.state.message ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["q" /* Message */],
+                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["q" /* Message */],
                         { success: this.state.success, negative: this.state.error },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'p',
@@ -82281,79 +82289,79 @@ var Page = function (_React$Component) {
                         )
                     ) : null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */],
+                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */],
                         { celled: true },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Header,
+                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Header,
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Row,
+                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Row,
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].HeaderCell,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].HeaderCell,
                                     { colSpan: '4' },
                                     'Lista'
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Row,
+                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Row,
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].HeaderCell,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].HeaderCell,
                                     null,
                                     'T\xEDtulo'
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].HeaderCell,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].HeaderCell,
                                     null,
                                     'Dura\xE7\xE3o'
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].HeaderCell,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].HeaderCell,
                                     null,
                                     'Descri\xE7\xE3o'
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].HeaderCell,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].HeaderCell,
                                     null,
                                     '  '
                                 )
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Body,
+                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Body,
                             null,
                             courses.map(function (course) {
                                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Row,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Row,
                                     { key: course.id },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Cell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Cell,
                                         null,
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["p" /* Menu */].Item,
+                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["p" /* Menu */].Item,
                                             { as: __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */], to: '/admin/courses/' + course.id },
                                             course.title
                                         )
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Cell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Cell,
                                         null,
                                         course.duration
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Cell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Cell,
                                         null,
                                         course.description
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Table */].Cell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["u" /* Table */].Cell,
                                         { collapsing: true, textAlign: 'right' },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["a" /* Button */], { icon: 'trash', onClick: _this3.handleConfirm, value: course.id })
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["a" /* Button */], { icon: 'trash', onClick: _this3.handleConfirm, value: course.id })
                                     )
                                 );
                             }),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["c" /* Confirm */], { open: this.state.open, onCancel: this.close, onConfirm: this.handleDelete })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["c" /* Confirm */], { open: this.state.open, onCancel: this.close, onConfirm: this.handleDelete })
                         )
                     )
                 )
@@ -82392,7 +82400,7 @@ var mapStateToProps = function mapStateToProps(state) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_url_types__ = __webpack_require__(957);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__ = __webpack_require__(16);
@@ -82419,8 +82427,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var genderOptions = [{ key: 'm', text: 'Male', value: 'male' }, { key: 'f', text: 'Female', value: 'female' }];
-
 var Page = function (_React$Component) {
     _inherits(Page, _React$Component);
 
@@ -82436,7 +82442,7 @@ var Page = function (_React$Component) {
         _this.handleSubmit = function (event) {
             event.preventDefault();
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('http://rplearning-homolog.siteseguro.ws/api/courses', {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_1__common_url_types__["a" /* API_URL */] + '/api/courses', {
                 title: _this.state.title,
                 slug: _this.state.slug,
                 description: _this.state.description,
@@ -82462,7 +82468,7 @@ var Page = function (_React$Component) {
         };
 
         _this.handleSubmitLesson = function (event) {
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('http://rplearning-homolog.siteseguro.ws/api/courses/2/lessons', {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_1__common_url_types__["a" /* API_URL */] + '/api/courses/2/lessons', {
                 title: 'Lição 1',
                 content: _this.state.lesson.content
             }).then(function (res) {
@@ -82494,7 +82500,6 @@ var Page = function (_React$Component) {
                     content: data
                 }
             });
-            console.log({ event: event, editor: editor, data: data });
         };
 
         _this.state = {
@@ -82752,12 +82757,13 @@ var Page = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Admin__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ckeditor_ckeditor5_react__ = __webpack_require__(441);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ckeditor_ckeditor5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__ckeditor_ckeditor5_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ckeditor_ckeditor5_build_classic__ = __webpack_require__(442);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ckeditor_ckeditor5_build_classic___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__ckeditor_ckeditor5_build_classic__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_url_types__ = __webpack_require__(957);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Admin__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ckeditor_ckeditor5_react__ = __webpack_require__(441);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ckeditor_ckeditor5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__ckeditor_ckeditor5_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ckeditor_ckeditor5_build_classic__ = __webpack_require__(442);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ckeditor_ckeditor5_build_classic___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__ckeditor_ckeditor5_build_classic__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -82767,6 +82773,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -82809,7 +82816,7 @@ var Page = function (_React$Component) {
 
             var courseID = _this.props.match.params.id;
 
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.put('http://rplearning-homolog.siteseguro.ws/api/courses/' + courseID, {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_2__common_url_types__["a" /* API_URL */] + '/api/courses/' + courseID, {
                 title: _this.state.course.title,
                 slug: _this.state.course.slug,
                 description: _this.state.course.description,
@@ -82845,7 +82852,14 @@ var Page = function (_React$Component) {
         };
 
         _this.state = {
-            course: {},
+            course: {
+                title: '',
+                slug: '',
+                duration: '',
+                start_date: '',
+                end_date: '',
+                description: ''
+            },
             edit: false,
             lessons: []
         };
@@ -82863,12 +82877,12 @@ var Page = function (_React$Component) {
 
             var courseID = this.props.match.params.id;
 
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('http://rplearning-homolog.siteseguro.ws/api/courses/' + courseID).then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_2__common_url_types__["a" /* API_URL */] + '/api/courses/' + courseID).then(function (res) {
                 var course = res.data;
                 _this2.setState({ course: course });
             });
 
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('http://rplearning-homolog.siteseguro.ws/api/courses/' + courseID + '/lessons/').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_2__common_url_types__["a" /* API_URL */] + '/api/courses/' + courseID + '/lessons/').then(function (res) {
                 var lessons = res.data;
                 _this2.setState({ lessons: lessons });
                 console.log(_this2.state.lessons);
@@ -82882,16 +82896,16 @@ var Page = function (_React$Component) {
             var lessons = this.state.lessons;
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_3__Admin__["a" /* default */],
+                __WEBPACK_IMPORTED_MODULE_4__Admin__["a" /* default */],
                 { heading: "Cursos" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */].Row,
+                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Row,
                     null,
                     this.state.message ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["q" /* Message */],
+                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Message */],
                         { success: this.state.success, negative: this.state.error },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["q" /* Message */].Header,
+                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Message */].Header,
                             null,
                             this.state.success ? 'Sucesso' : "Erro"
                         ),
@@ -82903,38 +82917,38 @@ var Page = function (_React$Component) {
                     ) : null
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */].Row,
+                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Row,
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */].Column,
+                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
                         { width: 16 },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */],
+                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */],
+                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */],
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */].Row,
+                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Row,
                                     null,
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */].Column,
+                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
                                         { width: 12 },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["s" /* Segment */],
+                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Segment */],
                                             { color: 'black' },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-title',
-                                                control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["m" /* Input */],
+                                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
                                                 label: 'T\xEDtulo',
                                                 placeholder: this.state.course.title,
                                                 value: this.state.course.title,
                                                 name: 'title',
                                                 onChange: this.updateCourse
                                             }),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-description',
-                                                control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["v" /* TextArea */],
+                                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["v" /* TextArea */],
                                                 label: 'Descri\xE7\xE3o',
                                                 placeholder: this.state.course.description,
                                                 value: this.state.course.description,
@@ -82943,10 +82957,10 @@ var Page = function (_React$Component) {
                                                 style: { minHeight: 150 } })
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */],
+                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */],
                                             { verticalAlign: 'middle' },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */].Column,
+                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
                                                 { width: 14 },
                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                     'h3',
@@ -82956,38 +82970,38 @@ var Page = function (_React$Component) {
                                             )
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["s" /* Segment */].Group,
+                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Segment */].Group,
                                             null,
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["s" /* Segment */],
+                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Segment */],
                                                 null,
                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["u" /* Table */],
+                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Table */],
                                                     { singleLine: true },
                                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                        __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["u" /* Table */].Body,
+                                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Table */].Body,
                                                         null,
                                                         lessons.map(function (lesson) {
                                                             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["u" /* Table */].Row,
+                                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Table */].Row,
                                                                 { key: lesson.id },
                                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                    __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["u" /* Table */].Cell,
+                                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Table */].Cell,
                                                                     { collapsing: true },
-                                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["k" /* Icon */], { name: 'circle outline' })
+                                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["k" /* Icon */], { name: 'circle outline' })
                                                                 ),
                                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                    __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["u" /* Table */].Cell,
+                                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Table */].Cell,
                                                                     null,
                                                                     lesson.title
                                                                 ),
                                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                    __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["u" /* Table */].Cell,
+                                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Table */].Cell,
                                                                     { collapsing: true },
                                                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                        __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["a" /* Button */].Group,
+                                                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */].Group,
                                                                         { size: 'small' },
-                                                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["a" /* Button */], { icon: 'trash', basic: true, color: 'red', onClick: _this3.handleDelete })
+                                                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */], { icon: 'trash', basic: true, color: 'red', onClick: _this3.handleDelete })
                                                                     )
                                                                 )
                                                             );
@@ -82998,41 +83012,41 @@ var Page = function (_React$Component) {
                                         )
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["i" /* Grid */].Column,
+                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
                                         { width: 4 },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["s" /* Segment */],
+                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Segment */],
                                             { color: 'black' },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-slug',
-                                                control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["m" /* Input */],
+                                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
                                                 label: 'Slug',
                                                 name: 'slug',
                                                 placeholder: this.state.course.slug,
                                                 value: this.state.course.slug,
                                                 onChange: this.updateCourse
                                             }),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-duration',
-                                                control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["m" /* Input */],
+                                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
                                                 label: 'Dura\xE7\xE3o',
                                                 name: 'duration',
                                                 placeholder: this.state.course.duration,
                                                 value: this.state.course.duration,
                                                 onChange: this.updateCourse
                                             }),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-startdate',
-                                                control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["m" /* Input */],
+                                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
                                                 label: 'Data de In\xEDcio',
                                                 name: 'start_date',
                                                 placeholder: this.state.course.start_date,
                                                 value: this.state.course.start_date,
                                                 onChange: this.updateCourse
                                             }),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-enddate',
-                                                control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["m" /* Input */],
+                                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["m" /* Input */],
                                                 label: 'Data de T\xE9rmino',
                                                 name: 'end_date',
                                                 placeholder: this.state.course.end_date,
@@ -83040,9 +83054,9 @@ var Page = function (_React$Component) {
                                                 onChange: this.updateCourse
                                             })
                                         ),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Form */].Field, {
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                             id: 'button-control-confirm',
-                                            control: __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["a" /* Button */],
+                                            control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */],
                                             content: 'Atualizar',
                                             positive: true,
                                             onClick: this.handleSubmit
@@ -83197,6 +83211,35 @@ var mapStateToProps = function mapStateToProps(state) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 936 */,
+/* 937 */,
+/* 938 */,
+/* 939 */,
+/* 940 */,
+/* 941 */,
+/* 942 */,
+/* 943 */,
+/* 944 */,
+/* 945 */,
+/* 946 */,
+/* 947 */,
+/* 948 */,
+/* 949 */,
+/* 950 */,
+/* 951 */,
+/* 952 */,
+/* 953 */,
+/* 954 */,
+/* 955 */,
+/* 956 */,
+/* 957 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return API_URL; });
+var API_URL = 'http://localhost:8000/';
 
 /***/ })
 /******/ ]);

@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import { API_URL } from "../../../../common/url-types";
 import {
     Grid,
     Form,
@@ -19,7 +20,14 @@ class Page extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            course: {},
+            course: {
+                title: '',
+                slug: '',
+                duration: '',
+                start_date: '',
+                end_date: '',
+                description: '',
+            },
             edit: false,
             lessons: []
         };
@@ -32,13 +40,13 @@ class Page extends React.Component {
     componentDidMount () {
         const courseID = this.props.match.params.id
 
-        axios.get(`http://rplearning-homolog.siteseguro.ws/api/courses/${courseID}`)
+        axios.get(`${ API_URL }/api/courses/${courseID}`)
         .then(res => {
             const course = res.data;
             this.setState({ course: course });
         });
 
-        axios.get(`http://rplearning-homolog.siteseguro.ws/api/courses/${courseID}/lessons/`)
+        axios.get(`${ API_URL }/api/courses/${courseID}/lessons/`)
         .then(res => {
             const lessons = res.data;
             this.setState({ lessons: lessons });
@@ -74,7 +82,7 @@ class Page extends React.Component {
 
         const courseID = this.props.match.params.id
 
-        axios.put(`http://rplearning-homolog.siteseguro.ws/api/courses/${courseID}`, {
+        axios.put(`${ API_URL }/api/courses/${courseID}`, {
             title: this.state.course.title,
             slug: this.state.course.slug,
             description: this.state.course.description,

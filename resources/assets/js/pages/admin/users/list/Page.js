@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
+import { API_URL } from "../../../../common/url-types";
 import PropTypes from 'prop-types'
 import {
     Button,
@@ -40,7 +41,7 @@ class Page extends React.Component {
     handleDelete = (event) => {
         let userID = event.target.value;
         if(confirm('Tem certeza que deseja deletar?')) {
-            axios.delete(`http://rplearning-homolog.siteseguro.ws/api/users/${userID}`)
+            axios.delete(`${ API_URL }/api/users/${userID}`)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
