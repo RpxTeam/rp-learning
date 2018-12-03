@@ -10,7 +10,7 @@
         <title>RP Learning</title>
     </head>
     <body>
-        <div id='app'></div>
+        <div id='app' style="height: 100%;"></div>
         <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>

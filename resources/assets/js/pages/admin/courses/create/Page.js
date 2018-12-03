@@ -12,7 +12,11 @@ import {
     TextArea,
     Divider,
     Table,
-    Icon
+    Icon,
+    Modal,
+    Header,
+    Image,
+    Dropdown
 } from 'semantic-ui-react'
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -77,30 +81,12 @@ class Page extends React.Component {
         })
     };
 
-    handleSubmitLesson = (event) => {
-        axios.post(`${ API_URL }/api/courses/2/lessons`, {
-            title: 'Lição 1',
-            content: this.state.lesson.content,
-        }).then(res => {
-            console.log(res);
-            console.log(res.data);
-            this.setState({
-                message: 'Lição criada com sucesso',
-                error: false,
-                success: true,
-            });
-        }).catch(error => {
-            console.log(error.message)
-            this.setState({
-                message: error.message,
-                error: true,
-                success: false
-            })
-        })
-    };
-
     handleDelete = () => {
         console.log('delete');
+    };
+
+    handleCopy = () => {
+        console.log('Copy');
     };
 
     handleEditor = ( event, editor ) => {
@@ -111,6 +97,10 @@ class Page extends React.Component {
             }
         });
     };
+
+    openModal = type => () => this.setState({ modal: { type: type, open: true} });
+
+    closeModal = () => this.setState({ modal: { open: false } });
 
     render() {
         return (
@@ -149,61 +139,26 @@ class Page extends React.Component {
                                                 onChange={this.handleChange}
                                                 style={{ minHeight: 150 }} />
                                             {/*<Form.Field>*/}
-                                                {/*<label>Autores</label>*/}
-                                                {/*<Dropdown placeholder='Autores' fluid multiple selection options={this.state.options} value={this.state.author} onChange={this.handleChange}/>*/}
+                                            {/*<label>Autores</label>*/}
+                                            {/*<Dropdown placeholder='Autores' fluid multiple selection options={this.state.options} value={this.state.author} onChange={this.handleChange}/>*/}
                                             {/*</Form.Field>*/}
                                         </Segment>
-                                        <Divider />
-                                        <CKEditor
-                                            editor={ ClassicEditor }
-                                            data={this.state.lesson.content}
-                                            onInit={ editor => {
-                                                // You can store the "editor" and use when it is needed.
-                                                console.log( 'Editor is ready to use!', editor );
-                                            } }
-                                            onChange={ this.handleEditor }
-                                        />
-                                        <Input label='http://' placeholder='Url' />
-                                        <div>
-                                        <iframe src={'https://www.youtube.com/embed/KGYLe3Liopo'} />
-                                        </div>
-                                        <Label
-                                            as="label"
-                                            basic
-                                            htmlFor="upload">
-                                            <Button
-                                                icon="upload"
-                                                label={{
-                                                    basic: true,
-                                                    content: 'Select file(s)'
-                                                }}
-                                                labelPosition="right"
-                                            />
-                                            <input
-                                                hidden
-                                                id="upload"
-                                                multiple
-                                                type="file"
-                                            />
-                                        </Label>
-                                        <Divider />
                                         <Grid verticalAlign='middle'>
-                                            <Grid.Column width={14}>
+                                            <Grid.Column width={13}>
                                                 <h3>Lições</h3>
                                             </Grid.Column>
-                                            {/*<Grid.Column width={2}>*/}
-                                                {/*<Dropdown text='Adicionar Lição' icon='file text' floating floated='right' labeled button className='icon'>*/}
-                                                    {/*<Dropdown.Menu>*/}
-                                                        {/*<Dropdown.Header content='Selecione tipo de conteúdo' />*/}
-                                                        {/*<Dropdown.Item text="Texto" />*/}
-                                                        {/*<Dropdown.Item text="Web content" />*/}
-                                                        {/*<Dropdown.Item text="Vídeo" />*/}
-                                                        {/*<Dropdown.Item text="Áudio" />*/}
-                                                        {/*<Dropdown.Item text="Apresentação ou documento" />*/}
-                                                        {/*<Dropdown.Item text="Scorm" />*/}
-                                                    {/*</Dropdown.Menu>*/}
-                                                {/*</Dropdown>*/}
-                                            {/*</Grid.Column>*/}
+                                            <Grid.Column width={3}>
+                                                <Dropdown text='Adicionar Lição'>
+                                                    <Dropdown.Menu>
+                                                        <Dropdown.Item icon='attention' text="Texto" onClick={this.openModal('text')} />
+                                                        <Dropdown.Item icon='attention' text="Web content" onClick={this.openModal('webcontent')} />
+                                                        <Dropdown.Item icon='attention' text="Vídeo" onClick={this.openModal('video')} />
+                                                        <Dropdown.Item icon='attention' text="Áudio" onClick={this.openModal('audio')} />
+                                                        <Dropdown.Item icon='attention' text="Apresentação ou documento" onClick={this.openModal('doc')} />
+                                                        <Dropdown.Item icon='attention' text="Scorm" onClick={this.openModal('text')} />
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                            </Grid.Column>
                                         </Grid>
                                         <Segment.Group>
                                             <Segment>
@@ -219,7 +174,7 @@ class Page extends React.Component {
                                                             <Table.Cell collapsing>
                                                                 <Button.Group size='small'>
                                                                     <Button icon='edit' basic color='green' onClick={this.handleDelete} />
-                                                                    <Button icon='copy' basic color='blue' onClick={this.handleDelete} />
+                                                                    <Button icon='copy' basic color='blue' onClick={this.handleCopy} />
                                                                     <Button icon='trash' basic color='red' onClick={this.handleDelete} />
                                                                 </Button.Group>
                                                             </Table.Cell>

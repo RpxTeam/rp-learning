@@ -10,16 +10,22 @@ import {
     Icon,
     Select,
     Message,
-    Segment, Divider, Label, Table
+    Segment,
+    Divider,
+    Label,
+    Table, Confirm
 } from 'semantic-ui-react'
 import Admin from '../../Admin'
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import Dropdown from "semantic-ui-react/dist/es/modules/Dropdown/Dropdown";
+import Modal from "semantic-ui-react/dist/es/modules/Modal/Modal";
 
 class Page extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            courseID: this.props.match.params.id,
             course: {
                 title: '',
                 slug: '',
@@ -29,7 +35,22 @@ class Page extends React.Component {
                 description: '',
             },
             edit: false,
-            lessons: []
+            lessons: [],
+            lesson: {
+                title: '',
+                user_id: '',
+                course_id: '',
+                lesson_id: '',
+                content: ''
+            },
+            modal: {
+                type: '',
+                open: false
+            },
+            video: 'https://www.youtube.com/embed/KGYLe3Liopo',
+            confirm: {
+                open: false
+            }
         };
 
         this.handleEdit = this.handleEdit.bind(this);
@@ -38,20 +59,19 @@ class Page extends React.Component {
     }
 
     componentDidMount () {
-        const courseID = this.props.match.params.id
-
-        axios.get(`${ API_URL }/api/courses/${courseID}`)
+        axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
         .then(res => {
             const course = res.data;
             this.setState({ course: course });
         });
 
-        axios.get(`${ API_URL }/api/courses/${courseID}/lessons/`)
-        .then(res => {
-            const lessons = res.data;
-            this.setState({ lessons: lessons });
-            console.log(this.state.lessons);
-        });
+        // axios.get(`${ API_URL }/api/courses/${courseID}/lessons/`)
+        // .then(res => {
+        //     const lessons = res.data;
+        //     this.setState({ lessons: lessons });
+        //     console.log(this.state.lessons);
+        // });
+        this.loadingLessons();
     }
 
     handleEdit = (event) => {
@@ -73,16 +93,13 @@ class Page extends React.Component {
     };
 
     handleChange = (event) => {
-        console.log(event.target.name);
         this.setState({ [event.target.name]: event.target.value });
     };
 
     handleSubmit = event => {
         event.preventDefault();
 
-        const courseID = this.props.match.params.id
-
-        axios.put(`${ API_URL }/api/courses/${courseID}`, {
+        axios.put(`${ API_URL }/api/courses/${this.state.courseID}`, {
             title: this.state.course.title,
             slug: this.state.course.slug,
             description: this.state.course.description,
@@ -106,7 +123,38 @@ class Page extends React.Component {
                 success: false
             })
         })
-    }
+    };
+
+    handleSubmitLesson = (event) => {
+        axios.post(`${ API_URL }/api/courses/${this.state.courseID}/lessons`, {
+            title: 'Lição 1',
+            content: this.state.lesson.content,
+        }).then(res => {
+            console.log(res);
+            console.log(res.data);
+            this.setState({
+                message: 'Lição criada com sucesso',
+                error: false,
+                success: true,
+            });
+            this.loadingLessons();
+        }).catch(error => {
+            console.log(error.message)
+            this.setState({
+                message: error.message,
+                error: true,
+                success: false
+            })
+        })
+    };
+
+    loadingLessons = () => {
+        axios.get(`${ API_URL }/api/courses/${this.state.courseID}/lessons/`)
+        .then(res => {
+            const lessons = res.data;
+            this.setState({ lessons: lessons });
+        });
+    };
 
     handleEditor = ( event, editor ) => {
         const data = editor.getData();
@@ -118,13 +166,47 @@ class Page extends React.Component {
         console.log( { event, editor, data } );
     };
 
+    handleConfirm = (event) => {
+        let lessonID = event.target.value;
+        this.setState({
+            lessonID: lessonID,
+            confirm: { open: true }
+        })
+    };
+
+    handleDelete = () => {
+        if(this.state.lessonID) {
+            axios.delete(`${ API_URL }/api/courses/${this.state.courseID}/lessons/${this.state.lessonID}`)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                this.setState({
+                });
+
+                this.loadingLessons();
+                this.setState({
+                    message: 'Lição deletado',
+                    error: false,
+                    success: true,
+                    confirm: { open: false }
+                })
+            });
+        }
+    }
+
+    openModal = type => () => this.setState({ modal: { type: type, open: true} });
+    closeModal = () => this.setState({ modal: { open: false } });
+
+    showConfirm = () => this.setState({ confirm: {open: true} });
+    closeConfirm = () => this.setState({ confirm: {open: false} });
+
     render() {
         const { lessons } = this.state;
         return (
             <Admin heading={"Cursos"}>
                 <Grid.Row>
                     {this.state.message ?
-                        <Message success={this.state.success} negative={this.state.error}>
+                        <Message floating success={this.state.success} negative={this.state.error}>
                             <Message.Header>{this.state.success ? 'Sucesso' : "Erro" }</Message.Header>
                             <p>
                                 {this.state.message}
@@ -163,22 +245,22 @@ class Page extends React.Component {
                                             {/*</Form.Field>*/}
                                         </Segment>
                                         <Grid verticalAlign='middle'>
-                                            <Grid.Column width={14}>
+                                            <Grid.Column width={12}>
                                                 <h3>Lições</h3>
                                             </Grid.Column>
-                                            {/*<Grid.Column width={2}>*/}
-                                            {/*<Dropdown text='Adicionar Lição' icon='file text' floating floated='right' labeled button className='icon'>*/}
-                                            {/*<Dropdown.Menu>*/}
-                                            {/*<Dropdown.Header content='Selecione tipo de conteúdo' />*/}
-                                            {/*<Dropdown.Item text="Texto" />*/}
-                                            {/*<Dropdown.Item text="Web content" />*/}
-                                            {/*<Dropdown.Item text="Vídeo" />*/}
-                                            {/*<Dropdown.Item text="Áudio" />*/}
-                                            {/*<Dropdown.Item text="Apresentação ou documento" />*/}
-                                            {/*<Dropdown.Item text="Scorm" />*/}
-                                            {/*</Dropdown.Menu>*/}
-                                            {/*</Dropdown>*/}
-                                            {/*</Grid.Column>*/}
+                                            <Grid.Column width={4}>
+                                                <Dropdown text='Adicionar Lição'>
+                                                    <Dropdown.Menu>
+                                                        <Dropdown.Item icon='attention' text="Texto" onClick={this.openModal('text')} />
+                                                        <Dropdown.Item icon='attention' text="Web content" onClick={this.openModal('webcontent')} />
+                                                        <Dropdown.Item icon='attention' text="Vídeo Interno" onClick={this.openModal('video-internal')} />
+                                                        <Dropdown.Item icon='attention' text="Vídeo Externo" onClick={this.openModal('video-external')} />
+                                                        <Dropdown.Item icon='attention' text="Áudio" onClick={this.openModal('audio')} />
+                                                        <Dropdown.Item icon='attention' text="Apresentação ou documento" onClick={this.openModal('doc')} />
+                                                        <Dropdown.Item icon='attention' text="Scorm" onClick={this.openModal('text')} />
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                            </Grid.Column>
                                         </Grid>
                                         <Segment.Group>
                                             <Segment>
@@ -194,14 +276,15 @@ class Page extends React.Component {
                                                                 </Table.Cell>
                                                                 <Table.Cell collapsing>
                                                                     <Button.Group size='small'>
-                                                                        {/*<Button icon='edit' basic color='green' onClick={this.handleDelete} />*/}
-                                                                        {/*<Button icon='copy' basic color='blue' onClick={this.handleDelete} />*/}
-                                                                        <Button icon='trash' basic color='red' onClick={this.handleDelete} />
+                                                                        {/*<Button icon='edit' basic color='green' value={this.state.courseID} onClick={this.handleDelete} />*/}
+                                                                        {/*<Button icon='copy' basic color='blue' value={this.state.courseID} onClick={this.handleDelete} />*/}
+                                                                        <Button icon='trash' basic color='red' value={lesson.id} onClick={this.handleConfirm} />
                                                                     </Button.Group>
                                                                 </Table.Cell>
                                                             </Table.Row>
                                                             )
                                                         }
+                                                        <Confirm open={this.state.confirm.open} onCancel={this.closeConfirm} onConfirm={this.handleDelete} />
                                                     </Table.Body>
                                                 </Table>
                                             </Segment>
@@ -259,6 +342,78 @@ class Page extends React.Component {
                         </Form>
                     </Grid.Column>
                 </Grid.Row>
+
+                <Modal dimmer={'blurring'} open={this.state.modal.open} onClose={this.closeModal}>
+                    <Modal.Header>Criar uma Lição</Modal.Header>
+                    <Modal.Content scrolling>
+                        <Form>
+                            <Form.Group widths='equal'>
+                                <Form.Field control={Input} label='Título' placeholder='Título' data={this.state.lesson.title} onChange={this.handleChange} />
+                            </Form.Group>
+                            {this.state.modal.type === 'text' ?
+                                <Form.Field>
+                                    <label>Conteúdo</label>
+                                    <CKEditor
+                                        editor={ ClassicEditor }
+                                        data={this.state.lesson.content}
+                                        onInit={ editor => {
+                                            // You can store the "editor" and use when it is needed.
+                                            console.log( 'Editor is ready to use!', editor );
+                                        } }
+                                        onChange={ this.handleEditor }
+                                    />
+                                </Form.Field>
+                                : null}
+                            {this.state.modal.type === 'webcontent' ?
+                                <Form.Field>
+                                    <label htmlFor="web-content">Conteúdo online</label>
+                                    <Input placeholder='Url' name="web-content" id="web-content" onChange={this.handleChange} />
+                                </Form.Field>
+                            : null}
+                            {this.state.modal.type === 'video-external' ?
+                                <Form.Field>
+                                    <label htmlFor="web-content">Conteúdo online</label>
+                                    <Input placeholder='Url' name="web-content" id="web-content" onChange={this.handleChange} />
+                                </Form.Field>
+                            : null}
+                            {this.state.modal.type === 'video-internal' || this.state.modal.type === 'audio' || this.state.modal.type === 'doc' ?
+                                <Label
+                                    as="label"
+                                    basic
+                                    htmlFor="upload">
+                                    Arquivo
+                                    <Button
+                                        icon="upload"
+                                        label={{
+                                            basic: true,
+                                            content: 'Select file(s)'
+                                        }}
+                                        labelPosition="right"
+                                    />
+                                    <input
+                                        hidden
+                                        id="upload"
+                                        multiple
+                                        type="file"
+                                    />
+                                </Label>
+                                : null }
+                        </Form>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color='black' onClick={this.closeModal}>
+                            Cancelar
+                        </Button>
+                        <Button
+                            positive
+                            icon='checkmark'
+                            labelPosition='right'
+                            content="Criar Lição"
+                            onClick={this.handleSubmitLesson}
+                        />
+                    </Modal.Actions>
+
+                </Modal>
             </Admin>
         );
     }
