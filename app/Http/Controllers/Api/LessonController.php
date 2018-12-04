@@ -7,6 +7,7 @@ use App\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class LessonController extends Controller
 {
@@ -18,7 +19,11 @@ class LessonController extends Controller
     public function index($course)
     {
         $course = Course::findOrFail($course);
-        $lessons = Lesson::courseLessons($course);
+        $lessons = Lesson::courseLessons($course)->each(function($lesson){
+            if($lesson->content != null && $lesson->mime != null){
+                $lesson->content = Storage::url($lesson->content);
+            }
+        });
 
         return response()->json($lessons,200);
         // return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
@@ -34,16 +39,18 @@ class LessonController extends Controller
     public function show($course,$lesson)
     {
         $course = Course::findOrFail($course);
-
         $lesson = Lesson::courseLessons($course)
-        ->where('lesson_id','=',$lesson);
-        
-        if($lesson->isEmpty()){
+        ->where('lesson_id','=',$lesson)->first();
+        if($lesson == null){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
         }else{
-            return response()->json(array('course'=>$course,'lesson'=>$lesson),200);
-        //200: OK. The standard success code and default option.
+            if($lesson->content != null && $lesson->mime != null){
+                $lesson->content = Storage::url($lesson->content);
+            }
+            return response()->json($lesson,200);
+            // return response()->json(array('course'=>$course,'lesson'=>$lesson),200);
+            //200: OK. The standard success code and default option.
         }
     }
 
@@ -56,8 +63,13 @@ class LessonController extends Controller
     public function store(Request $request,$course)
     {
         try{
+            if($request->hasFile('content') && $request->file('content')->isValid()) {
+                $lesson = Lesson::create($request->except('content'));
+                Lesson::uploadFileLesson($request , $lesson);
+            }else{
+                $lesson = Lesson::create($request->except('content'));
+            }
             $course = Course::findOrFail($course);
-            $lesson = Lesson::create($request->all());
             DB::table('course_lesson')->insert([
                 'course_id' =>$course->id,
                 'lesson_id' =>$lesson->id,
@@ -81,9 +93,14 @@ class LessonController extends Controller
     public function update(Request $request, $course, $lesson)
     {
         try{
-            $course = Course::findOrFail($course);
-            $lesson = Lesson::findOrFail($lesson);
-            $lesson->update($request->all());
+            if($request->hasFile('content') && $request->file('content')->isValid()) {
+                $lesson = Lesson::findOrFail($lesson);
+                Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
+                Lesson::updateFileLesson($request,$lesson);
+            }else{
+                $lesson = Lesson::findOrFail($lesson);
+                Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
+            }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -103,6 +120,9 @@ class LessonController extends Controller
         try{
             $course = Course::findOrFail($course);
             $lesson = Lesson::findOrFail($lesson);
+            if(Storage::exists($lesson->content)){
+                Storage::delete($lesson->content);
+            }
             $lesson->delete();
             DB::table('course_lesson')
             ->where('course_id','=', $course->id)

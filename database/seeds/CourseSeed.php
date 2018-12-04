@@ -62,7 +62,7 @@ class CourseSeed extends Seeder
              'end_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+90 days')->getTimestamp())->format('Y/m/d'),
             ],
             ['title' => "Curso 06",
-             'slug' => "curso7",
+             'slug' => "curso6",
              'introduction' => $faker->realText($maxNbChars = 200, $indexSize = 2),
              'description' => $faker->realText($maxNbChars = 200, $indexSize = 2),
              'duration' => $faker->randomDigitNotNull,
