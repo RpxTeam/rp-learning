@@ -13,7 +13,8 @@ import {
     Segment,
     Divider,
     Label,
-    Table, Confirm
+    Table,
+    Confirm
 } from 'semantic-ui-react'
 import Admin from '../../Admin'
 import CKEditor from "@ckeditor/ckeditor5-react";

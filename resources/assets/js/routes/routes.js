@@ -4,6 +4,7 @@ import Register from '../pages/register'
 import ForgotPassword from '../pages/forgotPassword'
 import ResetPassword from '../pages/resetPassword'
 import Courses from '../pages/courses'
+import Course from '../pages/course'
 import MyCourses from '../pages/myCourses'
 import Dashboard from '../pages/admin/dashboard'
 import AdminUsers from '../pages/admin/users/list'
@@ -56,6 +57,12 @@ const routes = [
         exact: true,
         auth: false,
         component: Courses
+    },
+    {
+        path: '/courses/:id',
+        exact: true,
+        auth: true,
+        component: Course
     },
     {
         path: '/my-courses',

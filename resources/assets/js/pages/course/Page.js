@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link, Redirect} from 'react-router-dom'
 import axios from 'axios'
 import {
     Button,
@@ -21,17 +20,23 @@ class Page extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            courses: [],
+            courseID: this.props.match.params.id,
+            course: {
+                id: '',
+                title: '',
+                create_at: '',
+                description: ''
+            },
             message: '',
         }
     }
 
     componentDidMount() {
-        axios.get(`http://rplearning-homolog.siteseguro.ws/api/courses`)
-          .then(res => {
-            const courses = res.data;
-            this.setState({ courses: courses });
-        })
+        axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
+        .then(res => {
+            const course = res.data;
+            this.setState({ course: course });
+        });
     }
 
     render() {
@@ -43,22 +48,21 @@ class Page extends React.Component {
                 <main className="fadeIn animated">
                     <PageHeader heading="Cursos"/>
                     <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
-                        <Header as='h1'>Cursos</Header>
+                        <Header as='h1'>{this.state.course.title}</Header>
                         <Container>
                             <Card.Group>
-                                { courses.map((course) => 
-                                <Card color='red' key={course.id}>
+                                <Card color='red' key={this.state.course.id}>
                                     <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
                                     <Card.Content>
-                                        <Card.Header>{ course.title }</Card.Header>
+                                        <Card.Header>{ this.state.course.title }</Card.Header>
                                         <Card.Meta>
-                                        <span className='date'>Criado em { course.created_at }</span>
+                                        <span className='date'>Criado em { this.state.course.created_at }</span>
                                         </Card.Meta>
-                                        <Card.Description>{ course.description }</Card.Description>
+                                        <Card.Description>{ this.state.course.description }</Card.Description>
                                     </Card.Content>
                                     <Card.Content extra>
                                     <div className='ui two buttons'>
-                                        <Button basic color='green' as={Link} to={"/courses/" + course.slug}>
+                                        <Button basic color='green'>
                                             Executar
                                         </Button>
                                         { isAuthenticated ?
@@ -69,8 +73,6 @@ class Page extends React.Component {
                                         </div>
                                     </Card.Content>
                                 </Card>
-                                    )
-                                }
                             </Card.Group>
                         </Container>
                     </Segment>
