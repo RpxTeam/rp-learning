@@ -65,13 +65,13 @@ class CoursesController extends Controller
                 $course = Course::create($request->except('image'));
                 Course::uploadImageCourse($request , $course);
             }else{
-                Course::create($request->except('image'));
+                $course = Course::create($request->except('image'));
             }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
         }
-        return response()->json(201);
+        return response()->json($course->id,200);
         //201: Object created. Useful for the store actions.
     }
 
