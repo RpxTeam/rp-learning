@@ -12,7 +12,7 @@ const user = {
 const initialState = {
     isAuthenticated : false,
     isAdmin: false,
-    user
+    user: ''
 };
 
 const Auth = (state= initialState,{type,payload = null}) => {
@@ -37,22 +37,22 @@ const authLogin = (state,payload) => {
         localStorage.setItem('is_admin',false);
     }
     localStorage.setItem('jwt_token',jwtToken);
-    localStorage.setItem('userId', user.id);
+    localStorage.setItem('user', user);
     Http.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
     state = Object.assign({}, state, {
         isAuthenticated: true,
         isAdmin: localStorage.getItem('is_admin') === 'true',
-        user
+        user: user
     });
     return state;
 
 };
 
 const checkAuth = (state) =>{
-    state =Object.assign({},state,{
+    state = Object.assign({},state,{
         isAuthenticated : !!localStorage.getItem('jwt_token'),
         isAdmin : localStorage.getItem('is_admin'),
-        user: !!localStorage.getItem('userId')
+        user: !!localStorage.getItem('user'),
     });
     if(state.isAuthenticated){
         Http.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwt_token')}`;
@@ -63,11 +63,11 @@ const checkAuth = (state) =>{
 const logout = (state) => {
     localStorage.removeItem('jwt_token');
     localStorage.setItem('is_admin',false);
-    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
     state = Object.assign({},state,{
         isAuthenticated: false,
         isAdmin : false,
-        user
+        user: ''
     });
     return state;
 };

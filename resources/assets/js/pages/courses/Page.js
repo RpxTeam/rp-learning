@@ -45,7 +45,7 @@ class Page extends React.Component {
                     <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
                         <Header as='h1'>Cursos</Header>
                         <Container>
-                            <Card.Group>
+                            <Card.Group itemsPerRow={4}>
                                 { courses.map((course) => 
                                 <Card color='red' key={course.id}>
                                     <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
@@ -58,14 +58,14 @@ class Page extends React.Component {
                                     </Card.Content>
                                     <Card.Content extra>
                                     <div className='ui two buttons'>
-                                        <Button basic color='green' as={Link} to={"/courses/" + course.slug}>
-                                            Executar
+                                        <Button basic color='green' as={Link} to={"/courses/" + course.id + '/details'}>
+                                            Detalhes
                                         </Button>
-                                        { isAuthenticated ?
-                                        <Button basic color='red'>
-                                            Excluir
-                                        </Button>
-                                        : null }
+                                        {/*{ isAuthenticated ?*/}
+                                        {/*<Button basic color='red'>*/}
+                                            {/*Excluir*/}
+                                        {/*</Button>*/}
+                                        // : null }
                                         </div>
                                     </Card.Content>
                                 </Card>
