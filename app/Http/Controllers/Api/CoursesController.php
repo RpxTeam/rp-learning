@@ -37,10 +37,12 @@ class CoursesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($course)
     {
         try{
-            $course = Course::findOrFail($id);
+            $course = Course::where('id', $course)
+                            ->orWhere('slug', $course)
+                            ->firstOrFail();
             if($course->image != null){
                 $course->image = Storage::url($course->image);
             }
@@ -61,6 +63,9 @@ class CoursesController extends Controller
     public function store(Request $request)
     {
         try{
+            if($request->slug == null){
+                $request->slug = str_slug($request->title);
+            }
             if($request->hasFile('image') && $request->file('image')->isValid()) {
                 $course = Course::create($request->except('image'));
                 Course::uploadImageCourse($request , $course);

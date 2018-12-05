@@ -18,7 +18,7 @@ class CreateLessonsTable extends Migration
             $table->increments('id');
             $table->integer('order')->nullable();
             $table->string('title')->nullable();
-            $table->string('slug')->nullable();
+            $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->string('type')->nullable();
             $table->text('content')->nullable();

@@ -18,7 +18,9 @@ class LessonController extends Controller
      */
     public function index($course)
     {
-        $course = Course::findOrFail($course);
+        $course = Course::where('id', $course)
+                        ->orWhere('slug', $course)
+                        ->firstOrFail();
         $lessons = Lesson::courseLessons($course)->each(function($lesson){
             if($lesson->content != null && $lesson->mime != null){
                 $lesson->content = Storage::url($lesson->content);
@@ -38,7 +40,9 @@ class LessonController extends Controller
      */
     public function show($course,$lesson)
     {
-        $course = Course::findOrFail($course);
+        $course = Course::where('id', $course)
+                        ->orWhere('slug', $course)
+                        ->firstOrFail();
         $lesson = Lesson::courseLessons($course)
         ->where('lesson_id','=',$lesson)->first();
         if($lesson == null){
@@ -63,6 +67,9 @@ class LessonController extends Controller
     public function store(Request $request,$course)
     {
         try{
+            if($request->slug == null){
+                $request->slug = str_slug($request->title);
+            }
             if($request->hasFile('content') && $request->file('content')->isValid()) {
                 $lesson = Lesson::create($request->except('content'));
                 Lesson::uploadFileLesson($request , $lesson);
