@@ -36,9 +36,12 @@ Route::resource('users', 'Api\UserController');
 
 //Course routes
 Route::resource('courses', 'Api\CoursesController');
+Route::get('courses/{course}', 'Api\CoursesController@show');
 
 //lesson routes
-Route::resource('courses/{id}/lessons', 'Api\LessonController');
+Route::resource('courses/{course}/lessons', 'Api\LessonController');
+Route::get('courses/{course}/lessons', 'Api\LessonController@index');
+Route::get('courses/{course}/lessons/{lesson}', 'Api\LessonController@show');
 
 //DataCourse routes
 Route::resource('users/{user}/courses', 'Api\DataCourseController');

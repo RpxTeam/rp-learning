@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 
 class CoursesController extends Controller
@@ -17,7 +18,11 @@ class CoursesController extends Controller
     public function index()
     {
         try{
-            $courses = Course::All();
+            $courses = Course::All()->each(function($course){
+                if($course->image != null){
+                    $course->image = Storage::url($course->image);
+                }
+            });
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -32,10 +37,15 @@ class CoursesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($course)
     {
         try{
-            $course = Course::findOrFail($id);
+            $course = Course::where('id', $course)
+                            ->orWhere('slug', $course)
+                            ->firstOrFail();
+            if($course->image != null){
+                $course->image = Storage::url($course->image);
+            }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -53,12 +63,20 @@ class CoursesController extends Controller
     public function store(Request $request)
     {
         try{
-            $course = Course::create($request->all());
+            if($request->slug == null){
+                $request->slug = str_slug($request->title);
+            }
+            if($request->hasFile('image') && $request->file('image')->isValid()) {
+                $course = Course::create($request->except('image'));
+                Course::uploadImageCourse($request , $course);
+            }else{
+                $course = Course::create($request->except('image'));
+            }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
         }
-        return response()->json(201);
+        return response()->json($course->id,200);
         //201: Object created. Useful for the store actions.
     }
 
@@ -72,8 +90,14 @@ class CoursesController extends Controller
     public function update(Request $request, $id)
     {
         try{
-            $course = Course::findOrFail($id);
-            $course->update($request->all());
+            if($request->hasFile('image') && $request->file('image')->isValid()) {
+                $course = Course::findOrFail($id);
+                Course::whereId($course->id)->update($request->except(['_method','image']));
+                Course::updateImageCourse($request,$course);
+            }else{
+                $course = Course::findOrFail($id);
+                Course::whereId($course->id)->update($request->except(['_method','image']));
+            }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -92,6 +116,9 @@ class CoursesController extends Controller
     {
         try{
             $course = Course::findOrFail($id);
+            if(Storage::exists($course->image)){
+                Storage::delete($course->image);
+            }
             $course->delete();
         }catch(ModelNotFoundException $e){
             return response()->json(400);

@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Course extends Model
 {
-    protected $fillable = [ 'title', 'slug','introduction', 'description', 'duration', 'image', 'instructor', 'start_date', 'end_date'];
+    protected $fillable = [ 'title', 'slug','introduction', 'description', 'duration', 'image', 'mime','instructor', 'start_date', 'end_date'];
     protected $hidden = [];
     public static $searchable = [
         'title',
@@ -28,5 +31,25 @@ class Course extends Model
         ->where('data_courses.user_id','=',$user)
         ->get();
         return $courses;
+    }
+
+    public static function uploadImageCourse(Request $request, Course $course){
+        $filename = $course->id . '-' . str_slug($course->title) . '.' . $request->file('image')->getClientOriginalExtension();
+        $request->file('image')->storeAs('courses/images', $filename);
+        $course->image = 'courses/images/' . $filename;
+        $course->mime = $request->file('image')->getClientMimeType();
+        $course->save();
+    }
+
+    public static function updateImageCourse(Request $request, Course $course){
+        $filename = $course->id . '-' . str_slug($course->title) . '.' . $request->file('image')->getClientOriginalExtension();
+        $filepath = 'courses/images/' . $filename;
+        if(Storage::exists($filepath)){
+            Storage::delete($filepath);
+        }
+        $request->file('image')->storeAs('courses/images', $filename);
+        $course->image =  $filepath;
+        $course->mime = $request->file('image')->getClientMimeType();
+        $course->save();
     }
 }
