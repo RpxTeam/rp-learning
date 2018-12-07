@@ -28,6 +28,7 @@ class Page extends React.Component {
         super(props);
         this.state = {
             courseID: this.props.match.params.id,
+            user: this.props.user,
             course: {
                 id: '',
                 title: '',
@@ -36,27 +37,28 @@ class Page extends React.Component {
             },
             message: '',
             onCourse: false,
-            lesson: {
-                title: '',
-                content: ''
-            }
         }
     }
 
     componentDidMount() {
-        axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
-        .then(res => {
-            const course = res.data;
-            this.setState({ course: course });
-        });
+        // axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
+        // .then(res => {
+        //     const course = res.data;
+        //     this.setState({ course: course });
+        // });
         this.getLessons();
     }
 
     getLessons = () => {
-        axios.get(`${ API_URL }/api/courses/${this.state.courseID}/lessons`)
+        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
         .then(res => {
-            const lessons = res.data;
-            this.setState({ lessons: lessons, lessonsCount: lessons.length });
+            console.log(res);
+            // const lessons = res.data;
+            // this.setState({
+            //     lesson: lessons[0],
+            //     lessons: lessons,
+            //     lessonsCount: lessons.length
+            // });
         });
     };
 
@@ -64,14 +66,16 @@ class Page extends React.Component {
         axios.get(`${ API_URL }/api/courses/${this.state.courseID}/lessons/${lessonID}`)
         .then(res => {
             const lesson = res.data;
-            console.log(lesson);
-            this.setState({ lesson: lesson.lesson });
-            // console.log(this.state.lesson);
+            this.setState({ lesson: lesson });
         });
     };
 
+    endLesson = (lessonID) => {
+        console.log(lessonID);
+    };
+
     render() {
-        const { course, lessons } = this.state;
+        const { course, lessons, lesson } = this.state;
         const { isAuthenticated, user } = this.props;
         return (
             <div>
@@ -99,28 +103,35 @@ class Page extends React.Component {
                         <Grid>
                             <Grid.Row>
                                 <Grid.Column width={16}>
-                                    <Progress value='2' total={this.state.lessonsCount} progress='ratio' />
+                                    <Progress value='0' total={this.state.lessonsCount} progress='ratio' />
                                 </Grid.Column>
                                 <Grid.Column width={5}>
                                     <Step.Group vertical>
-                                        {
-                                            lessons ?
-                                                lessons.map((lesson) =>
-                                                    <Step completed link onClick={this.getLesson.bind(this, lesson.id)} key={lesson.id}>
-                                                        <Icon name='truck' />
-                                                        <Step.Content>
-                                                            <Step.Title>{lesson.title}</Step.Title>
-                                                        </Step.Content>
-                                                    </Step>
-                                                ) : null
-                                        }
+                                        {/*{*/}
+                                            {/*lessons ?*/}
+                                                {/*lessons.map((lesson) =>*/}
+                                                    {/*<Step completed link onClick={this.getLesson.bind(this, lesson.id)} key={lesson.id}>*/}
+                                                        {/*<Icon name='truck' />*/}
+                                                        {/*<Step.Content>*/}
+                                                            {/*<Step.Title>{lesson.title}</Step.Title>*/}
+                                                        {/*</Step.Content>*/}
+                                                    {/*</Step>*/}
+                                                {/*) : null*/}
+                                        {/*}*/}
                                     </Step.Group>
                                 </Grid.Column>
                                 <Grid.Column width={11}>
                                     <Segment>
                                         <Header as='h2'>Detalhes do Curso</Header>
                                         <Divider />
-                                        {this.state.lesson.title ? this.state.lesson.title : null}
+                                        {lesson ?
+                                            <div>
+                                                <h4>{lesson.title}</h4>
+                                                <p>{lesson.content}</p>
+                                                <Button positive floated='right' onClick={this.endLesson.bind(this, lesson.id)}>Finalizar
+                                                    lição</Button>
+                                            </div>
+                                        : null }
                                     </Segment>
                                 </Grid.Column>
                             </Grid.Row>

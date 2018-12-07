@@ -16,7 +16,7 @@ class CreateDataLessonsTable extends Migration
         Schema::create('data_lessons', function (Blueprint $table) {
            
 
-            $table->integer('view')->nullable();
+            $table->boolean('view')->nullable();
             $table->float('progress', 10 , 5)->nullable();
             $table->date('finish')->nullable();
             $table->integer('user_id')->unsigned();

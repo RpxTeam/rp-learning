@@ -56,31 +56,19 @@ class Page extends React.Component {
     };
 
     startCourse = () => {
-        axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {
-            view: 1,
-            progress: 50.000,
-            finish: '10/10/2018',
-            rating: 5,
-            testimonial: 'dasdsadeewdwdwdwedwe',
-            favorite: 1,
+        axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {
+            progress: 0,
         })
         .then(res => {
+            this.setState({ onCourse: true });
             console.log('Sucesso');
-            this.setState({ onCourse: true })
         });
 
-        axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {
-            view: 1,
-            progress: 50.000,
-            finish: '2018-10-10',
-            rating: 5,
-            testimonal: 'dasdsadeewdwdwdwedwe',
-            favorite: 1,
-        })
+        axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}/lessons`)
         .then(res => {
-            console.log('Sucesso');
+            console.log('Lições criadas');
         });
-    }
+    };
 
     render() {
         const { course, lessons } = this.state;
@@ -95,9 +83,9 @@ class Page extends React.Component {
                         lessons.map((lesson) =>
                             <List divided verticalAlign='middle' key={lesson.id}>
                                 <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
-                                    <List.Content floated='right'>{lesson.title}</List.Content>
+                                    <List.Content floated='right'>{lesson.type}</List.Content>
                                     <Icon name='file' />
-                                    <List.Content>Lições</List.Content>
+                                    <List.Content>{lesson.title}</List.Content>
                                 </List.Item>
                             </List>
                         )

@@ -23,6 +23,8 @@ class Page extends React.Component {
         this.state = {
             courses: [],
             message: '',
+            courseID: '',
+            viewCourse: false
         }
     }
 
@@ -34,9 +36,25 @@ class Page extends React.Component {
         })
     }
 
+    viewCourse = (courseID) => {
+        axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`)
+        .then(res => {
+            const { data } = res;
+            if(data.length === 0) {
+                axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`);
+                axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`, {view: 1});
+            }
+            this.setState({ courseID: courseID, viewCourse: true });
+        })
+    };
+
     render() {
         const courses = this.state.courses;
         const { isAuthenticated } = this.props;
+        if (this.state.viewCourse === true) {
+            return <Redirect to={'/courses/' + this.state.courseID + '/details'} />
+        }
+
         return (
             <div>
                 <Navigation/>
@@ -58,7 +76,7 @@ class Page extends React.Component {
                                     </Card.Content>
                                     <Card.Content extra>
                                     <div className='ui two buttons'>
-                                        <Button basic color='green' as={Link} to={"/courses/" + course.id + '/details'}>
+                                        <Button basic color='green' onClick={this.viewCourse.bind(this, course.id)}>
                                             Detalhes
                                         </Button>
                                         {/*{ isAuthenticated ?*/}
@@ -84,6 +102,7 @@ class Page extends React.Component {
 const mapStateToProps = (state) => {
     return {
         isAuthenticated : state.Auth.isAuthenticated,
+        user: state.Auth.user
     }
 };
 
