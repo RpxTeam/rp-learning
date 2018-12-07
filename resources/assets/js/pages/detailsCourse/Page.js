@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import {
     Button,
@@ -33,6 +34,7 @@ class Page extends React.Component {
                 description: ''
             },
             message: '',
+            onCourse: false
         }
     }
 
@@ -64,6 +66,7 @@ class Page extends React.Component {
         })
         .then(res => {
             console.log('Sucesso');
+            this.setState({ onCourse: true })
         });
 
         axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {
@@ -82,6 +85,9 @@ class Page extends React.Component {
     render() {
         const { course, lessons } = this.state;
         const { isAuthenticated, user } = this.props;
+        if (this.state.onCourse === true) {
+            return <Redirect to={'/courses/' + course.id} />
+        }
         const panes = [
             { menuItem: 'Descrição', render: () => <Tab.Pane attached={false}>{course.description}</Tab.Pane> },
             { menuItem: 'Lições', render: () => <Tab.Pane attached={false}>

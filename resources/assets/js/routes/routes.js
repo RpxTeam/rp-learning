@@ -5,6 +5,7 @@ import ForgotPassword from '../pages/forgotPassword'
 import ResetPassword from '../pages/resetPassword'
 import Courses from '../pages/courses'
 import detailCourse from '../pages/detailsCourse'
+import onCourse from '../pages/onCourse'
 import MyCourses from '../pages/myCourses'
 import Dashboard from '../pages/admin/dashboard'
 import AdminUsers from '../pages/admin/users/list'
@@ -63,6 +64,12 @@ const routes = [
         exact: true,
         auth: true,
         component: detailCourse
+    },
+    {
+        path: '/courses/:id',
+        exact: true,
+        auth: true,
+        component: onCourse
     },
     {
         path: '/my-courses',

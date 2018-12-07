@@ -652,11 +652,11 @@ module.exports = map;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__addons_Ref__ = __webpack_require__(206);
 /* unused harmony reexport Ref */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__addons_Responsive__ = __webpack_require__(809);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_7__addons_Responsive__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return __WEBPACK_IMPORTED_MODULE_7__addons_Responsive__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__addons_Select__ = __webpack_require__(370);
 /* unused harmony reexport Select */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__addons_TextArea__ = __webpack_require__(380);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return __WEBPACK_IMPORTED_MODULE_9__addons_TextArea__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return __WEBPACK_IMPORTED_MODULE_9__addons_TextArea__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__addons_TransitionablePortal__ = __webpack_require__(831);
 /* unused harmony reexport TransitionablePortal */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__behaviors_Visibility__ = __webpack_require__(833);
@@ -712,7 +712,7 @@ module.exports = map;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__collections_Message_MessageList__ = __webpack_require__(399);
 /* unused harmony reexport MessageList */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__collections_Table__ = __webpack_require__(843);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return __WEBPACK_IMPORTED_MODULE_37__collections_Table__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return __WEBPACK_IMPORTED_MODULE_37__collections_Table__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__collections_Table_TableBody__ = __webpack_require__(400);
 /* unused harmony reexport TableBody */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__collections_Table_TableCell__ = __webpack_require__(143);
@@ -784,11 +784,11 @@ module.exports = map;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_72__elements_Reveal_RevealContent__ = __webpack_require__(408);
 /* unused harmony reexport RevealContent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_73__elements_Segment__ = __webpack_require__(859);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return __WEBPACK_IMPORTED_MODULE_73__elements_Segment__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_73__elements_Segment__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_74__elements_Segment_SegmentGroup__ = __webpack_require__(410);
 /* unused harmony reexport SegmentGroup */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_75__elements_Step__ = __webpack_require__(860);
-/* unused harmony reexport Step */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return __WEBPACK_IMPORTED_MODULE_75__elements_Step__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_76__elements_Step_StepContent__ = __webpack_require__(412);
 /* unused harmony reexport StepContent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_77__elements_Step_StepDescription__ = __webpack_require__(216);
@@ -842,7 +842,7 @@ module.exports = map;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_101__modules_Popup_PopupHeader__ = __webpack_require__(416);
 /* unused harmony reexport PopupHeader */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_102__modules_Progress__ = __webpack_require__(869);
-/* unused harmony reexport Progress */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_102__modules_Progress__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_103__modules_Rating__ = __webpack_require__(874);
 /* unused harmony reexport Rating */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_104__modules_Rating_RatingIcon__ = __webpack_require__(417);
@@ -856,7 +856,7 @@ module.exports = map;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_108__modules_Search_SearchResults__ = __webpack_require__(420);
 /* unused harmony reexport SearchResults */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_109__modules_Sidebar__ = __webpack_require__(879);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_109__modules_Sidebar__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return __WEBPACK_IMPORTED_MODULE_109__modules_Sidebar__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_110__modules_Sidebar_SidebarPushable__ = __webpack_require__(421);
 /* unused harmony reexport SidebarPushable */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_111__modules_Sidebar_SidebarPusher__ = __webpack_require__(422);
@@ -864,7 +864,7 @@ module.exports = map;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_112__modules_Sticky__ = __webpack_require__(881);
 /* unused harmony reexport Sticky */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_113__modules_Tab__ = __webpack_require__(883);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return __WEBPACK_IMPORTED_MODULE_113__modules_Tab__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return __WEBPACK_IMPORTED_MODULE_113__modules_Tab__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_114__modules_Tab_TabPane__ = __webpack_require__(423);
 /* unused harmony reexport TabPane */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_115__modules_Transition__ = __webpack_require__(381);
@@ -3121,7 +3121,7 @@ var PageHeader = function (_React$Component) {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["t" /* Segment */],
+                __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["u" /* Segment */],
                 { inverted: true, className: 'page-header', textAlign: 'center', vertical: true },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["j" /* Header */],
@@ -59844,16 +59844,18 @@ var createMemoryHistory = function createMemoryHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_forgotPassword__ = __webpack_require__(906);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_resetPassword__ = __webpack_require__(908);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_courses__ = __webpack_require__(910);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_detailsCourse__ = __webpack_require__(960);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_myCourses__ = __webpack_require__(914);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_admin_dashboard__ = __webpack_require__(916);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_admin_users_list__ = __webpack_require__(922);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_admin_users_create__ = __webpack_require__(924);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_admin_users_view__ = __webpack_require__(926);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_admin_courses_list__ = __webpack_require__(928);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_admin_courses_create__ = __webpack_require__(930);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_admin_courses_view__ = __webpack_require__(932);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_noMatch__ = __webpack_require__(934);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_detailsCourse__ = __webpack_require__(912);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_onCourse__ = __webpack_require__(960);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_myCourses__ = __webpack_require__(914);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_admin_dashboard__ = __webpack_require__(916);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_admin_users_list__ = __webpack_require__(922);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_admin_users_create__ = __webpack_require__(924);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_admin_users_view__ = __webpack_require__(926);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_admin_courses_list__ = __webpack_require__(928);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_admin_courses_create__ = __webpack_require__(930);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_admin_courses_view__ = __webpack_require__(932);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_noMatch__ = __webpack_require__(934);
+
 
 
 
@@ -59912,55 +59914,60 @@ var routes = [{
     auth: true,
     component: __WEBPACK_IMPORTED_MODULE_6__pages_detailsCourse__["a" /* default */]
 }, {
+    path: '/courses/:id',
+    exact: true,
+    auth: true,
+    component: __WEBPACK_IMPORTED_MODULE_7__pages_onCourse__["a" /* default */]
+}, {
     path: '/my-courses',
     exact: true,
     auth: true,
-    component: __WEBPACK_IMPORTED_MODULE_7__pages_myCourses__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_8__pages_myCourses__["a" /* default */]
 }, {
     path: '/dashboard',
     exact: true,
     auth: true,
-    component: __WEBPACK_IMPORTED_MODULE_8__pages_admin_dashboard__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_9__pages_admin_dashboard__["a" /* default */]
 }, {
     path: '/admin/users',
     exact: true,
     auth: true,
-    component: __WEBPACK_IMPORTED_MODULE_9__pages_admin_users_list__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_10__pages_admin_users_list__["a" /* default */]
 }, {
     path: '/admin/users/create',
     exact: true,
     auth: true,
-    component: __WEBPACK_IMPORTED_MODULE_10__pages_admin_users_create__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_11__pages_admin_users_create__["a" /* default */]
 }, {
     path: '/admin/users/:id',
     exact: true,
     auth: true,
-    component: __WEBPACK_IMPORTED_MODULE_11__pages_admin_users_view__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_12__pages_admin_users_view__["a" /* default */]
 }, {
     path: '/admin/courses',
     exact: true,
     auth: true,
-    component: __WEBPACK_IMPORTED_MODULE_12__pages_admin_courses_list__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_13__pages_admin_courses_list__["a" /* default */]
 }, {
     path: '/admin/courses/create',
     exact: true,
     auth: true,
-    component: __WEBPACK_IMPORTED_MODULE_13__pages_admin_courses_create__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_14__pages_admin_courses_create__["a" /* default */]
 }, {
     path: '/admin/courses/:id',
     exact: true,
     auth: true,
-    component: __WEBPACK_IMPORTED_MODULE_14__pages_admin_courses_view__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_15__pages_admin_courses_view__["a" /* default */]
 }, {
     path: '/admin/courses/:courseId/lesson/:lessonId',
     exact: true,
     auth: true,
-    component: __WEBPACK_IMPORTED_MODULE_14__pages_admin_courses_view__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_15__pages_admin_courses_view__["a" /* default */]
 }, {
     path: '',
     exact: true,
     auth: false,
-    component: __WEBPACK_IMPORTED_MODULE_15__pages_noMatch__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_16__pages_noMatch__["a" /* default */]
 }];
 
 /* harmony default export */ __webpack_exports__["a"] = (routes);
@@ -60051,7 +60058,7 @@ var Page = function (_React$Component) {
                     'main',
                     { className: 'fadeIn animated' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Segment */],
+                        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["u" /* Segment */],
                         {
                             inverted: true,
                             textAlign: 'center',
@@ -60062,7 +60069,7 @@ var Page = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["d" /* Container */],
                             { text: true },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["s" /* Responsive */],
+                                __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Responsive */],
                                 { minWidth: 769 },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["j" /* Header */], {
                                     as: 'h2',
@@ -60111,7 +60118,7 @@ var Page = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["d" /* Container */],
                             { className: 'step-container' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["s" /* Responsive */],
+                                __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Responsive */],
                                 { minWidth: 992 },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["i" /* Grid */],
@@ -75639,7 +75646,7 @@ Reveal.Content = __WEBPACK_IMPORTED_MODULE_5__RevealContent__["a" /* default */]
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Step__ = __webpack_require__(411);
-/* unused harmony reexport default */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__Step__["a"]; });
 
 
 
@@ -76578,7 +76585,7 @@ module.exports = createAssigner;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Progress__ = __webpack_require__(870);
-/* unused harmony reexport default */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__Progress__["a"]; });
 
 
 
@@ -76828,7 +76835,7 @@ Progress.propTypes =  true ? {
 } : {};
 
 
-/* unused harmony default export */ var _unused_webpack_default_export = (Progress);
+/* harmony default export */ __webpack_exports__["a"] = (Progress);
 
 /***/ }),
 /* 871 */
@@ -79232,8 +79239,8 @@ var Page = function (_React$Component) {
                 'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Responsive */],
-                    { as: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */], maxWidth: 768, className: 'mobile-navbar' },
+                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Responsive */],
+                    { as: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */], maxWidth: 768, className: 'mobile-navbar' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Menu */],
                         { size: 'large', secondary: true },
@@ -79273,10 +79280,10 @@ var Page = function (_React$Component) {
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Responsive */],
+                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Responsive */],
                     { className: 'navbar', minWidth: 769 },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */],
+                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Menu */],
@@ -79887,7 +79894,7 @@ var Page = function (_React$Component) {
                     { className: 'fadeIn animated' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__common_pageHeader__["a" /* default */], { heading: 'login' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Segment */],
+                        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["u" /* Segment */],
                         { className: 'page-loader', style: { display: this.state.isLoading ? 'block' : 'none' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Dimmer */],
@@ -79927,7 +79934,7 @@ var Page = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["h" /* Form */],
                                 { size: 'large' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Segment */],
+                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["u" /* Segment */],
                                     { stacked: true },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["h" /* Form */].Input, {
                                         fluid: true,
@@ -80195,7 +80202,7 @@ var Page = function (_React$Component) {
                     { className: 'fadeIn animated' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__common_pageHeader__["a" /* default */], { heading: 'Registro' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Segment */],
+                        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["u" /* Segment */],
                         { className: 'page-loader', style: { display: this.state.isLoading ? 'block' : 'none' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Dimmer */],
@@ -80250,7 +80257,7 @@ var Page = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["h" /* Form */],
                                 { size: 'large' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Segment */],
+                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["u" /* Segment */],
                                     { stacked: true },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["h" /* Form */].Input, {
                                         fluid: true,
@@ -80514,7 +80521,7 @@ var Page = function (_React$Component) {
                     { className: 'fadeIn animated' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__common_pageHeader__["a" /* default */], { heading: 'login' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Segment */],
+                        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["u" /* Segment */],
                         { className: 'page-loader', style: { display: this.state.isLoading ? 'block' : 'none' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Dimmer */],
@@ -80563,7 +80570,7 @@ var Page = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["h" /* Form */],
                                 { size: 'large' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Segment */],
+                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["u" /* Segment */],
                                     { stacked: true },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["h" /* Form */].Input, {
                                         fluid: true,
@@ -80783,7 +80790,7 @@ var Page = function (_React$Component) {
                     { className: 'fadeIn animated' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__common_pageHeader__["a" /* default */], { heading: 'Register' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Segment */],
+                        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["u" /* Segment */],
                         { className: 'page-loader', style: { display: this.state.isLoading ? 'block' : 'none' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Dimmer */],
@@ -80838,7 +80845,7 @@ var Page = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["h" /* Form */],
                                 { size: 'large' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["t" /* Segment */],
+                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["u" /* Segment */],
                                     { stacked: true },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["h" /* Form */].Input, {
                                         fluid: true,
@@ -80979,7 +80986,7 @@ var Page = function (_React$Component) {
                     { className: 'fadeIn animated' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__common_pageHeader__["a" /* default */], { heading: 'Cursos' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["t" /* Segment */],
+                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Segment */],
                         { vertical: true, textAlign: 'center', style: { minHeight: '100vh' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["j" /* Header */],
@@ -81058,8 +81065,334 @@ var mapStateToProps = function mapStateToProps(state) {
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Page));
 
 /***/ }),
-/* 912 */,
-/* 913 */,
+/* 912 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_redux__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Page__ = __webpack_require__(913);
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])()(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
+
+/***/ }),
+/* 913 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_pageHeader__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_navigation__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_mainFooter__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_url_types__ = __webpack_require__(49);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+
+
+
+
+
+var Page = function (_React$Component) {
+    _inherits(Page, _React$Component);
+
+    function Page(props) {
+        _classCallCheck(this, Page);
+
+        var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
+
+        _this.getLessons = function () {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/courses/' + _this.state.courseID + '/lessons').then(function (res) {
+                var lessons = res.data;
+                _this.setState({ lessons: lessons, lessonsCount: lessons.length });
+            });
+        };
+
+        _this.startCourse = function () {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID, {
+                view: 1,
+                progress: 50.000,
+                finish: '10/10/2018',
+                rating: 5,
+                testimonial: 'dasdsadeewdwdwdwedwe',
+                favorite: 1
+            }).then(function (res) {
+                console.log('Sucesso');
+                _this.setState({ onCourse: true });
+            });
+
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID, {
+                view: 1,
+                progress: 50.000,
+                finish: '2018-10-10',
+                rating: 5,
+                testimonal: 'dasdsadeewdwdwdwedwe',
+                favorite: 1
+            }).then(function (res) {
+                console.log('Sucesso');
+            });
+        };
+
+        _this.state = {
+            courseID: _this.props.match.params.id,
+            course: {
+                id: '',
+                title: '',
+                create_at: '',
+                description: ''
+            },
+            message: '',
+            onCourse: false
+        };
+        return _this;
+    }
+
+    _createClass(Page, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/courses/' + this.state.courseID).then(function (res) {
+                var course = res.data;
+                _this2.setState({ course: course });
+            });
+            this.getLessons();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _state = this.state,
+                course = _state.course,
+                lessons = _state.lessons;
+            var _props = this.props,
+                isAuthenticated = _props.isAuthenticated,
+                user = _props.user;
+
+            if (this.state.onCourse === true) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Redirect */], { to: '/courses/' + course.id });
+            }
+            var panes = [{ menuItem: 'Descrição', render: function render() {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["x" /* Tab */].Pane,
+                        { attached: false },
+                        course.description
+                    );
+                } }, { menuItem: 'Lições', render: function render() {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["x" /* Tab */].Pane,
+                        { attached: false },
+                        lessons.map(function (lesson) {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */],
+                                { divided: true, verticalAlign: 'middle', key: lesson.id },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Item,
+                                    { style: { paddingTop: '1em', paddingBottom: '1em' } },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Content,
+                                        { floated: 'right' },
+                                        lesson.title
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["k" /* Icon */], { name: 'file' }),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Content,
+                                        null,
+                                        'Li\xE7\xF5es'
+                                    )
+                                )
+                            );
+                        })
+                    );
+                } }, { menuItem: 'Autores', render: function render() {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["x" /* Tab */].Pane,
+                        { attached: false },
+                        course.instructor
+                    );
+                } }];
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__common_navigation__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'main',
+                    { className: 'fadeIn animated' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { style: {
+                                background: '#A2A2A2',
+                                marginBottom: '5em'
+                            } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["d" /* Container */],
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["j" /* Header */], {
+                                as: 'h1',
+                                content: 'Cursos',
+                                inverted: true,
+                                style: {
+                                    fontSize: '3em',
+                                    fontWeight: 'normal',
+                                    paddingBottom: '1em',
+                                    paddingTop: '1em'
+                                }
+                            })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["d" /* Container */],
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */],
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Row,
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
+                                    { width: 11 },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Segment */],
+                                        { basic: true },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["j" /* Header */],
+                                            { as: 'h2', floated: 'left' },
+                                            course.title
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["a" /* Button */],
+                                            { size: 'big', basic: true, color: 'blue', floated: 'right', onClick: this.startCourse },
+                                            'Iniciar Curso'
+                                        )
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["f" /* Divider */], { hidden: true, clearing: true }),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["f" /* Divider */], null),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["l" /* Image */], { src: 'https://assets.wordpress.envato-static.com/uploads/2017/08/tropical-PS53BSA.jpg' }),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["f" /* Divider */], { hidden: true }),
+                                    course.description,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["f" /* Divider */], { hidden: true }),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["x" /* Tab */], { color: 'blue', attached: 'true', menu: { secondary: true }, panes: panes })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
+                                    { width: 5 },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Segment */],
+                                        null,
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["j" /* Header */],
+                                            { as: 'h2' },
+                                            'Detalhes do Curso'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["f" /* Divider */], null),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */],
+                                            { divided: true, verticalAlign: 'middle' },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Item,
+                                                { style: { paddingTop: '1em', paddingBottom: '1em' } },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Content,
+                                                    { floated: 'right' },
+                                                    this.state.lessonsCount
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["k" /* Icon */], { name: 'file' }),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Content,
+                                                    null,
+                                                    'Li\xE7\xF5es'
+                                                )
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Item,
+                                                { style: { paddingTop: '1em', paddingBottom: '1em' } },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Content,
+                                                    { floated: 'right' },
+                                                    course.duration
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["k" /* Icon */], { name: 'file' }),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Content,
+                                                    null,
+                                                    'Dura\xE7\xE3o'
+                                                )
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Item,
+                                                { style: { paddingTop: '1em', paddingBottom: '1em' } },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Content,
+                                                    { floated: 'right' },
+                                                    course.start_date
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["k" /* Icon */], { name: 'file' }),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Content,
+                                                    null,
+                                                    'Data de In\xEDcio'
+                                                )
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Item,
+                                                { style: { paddingTop: '1em', paddingBottom: '1em' } },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Content,
+                                                    { floated: 'right' },
+                                                    course.end_date
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["k" /* Icon */], { name: 'file' }),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["o" /* List */].Content,
+                                                    null,
+                                                    'Data de T\xE9rmino'
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__common_mainFooter__["a" /* default */], null)
+            );
+        }
+    }]);
+
+    return Page;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.Auth.isAuthenticated,
+        user: state.Auth.user
+    };
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Page));
+
+/***/ }),
 /* 914 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -81143,7 +81476,7 @@ var Page = function (_React$Component) {
                     { className: 'fadeIn animated' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__common_pageHeader__["a" /* default */], { heading: 'Meus Cursos' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */],
+                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */],
                         { vertical: true, textAlign: 'center', style: { minHeight: '100vh' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["d" /* Container */],
@@ -81366,8 +81699,8 @@ var Page = function (_React$Component) {
                 'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Responsive */],
-                    { as: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */], maxWidth: 768, className: 'mobile-navbar' },
+                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Responsive */],
+                    { as: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */], maxWidth: 768, className: 'mobile-navbar' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Menu */],
                         { size: 'large', secondary: true },
@@ -81407,7 +81740,7 @@ var Page = function (_React$Component) {
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Responsive */],
+                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Responsive */],
                     { className: 'navbar', minWidth: 769 },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Menu */],
@@ -81546,7 +81879,7 @@ var Page = function (_React$Component) {
                 'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Sidebar */],
+                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["v" /* Sidebar */],
                     _defineProperty({ as: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Menu */], animation: 'overlay', icon: 'labeled', inverted: true, vertical: true, visible: true, width: 'thin' }, 'animation', 'slide along'),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["q" /* Menu */].Item,
@@ -81707,54 +82040,54 @@ var Page = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["i" /* Grid */].Column,
                         { width: 16 },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */],
+                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */],
                             { celled: true },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Header,
+                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Header,
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Row,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Row,
                                     null,
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].HeaderCell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].HeaderCell,
                                         { colSpan: '4' },
                                         'Lista'
                                     )
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Row,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Row,
                                     null,
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].HeaderCell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].HeaderCell,
                                         null,
                                         'Nome'
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].HeaderCell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].HeaderCell,
                                         null,
                                         'Email'
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].HeaderCell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].HeaderCell,
                                         null,
                                         'Status'
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].HeaderCell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].HeaderCell,
                                         null,
                                         '  '
                                     )
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Body,
+                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Body,
                                 null,
                                 users.map(function (user) {
                                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Row,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Row,
                                         { key: user.id },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Cell,
+                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Cell,
                                             null,
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["q" /* Menu */].Item,
@@ -81763,18 +82096,18 @@ var Page = function (_React$Component) {
                                             )
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Cell,
+                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Cell,
                                             null,
                                             user.email
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Cell,
+                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Cell,
                                             { positive: true },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["k" /* Icon */], { name: 'checkmark' }),
                                             'Aprovado'
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Cell,
+                                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Cell,
                                             { collapsing: true, textAlign: 'right' },
                                             _this3.props.currentUser.id === user.id ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["a" /* Button */], { icon: 'trash alternate outline', onClick: _this3.handleDelete, value: user.id })
                                         )
@@ -82306,54 +82639,54 @@ var Page = function (_React$Component) {
                         )
                     ) : null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */],
+                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */],
                         { celled: true },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Header,
+                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Header,
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Row,
+                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Row,
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].HeaderCell,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].HeaderCell,
                                     { colSpan: '4' },
                                     'Lista'
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Row,
+                                __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Row,
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].HeaderCell,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].HeaderCell,
                                     null,
                                     'T\xEDtulo'
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].HeaderCell,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].HeaderCell,
                                     null,
                                     'Dura\xE7\xE3o'
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].HeaderCell,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].HeaderCell,
                                     null,
                                     'Descri\xE7\xE3o'
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].HeaderCell,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].HeaderCell,
                                     null,
                                     '  '
                                 )
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Body,
+                            __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Body,
                             null,
                             courses.map(function (course) {
                                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Row,
+                                    __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Row,
                                     { key: course.id },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Cell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Cell,
                                         null,
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["q" /* Menu */].Item,
@@ -82362,17 +82695,17 @@ var Page = function (_React$Component) {
                                         )
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Cell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Cell,
                                         null,
                                         course.duration
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Cell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Cell,
                                         null,
                                         course.description
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["w" /* Table */].Cell,
+                                        __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Cell,
                                         { collapsing: true, textAlign: 'right' },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["a" /* Button */], { icon: 'trash', onClick: _this3.handleConfirm, value: course.id })
                                     )
@@ -82572,7 +82905,7 @@ var Page = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
                                         { width: 12 },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */],
+                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */],
                                             { color: 'black' },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-title',
@@ -82584,7 +82917,7 @@ var Page = function (_React$Component) {
                                             }),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-description',
-                                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["x" /* TextArea */],
+                                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["z" /* TextArea */],
                                                 label: 'Descri\xE7\xE3o',
                                                 placeholder: 'Descri\xE7\xE3o',
                                                 name: 'description',
@@ -82623,32 +82956,32 @@ var Page = function (_React$Component) {
                                             )
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */].Group,
+                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */].Group,
                                             null,
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */],
+                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */],
                                                 null,
                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */],
+                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */],
                                                     { singleLine: true },
                                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */].Body,
+                                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */].Body,
                                                         null,
                                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */].Row,
+                                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */].Row,
                                                             null,
                                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */].Cell,
+                                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */].Cell,
                                                                 { collapsing: true },
                                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["k" /* Icon */], { name: 'circle outline' })
                                                             ),
                                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */].Cell,
+                                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */].Cell,
                                                                 null,
                                                                 'Li\xE7\xE3o 1'
                                                             ),
                                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */].Cell,
+                                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */].Cell,
                                                                 { collapsing: true },
                                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                                     __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */].Group,
@@ -82668,7 +83001,7 @@ var Page = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
                                         { width: 4 },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */],
+                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */],
                                             { color: 'black' },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-slug',
@@ -83015,7 +83348,7 @@ var Page = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
                                         { width: 12 },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */],
+                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */],
                                             { color: 'black' },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-title',
@@ -83028,7 +83361,7 @@ var Page = function (_React$Component) {
                                             }),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-description',
-                                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["x" /* TextArea */],
+                                                control: __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["z" /* TextArea */],
                                                 label: 'Descri\xE7\xE3o',
                                                 placeholder: this.state.course.description,
                                                 value: this.state.course.description,
@@ -83069,33 +83402,33 @@ var Page = function (_React$Component) {
                                             )
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */].Group,
+                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */].Group,
                                             null,
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */],
+                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */],
                                                 null,
                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */],
+                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */],
                                                     { singleLine: true },
                                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */].Body,
+                                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */].Body,
                                                         null,
                                                         lessons.map(function (lesson) {
                                                             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */].Row,
+                                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */].Row,
                                                                 { key: lesson.id },
                                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */].Cell,
+                                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */].Cell,
                                                                     { collapsing: true },
                                                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["k" /* Icon */], { name: 'circle outline' })
                                                                 ),
                                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */].Cell,
+                                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */].Cell,
                                                                     null,
                                                                     lesson.title
                                                                 ),
                                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["w" /* Table */].Cell,
+                                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["y" /* Table */].Cell,
                                                                     { collapsing: true },
                                                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */].Group,
@@ -83115,7 +83448,7 @@ var Page = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
                                         { width: 4 },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */],
+                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["u" /* Segment */],
                                             { color: 'black' },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["h" /* Form */].Field, {
                                                 id: 'input-control-slug',
@@ -83451,15 +83784,16 @@ var mapStateToProps = function mapStateToProps(state) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_prop_types__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_pageHeader__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_navigation__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_mainFooter__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_url_types__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_pageHeader__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_navigation__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_mainFooter__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_url_types__ = __webpack_require__(49);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -83467,6 +83801,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -83487,33 +83822,18 @@ var Page = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
         _this.getLessons = function () {
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_8__common_url_types__["a" /* API_URL */] + '/api/courses/' + _this.state.courseID + '/lessons').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/courses/' + _this.state.courseID + '/lessons').then(function (res) {
                 var lessons = res.data;
                 _this.setState({ lessons: lessons, lessonsCount: lessons.length });
             });
         };
 
-        _this.startCourse = function () {
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_8__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID, {
-                view: 1,
-                progress: 50.000,
-                finish: '10/10/2018',
-                rating: 5,
-                testimonial: 'dasdsadeewdwdwdwedwe',
-                favorite: 1
-            }).then(function (res) {
-                console.log('Sucesso');
-            });
-
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_8__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID, {
-                view: 1,
-                progress: 50.000,
-                finish: '2018-10-10',
-                rating: 5,
-                testimonal: 'dasdsadeewdwdwdwedwe',
-                favorite: 1
-            }).then(function (res) {
-                console.log('Sucesso');
+        _this.getLesson = function (lessonID) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/courses/' + _this.state.courseID + '/lessons/' + lessonID).then(function (res) {
+                var lesson = res.data;
+                console.log(lesson);
+                _this.setState({ lesson: lesson.lesson });
+                // console.log(this.state.lesson);
             });
         };
 
@@ -83525,7 +83845,12 @@ var Page = function (_React$Component) {
                 create_at: '',
                 description: ''
             },
-            message: ''
+            message: '',
+            onCourse: false,
+            lesson: {
+                title: '',
+                content: ''
+            }
         };
         return _this;
     }
@@ -83535,7 +83860,7 @@ var Page = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_8__common_url_types__["a" /* API_URL */] + '/api/courses/' + this.state.courseID).then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/courses/' + this.state.courseID).then(function (res) {
                 var course = res.data;
                 _this2.setState({ course: course });
             });
@@ -83544,6 +83869,8 @@ var Page = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             var _state = this.state,
                 course = _state.course,
                 lessons = _state.lessons;
@@ -83551,49 +83878,10 @@ var Page = function (_React$Component) {
                 isAuthenticated = _props.isAuthenticated,
                 user = _props.user;
 
-            var panes = [{ menuItem: 'Descrição', render: function render() {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["v" /* Tab */].Pane,
-                        { attached: false },
-                        course.description
-                    );
-                } }, { menuItem: 'Lições', render: function render() {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["v" /* Tab */].Pane,
-                        { attached: false },
-                        lessons.map(function (lesson) {
-                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */],
-                                { divided: true, verticalAlign: 'middle', key: lesson.id },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Item,
-                                    { style: { paddingTop: '1em', paddingBottom: '1em' } },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Content,
-                                        { floated: 'right' },
-                                        lesson.title
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["k" /* Icon */], { name: 'file' }),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Content,
-                                        null,
-                                        'Li\xE7\xF5es'
-                                    )
-                                )
-                            );
-                        })
-                    );
-                } }, { menuItem: 'Autores', render: function render() {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["v" /* Tab */].Pane,
-                        { attached: false },
-                        course.instructor
-                    );
-                } }];
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__common_navigation__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__common_navigation__["a" /* default */], null),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'main',
                     { className: 'fadeIn animated' },
@@ -83604,9 +83892,9 @@ var Page = function (_React$Component) {
                                 marginBottom: '5em'
                             } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["d" /* Container */],
+                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["d" /* Container */],
                             null,
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["j" /* Header */], {
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["j" /* Header */], {
                                 as: 'h1',
                                 content: 'Cursos',
                                 inverted: true,
@@ -83620,122 +83908,63 @@ var Page = function (_React$Component) {
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["d" /* Container */],
+                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["d" /* Container */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */],
+                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Row,
+                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Row,
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
-                                    { width: 11 },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */],
-                                        { basic: true },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["j" /* Header */],
-                                            { as: 'h2', floated: 'left' },
-                                            course.title
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */],
-                                            { size: 'big', basic: true, color: 'blue', floated: 'right', onClick: this.startCourse },
-                                            'Iniciar Curso'
-                                        )
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["f" /* Divider */], { hidden: true, clearing: true }),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["f" /* Divider */], null),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["l" /* Image */], { src: 'https://assets.wordpress.envato-static.com/uploads/2017/08/tropical-PS53BSA.jpg' }),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["f" /* Divider */], { hidden: true }),
-                                    course.description,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["f" /* Divider */], { hidden: true }),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["v" /* Tab */], { color: 'blue', attached: 'true', menu: { secondary: true }, panes: panes })
+                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
+                                    { width: 16 },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["s" /* Progress */], { value: '2', total: this.state.lessonsCount, progress: 'ratio' })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["i" /* Grid */].Column,
+                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
                                     { width: 5 },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["t" /* Segment */],
+                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["w" /* Step */].Group,
+                                        { vertical: true },
+                                        lessons ? lessons.map(function (lesson) {
+                                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["w" /* Step */],
+                                                { completed: true, link: true, onClick: _this3.getLesson.bind(_this3, lesson.id), key: lesson.id },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["k" /* Icon */], { name: 'truck' }),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["w" /* Step */].Content,
+                                                    null,
+                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["w" /* Step */].Title,
+                                                        null,
+                                                        lesson.title
+                                                    )
+                                                )
+                                            );
+                                        }) : null
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
+                                    { width: 11 },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["u" /* Segment */],
                                         null,
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["j" /* Header */],
+                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["j" /* Header */],
                                             { as: 'h2' },
                                             'Detalhes do Curso'
                                         ),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["f" /* Divider */], null),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */],
-                                            { divided: true, verticalAlign: 'middle' },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Item,
-                                                { style: { paddingTop: '1em', paddingBottom: '1em' } },
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Content,
-                                                    { floated: 'right' },
-                                                    this.state.lessonsCount
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["k" /* Icon */], { name: 'file' }),
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Content,
-                                                    null,
-                                                    'Li\xE7\xF5es'
-                                                )
-                                            ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Item,
-                                                { style: { paddingTop: '1em', paddingBottom: '1em' } },
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Content,
-                                                    { floated: 'right' },
-                                                    course.duration
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["k" /* Icon */], { name: 'file' }),
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Content,
-                                                    null,
-                                                    'Dura\xE7\xE3o'
-                                                )
-                                            ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Item,
-                                                { style: { paddingTop: '1em', paddingBottom: '1em' } },
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Content,
-                                                    { floated: 'right' },
-                                                    course.start_date
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["k" /* Icon */], { name: 'file' }),
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Content,
-                                                    null,
-                                                    'Data de In\xEDcio'
-                                                )
-                                            ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Item,
-                                                { style: { paddingTop: '1em', paddingBottom: '1em' } },
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Content,
-                                                    { floated: 'right' },
-                                                    course.end_date
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["k" /* Icon */], { name: 'file' }),
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["o" /* List */].Content,
-                                                    null,
-                                                    'Data de T\xE9rmino'
-                                                )
-                                            )
-                                        )
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["f" /* Divider */], null),
+                                        this.state.lesson.title ? this.state.lesson.title : null
                                     )
                                 )
                             )
                         )
                     )
                 ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__common_mainFooter__["a" /* default */], null)
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__common_mainFooter__["a" /* default */], null)
             );
         }
     }]);
