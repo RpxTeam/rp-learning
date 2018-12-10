@@ -61,12 +61,6 @@ class Page extends React.Component {
         })
         .then(res => {
             this.setState({ onCourse: true });
-            console.log('Sucesso');
-        });
-
-        axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}/lessons`)
-        .then(res => {
-            console.log('Lições criadas');
         });
     };
 
@@ -172,11 +166,4 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated : state.Auth.isAuthenticated,
-        user: state.Auth.user
-    }
-};
-
-export default connect(mapStateToProps)(Page);
+export default Page;

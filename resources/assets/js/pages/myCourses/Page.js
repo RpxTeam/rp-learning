@@ -26,7 +26,7 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8000/api/users/${this.props.currentUser}/courses`)
+        axios.get(`http://localhost:8000/api/users/${this.props.user}/courses`)
             .then(res => {
                 const courses = res.data;
                 this.setState({ courses: courses });
@@ -80,11 +80,4 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated : state.Auth.isAuthenticated,
-        currentUser: state.Auth.user
-    }
-};
-
-export default connect(mapStateToProps)(Page);
+export default Page;

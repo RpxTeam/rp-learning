@@ -105,7 +105,7 @@ class Page extends React.Component {
                                             Aprovado
                                         </Table.Cell>
                                         <Table.Cell collapsing textAlign="right">
-                                            {this.props.currentUser.id === user.id ? null :
+                                            {this.props.user.id === user.id ? null :
                                                 <Button icon='trash alternate outline' onClick={this.handleDelete} value={user.id} />
                                             }
                                         </Table.Cell>
@@ -121,11 +121,4 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated: state.Auth.isAuthenticated,
-        currentUser: state.Auth.user
-    }
-};
-
-export default connect(mapStateToProps)(Page);
+export default Page;

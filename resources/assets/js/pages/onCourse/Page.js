@@ -37,46 +37,58 @@ class Page extends React.Component {
             },
             message: '',
             onCourse: false,
+            lessonsCount: 0,
+            endLessons: 0
         }
     }
 
-    componentDidMount() {
-        // axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
-        // .then(res => {
-        //     const course = res.data;
-        //     this.setState({ course: course });
-        // });
-        this.getLessons();
-    }
-
-    getLessons = () => {
+    getData = () => {
         axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
-        .then(res => {
-            console.log(res);
-            // const lessons = res.data;
-            // this.setState({
-            //     lesson: lessons[0],
-            //     lessons: lessons,
-            //     lessonsCount: lessons.length
-            // });
-        });
+            .then(res => {
+                const lessons = res.data.lessons;
+                let endLessons = lessons.filter(lesson => {
+                    if (lesson.view === false || lesson.view != null ) {
+                        return lessons
+                    }
+                });
+                let newLessons = lessons.filter(lesson => {
+                    if(lesson.view === false) {
+                        return lessons;
+                    }
+                });
+                this.setState({
+                    lesson: lessons[0],
+                    lessons: lessons,
+                    lessonsCount: lessons.length,
+                    endLessons: endLessons.length,
+                });
+            });
     };
 
+    componentDidMount() {
+        this.getData();
+    }
+
     getLesson = (lessonID) => {
-        axios.get(`${ API_URL }/api/courses/${this.state.courseID}/lessons/${lessonID}`)
+        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${lessonID}`)
         .then(res => {
-            const lesson = res.data;
-            this.setState({ lesson: lesson });
+            const lesson = res.data.lessons;
+            this.setState({lesson: lesson})
         });
     };
 
     endLesson = (lessonID) => {
-        console.log(lessonID);
+        axios.put(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${lessonID}`, {
+            view: 1
+        })
+        .then(res => {
+            this.getData();
+            console.log('Lição Finalizada');
+        });
     };
 
     render() {
-        const { course, lessons, lesson } = this.state;
-        const { isAuthenticated, user } = this.props;
+        const { lessons, lesson, endLessons, lessonsCount } = this.state;
         return (
             <div>
                 <Navigation/>
@@ -103,37 +115,39 @@ class Page extends React.Component {
                         <Grid>
                             <Grid.Row>
                                 <Grid.Column width={16}>
-                                    <Progress value='0' total={this.state.lessonsCount} progress='ratio' />
+                                    <Progress value={endLessons} total={lessonsCount} progress='ratio' success={endLessons === lessonsCount} />
                                 </Grid.Column>
                                 <Grid.Column width={5}>
                                     <Step.Group vertical>
-                                        {/*{*/}
-                                            {/*lessons ?*/}
-                                                {/*lessons.map((lesson) =>*/}
-                                                    {/*<Step completed link onClick={this.getLesson.bind(this, lesson.id)} key={lesson.id}>*/}
-                                                        {/*<Icon name='truck' />*/}
-                                                        {/*<Step.Content>*/}
-                                                            {/*<Step.Title>{lesson.title}</Step.Title>*/}
-                                                        {/*</Step.Content>*/}
-                                                    {/*</Step>*/}
-                                                {/*) : null*/}
-                                        {/*}*/}
+                                        {
+                                            lessons ?
+                                                lessons.map((lesson) =>
+                                                    <Step completed={lesson.view != null} link onClick={this.getLesson.bind(this, lesson.id)} key={lesson.id}>
+                                                        <Icon name='truck' />
+                                                        <Step.Content>
+                                                            <Step.Title>{lesson.title}</Step.Title>
+                                                        </Step.Content>
+                                                    </Step>
+                                                ) : null
+                                        }
                                     </Step.Group>
                                 </Grid.Column>
+                                {lesson ?
                                 <Grid.Column width={11}>
                                     <Segment>
-                                        <Header as='h2'>Detalhes do Curso</Header>
+                                        <Header as='h2'>{lesson.title}</Header>
                                         <Divider />
-                                        {lesson ?
                                             <div>
                                                 <h4>{lesson.title}</h4>
                                                 <p>{lesson.content}</p>
-                                                <Button positive floated='right' onClick={this.endLesson.bind(this, lesson.id)}>Finalizar
+                                                {!lesson.view ?
+                                                    <Button positive floated='right' onClick={this.endLesson.bind(this, lesson.id)}>Finalizar
                                                     lição</Button>
+                                                : null }
                                             </div>
-                                        : null }
                                     </Segment>
                                 </Grid.Column>
+                                : null }
                             </Grid.Row>
                         </Grid>
                     </Container>
@@ -144,11 +158,4 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated : state.Auth.isAuthenticated,
-        user: state.Auth.user
-    }
-};
-
-export default connect(mapStateToProps)(Page);
+export default Page;

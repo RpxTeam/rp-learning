@@ -2728,7 +2728,7 @@ module.exports = getTag;
 var mapStateToProps = function mapStateToProps(state) {
     return {
         isAuthenticated: state.Auth.isAuthenticated,
-        userName: state.Auth.user.name
+        user: state.Auth.user
     };
 };
 
@@ -3258,10 +3258,9 @@ function authLogout() {
     };
 }
 
-function authCheck(payload) {
+function authCheck() {
     return {
-        type: __WEBPACK_IMPORTED_MODULE_0__action_types__["a" /* AUTH_CHECK */],
-        payload: payload
+        type: __WEBPACK_IMPORTED_MODULE_0__action_types__["a" /* AUTH_CHECK */]
     };
 }
 
@@ -55985,7 +55984,7 @@ var authLogin = function authLogin(state, payload) {
         localStorage.setItem('is_admin', false);
     }
     localStorage.setItem('jwt_token', jwtToken);
-    localStorage.setItem('user', user);
+    localStorage.setItem('user', JSON.stringify(user));
     __WEBPACK_IMPORTED_MODULE_1__Http__["a" /* default */].defaults.headers.common['Authorization'] = 'Bearer ' + jwtToken;
     state = Object.assign({}, state, {
         isAuthenticated: true,
@@ -55999,7 +55998,7 @@ var checkAuth = function checkAuth(state) {
     state = Object.assign({}, state, {
         isAuthenticated: !!localStorage.getItem('jwt_token'),
         isAdmin: localStorage.getItem('is_admin'),
-        user: !!localStorage.getItem('user')
+        user: JSON.parse(localStorage.getItem('user'))
     });
     if (state.isAuthenticated) {
         __WEBPACK_IMPORTED_MODULE_1__Http__["a" /* default */].defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('jwt_token');
@@ -80910,7 +80909,14 @@ Page.propTypes = {
 
 
 
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])()(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.Auth.isAuthenticated,
+        user: state.Auth.user
+    };
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])(mapStateToProps)(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
 
 /***/ }),
 /* 911 */
@@ -81076,14 +81082,7 @@ var Page = function (_React$Component) {
     return Page;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        isAuthenticated: state.Auth.isAuthenticated,
-        user: state.Auth.user
-    };
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Page));
+/* harmony default export */ __webpack_exports__["a"] = (Page);
 
 /***/ }),
 /* 912 */
@@ -81095,7 +81094,14 @@ var mapStateToProps = function mapStateToProps(state) {
 
 
 
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])()(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.Auth.isAuthenticated,
+        user: state.Auth.user
+    };
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])(mapStateToProps)(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
 
 /***/ }),
 /* 913 */
@@ -81154,11 +81160,6 @@ var Page = function (_React$Component) {
                 progress: 0
             }).then(function (res) {
                 _this.setState({ onCourse: true });
-                console.log('Sucesso');
-            });
-
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID + '/lessons').then(function (res) {
-                console.log('Lições criadas');
             });
         };
 
@@ -81392,14 +81393,7 @@ var Page = function (_React$Component) {
     return Page;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        isAuthenticated: state.Auth.isAuthenticated,
-        user: state.Auth.user
-    };
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Page));
+/* harmony default export */ __webpack_exports__["a"] = (Page);
 
 /***/ }),
 /* 914 */
@@ -81411,7 +81405,14 @@ var mapStateToProps = function mapStateToProps(state) {
 
 
 
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])()(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.Auth.isAuthenticated,
+        user: state.Auth.user
+    };
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])(mapStateToProps)(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
 
 /***/ }),
 /* 915 */
@@ -81458,27 +81459,42 @@ var Page = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
-        _this.getLessons = function () {
+        _this.getData = function () {
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID + '/lessons').then(function (res) {
-                console.log(res);
-                // const lessons = res.data;
-                // this.setState({
-                //     lesson: lessons[0],
-                //     lessons: lessons,
-                //     lessonsCount: lessons.length
-                // });
+                var lessons = res.data.lessons;
+                var endLessons = lessons.filter(function (lesson) {
+                    if (lesson.view === false || lesson.view != null) {
+                        return lessons;
+                    }
+                });
+                var newLessons = lessons.filter(function (lesson) {
+                    if (lesson.view === false) {
+                        return lessons;
+                    }
+                });
+                _this.setState({
+                    lesson: lessons[0],
+                    lessons: lessons,
+                    lessonsCount: lessons.length,
+                    endLessons: endLessons.length
+                });
             });
         };
 
         _this.getLesson = function (lessonID) {
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/courses/' + _this.state.courseID + '/lessons/' + lessonID).then(function (res) {
-                var lesson = res.data;
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID + '/lessons/' + lessonID).then(function (res) {
+                var lesson = res.data.lessons;
                 _this.setState({ lesson: lesson });
             });
         };
 
         _this.endLesson = function (lessonID) {
-            console.log(lessonID);
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID + '/lessons/' + lessonID, {
+                view: 1
+            }).then(function (res) {
+                _this.getData();
+                console.log('Lição Finalizada');
+            });
         };
 
         _this.state = {
@@ -81491,7 +81507,9 @@ var Page = function (_React$Component) {
                 description: ''
             },
             message: '',
-            onCourse: false
+            onCourse: false,
+            lessonsCount: 0,
+            endLessons: 0
         };
         return _this;
     }
@@ -81499,23 +81517,18 @@ var Page = function (_React$Component) {
     _createClass(Page, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            // axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
-            // .then(res => {
-            //     const course = res.data;
-            //     this.setState({ course: course });
-            // });
-            this.getLessons();
+            this.getData();
         }
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             var _state = this.state,
-                course = _state.course,
                 lessons = _state.lessons,
-                lesson = _state.lesson;
-            var _props = this.props,
-                isAuthenticated = _props.isAuthenticated,
-                user = _props.user;
+                lesson = _state.lesson,
+                endLessons = _state.endLessons,
+                lessonsCount = _state.lessonsCount;
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -81558,14 +81571,33 @@ var Page = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
                                     { width: 16 },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["s" /* Progress */], { value: '0', total: this.state.lessonsCount, progress: 'ratio' })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["s" /* Progress */], { value: endLessons, total: lessonsCount, progress: 'ratio', success: endLessons === lessonsCount })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
                                     { width: 5 },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["w" /* Step */].Group, { vertical: true })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["w" /* Step */].Group,
+                                        { vertical: true },
+                                        lessons ? lessons.map(function (lesson) {
+                                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["w" /* Step */],
+                                                { completed: lesson.view != null, link: true, onClick: _this2.getLesson.bind(_this2, lesson.id), key: lesson.id },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["k" /* Icon */], { name: 'truck' }),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["w" /* Step */].Content,
+                                                    null,
+                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                        __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["w" /* Step */].Title,
+                                                        null,
+                                                        lesson.title
+                                                    )
+                                                )
+                                            );
+                                        }) : null
+                                    )
                                 ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                lesson ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
                                     { width: 11 },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -81574,10 +81606,10 @@ var Page = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["j" /* Header */],
                                             { as: 'h2' },
-                                            'Detalhes do Curso'
+                                            lesson.title
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["f" /* Divider */], null),
-                                        lesson ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'div',
                                             null,
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -81590,14 +81622,14 @@ var Page = function (_React$Component) {
                                                 null,
                                                 lesson.content
                                             ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            !lesson.view ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["a" /* Button */],
                                                 { positive: true, floated: 'right', onClick: this.endLesson.bind(this, lesson.id) },
                                                 'Finalizar li\xE7\xE3o'
-                                            )
-                                        ) : null
+                                            ) : null
+                                        )
                                     )
-                                )
+                                ) : null
                             )
                         )
                     )
@@ -81610,14 +81642,7 @@ var Page = function (_React$Component) {
     return Page;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        isAuthenticated: state.Auth.isAuthenticated,
-        user: state.Auth.user
-    };
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Page));
+/* harmony default export */ __webpack_exports__["a"] = (Page);
 
 /***/ }),
 /* 916 */
@@ -81629,7 +81654,14 @@ var mapStateToProps = function mapStateToProps(state) {
 
 
 
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])()(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.Auth.isAuthenticated,
+        user: state.Auth.user
+    };
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])(mapStateToProps)(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
 
 /***/ }),
 /* 917 */
@@ -81682,7 +81714,7 @@ var Page = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('http://localhost:8000/api/users/' + this.props.currentUser + '/courses').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('http://localhost:8000/api/users/' + this.props.user + '/courses').then(function (res) {
                 var courses = res.data;
                 _this2.setState({ courses: courses });
                 console.log(courses);
@@ -81772,14 +81804,7 @@ var Page = function (_React$Component) {
     return Page;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        isAuthenticated: state.Auth.isAuthenticated,
-        currentUser: state.Auth.user
-    };
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Page));
+/* harmony default export */ __webpack_exports__["a"] = (Page);
 
 /***/ }),
 /* 918 */
@@ -81853,7 +81878,7 @@ var Page = function (_React$Component) {
 var mapStateToProps = function mapStateToProps(state) {
     return {
         isAuthenticated: state.Auth.isAuthenticated,
-        userName: state.Auth.user.name
+        user: state.Auth.user
     };
 };
 
@@ -82150,7 +82175,14 @@ Page.propTypes = {
 
 
 
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])()(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.Auth.isAuthenticated,
+        user: state.Auth.user
+    };
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])(mapStateToProps)(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
 
 /***/ }),
 /* 925 */
@@ -82336,7 +82368,7 @@ var Page = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             __WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["y" /* Table */].Cell,
                                             { collapsing: true, textAlign: 'right' },
-                                            _this3.props.currentUser.id === user.id ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["a" /* Button */], { icon: 'trash alternate outline', onClick: _this3.handleDelete, value: user.id })
+                                            _this3.props.user.id === user.id ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_semantic_ui_react__["a" /* Button */], { icon: 'trash alternate outline', onClick: _this3.handleDelete, value: user.id })
                                         )
                                     );
                                 })
@@ -82351,14 +82383,7 @@ var Page = function (_React$Component) {
     return Page;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        isAuthenticated: state.Auth.isAuthenticated,
-        currentUser: state.Auth.user
-    };
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Page));
+/* harmony default export */ __webpack_exports__["a"] = (Page);
 
 /***/ }),
 /* 926 */
@@ -82735,7 +82760,14 @@ var Page = function (_React$Component) {
 
 
 
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])()(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.Auth.isAuthenticated,
+        user: state.Auth.user
+    };
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])(mapStateToProps)(__WEBPACK_IMPORTED_MODULE_1__Page__["a" /* default */]));
 
 /***/ }),
 /* 931 */
@@ -82949,14 +82981,7 @@ var Page = function (_React$Component) {
     return Page;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        isAuthenticated: state.Auth.isAuthenticated,
-        currentUser: state.Auth.user
-    };
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Page));
+/* harmony default export */ __webpack_exports__["a"] = (Page);
 
 /***/ }),
 /* 932 */

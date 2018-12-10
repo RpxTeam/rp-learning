@@ -35,9 +35,10 @@ class DataLessonController extends Controller
     {
         $course = Course::findOrFail($course);
         $lessons = Lesson::userLessons($user,$course->id)
-        ->where('lesson_id','=',$lesson);
-        
-        return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
+        ->where('lesson_id','=',$lesson)
+        ->first();
+
+        return response()->json(array('course'=>$course, 'lessons'=>$lessons),200);
     }
 
     /**

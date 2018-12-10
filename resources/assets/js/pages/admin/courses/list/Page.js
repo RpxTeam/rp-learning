@@ -128,11 +128,4 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated: state.Auth.isAuthenticated,
-        currentUser: state.Auth.user
-    }
-};
-
-export default connect(mapStateToProps)(Page);
+export default Page;
