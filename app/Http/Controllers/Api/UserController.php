@@ -9,8 +9,8 @@ use App\User;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Storage;
-
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\teste;
 
 class UserController extends Controller
 {
@@ -82,6 +82,7 @@ class UserController extends Controller
             if($user->image != null){
                 $user->image = Storage::url($user->image);
             }
+            //Mail::to('fehiya@gmail.com')->send(new teste());
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.

@@ -19,8 +19,13 @@ class DataCourseController extends Controller
     public function index($user)
     {
         $mycourses = Course::userCourse($user);
-
-        return response()->json($mycourses);
+        if($mycourses != null){
+        return response()->json($mycourses,200);
+        //200: OK. The standard success code and default option.
+        }else{
+            return response()->json(400);
+            //400: Bad request. The standard option for requests that fail to pass validation.
+        }
     }
 
     /**
@@ -47,11 +52,13 @@ class DataCourseController extends Controller
     public function store($user,$course)
     {
         try{
+            $user = User::findOrFail($user);
             $course = Course::findOrFail($course);
             DB::table('data_courses')->insert([
-                'user_id' => $user,
+                'user_id' => $user->id,
                 'course_id' => $course->id,
             ]);
+            DataCourse::createDataLesson($user,$course);
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
