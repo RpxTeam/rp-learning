@@ -10,7 +10,8 @@ import {
     Icon,
     Segment,
     Card,
-    Image
+    Image,
+    Progress
 } from 'semantic-ui-react'
 import PageHeader from '../../common/pageHeader'
 import Navigation from '../../common/navigation'
@@ -40,7 +41,7 @@ class Page extends React.Component {
         axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`)
         .then(res => {
             const { data } = res;
-            if(data.length === 0) {
+            if(!data.view) {
                 axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`);
                 axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`, {view: 1});
             }
@@ -70,22 +71,23 @@ class Page extends React.Component {
                                     <Card.Content>
                                         <Card.Header>{ course.title }</Card.Header>
                                         <Card.Meta>
-                                        <span className='date'>Criado em { course.created_at }</span>
+                                            <span className='date'>Criado em { course.created_at }</span>
                                         </Card.Meta>
                                         <Card.Description>{ course.description }</Card.Description>
                                     </Card.Content>
                                     <Card.Content extra>
-                                    <div className='ui two buttons'>
-                                        <Button basic color='green' onClick={this.viewCourse.bind(this, course.id)}>
-                                            Detalhes
-                                        </Button>
-                                        {/*{ isAuthenticated ?*/}
-                                        {/*<Button basic color='red'>*/}
-                                            {/*Excluir*/}
-                                        {/*</Button>*/}
-                                        // : null }
+                                        <div className='ui two buttons'>
+                                            <Button basic color='green' onClick={this.viewCourse.bind(this, course.id)}>
+                                                Detalhes
+                                            </Button>
                                         </div>
                                     </Card.Content>
+                                    {/*<Card.Content extra>*/}
+                                        {/*<a>*/}
+                                            {/*<Icon name='user' />*/}
+                                            {/*22 Friends*/}
+                                        {/*</a>*/}
+                                    {/*</Card.Content>*/}
                                 </Card>
                                     )
                                 }

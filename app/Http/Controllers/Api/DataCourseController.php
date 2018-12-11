@@ -38,7 +38,7 @@ class DataCourseController extends Controller
     {
         $course = Course::findOrFail($course);
         $mycourse = Course::userCourse($user)
-        ->where('course_id','=',$course->id);
+        ->where('course_id','=',$course->id)->first();
 
         return response()->json($mycourse);
     }

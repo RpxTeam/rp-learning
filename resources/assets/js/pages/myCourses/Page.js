@@ -9,11 +9,13 @@ import {
     Icon,
     Segment,
     Card,
-    Image
+    Image, Progress
 } from 'semantic-ui-react'
 import PageHeader from '../../common/pageHeader'
 import Navigation from '../../common/navigation'
 import Footer from '../../common/mainFooter'
+import {API_URL} from "../../common/url-types";
+import {Redirect} from "react-router-dom";
 
 class Page extends React.Component {
     constructor(props) {
@@ -21,22 +23,40 @@ class Page extends React.Component {
         this.state = {
             courses: [],
             message: '',
-        }
-        console.log('User', this.props)
+        };
+        console.log('User', this.props.user.id)
     }
 
+    getData = () => {
+        axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses`)
+        .then(res => {
+            const courses = res.data;
+            this.setState({ courses: courses });
+        })
+    };
+
     componentDidMount() {
-        axios.get(`http://localhost:8000/api/users/${this.props.user}/courses`)
-            .then(res => {
-                const courses = res.data;
-                this.setState({ courses: courses });
-                console.log(courses);
-            })
+        this.getData();
     }
+
+    viewCourse = (courseID) => {
+        axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`)
+            .then(res => {
+                const { data } = res;
+                if(data.length === 0) {
+                    axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`);
+                    axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`, {view: 1});
+                }
+                this.setState({ courseID: courseID, viewCourse: true });
+            })
+    };
 
     render() {
         const courses = this.state.courses;
         const { isAuthenticated } = this.props;
+        if (this.state.viewCourse === true) {
+            return <Redirect to={'/courses/' + this.state.courseID + '/details'} />
+        }
         return (
             <div>
                 <Navigation/>
@@ -47,6 +67,7 @@ class Page extends React.Component {
                             <Card.Group>
                                 { courses.map((course) =>
                                     <Card color='red' key={course.id}>
+                                        {console.log(course)}
                                         <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
                                         <Card.Content>
                                             <Card.Header>{ course.title }</Card.Header>
@@ -56,15 +77,12 @@ class Page extends React.Component {
                                             <Card.Description>{ course.description }</Card.Description>
                                         </Card.Content>
                                         <Card.Content extra>
-                                            <div className='ui two buttons'>
-                                                <Button basic color='green'>
-                                                    Executar
+                                            {console.log(course.progress)}
+                                            <Progress percent={course.progress != null ? course.progress : 0} size='tiny' />
+                                            <div className='ui buttons'>
+                                                <Button basic color='green' onClick={this.viewCourse.bind(this, course.id)}>
+                                                    Detalhes
                                                 </Button>
-                                                { isAuthenticated ?
-                                                    <Button basic color='red'>
-                                                        Excluir
-                                                    </Button>
-                                                    : null }
                                             </div>
                                         </Card.Content>
                                     </Card>

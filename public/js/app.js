@@ -80964,7 +80964,7 @@ var Page = function (_React$Component) {
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_8__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + courseID).then(function (res) {
                 var data = res.data;
 
-                if (data.length === 0) {
+                if (!data.view) {
                     __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_8__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + courseID);
                     __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_8__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + courseID, { view: 1 });
                 }
@@ -81064,8 +81064,7 @@ var Page = function (_React$Component) {
                                                     __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["a" /* Button */],
                                                     { basic: true, color: 'green', onClick: _this3.viewCourse.bind(_this3, course.id) },
                                                     'Detalhes'
-                                                ),
-                                                '// : null }'
+                                                )
                                             )
                                         )
                                     );
@@ -81460,6 +81459,11 @@ var Page = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
         _this.getData = function () {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID).then(function (res) {
+                var progress = res.data.progress;
+                _this.setState({ progress: progress.toFixed(0) });
+            });
+
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID + '/lessons').then(function (res) {
                 var lessons = res.data.lessons;
                 var endLessons = lessons.filter(function (lesson) {
@@ -81467,11 +81471,7 @@ var Page = function (_React$Component) {
                         return lessons;
                     }
                 });
-                var newLessons = lessons.filter(function (lesson) {
-                    if (lesson.view === false) {
-                        return lessons;
-                    }
-                });
+
                 _this.setState({
                     lesson: lessons[0],
                     lessons: lessons,
@@ -81489,11 +81489,32 @@ var Page = function (_React$Component) {
         };
 
         _this.endLesson = function (lessonID) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID).then(function (res) {
+                var course = res.data;
+                var percentLesson = 100 / _this.state.lessonsCount;
+                var progress = course.progress + percentLesson;
+                _this.setState({ course: course, progress: progress.toFixed(0) });
+                _this.updateProgress(progress);
+            });
+
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID + '/lessons/' + lessonID).then(function (res) {
+                var lesson = res.data.lessons;
+                if (lesson.view === 0 || lesson.view === null) {
+                    _this.updateLesson(lessonID);
+                    _this.getData();
+                }
+            });
+        };
+
+        _this.updateLesson = function (lessonID) {
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID + '/lessons/' + lessonID, {
                 view: 1
-            }).then(function (res) {
-                _this.getData();
-                console.log('Lição Finalizada');
+            }).then(_this.updateProgress(_this.state.progress));
+        };
+
+        _this.updateProgress = function (progress) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID, {
+                progress: progress
             });
         };
 
@@ -81508,8 +81529,9 @@ var Page = function (_React$Component) {
             },
             message: '',
             onCourse: false,
-            lessonsCount: 0,
-            endLessons: 0
+            progress: 0,
+            endLessons: 0,
+            lessonsCount: 0
         };
         return _this;
     }
@@ -81528,7 +81550,7 @@ var Page = function (_React$Component) {
                 lessons = _state.lessons,
                 lesson = _state.lesson,
                 endLessons = _state.endLessons,
-                lessonsCount = _state.lessonsCount;
+                progress = _state.progress;
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -81571,7 +81593,7 @@ var Page = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
                                     { width: 16 },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["s" /* Progress */], { value: endLessons, total: lessonsCount, progress: 'ratio', success: endLessons === lessonsCount })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["s" /* Progress */], { percent: progress, progress: true, autoSuccess: true })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["i" /* Grid */].Column,
@@ -81677,6 +81699,8 @@ var mapStateToProps = function mapStateToProps(state) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_pageHeader__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_navigation__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_mainFooter__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_url_types__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_router_dom__ = __webpack_require__(18);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -81684,6 +81708,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
 
 
 
@@ -81701,31 +81727,49 @@ var Page = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
+        _this.getData = function () {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_7__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses').then(function (res) {
+                var courses = res.data;
+                _this.setState({ courses: courses });
+            });
+        };
+
+        _this.viewCourse = function (courseID) {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_7__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + courseID).then(function (res) {
+                var data = res.data;
+
+                if (data.length === 0) {
+                    __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_7__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + courseID);
+                    __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_7__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + courseID, { view: 1 });
+                }
+                _this.setState({ courseID: courseID, viewCourse: true });
+            });
+        };
+
         _this.state = {
             courses: [],
             message: ''
         };
-        console.log('User', _this.props);
+        console.log('User', _this.props.user.id);
         return _this;
     }
 
     _createClass(Page, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this2 = this;
-
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('http://localhost:8000/api/users/' + this.props.user + '/courses').then(function (res) {
-                var courses = res.data;
-                _this2.setState({ courses: courses });
-                console.log(courses);
-            });
+            this.getData();
         }
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             var courses = this.state.courses;
             var isAuthenticated = this.props.isAuthenticated;
 
+            if (this.state.viewCourse === true) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_react_router_dom__["d" /* Redirect */], { to: '/courses/' + this.state.courseID + '/details' });
+            }
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -81747,6 +81791,7 @@ var Page = function (_React$Component) {
                                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["b" /* Card */],
                                         { color: 'red', key: course.id },
+                                        console.log(course),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["l" /* Image */], { src: 'https://react.semantic-ui.com/images/avatar/large/matthew.png' }),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["b" /* Card */].Content,
@@ -81775,19 +81820,16 @@ var Page = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["b" /* Card */].Content,
                                             { extra: true },
+                                            console.log(course.progress),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Progress */], { percent: course.progress != null ? course.progress : 0, size: 'tiny' }),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'div',
-                                                { className: 'ui two buttons' },
+                                                { className: 'ui buttons' },
                                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                     __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */],
-                                                    { basic: true, color: 'green' },
-                                                    'Executar'
-                                                ),
-                                                isAuthenticated ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */],
-                                                    { basic: true, color: 'red' },
-                                                    'Excluir'
-                                                ) : null
+                                                    { basic: true, color: 'green', onClick: _this2.viewCourse.bind(_this2, course.id) },
+                                                    'Detalhes'
+                                                )
                                             )
                                         )
                                     );

@@ -37,32 +37,35 @@ class Page extends React.Component {
             },
             message: '',
             onCourse: false,
-            lessonsCount: 0,
-            endLessons: 0
+            progress: 0,
+            endLessons: 0,
+            lessonsCount: 0
         }
     }
 
     getData = () => {
-        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
+        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
             .then(res => {
-                const lessons = res.data.lessons;
-                let endLessons = lessons.filter(lesson => {
-                    if (lesson.view === false || lesson.view != null ) {
-                        return lessons
-                    }
-                });
-                let newLessons = lessons.filter(lesson => {
-                    if(lesson.view === false) {
-                        return lessons;
-                    }
-                });
-                this.setState({
-                    lesson: lessons[0],
-                    lessons: lessons,
-                    lessonsCount: lessons.length,
-                    endLessons: endLessons.length,
-                });
+               const progress = res.data.progress;
+               this.setState({ progress: progress.toFixed(0) });
             });
+
+        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
+        .then(res => {
+            const lessons = res.data.lessons;
+            let endLessons = lessons.filter(lesson => {
+                if (lesson.view === false || lesson.view != null ) {
+                    return lessons
+                }
+            });
+
+            this.setState({
+                lesson: lessons[0],
+                lessons: lessons,
+                lessonsCount: lessons.length,
+                endLessons: endLessons.length,
+            });
+        });
     };
 
     componentDidMount() {
@@ -78,17 +81,41 @@ class Page extends React.Component {
     };
 
     endLesson = (lessonID) => {
+        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
+        .then(res => {
+            const course = res.data;
+            const percentLesson = 100 / this.state.lessonsCount;
+            const progress = course.progress + percentLesson;
+            this.setState({ course: course, progress: progress.toFixed(0) });
+            this.updateProgress(progress);
+        });
+
+        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${lessonID}`)
+            .then(res => {
+                const lesson = res.data.lessons;
+                if(lesson.view === 0 || lesson.view === null) {
+                    this.updateLesson(lessonID);
+                    this.getData();
+                }
+            });
+
+    };
+
+    updateLesson = (lessonID) => {
         axios.put(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${lessonID}`, {
             view: 1
         })
-        .then(res => {
-            this.getData();
-            console.log('Lição Finalizada');
+            .then( this.updateProgress(this.state.progress) );
+    };
+
+    updateProgress = (progress) => {
+        axios.put(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}`, {
+            progress: progress
         });
     };
 
     render() {
-        const { lessons, lesson, endLessons, lessonsCount } = this.state;
+        const { lessons, lesson, endLessons, progress } = this.state;
         return (
             <div>
                 <Navigation/>
@@ -115,7 +142,7 @@ class Page extends React.Component {
                         <Grid>
                             <Grid.Row>
                                 <Grid.Column width={16}>
-                                    <Progress value={endLessons} total={lessonsCount} progress='ratio' success={endLessons === lessonsCount} />
+                                    <Progress percent={progress} progress autoSuccess />
                                 </Grid.Column>
                                 <Grid.Column width={5}>
                                     <Step.Group vertical>
