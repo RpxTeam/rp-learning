@@ -17,9 +17,10 @@ class LessonSeed extends Seeder
             \App\Lesson::create([
                 'order' => $i+1,
                 'title' => $faker->word,
-                'slug' => $faker->word,
                 'description' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
                 'content' => $faker->paragraph($nbSentences = 5, $variableNbSentences = true),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

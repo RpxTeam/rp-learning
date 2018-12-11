@@ -48,10 +48,12 @@ class DataCourse extends Model
         ->where('course_lesson.course_id','=',$course->id)
         ->get();
         foreach($lessons as $lesson){
-            DB::table('data_lessons')->insert([
-                    'user_id' => $user->id,
-                    'course_id' => $course->id,
-                    'lesson_id' => $lesson->lesson_id,
+            DataLesson::updateOrCreate([
+                'user_id' => $user->id,
+                'course_id' => $course->id,
+                'lesson_id' => $lesson->lesson_id,
+            ],[
+                'updated_at' => now(),
             ]);
         }
     }
