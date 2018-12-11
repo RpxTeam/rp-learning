@@ -18,10 +18,13 @@ class DataCourseController extends Controller
      */
     public function index($user)
     {
-        $mycourses = Course::userCourse($user);
+        $mycourses = Course::userCourse($user)
+        ->where('view','=',1)
+        ->where('progress','!=',null);
+
         if($mycourses != null){
-        return response()->json($mycourses,200);
-        //200: OK. The standard success code and default option.
+            return response()->json($mycourses,200);
+            //200: OK. The standard success code and default option.
         }else{
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -38,7 +41,8 @@ class DataCourseController extends Controller
     {
         $course = Course::findOrFail($course);
         $mycourse = Course::userCourse($user)
-        ->where('course_id','=',$course->id);
+        ->where('course_id','=',$course->id)
+        ->first();
         
         return response()->json($mycourse);
     }
@@ -54,9 +58,11 @@ class DataCourseController extends Controller
         try{
             $user = User::findOrFail($user);
             $course = Course::findOrFail($course);
-            DB::table('data_courses')->insert([
+            DataCourse::updateOrCreate([
                 'user_id' => $user->id,
                 'course_id' => $course->id,
+            ],[
+                'updated_at' => now(),
             ]);
             DataCourse::createDataLesson($user,$course);
         }catch(ModelNotFoundException $e){
@@ -79,10 +85,9 @@ class DataCourseController extends Controller
     {
         try{
             $course = Course::findOrFail($course);
-            DB::table('data_courses')
-            ->where('data_courses.user_id','=',$user)
-            ->where('data_courses.course_id','=',$course->id)
-            ->update($request->all());
+            DataCourse::where('data_courses.user_id','=',$user)
+                      ->where('data_courses.course_id','=',$course->id)
+                      ->update($request->all());
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.

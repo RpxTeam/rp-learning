@@ -22,6 +22,8 @@ class CoursesController extends Controller
                 if($course->image != null){
                     $course->image = Storage::url($course->image);
                 }
+                $course->setAttribute('favorited',Course::getFavoriteCount($course->id));
+                $course->setAttribute('viewed',Course::getViewCount($course->id));
             });
         }catch(ModelNotFoundException $e){
             return response()->json(400);
@@ -46,6 +48,8 @@ class CoursesController extends Controller
             if($course->image != null){
                 $course->image = Storage::url($course->image);
             }
+            $course->setAttribute('favorited',Course::getFavoriteCount($course->id));
+            $course->setAttribute('viewed',Course::getViewCount($course->id));
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.

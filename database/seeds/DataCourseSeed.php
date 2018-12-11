@@ -24,7 +24,8 @@ class DataCourseSeed extends Seeder
                 'favorite'=> $faker->numberBetween(0,1),
                 'user_id' => $faker->randomDigitNotNull,
                 'course_id' => $faker->randomDigitNotNull,
-                
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

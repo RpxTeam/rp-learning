@@ -52,4 +52,20 @@ class Course extends Model
         $course->mime = $request->file('image')->getClientMimeType();
         $course->save();
     }
+
+    public static function getFavoriteCount(Int $id){
+        $fav = DB::table('data_courses')
+                 ->where('course_id','=',$id)
+                 ->where('favorite','=',1)
+                 ->count();
+        return $fav;
+    }
+
+    public static function getViewCount(Int $id){
+        $view = DB::table('data_courses')
+                 ->where('course_id','=',$id)
+                 ->where('view','=',1)
+                 ->count();
+        return $view;
+    }
 }

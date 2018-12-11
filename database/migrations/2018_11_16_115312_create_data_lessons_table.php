@@ -14,10 +14,7 @@ class CreateDataLessonsTable extends Migration
     public function up()
     {
         Schema::create('data_lessons', function (Blueprint $table) {
-           
-
-            $table->integer('view')->nullable();
-            $table->float('progress', 10 , 5)->nullable();
+            
             $table->date('finish')->nullable();
             $table->integer('user_id')->unsigned();
             $table->integer('course_id')->unsigned();

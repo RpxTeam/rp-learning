@@ -32,6 +32,8 @@ class UserSeed extends Seeder
                 'birthday' => Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 years', 'now')->getTimestamp())->format('Y/m/d'),
                 'adress' => $faker->word,
                 'age' => $faker->numberBetween($min = 18, $max = 60),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }
