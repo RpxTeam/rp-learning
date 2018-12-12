@@ -25,6 +25,13 @@ class Lesson extends Model
         ->leftJoin('lessons','course_lesson.lesson_id','=','lessons.id')
         ->where('course_lesson.course_id','=',$course->id)
         ->get();
+
+        foreach($lessons as $lesson){
+            if($lesson->content != null && $lesson->mime != null){
+                $lesson->content = Storage::url($lesson->content);
+            }
+        }
+        
         return $lessons;
     }
 
