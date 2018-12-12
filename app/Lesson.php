@@ -25,6 +25,13 @@ class Lesson extends Model
         ->leftJoin('lessons','course_lesson.lesson_id','=','lessons.id')
         ->where('course_lesson.course_id','=',$course->id)
         ->get();
+
+        foreach($lessons as $lesson){
+            if($lesson->content != null && $lesson->mime != null && $lesson->type != 'text'){
+                $lesson->content = Storage::url($lesson->content);
+            }
+        }
+        
         return $lessons;
     }
 
@@ -34,6 +41,12 @@ class Lesson extends Model
         ->where('data_lessons.user_id','=',$user)
         ->where('data_lessons.course_id','=',$course)
         ->get();
+
+        foreach($lessons as $lesson){
+            if($lesson->content != null && $lesson->mime != null && $lesson->type != 'text'){
+                $lesson->content = Storage::url($lesson->content);
+            }
+        }
 
         return $lessons;
     }

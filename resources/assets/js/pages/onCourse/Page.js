@@ -170,7 +170,36 @@ class Page extends React.Component {
                                         <Divider />
                                             <div>
                                                 <h4>{lesson.title}</h4>
-                                                <p>{lesson.content}</p>
+                                                {lesson.type === 'text' ?
+                                                    <div dangerouslySetInnerHTML = {{ __html : lesson.content }}></div>
+                                                : null }
+                                                {lesson.type === 'video-internal' ?
+                                                    <video width="400" controls>
+                                                        <source src={lesson.content} type={lesson.mime} />
+                                                        Your browser does not support HTML5 video.
+                                                    </video>
+                                                : null }
+                                                {lesson.type === 'video-external' ?
+                                                    <iframe
+                                                        width="100%" height="550"
+                                                        src={lesson.content}
+                                                        frameBorder="0"
+                                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" />
+                                                : null }
+                                                {lesson.type === 'ppt' ?
+                                                    lesson.content
+                                                : null }
+                                                {lesson.type === 'pdf' ?
+                                                    <object data={lesson.content} type="application/pdf" width="100%" height="700px">
+                                                        <iframe src={lesson.content} width="100%" height="700px"></iframe>
+                                                    </object>
+                                                : null }
+                                                {lesson.type === 'audio' ?
+                                                    <audio controls>
+                                                        <source src={lesson.content} type={lesson.mime} />
+                                                        Your browser does not support the audio element.
+                                                    </audio>
+                                                : null }
                                                 {!lesson.view ?
                                                     <Button positive floated='right' onClick={this.endLesson.bind(this, lesson.id)}>Finalizar
                                                     lição</Button>

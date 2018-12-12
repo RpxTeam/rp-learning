@@ -44,10 +44,10 @@ class Page extends React.Component {
                 .then(res => {
                     const {data} = res;
                     if(!data.view) {
-                        console.log('dasdsda');
                         axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`);
                         axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {view: 1});
                     }
+                    this.setState({ course: data });
                 });
         } else {
             axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)

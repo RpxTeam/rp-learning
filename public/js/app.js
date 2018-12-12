@@ -81153,10 +81153,10 @@ var Page = function (_React$Component) {
                     var data = res.data;
 
                     if (!data.view) {
-                        console.log('dasdsda');
                         __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID);
                         __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID, { view: 1 });
                     }
+                    _this.setState({ course: data });
                 });
             } else {
                 __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/courses/' + _this.state.courseID).then(function (res) {
@@ -81673,11 +81673,30 @@ var Page = function (_React$Component) {
                                                 null,
                                                 lesson.title
                                             ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                'p',
-                                                null,
-                                                lesson.content
-                                            ),
+                                            lesson.type === 'text' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { dangerouslySetInnerHTML: { __html: lesson.content } }) : null,
+                                            lesson.type === 'video-internal' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'video',
+                                                { width: '400', controls: true },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('source', { src: lesson.content, type: lesson.mime }),
+                                                'Your browser does not support HTML5 video.'
+                                            ) : null,
+                                            lesson.type === 'video-external' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('iframe', {
+                                                width: '100%', height: '550',
+                                                src: lesson.content,
+                                                frameBorder: '0',
+                                                allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' }) : null,
+                                            lesson.type === 'ppt' ? lesson.content : null,
+                                            lesson.type === 'pdf' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'object',
+                                                { data: lesson.content, type: 'application/pdf', width: '100%', height: '700px' },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('iframe', { src: lesson.content, width: '100%', height: '700px' })
+                                            ) : null,
+                                            lesson.type === 'audio' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'audio',
+                                                { controls: true },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('source', { src: lesson.content, type: lesson.mime }),
+                                                'Your browser does not support the audio element.'
+                                            ) : null,
                                             !lesson.view ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["a" /* Button */],
                                                 { positive: true, floated: 'right', onClick: this.endLesson.bind(this, lesson.id) },

@@ -30,6 +30,12 @@ class Course extends Model
         ->leftJoin('courses','data_courses.course_id','=','courses.id')
         ->where('data_courses.user_id','=',$user)
         ->get();
+        
+        foreach($courses as $course){
+            if($course->image != null){
+                $course->image = Storage::url($course->image);
+            }
+        }
         return $courses;
     }
 
