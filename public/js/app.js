@@ -81153,6 +81153,7 @@ var Page = function (_React$Component) {
                     var data = res.data;
 
                     if (!data.view) {
+                        console.log('dasdsda');
                         __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID);
                         __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID, { view: 1 });
                     }
@@ -81214,13 +81215,14 @@ var Page = function (_React$Component) {
         value: function render() {
             var _state = this.state,
                 course = _state.course,
+                courseID = _state.courseID,
                 lessons = _state.lessons;
             var _props = this.props,
                 isAuthenticated = _props.isAuthenticated,
                 user = _props.user;
 
             if (this.state.onCourse === true) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Redirect */], { to: '/courses/' + course.id });
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Redirect */], { to: '/courses/' + courseID });
             }
             var panes = [{ menuItem: 'Descrição', render: function render() {
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

@@ -44,6 +44,7 @@ class Page extends React.Component {
                 .then(res => {
                     const {data} = res;
                     if(!data.view) {
+                        console.log('dasdsda');
                         axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`);
                         axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {view: 1});
                     }
@@ -90,10 +91,10 @@ class Page extends React.Component {
     }
 
     render() {
-        const { course, lessons } = this.state;
+        const { course, courseID, lessons } = this.state;
         const { isAuthenticated, user } = this.props;
         if (this.state.onCourse === true) {
-            return <Redirect to={'/courses/' + course.id} />
+            return <Redirect to={'/courses/' + courseID} />
         }
         const panes = [
             { menuItem: 'Descrição', render: () => <Tab.Pane attached={false}>{course.description}</Tab.Pane> },
@@ -116,7 +117,9 @@ class Page extends React.Component {
         return (
             <div>
                 <Navigation/>
+
                 <main className="fadeIn animated">
+                    
                     <div style={{
                         background: '#A2A2A2',
                         marginBottom: '5em'
