@@ -45,7 +45,7 @@ class Page extends React.Component {
         this.avatar = (
             <span>
                  <Image avatar src={require('../../../images/avatar/boy.png')}
-                        verticalAlign='middle'/> {this.props.userName}
+                        verticalAlign='middle'/> {this.props.user.name}
             </span>
         );
         return (

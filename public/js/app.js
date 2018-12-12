@@ -59910,7 +59910,7 @@ var routes = [{
 }, {
     path: '/courses/:id/details',
     exact: true,
-    auth: true,
+    auth: false,
     component: __WEBPACK_IMPORTED_MODULE_6__pages_detailsCourse__["a" /* default */]
 }, {
     path: '/courses/:id',
@@ -79232,7 +79232,7 @@ var Page = function (_React$Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["l" /* Image */], { avatar: true, src: __webpack_require__(235),
                     verticalAlign: 'middle' }),
                 ' ',
-                this.props.userName
+                this.props.user.name
             );
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -80986,7 +80986,7 @@ var Page = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('http://rplearning-homolog.siteseguro.ws/api/courses').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_8__common_url_types__["a" /* API_URL */] + '/api/courses').then(function (res) {
                 var courses = res.data;
                 _this2.setState({ courses: courses });
             });
@@ -81147,6 +81147,25 @@ var Page = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
+        _this.getData = function () {
+            if (_this.props.isAuthenticated) {
+                __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID).then(function (res) {
+                    var data = res.data;
+
+                    if (!data.view) {
+                        __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID);
+                        __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID, { view: 1 });
+                    }
+                });
+            } else {
+                __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/courses/' + _this.state.courseID).then(function (res) {
+                    var course = res.data;
+                    _this.setState({ course: course });
+                });
+            }
+            _this.getLessons();
+        };
+
         _this.getLessons = function () {
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/courses/' + _this.state.courseID + '/lessons').then(function (res) {
                 var lessons = res.data;
@@ -81155,6 +81174,15 @@ var Page = function (_React$Component) {
         };
 
         _this.startCourse = function () {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID).then(function (res) {
+                if (res.data.progress === null) {
+                    _this.updateCourse();
+                }
+                _this.setState({ onCourse: true });
+            });
+        };
+
+        _this.updateCourse = function () {
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses/' + _this.state.courseID, {
                 progress: 0
             }).then(function (res) {
@@ -81179,13 +81207,7 @@ var Page = function (_React$Component) {
     _createClass(Page, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this2 = this;
-
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/courses/' + this.state.courseID).then(function (res) {
-                var course = res.data;
-                _this2.setState({ course: course });
-            });
-            this.getLessons();
+            this.getData();
         }
     }, {
         key: 'render',
@@ -81288,7 +81310,11 @@ var Page = function (_React$Component) {
                                             { as: 'h2', floated: 'left' },
                                             course.title
                                         ),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        isAuthenticated ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["a" /* Button */],
+                                            { size: 'big', basic: true, color: 'blue', floated: 'right', onClick: this.startCourse },
+                                            course.progress != null ? "Continuar Curso" : "Iniciar Curso"
+                                        ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["a" /* Button */],
                                             { size: 'big', basic: true, color: 'blue', floated: 'right', onClick: this.startCourse },
                                             'Iniciar Curso'
@@ -81460,8 +81486,15 @@ var Page = function (_React$Component) {
 
         _this.getData = function () {
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID).then(function (res) {
-                var progress = res.data.progress;
-                _this.setState({ progress: progress.toFixed(0) });
+                console.log(res.data);
+                if (res.data.progress != null) {
+                    var progress = res.data.progress;
+                    _this.setState({ progress: progress.toFixed(0) });
+                } else {
+                    _this.setState({ onCourse: true });
+                }
+            }).catch(function (res) {
+                _this.setState({ notFound: true });
             });
 
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID + '/lessons').then(function (res) {
@@ -81497,19 +81530,11 @@ var Page = function (_React$Component) {
                 _this.updateProgress(progress);
             });
 
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID + '/lessons/' + lessonID).then(function (res) {
-                var lesson = res.data.lessons;
-                if (lesson.view === 0 || lesson.view === null) {
-                    _this.updateLesson(lessonID);
-                    _this.getData();
-                }
-            });
-        };
-
-        _this.updateLesson = function (lessonID) {
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put(__WEBPACK_IMPORTED_MODULE_9__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.state.user.id + '/courses/' + _this.state.courseID + '/lessons/' + lessonID, {
                 view: 1
-            }).then(_this.updateProgress(_this.state.progress));
+            }).then(function (res) {
+                _this.getData();
+            });
         };
 
         _this.updateProgress = function (progress) {
@@ -81531,7 +81556,8 @@ var Page = function (_React$Component) {
             onCourse: false,
             progress: 0,
             endLessons: 0,
-            lessonsCount: 0
+            lessonsCount: 0,
+            notFound: false
         };
         return _this;
     }
@@ -81547,11 +81573,17 @@ var Page = function (_React$Component) {
             var _this2 = this;
 
             var _state = this.state,
+                courseID = _state.courseID,
                 lessons = _state.lessons,
                 lesson = _state.lesson,
                 endLessons = _state.endLessons,
                 progress = _state.progress;
 
+            if (this.state.onCourse === true) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Redirect */], { to: '/courses/' + courseID + '/details' });
+            } else if (this.state.notFound) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Redirect */], { from: '*', to: '/404' });
+            }
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -81729,7 +81761,7 @@ var Page = function (_React$Component) {
 
         _this.getData = function () {
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_7__common_url_types__["a" /* API_URL */] + '/api/users/' + _this.props.user.id + '/courses').then(function (res) {
-                var courses = res.data;
+                var courses = Object.values(res.data);
                 _this.setState({ courses: courses });
             });
         };
@@ -81750,7 +81782,6 @@ var Page = function (_React$Component) {
             courses: [],
             message: ''
         };
-        console.log('User', _this.props.user.id);
         return _this;
     }
 
@@ -81786,7 +81817,7 @@ var Page = function (_React$Component) {
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["b" /* Card */].Group,
-                                null,
+                                { itemsPerRow: 4 },
                                 courses.map(function (course) {
                                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["b" /* Card */],
@@ -81820,8 +81851,7 @@ var Page = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["b" /* Card */].Content,
                                             { extra: true },
-                                            console.log(course.progress),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Progress */], { percent: course.progress != null ? course.progress : 0, size: 'tiny' }),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["s" /* Progress */], { percent: course.progress != null ? course.progress.toFixed(0) : 0, autoSuccess: true, size: 'tiny' }),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'div',
                                                 { className: 'ui buttons' },

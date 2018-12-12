@@ -20,7 +20,7 @@ class DataCourseController extends Controller
     {
         $mycourses = Course::userCourse($user)
         ->where('view','=',1)
-        ->where('progress','!=',null);
+        ->where('progress','>', -1);
 
         if($mycourses != null){
             return response()->json($mycourses,200);

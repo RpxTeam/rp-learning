@@ -39,15 +39,23 @@ class Page extends React.Component {
             onCourse: false,
             progress: 0,
             endLessons: 0,
-            lessonsCount: 0
+            lessonsCount: 0,
+            notFound: false
         }
     }
 
     getData = () => {
         axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
             .then(res => {
-               const progress = res.data.progress;
-               this.setState({ progress: progress.toFixed(0) });
+                console.log(res.data);
+                if(res.data.progress != null) {
+                    const progress = res.data.progress;
+                    this.setState({ progress: progress.toFixed(0) });
+                } else {
+                    this.setState({ onCourse: true })
+                }
+            }).catch(res => {
+                this.setState({ notFound: true })
             });
 
         axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
@@ -90,22 +98,13 @@ class Page extends React.Component {
             this.updateProgress(progress);
         });
 
-        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${lessonID}`)
-            .then(res => {
-                const lesson = res.data.lessons;
-                if(lesson.view === 0 || lesson.view === null) {
-                    this.updateLesson(lessonID);
-                    this.getData();
-                }
-            });
-
-    };
-
-    updateLesson = (lessonID) => {
         axios.put(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${lessonID}`, {
             view: 1
         })
-            .then( this.updateProgress(this.state.progress) );
+            .then(res => {
+                this.getData();
+            });
+
     };
 
     updateProgress = (progress) => {
@@ -115,7 +114,12 @@ class Page extends React.Component {
     };
 
     render() {
-        const { lessons, lesson, endLessons, progress } = this.state;
+        const { courseID, lessons, lesson, endLessons, progress } = this.state;
+        if (this.state.onCourse === true) {
+            return <Redirect to={'/courses/' + courseID + '/details'} />
+        } else if(this.state.notFound) {
+            return <Redirect from='*' to='/404' />
+        }
         return (
             <div>
                 <Navigation/>

@@ -24,13 +24,12 @@ class Page extends React.Component {
             courses: [],
             message: '',
         };
-        console.log('User', this.props.user.id)
     }
 
     getData = () => {
         axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses`)
         .then(res => {
-            const courses = res.data;
+            const courses = Object.values(res.data);
             this.setState({ courses: courses });
         })
     };
@@ -52,7 +51,7 @@ class Page extends React.Component {
     };
 
     render() {
-        const courses = this.state.courses;
+        const { courses } = this.state;
         const { isAuthenticated } = this.props;
         if (this.state.viewCourse === true) {
             return <Redirect to={'/courses/' + this.state.courseID + '/details'} />
@@ -64,7 +63,7 @@ class Page extends React.Component {
                     <PageHeader heading="Meus Cursos"/>
                     <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
                         <Container>
-                            <Card.Group>
+                            <Card.Group itemsPerRow={4}>
                                 { courses.map((course) =>
                                     <Card color='red' key={course.id}>
                                         {console.log(course)}
@@ -77,8 +76,7 @@ class Page extends React.Component {
                                             <Card.Description>{ course.description }</Card.Description>
                                         </Card.Content>
                                         <Card.Content extra>
-                                            {console.log(course.progress)}
-                                            <Progress percent={course.progress != null ? course.progress : 0} size='tiny' />
+                                            <Progress percent={course.progress != null ? course.progress.toFixed(0) : 0} autoSuccess size='tiny' />
                                             <div className='ui buttons'>
                                                 <Button basic color='green' onClick={this.viewCourse.bind(this, course.id)}>
                                                     Detalhes

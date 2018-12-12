@@ -38,13 +38,28 @@ class Page extends React.Component {
         }
     }
 
-    componentDidMount() {
-        axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
-        .then(res => {
-            const course = res.data;
-            this.setState({ course: course });
-        });
+    getData = () => {
+        if(this.props.isAuthenticated) {
+            axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`)
+                .then(res => {
+                    const {data} = res;
+                    if(!data.view) {
+                        axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`);
+                        axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {view: 1});
+                    }
+                });
+        } else {
+            axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
+                .then(res => {
+                    const course = res.data;
+                    this.setState({ course: course });
+                });
+        }
         this.getLessons();
+    };
+
+    componentDidMount() {
+        this.getData();
     }
 
     getLessons = () => {
@@ -56,13 +71,23 @@ class Page extends React.Component {
     };
 
     startCourse = () => {
-        axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {
-            progress: 0,
-        })
+        axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`)
         .then(res => {
+            if(res.data.progress === null) {
+                this.updateCourse();
+            }
             this.setState({ onCourse: true });
         });
     };
+
+    updateCourse = () => {
+        axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {
+            progress: 0,
+        })
+            .then(res => {
+                this.setState({ onCourse: true });
+            });
+    }
 
     render() {
         const { course, lessons } = this.state;
@@ -118,7 +143,13 @@ class Page extends React.Component {
                                         <Header as='h2' floated='left'>
                                             {course.title}
                                         </Header>
-                                        <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>Iniciar Curso</Button>
+                                        {isAuthenticated ?
+                                            <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>
+                                                {course.progress != null ? "Continuar Curso" : "Iniciar Curso" }
+                                            </Button>
+                                        :
+                                            <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>Iniciar Curso</Button>
+                                        }
                                     </Segment>
                                     <Divider hidden clearing />
                                     <Divider />
