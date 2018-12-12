@@ -27,7 +27,7 @@ class Lesson extends Model
         ->get();
 
         foreach($lessons as $lesson){
-            if($lesson->content != null && $lesson->mime != null){
+            if($lesson->content != null && $lesson->mime != null && $lesson->type != 'text'){
                 $lesson->content = Storage::url($lesson->content);
             }
         }
@@ -43,7 +43,7 @@ class Lesson extends Model
         ->get();
 
         foreach($lessons as $lesson){
-            if($lesson->content != null && $lesson->mime != null){
+            if($lesson->content != null && $lesson->mime != null && $lesson->type != 'text'){
                 $lesson->content = Storage::url($lesson->content);
             }
         }
