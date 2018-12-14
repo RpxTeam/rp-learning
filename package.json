@@ -22,7 +22,7 @@
     "lodash": "^4.17.11",
     "react": "^16.0.0",
     "react-dom": "^16.2.0",
-    "styled-components": "^4.0.3"
+    "styled-components": "^4.1.2"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-balloon": "^11.1.1",

@@ -181,7 +181,7 @@ class Page extends React.Component {
                                                 : null }
                                                 {lesson.type === 'video-external' ?
                                                     <iframe
-                                                        width="100%" height="550"
+                                                        width="100%" height="420"
                                                         src={lesson.content}
                                                         frameBorder="0"
                                                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" />
@@ -200,12 +200,12 @@ class Page extends React.Component {
                                                         Your browser does not support the audio element.
                                                     </audio>
                                                 : null }
-                                                {!lesson.view ?
-                                                    <Button positive floated='right' onClick={this.endLesson.bind(this, lesson.id)}>Finalizar
-                                                    lição</Button>
-                                                : null }
                                             </div>
                                     </Segment>
+                                    {!lesson.view ?
+                                        <Button positive floated='right' onClick={this.endLesson.bind(this, lesson.id)}>Finalizar
+                                            lição</Button>
+                                        : null }
                                 </Grid.Column>
                                 : null }
                             </Grid.Row>

@@ -88,7 +88,7 @@ class Page extends React.Component {
             .then(res => {
                 this.setState({ onCourse: true });
             });
-    }
+    };
 
     render() {
         const { course, courseID, lessons } = this.state;
