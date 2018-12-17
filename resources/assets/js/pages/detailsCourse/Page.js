@@ -119,26 +119,7 @@ class Page extends React.Component {
                 <Navigation/>
 
                 <main className="fadeIn animated">
-                    
-                    <div style={{
-                        background: '#A2A2A2',
-                        marginBottom: '5em'
-                    }}>
-                        <Container>
-                            <Header
-                                as='h1'
-                                content='Cursos'
-                                inverted
-                                style={{
-                                    fontSize: '3em',
-                                    fontWeight: 'normal',
-                                    paddingBottom: '1em',
-                                    paddingTop: '1em',
-                                }}
-                            />
-                        </Container>
-                    </div>
-                    <Container>
+                    <Container style={{ marginTop: '5em' }}>
                         <Grid>
                             <Grid.Row>
                                 <Grid.Column width={11}>

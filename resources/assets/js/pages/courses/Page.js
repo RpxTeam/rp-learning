@@ -62,7 +62,6 @@ class Page extends React.Component {
                 <main className="fadeIn animated">
                     <PageHeader heading="Cursos"/>
                     <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
-                        <Header as='h1'>Cursos</Header>
                         <Container>
                             <Card.Group itemsPerRow={4}>
                                 { courses.map((course) => 

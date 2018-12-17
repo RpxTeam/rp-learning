@@ -394,7 +394,7 @@ class Page extends React.Component {
                                                 <Dropdown text='Adicionar Lição'>
                                                     <Dropdown.Menu>
                                                         <Dropdown.Item icon='file text' text="Texto" onClick={this.openModal('text')} />
-                                                        <Dropdown.Item icon='cloud' text="Web content" onClick={this.openModal('webcontent')} />
+                                                        {/*<Dropdown.Item icon='cloud' text="Web content" onClick={this.openModal('webcontent')} />*/}
                                                         <Dropdown.Item icon='file video' text="Vídeo Interno" onClick={this.openModal('video-internal')} />
                                                         <Dropdown.Item icon='file video outline' text="Vídeo Externo" onClick={this.openModal('video-external')} />
                                                         <Dropdown.Item icon='file audio outline' text="Áudio" onClick={this.openModal('audio')} />

@@ -131,7 +131,7 @@ class Page extends React.Component {
                         <Container>
                             <Header
                                 as='h1'
-                                content='Cursos'
+                                content={this.state.course.name}
                                 inverted
                                 style={{
                                     fontSize: '3em',

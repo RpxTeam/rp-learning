@@ -18,9 +18,14 @@ import {
     Image,
     Dropdown
 } from 'semantic-ui-react'
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {
+    DateInput,
+    TimeInput,
+    DateTimeInput,
+    DatesRangeInput
+} from 'semantic-ui-calendar-react';
 import Admin from '../../Admin'
+import {Redirect} from "react-router-dom";
 
 class Page extends React.Component {
     constructor(props) {
@@ -39,18 +44,28 @@ class Page extends React.Component {
             lessons: {
 
             },
-            lesson: {
-                title: '',
-                user_id: '',
-                course_id: '',
-                lesson_id: '',
-                content: ''
-            }
+            start_date: '',
+            end_date: '',
+            courseID: '',
+            courseEdit: false
         }
     };
 
     handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    };
+
+    handleChangeDate = (event, {name, value}) => {
+        const date = value.split('/');
+        let day = date[0];
+        let month = date[1];
+        let year = date[2];
+        const updateDate = year + '-' + month + '-' + day
+        if (this.state.hasOwnProperty(name)) {
+            this.setState({ [name]: updateDate });
+        }
     };
 
     handleSubmit = event => {
@@ -64,12 +79,12 @@ class Page extends React.Component {
             end_date: this.state.end_date,
             duration: this.state.duration
          }).then(res => {
-            console.log(res);
-            console.log(res.data);
             this.setState({
                 message: 'Usuário criado com sucesso',
                 error: false,
                 success: true,
+                courseID: res.data,
+                courseEdit: true
             });
         }).catch(error => {
             console.log(error.message)
@@ -103,6 +118,9 @@ class Page extends React.Component {
     closeModal = () => this.setState({ modal: { open: false } });
 
     render() {
+        if (this.state.courseEdit === true) {
+            return <Redirect to={'/admin/courses/' + this.state.courseID} />
+        }
         return (
             <Admin heading="Create">
                 <Grid.Row>
@@ -143,46 +161,6 @@ class Page extends React.Component {
                                             {/*<Dropdown placeholder='Autores' fluid multiple selection options={this.state.options} value={this.state.author} onChange={this.handleChange}/>*/}
                                             {/*</Form.Field>*/}
                                         </Segment>
-                                        <Grid verticalAlign='middle'>
-                                            <Grid.Column width={13}>
-                                                <h3>Lições</h3>
-                                            </Grid.Column>
-                                            <Grid.Column width={3}>
-                                                <Dropdown text='Adicionar Lição'>
-                                                    <Dropdown.Menu>
-                                                        <Dropdown.Item icon='attention' text="Texto" onClick={this.openModal('text')} />
-                                                        <Dropdown.Item icon='attention' text="Web content" onClick={this.openModal('webcontent')} />
-                                                        <Dropdown.Item icon='attention' text="Vídeo" onClick={this.openModal('video')} />
-                                                        <Dropdown.Item icon='attention' text="Áudio" onClick={this.openModal('audio')} />
-                                                        <Dropdown.Item icon='attention' text="Apresentação ou documento" onClick={this.openModal('doc')} />
-                                                        <Dropdown.Item icon='attention' text="Scorm" onClick={this.openModal('text')} />
-                                                    </Dropdown.Menu>
-                                                </Dropdown>
-                                            </Grid.Column>
-                                        </Grid>
-                                        <Segment.Group>
-                                            <Segment>
-                                                <Table singleLine>
-                                                    <Table.Body>
-                                                        <Table.Row>
-                                                            <Table.Cell collapsing>
-                                                                <Icon name={'circle outline'} />
-                                                            </Table.Cell>
-                                                            <Table.Cell>
-                                                                Lição 1
-                                                            </Table.Cell>
-                                                            <Table.Cell collapsing>
-                                                                <Button.Group size='small'>
-                                                                    <Button icon='edit' basic color='green' onClick={this.handleDelete} />
-                                                                    <Button icon='copy' basic color='blue' onClick={this.handleCopy} />
-                                                                    <Button icon='trash' basic color='red' onClick={this.handleDelete} />
-                                                                </Button.Group>
-                                                            </Table.Cell>
-                                                        </Table.Row>
-                                                    </Table.Body>
-                                                </Table>
-                                            </Segment>
-                                        </Segment.Group>
                                     </Grid.Column>
                                     <Grid.Column width={4}>
                                         <Segment color="black">
@@ -191,33 +169,42 @@ class Page extends React.Component {
                                                 control={Input}
                                                 label='Slug'
                                                 name="slug"
+                                                disabled
                                                 placeholder='Slug'
                                                 onChange={this.handleChange}
                                             />
                                             <Form.Field
                                                 id='input-control-duration'
                                                 control={Input}
+                                                type='number'
                                                 label='Duração'
                                                 name="duration"
                                                 placeholder='Duração'
                                                 onChange={this.handleChange}
                                             />
-                                            <Form.Field
-                                                id='input-control-startdate'
-                                                control={Input}
-                                                label='Data de Início'
-                                                name="start_date"
-                                                placeholder='Data de Início'
-                                                onChange={this.handleChange}
-                                            />
-                                            <Form.Field
-                                                id='input-control-enddate'
-                                                control={Input}
-                                                label='Data de Término'
-                                                name="end_date"
-                                                placeholder='Data de Término'
-                                                onChange={this.handleChange}
-                                            />
+                                            <Form.Field>
+                                                <label>Data de Início
+                                                    <DateInput
+                                                        name="start_date"
+                                                        placeholder="Data"
+                                                        dateFormat="DD/MM/YYYY"
+                                                        value={this.state.start_date}
+                                                        iconPosition="left"
+                                                        onChange={this.handleChangeDate} />
+                                                </label>
+                                            </Form.Field>
+                                            <Form.Field>
+                                                <label>
+                                                    Data de Término
+                                                    <DateInput
+                                                        name="end_date"
+                                                        dateFormat="DD/MM/YYYY"
+                                                        placeholder="Data"
+                                                        value={this.state.end_date}
+                                                        iconPosition="left"
+                                                        onChange={this.handleChangeDate} />
+                                                </label>
+                                            </Form.Field>
                                         </Segment>
                                         <Form.Field
                                             id='button-control-confirm'
