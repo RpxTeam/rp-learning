@@ -84,7 +84,7 @@ class DataLessonController extends Controller
     {
         try{
             $course = Course::findOrFail($course);
-            $lesson = Course::findOrFail($lesson);
+            $lesson = Lesson::findOrFail($lesson);
             DataLesson::where('data_lessons.user_id','=',$user)
             ->where('data_lessons.course_id','=',$course->id)
             ->where('data_lessons.lesson_id','=',$lesson->id)

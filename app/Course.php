@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Author;
 
 class Course extends Model
 {
@@ -73,5 +74,19 @@ class Course extends Model
                  ->where('view','=',1)
                  ->count();
         return $view;
+    }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setAuthorIdAttribute($input)
+    {
+        $this->attributes['author_id'] = $input ? $input : null;
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(Author::class, 'author_id')->withTrashed();
     }
 }
