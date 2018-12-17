@@ -15,7 +15,8 @@ class DataLessonSeed extends Seeder
         $faker = Faker\Factory::create();
 
         for($i=0;$i<30;$i++){
-            \App\DataLesson::insert([
+            \App\DataLesson::create([
+                'view' => 1,
                 'finish'=> Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 days', 'now')->getTimestamp())->format('Y/m/d'),
                 'user_id' => $faker->randomDigitNotNull,
                 'course_id' => $faker->randomDigitNotNull,

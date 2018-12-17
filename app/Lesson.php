@@ -31,7 +31,7 @@ class Lesson extends Model
                 $lesson->content = Storage::url($lesson->content);
             }
         }
-        
+
         return $lessons;
     }
 

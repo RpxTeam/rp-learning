@@ -22,12 +22,12 @@ class DataCourseController extends Controller
         ->where('view','=',1)
         ->where('progress','>', -1);
 
-        if($mycourses != null){
-            return response()->json($mycourses,200);
-            //200: OK. The standard success code and default option.
-        }else{
+        if($mycourses == null || $mycourses->isEmpty()){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
+        }else{
+            return response()->json($mycourses,200);
+            //200: OK. The standard success code and default option.
         }
     }
 

@@ -100,6 +100,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try{
+            if($request->role_id != 3){
+                $request['role_id'] = 3;
+            }
             if($request->hasFile('image') && $request->file('image')->isValid()) {
                 $request['password'] = Hash::make($request->password);
                 $user = User::create($request->except('image'));

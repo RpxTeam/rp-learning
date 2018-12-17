@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DataLesson extends Model
 {
-    protected $fillable = ['view', 'progress', 'finish', 'user_id', 'course_id', 'lesson_id'];
+    protected $fillable = ['view', 'finish', 'user_id', 'course_id', 'lesson_id'];
     protected $hidden = [];
     public static $searchable = [
     ];

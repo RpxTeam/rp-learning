@@ -27,6 +27,7 @@ class Page extends React.Component {
             courseID: '',
             viewCourse: false
         }
+        this.favoriteCourse = this.favoriteCourse.bind(this);
     }
 
     componentDidMount() {
@@ -38,26 +39,43 @@ class Page extends React.Component {
     }
 
     viewCourse = (courseID) => {
-        axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`)
-        .then(res => {
-            const { data } = res;
-            if(!data.view) {
-                axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`);
-                axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`, {view: 1});
-            }
-            this.setState({ courseID: courseID, viewCourse: true });
-        })
+        if(this.props.isAuthenticated) {
+            axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`)
+                .then(res => {
+                    const {data} = res;
+                    if (!data.view) {
+                        axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`);
+                        axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`, {view: 1});
+                    }
+                    this.setState({courseID: courseID, viewCourse: true});
+                })
+        } else {
+            axios.get(`${ API_URL }/api/courses/${courseID}`)
+                .then(res => {
+                    const {data} = res;
+                    this.setState({courseID: courseID, viewCourse: true});
+                })
+        }
+    };
+
+    favoriteCourse = (id) => {
+        console.log(id);
+        axios.get(`${ API_URL }/api/courses/${id}`)
+            .then(res => {
+                const { data } = res;
+
+            });
     };
 
     render() {
-        const courses = this.state.courses;
-        const { isAuthenticated } = this.props;
+        const { courses } = this.state;
         if (this.state.viewCourse === true) {
             return <Redirect to={'/courses/' + this.state.courseID + '/details'} />
         }
 
         return (
             <div>
+                {console.log(courses)}
                 <Navigation/>
                 <main className="fadeIn animated">
                     <PageHeader heading="Cursos"/>
@@ -66,9 +84,11 @@ class Page extends React.Component {
                             <Card.Group itemsPerRow={4}>
                                 { courses.map((course) => 
                                 <Card color='red' key={course.id}>
-                                    <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
+                                    <Card.Content header={ course.title } />
+                                    {course.image ?
+                                        <Image src={course.image} />
+                                    : null }
                                     <Card.Content>
-                                        <Card.Header>{ course.title }</Card.Header>
                                         <Card.Meta>
                                             <span className='date'>Criado em { course.created_at }</span>
                                         </Card.Meta>
@@ -81,12 +101,18 @@ class Page extends React.Component {
                                             </Button>
                                         </div>
                                     </Card.Content>
-                                    {/*<Card.Content extra>*/}
-                                        {/*<a>*/}
-                                            {/*<Icon name='user' />*/}
-                                            {/*22 Friends*/}
-                                        {/*</a>*/}
-                                    {/*</Card.Content>*/}
+                                    <Card.Content extra>
+                                        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                                            <span floated={'left'}>
+                                                <Icon name='eye' />
+                                                {course.viewed}
+                                            </span>
+                                            <a onClick={this.favoriteCourse.bind(this, course.id)}>
+                                                <Icon name='heart outline' />
+                                                {course.favorited}
+                                            </a>
+                                        </div>
+                                    </Card.Content>
                                 </Card>
                                     )
                                 }

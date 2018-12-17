@@ -100,13 +100,14 @@ class LessonController extends Controller
     public function update(Request $request, $course, $lesson)
     {
         try{
+            $lesson = Lesson::findOrFail($lesson);
             if($request->hasFile('content') && $request->file('content')->isValid()) {
-                $lesson = Lesson::findOrFail($lesson);
                 Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
                 Lesson::updateFileLesson($request,$lesson);
+            }else if($request->type == 'text'){
+                $lesson = Lesson::whereId($lesson->id)->update($request->All());
             }else{
-                $lesson = Lesson::findOrFail($lesson);
-                Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
+                $lesson = Lesson::whereId($lesson->id)->update($request->except('content'));
             }
         }catch(ModelNotFoundException $e){
             return response()->json(400);

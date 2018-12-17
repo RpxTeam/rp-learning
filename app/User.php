@@ -9,6 +9,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Role;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -20,7 +21,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'birthday', 'adress', 'age', 'image', 'mime'
+        'name', 'email', 'password', 'birthday', 'adress', 'age', 'image', 'mime', 'role_id'
     ];
 
     /**
@@ -74,5 +75,19 @@ class User extends Authenticatable implements JWTSubject
         $user->image =  $filepath;
         $user->mime = $request->file('image')->getClientMimeType();
         $user->save();
+    }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setRoleIdAttribute($input)
+    {
+        $this->attributes['role_id'] = $input ? $input : null;
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id')->withTrashed();
     }
 }

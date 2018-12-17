@@ -104,7 +104,7 @@ class Page extends React.Component {
                             <List divided verticalAlign='middle' key={lesson.id}>
                                 <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
                                     <List.Content floated='right'>{lesson.type}</List.Content>
-                                    <Icon name='file' />
+                                    <Icon name={lesson.type === '' ? '' : 'file'} />
                                     <List.Content>{lesson.title}</List.Content>
                                 </List.Item>
                             </List>
@@ -137,7 +137,9 @@ class Page extends React.Component {
                                     </Segment>
                                     <Divider hidden clearing />
                                     <Divider />
-                                    <Image src='https://assets.wordpress.envato-static.com/uploads/2017/08/tropical-PS53BSA.jpg' />
+                                    {course.image ?
+                                        <Image src={course.image} />
+                                    : null }
                                     <Divider hidden />
                                     {course.description}
                                     <Divider hidden />
@@ -155,17 +157,17 @@ class Page extends React.Component {
                                             </List.Item>
                                             <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
                                                 <List.Content floated='right'>{course.duration}</List.Content>
-                                                <Icon name='file' />
+                                                <Icon name='clock outline' />
                                                 <List.Content>Duração</List.Content>
                                             </List.Item>
                                             <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
                                                 <List.Content floated='right'>{course.start_date}</List.Content>
-                                                <Icon name='file' />
+                                                <Icon name='calendar alternate' />
                                                 <List.Content>Data de Início</List.Content>
                                             </List.Item>
                                             <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
                                                 <List.Content floated='right'>{course.end_date}</List.Content>
-                                                <Icon name='file' />
+                                                <Icon name='calendar alternate' />
                                                 <List.Content>Data de Término</List.Content>
                                             </List.Item>
                                         </List>

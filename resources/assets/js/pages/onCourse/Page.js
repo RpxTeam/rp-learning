@@ -47,10 +47,10 @@ class Page extends React.Component {
     getData = () => {
         axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
             .then(res => {
-                console.log(res.data);
                 if(res.data.progress != null) {
                     const progress = res.data.progress;
-                    this.setState({ progress: progress.toFixed(0) });
+                    const course = res.data;
+                    this.setState({ course: course, progress: progress.toFixed(0) });
                 } else {
                     this.setState({ onCourse: true })
                 }
@@ -131,7 +131,7 @@ class Page extends React.Component {
                         <Container>
                             <Header
                                 as='h1'
-                                content={this.state.course.name}
+                                content={this.state.course.title}
                                 inverted
                                 style={{
                                     fontSize: '3em',

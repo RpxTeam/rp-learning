@@ -45,7 +45,7 @@ class Page extends React.Component {
         this.avatar = (
             <span>
                  <Image avatar src={require('../../../images/avatar/boy.png')}
-                        verticalAlign='middle'/> {this.props.user.name}
+                        verticalAlign='middle'/> {this.props.user === '' || this.props.user !== null ? this.props.user.name : null}
             </span>
         );
         return (
@@ -99,6 +99,7 @@ class Page extends React.Component {
                                                 <Dropdown.Item
                                                     text={"Está logado como " + this.props.userName}
                                                     disabled key='user'/>
+                                                <Dropdown.Item as={Link} to="/profile" text="Perfil" icon='user' />
                                                 <Dropdown.Item as={Link} to="/dashboard" text="Painel" icon='dashboard' />
                                                 <Dropdown.Divider />
                                                 <Dropdown.Item onClick={this.handleLogout} text="Sair" icon='sign out'

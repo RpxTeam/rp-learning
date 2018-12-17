@@ -47,12 +47,11 @@ class Page extends React.Component {
                     axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`, {view: 1});
                 }
                 this.setState({ courseID: courseID, viewCourse: true });
-            })
+            });
     };
 
     render() {
         const { courses } = this.state;
-        const { isAuthenticated } = this.props;
         if (this.state.viewCourse === true) {
             return <Redirect to={'/courses/' + this.state.courseID + '/details'} />
         }
@@ -76,7 +75,9 @@ class Page extends React.Component {
                                             <Card.Description>{ course.description }</Card.Description>
                                         </Card.Content>
                                         <Card.Content extra>
-                                            <Progress percent={course.progress != null ? course.progress.toFixed(0) : 0} autoSuccess size='tiny' />
+                                            <Progress percent={course.progress != null ? course.progress.toFixed(0) : 0} autoSuccess size='tiny'>
+                                                10 / 100
+                                            </Progress>
                                             <div className='ui buttons'>
                                                 <Button basic color='green' onClick={this.viewCourse.bind(this, course.id)}>
                                                     Detalhes
