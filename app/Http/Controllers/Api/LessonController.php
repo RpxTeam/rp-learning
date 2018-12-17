@@ -73,8 +73,6 @@ class LessonController extends Controller
             if($request->hasFile('content') && $request->file('content')->isValid()) {
                 $lesson = Lesson::create($request->except('content'));
                 Lesson::uploadFileLesson($request , $lesson);
-            }else if($request->type == 'text'){
-                $lesson = Lesson::create($request->All());
             }else{
                 $lesson = Lesson::create($request->except('content'));
             }
@@ -102,16 +100,14 @@ class LessonController extends Controller
     public function update(Request $request, $course, $lesson)
     {
         try{
+            $lesson = Lesson::findOrFail($lesson);
             if($request->hasFile('content') && $request->file('content')->isValid()) {
-                $lesson = Lesson::findOrFail($lesson);
                 Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
                 Lesson::updateFileLesson($request,$lesson);
             }else if($request->type == 'text'){
-                $lesson = Lesson::findOrFail($lesson);
-                $lesson = Lesson::create($request->All());
+                $lesson = Lesson::whereId($lesson->id)->update($request->All());
             }else{
-                $lesson = Lesson::findOrFail($lesson);
-                $lesson = Lesson::create($request->except('content'));
+                $lesson = Lesson::whereId($lesson->id)->update($request->except('content'));
             }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
