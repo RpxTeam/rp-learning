@@ -44,7 +44,8 @@ class DataCourseController extends Controller
         ->where('course_id','=',$course->id)
         ->first();
         
-        return response()->json($mycourse);
+        return response()->json($mycourse,200);
+        //200: OK. The standard success code and default option.
     }
 
     /**
