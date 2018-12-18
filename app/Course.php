@@ -36,6 +36,12 @@ class Course extends Model
             if($course->image != null){
                 $course->image = Storage::url($course->image);
             }
+            $course->total_lesson = DB::table('course_lesson')->where('course_id',$course->id)->count();
+            $course->lesson_complete = DB::table('data_lessons')
+                                        ->where('user_id',$user)
+                                        ->where('course_id',$course->id)
+                                        ->whereNotNull('finish')
+                                        ->count();
         }
         return $courses;
     }
