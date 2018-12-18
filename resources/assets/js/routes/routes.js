@@ -4,6 +4,8 @@ import Register from '../pages/register'
 import ForgotPassword from '../pages/forgotPassword'
 import ResetPassword from '../pages/resetPassword'
 import Courses from '../pages/courses'
+import detailCourse from '../pages/detailsCourse'
+import onCourse from '../pages/onCourse'
 import MyCourses from '../pages/myCourses'
 import Dashboard from '../pages/admin/dashboard'
 import AdminUsers from '../pages/admin/users/list'
@@ -12,6 +14,7 @@ import ViewUsers from '../pages/admin/users/view'
 import AdminCourses from '../pages/admin/courses/list'
 import CreateCourses from '../pages/admin/courses/create'
 import ViewCourses from '../pages/admin/courses/view'
+import Profile from '../pages/profile'
 import NoMatch from '../pages/noMatch'
 
 const routes = [
@@ -56,6 +59,18 @@ const routes = [
         exact: true,
         auth: false,
         component: Courses
+    },
+    {
+        path: '/courses/:id/details',
+        exact: true,
+        auth: false,
+        component: detailCourse
+    },
+    {
+        path: '/courses/:id',
+        exact: true,
+        auth: true,
+        component: onCourse
     },
     {
         path: '/my-courses',
@@ -106,10 +121,10 @@ const routes = [
         component: ViewCourses
     },
     {
-        path: '/admin/courses/:courseId/lesson/:lessonId',
+        path: '/profile',
         exact: true,
         auth: true,
-        component: ViewCourses
+        component: Profile
     },
     {
         path: '',

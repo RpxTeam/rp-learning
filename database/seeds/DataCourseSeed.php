@@ -15,7 +15,7 @@ class DataCourseSeed extends Seeder
         $faker = Faker\Factory::create();
 
         for($i=0;$i<20;$i++){
-            \App\DataCourse::insert([
+            \App\DataCourse::create([
                 'view' => $faker->numberBetween(0,1),
                 'progress' => $faker->numberBetween(0,100),
                 'finish'=> Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 days', 'now')->getTimestamp())->format('Y/m/d'),
@@ -24,7 +24,8 @@ class DataCourseSeed extends Seeder
                 'favorite'=> $faker->numberBetween(0,1),
                 'user_id' => $faker->randomDigitNotNull,
                 'course_id' => $faker->randomDigitNotNull,
-                
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

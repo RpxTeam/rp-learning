@@ -22,7 +22,8 @@
     "lodash": "^4.17.11",
     "react": "^16.0.0",
     "react-dom": "^16.2.0",
-    "styled-components": "^4.0.3"
+    "semantic-ui-calendar-react": "^0.12.1",
+    "styled-components": "^4.1.2"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-balloon": "^11.1.1",
@@ -30,6 +31,7 @@
     "@ckeditor/ckeditor5-react": "^1.0.0",
     "babel-cli": "^6.26.0",
     "babel-preset-es2016": "^6.24.1",
+    "npm": "^6.4.1",
     "prop-types": "^15.6.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
@@ -39,7 +41,6 @@
     "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0",
     "ree-validate": "^3.0.2",
-    "semantic-ui-calendar-react": "^0.12.1",
     "semantic-ui-react": "^0.79.0"
   }
 }

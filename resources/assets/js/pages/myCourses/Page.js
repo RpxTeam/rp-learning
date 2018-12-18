@@ -9,11 +9,13 @@ import {
     Icon,
     Segment,
     Card,
-    Image
+    Image, Progress
 } from 'semantic-ui-react'
 import PageHeader from '../../common/pageHeader'
 import Navigation from '../../common/navigation'
 import Footer from '../../common/mainFooter'
+import {API_URL} from "../../common/url-types";
+import {Redirect} from "react-router-dom";
 
 class Page extends React.Component {
     constructor(props) {
@@ -21,22 +23,38 @@ class Page extends React.Component {
         this.state = {
             courses: [],
             message: '',
-        }
-        console.log('User', this.props)
+        };
     }
+
+    getData = () => {
+        axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses`)
+        .then(res => {
+            const courses = Object.values(res.data);
+            this.setState({ courses: courses });
+        })
+    };
 
     componentDidMount() {
-        axios.get(`http://localhost:8000/api/users/${this.props.currentUser}/courses`)
-            .then(res => {
-                const courses = res.data;
-                this.setState({ courses: courses });
-                console.log(courses);
-            })
+        this.getData();
     }
 
+    viewCourse = (courseID) => {
+        axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`)
+            .then(res => {
+                const { data } = res;
+                if(data.length === 0) {
+                    axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`);
+                    axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${courseID}`, {view: 1});
+                }
+                this.setState({ courseID: courseID, viewCourse: true });
+            });
+    };
+
     render() {
-        const courses = this.state.courses;
-        const { isAuthenticated } = this.props;
+        const { courses } = this.state;
+        if (this.state.viewCourse === true) {
+            return <Redirect to={'/courses/' + this.state.courseID + '/details'} />
+        }
         return (
             <div>
                 <Navigation/>
@@ -44,9 +62,10 @@ class Page extends React.Component {
                     <PageHeader heading="Meus Cursos"/>
                     <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
                         <Container>
-                            <Card.Group>
+                            <Card.Group itemsPerRow={4}>
                                 { courses.map((course) =>
                                     <Card color='red' key={course.id}>
+                                        {console.log(course)}
                                         <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
                                         <Card.Content>
                                             <Card.Header>{ course.title }</Card.Header>
@@ -56,15 +75,13 @@ class Page extends React.Component {
                                             <Card.Description>{ course.description }</Card.Description>
                                         </Card.Content>
                                         <Card.Content extra>
-                                            <div className='ui two buttons'>
-                                                <Button basic color='green'>
-                                                    Executar
+                                            <Progress percent={course.progress != null ? course.progress.toFixed(0) : 0} autoSuccess size='tiny'>
+                                                10 / 100
+                                            </Progress>
+                                            <div className='ui buttons'>
+                                                <Button basic color='green' onClick={this.viewCourse.bind(this, course.id)}>
+                                                    Detalhes
                                                 </Button>
-                                                { isAuthenticated ?
-                                                    <Button basic color='red'>
-                                                        Excluir
-                                                    </Button>
-                                                    : null }
                                             </div>
                                         </Card.Content>
                                     </Card>
@@ -80,11 +97,4 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated : state.Auth.isAuthenticated,
-        currentUser: state.Auth.user
-    }
-};
-
-export default connect(mapStateToProps)(Page);
+export default Page;

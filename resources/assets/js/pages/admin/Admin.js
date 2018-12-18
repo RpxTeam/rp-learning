@@ -27,7 +27,7 @@ class Admin extends React.Component {
                         {this.props.children}
                     </Grid>
                 </main>
-                <Footer/>
+                {/*<Footer/>*/}
             </div>
         );
     }

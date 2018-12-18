@@ -15,14 +15,14 @@ class DataLessonSeed extends Seeder
         $faker = Faker\Factory::create();
 
         for($i=0;$i<30;$i++){
-            \App\DataLesson::insert([
-                'view' => $faker->numberBetween(0,1),
-                'progress' => $faker->numberBetween(0,100),
+            \App\DataLesson::create([
+                'view' => 1,
                 'finish'=> Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 days', 'now')->getTimestamp())->format('Y/m/d'),
                 'user_id' => $faker->randomDigitNotNull,
                 'course_id' => $faker->randomDigitNotNull,
                 'lesson_id' => $faker->randomDigitNotNull,
-                
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

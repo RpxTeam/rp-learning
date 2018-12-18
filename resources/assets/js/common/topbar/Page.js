@@ -45,7 +45,7 @@ class Page extends React.Component {
         this.avatar = (
             <span>
                  <Image avatar src={require('../../../images/avatar/boy.png')}
-                        verticalAlign='middle'/> {this.props.userName}
+                        verticalAlign='middle'/> {this.props.user.name}
             </span>
         );
         return (
@@ -90,7 +90,7 @@ class Page extends React.Component {
                                 <Dropdown trigger={this.avatar} pointing='top right' className='user-dropdown'>
                                     <Dropdown.Menu className='bounceIn animated'>
                                         <Dropdown.Item
-                                            text={"Está logado como " + this.props.userName}
+                                            text={"Está logado como " + this.props.user.name}
                                             disabled key='user'/>
                                         <Dropdown.Item as={Link} to="/dashboard" text="Perfil" icon='user' />
                                         <Dropdown.Divider />

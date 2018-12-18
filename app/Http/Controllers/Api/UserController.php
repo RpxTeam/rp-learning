@@ -8,11 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Image;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
-use Faker\Provider\File;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\teste;
 
 class UserController extends Controller
 {
@@ -58,12 +56,11 @@ class UserController extends Controller
     public function index()
     {
         try{
-            $users = User::All();
-            foreach ($users as $user) {
+            $users = User::All()->each(function($user){
                 if($user->image != null){
                     $user->image = Storage::url($user->image);
                 }
-            }
+            });
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -85,6 +82,7 @@ class UserController extends Controller
             if($user->image != null){
                 $user->image = Storage::url($user->image);
             }
+            //Mail::to('fehiya@gmail.com')->send(new teste());
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -102,18 +100,16 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try{
+            if($request->role_id != 3){
+                $request['role_id'] = 3;
+            }
             if($request->hasFile('image') && $request->file('image')->isValid()) {
                 $request['password'] = Hash::make($request->password);
-                $user = User::create($request->all());
-                $filename = $user->id . '-' . str_slug($user->name) . '.' . $request->file('image')->getClientOriginalExtension();
-                $request->file('image')->storeAs('users/images', $filename);
-                $user->image = 'users/images/' . $filename;
-                $user->mime = $request->file('image')->getClientOriginalExtension();
-                $user->save();
+                $user = User::create($request->except('image'));
+                User::uploadImageUser($request , $user);
             }else{
-                $request['image'] = null;
                 $request['password'] = Hash::make($request->password);
-                $user = User::create($request->all());
+                User::create($request->except('image'));
             }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
@@ -137,15 +133,7 @@ class UserController extends Controller
                 $user = User::findOrFail($id);
                 $request['password'] = Hash::make($request->password);
                 User::whereId($user->id)->update($request->except(['_method','image']));
-                $filename = $user->id . '-' . str_slug($user->name) . '.' . $request->file('image')->getClientOriginalExtension();
-                $filepath = 'users/images/' . $filename;
-                if(Storage::exists($filepath)){
-                    Storage::delete($filepath);
-                }
-                $request->file('image')->storeAs('users/images', $filename);
-                $user->image =  $filepath;
-                $user->mime = $request->file('image')->getClientOriginalExtension();
-                $user->save();
+                User::updateImageUser($request,$user);
             }else{
                 $user = User::findOrFail($id);
                 $request['password'] = Hash::make($request->password);

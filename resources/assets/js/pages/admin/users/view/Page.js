@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import { API_URL } from "../../../../common/url-types";
 import {
     Grid,
     Form,
@@ -29,7 +30,7 @@ class Page extends React.Component {
     componentDidMount () {
         const userID = this.props.match.params.id
 
-        axios.get(`http://rplearning-homolog.siteseguro.ws/api/users/${userID}`)
+        axios.get(`${ API_URL }/api/users/${userID}`)
         .then(res => {
             const user = res.data;
             this.setState({ user: user });

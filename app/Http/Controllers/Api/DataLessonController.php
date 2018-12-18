@@ -20,9 +20,12 @@ class DataLessonController extends Controller
     public function index($user,$course)
     {
         $course = Course::findOrFail($course);
+        $mycourse = Course::userCourse($user)
+        ->where('course_id','=',$course->id);
+
         $lessons = Lesson::userLessons($user,$course->id);
 
-        return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
+        return response()->json(array('course'=>$mycourse,'lessons'=>$lessons),200);
     }
     
     /**
@@ -34,10 +37,13 @@ class DataLessonController extends Controller
     public function show($user,$course,$lesson)
     {
         $course = Course::findOrFail($course);
+        $mycourse = Course::userCourse($user)
+        ->where('course_id','=',$course->id);
+
         $lessons = Lesson::userLessons($user,$course->id)
-        ->where('lesson_id','=',$lesson);
-        
-        return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
+        ->where('lesson_id','=',$lesson)
+        ->first();
+        return response()->json(array('course'=>$mycourse,'lessons'=>$lessons),200);
     }
 
     /**
@@ -51,10 +57,12 @@ class DataLessonController extends Controller
         try{
             $course = Course::findOrFail($course);
             $lesson = Lesson::findOrFail($lesson);
-            DB::table('data_lessons')->insert([
+            DataLesson::updateOrCreate([
                 'user_id' => $user,
                 'course_id' => $course->id,
                 'lesson_id' => $lesson->id,
+            ],[
+                'updated_at' => now(),
             ]);
         }catch(ModelNotFoundException $e){
             return response()->json(400);
@@ -75,9 +83,8 @@ class DataLessonController extends Controller
     {
         try{
             $course = Course::findOrFail($course);
-            $lesson = Course::findOrFail($lesson);
-            DB::table('data_lessons')
-            ->where('data_lessons.user_id','=',$user)
+            $lesson = Lesson::findOrFail($lesson);
+            DataLesson::where('data_lessons.user_id','=',$user)
             ->where('data_lessons.course_id','=',$course->id)
             ->where('data_lessons.lesson_id','=',$lesson->id)
             ->update($request->all());

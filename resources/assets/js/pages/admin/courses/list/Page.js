@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
+import { API_URL } from "../../../../common/url-types";
 import PropTypes from 'prop-types'
 import {
     Button,
@@ -31,7 +32,7 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://rplearning-homolog.siteseguro.ws/api/courses`)
+        axios.get(`${ API_URL }/api/courses`)
           .then(res => {
             const courses = res.data;
             this.setState({ courses: courses });
@@ -53,7 +54,7 @@ class Page extends React.Component {
 
     handleDelete = () => {
         let courseID = this.state.course;
-        axios.delete(`http://rplearning-homolog.siteseguro.ws/api/courses/${courseID}`)
+        axios.delete(`${ API_URL }/api/courses/${courseID}`)
         .then(res => {
             console.log(res);
             console.log(res.data);
@@ -127,11 +128,4 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated: state.Auth.isAuthenticated,
-        currentUser: state.Auth.user
-    }
-};
-
-export default connect(mapStateToProps)(Page);
+export default Page;

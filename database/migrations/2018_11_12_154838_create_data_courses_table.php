@@ -15,7 +15,7 @@ class CreateDataCoursesTable extends Migration
     {
         Schema::create('data_courses', function (Blueprint $table) {
 
-            $table->integer('view')->nullable();
+            $table->boolean('view')->nullable();
             $table->float('progress', 10 , 5)->nullable();
             $table->date('finish')->nullable();
             $table->integer('rating')->nullable();

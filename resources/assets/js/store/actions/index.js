@@ -15,7 +15,7 @@ export function authLogout(){
 
 export function authCheck(){
     return {
-        type:ActionTypes.AUTH_CHECK
+        type: ActionTypes.AUTH_CHECK,
     }
 }
 

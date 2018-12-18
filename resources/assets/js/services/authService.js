@@ -112,6 +112,7 @@ export function register(credentials) {
         new Promise((resolve, reject) => {
             Http.post('api/auth/register', credentials)
                 .then(res => {
+                    console.log(res.data);
                     return resolve(res.data);
                 })
                 .catch(err => {
