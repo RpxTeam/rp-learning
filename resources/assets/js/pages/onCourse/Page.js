@@ -50,12 +50,13 @@ class Page extends React.Component {
                 if(res.data.progress != null) {
                     const progress = res.data.progress;
                     const course = res.data;
-                    this.setState({ course: course, progress: progress.toFixed(0) });
+                    this.setState({ course: course, progress: progress });
                 } else {
                     this.setState({ onCourse: true })
                 }
             }).catch(res => {
-                this.setState({ notFound: true })
+                console.log(res);
+                // this.setState({ notFound: true })
             });
 
         axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
@@ -68,7 +69,7 @@ class Page extends React.Component {
             });
 
             this.setState({
-                lesson: lessons[0],
+                // lesson: lessons[0],
                 lessons: lessons,
                 lessonsCount: lessons.length,
                 endLessons: endLessons.length,
@@ -90,16 +91,24 @@ class Page extends React.Component {
 
     endLesson = (lessonID) => {
         axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
-        .then(res => {
-            const course = res.data;
-            const percentLesson = 100 / this.state.lessonsCount;
-            const progress = course.progress + percentLesson;
-            this.setState({ course: course, progress: progress.toFixed(0) });
-            this.updateProgress(progress);
-        });
+            .then(res => {
+                const course = res.data;
+                let percentLesson = 100 / this.state.lessonsCount;
+                let progress = parseFloat(course.progress) + parseFloat(percentLesson);
+                progress = progress.toFixed(0);
+                if(progress >= 100) {
+                    progress = 100;
+                }
+                this.setState({ course: course });
+                this.updateProgress(progress);
+            });
+
+        const day = new Date();
+        const finish = day.getFullYear() + '-' + day.getMonth() + '-' + day.getDate();
 
         axios.put(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${lessonID}`, {
-            view: 1
+            view: 1,
+            finish: finish
         })
             .then(res => {
                 this.getData();
@@ -110,7 +119,11 @@ class Page extends React.Component {
     updateProgress = (progress) => {
         axios.put(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}`, {
             progress: progress
-        });
+        })
+            .then(() => {
+                    this.setState({ progress: progress });
+                }
+            );
     };
 
     render() {
@@ -174,8 +187,8 @@ class Page extends React.Component {
                                                     <div dangerouslySetInnerHTML = {{ __html : lesson.content }}></div>
                                                 : null }
                                                 {lesson.type === 'video-internal' ?
-                                                    <video width="400" controls>
-                                                        <source src={lesson.content} type={lesson.mime} />
+                                                    <video width="400" controls preload="metadata">
+                                                        <source src='http://localhost:8000/storage/exemple/lesson/Lorem%20ipsum%20Meaning.mp4' type='video/mp4' />
                                                         Your browser does not support HTML5 video.
                                                     </video>
                                                 : null }

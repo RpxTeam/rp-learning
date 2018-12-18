@@ -30,13 +30,17 @@ class Page extends React.Component {
         this.favoriteCourse = this.favoriteCourse.bind(this);
     }
 
-    componentDidMount() {
+    getData = () => {
         axios.get(`${ API_URL }/api/courses`)
-          .then(res => {
-            const courses = res.data;
-            this.setState({ courses: courses });
-        })
-    }
+            .then(res => {
+                const courses = res.data;
+                this.setState({ courses: courses });
+            })
+    };
+
+    componentDidMount() {
+        this.getData();
+    };
 
     viewCourse = (courseID) => {
         if(this.props.isAuthenticated) {
@@ -59,23 +63,43 @@ class Page extends React.Component {
     };
 
     favoriteCourse = (id) => {
-        console.log(id);
-        axios.get(`${ API_URL }/api/courses/${id}`)
+        axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${id}`)
             .then(res => {
                 const { data } = res;
-
+                if(data.favorite === null) {
+                    axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${id}`, {
+                        favorite: 1
+                    });
+                } else if(data.favorite === 0) {
+                    axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${id}`, {
+                        favorite: 1
+                    });
+                } else {
+                    axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${id}`, {
+                        favorite: 0
+                    });
+                }
             });
+    };
+
+    formatDate = (date) => {
+        if(date) {
+            const newDate = date.split('-');
+            const day = newDate[2].split(' ');
+            const formatedDate = day[0] + '/' + newDate[1] + '/' + newDate[0];
+            return formatedDate;
+        }
     };
 
     render() {
         const { courses } = this.state;
+        const { isAuthenticated } = this.props;
         if (this.state.viewCourse === true) {
             return <Redirect to={'/courses/' + this.state.courseID + '/details'} />
         }
 
         return (
             <div>
-                {console.log(courses)}
                 <Navigation/>
                 <main className="fadeIn animated">
                     <PageHeader heading="Cursos"/>
@@ -90,7 +114,7 @@ class Page extends React.Component {
                                     : null }
                                     <Card.Content>
                                         <Card.Meta>
-                                            <span className='date'>Criado em { course.created_at }</span>
+                                            <span className='date'>Criado em { this.formatDate(course.created_at) }</span>
                                         </Card.Meta>
                                         <Card.Description>{ course.description }</Card.Description>
                                     </Card.Content>
@@ -105,12 +129,14 @@ class Page extends React.Component {
                                         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                                             <span floated={'left'}>
                                                 <Icon name='eye' />
-                                                {course.viewed}
+                                                { course.viewed }
                                             </span>
+                                            {isAuthenticated ?
                                             <a onClick={this.favoriteCourse.bind(this, course.id)}>
-                                                <Icon name='heart outline' />
-                                                {course.favorited}
+                                                <Icon name={course.favorite ? 'heart' : 'heart outline'} />
+                                                { course.favorited }
                                             </a>
+                                            : null }
                                         </div>
                                     </Card.Content>
                                 </Card>

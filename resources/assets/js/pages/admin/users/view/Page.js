@@ -58,7 +58,7 @@ class Page extends React.Component {
         event.preventDefault();
         const userID = this.props.match.params.id
 
-        axios.put(`http://localhost:8000/api/users/${userID}`, { 
+        axios.put(`${API_URL}/api/users/${userID}`, {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password

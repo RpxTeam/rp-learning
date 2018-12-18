@@ -47,7 +47,12 @@ class Page extends React.Component {
                         axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`);
                         axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {view: 1});
                     }
-                    this.setState({ course: data });
+                    this.setState({ progress: data.progress });
+                });
+            axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
+                .then(res => {
+                    const course = res.data;
+                    this.setState({ course: course });
                 });
         } else {
             axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
@@ -90,8 +95,29 @@ class Page extends React.Component {
             });
     };
 
+    formatIcons = (type) => {
+        let icon = 'file';
+        switch(type) {
+            case 'text':
+                icon = icon + ' outline';
+                break;
+            case 'video-internal':
+                icon = icon + ' video';
+                break;
+            case 'video-external':
+                icon = icon + ' video outline';
+                break;
+            case 'audio':
+                icon = icon + ' audio outline';
+                break;
+            default:
+                icon = 'file';
+        }
+        return icon;
+    };
+
     render() {
-        const { course, courseID, lessons } = this.state;
+        const { course, courseID, lessons, progress } = this.state;
         const { isAuthenticated, user } = this.props;
         if (this.state.onCourse === true) {
             return <Redirect to={'/courses/' + courseID} />
@@ -103,8 +129,7 @@ class Page extends React.Component {
                         lessons.map((lesson) =>
                             <List divided verticalAlign='middle' key={lesson.id}>
                                 <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
-                                    <List.Content floated='right'>{lesson.type}</List.Content>
-                                    <Icon name={lesson.type === '' ? '' : 'file'} />
+                                    <Icon name={this.formatIcons(lesson.type)} />
                                     <List.Content>{lesson.title}</List.Content>
                                 </List.Item>
                             </List>
@@ -129,7 +154,7 @@ class Page extends React.Component {
                                         </Header>
                                         {isAuthenticated ?
                                             <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>
-                                                {course.progress != null ? "Continuar Curso" : "Iniciar Curso" }
+                                                {progress != null ? "Continuar Curso" : "Iniciar Curso" }
                                             </Button>
                                         :
                                             <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>Iniciar Curso</Button>

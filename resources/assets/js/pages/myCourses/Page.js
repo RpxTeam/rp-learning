@@ -50,6 +50,15 @@ class Page extends React.Component {
             });
     };
 
+    formatDate = (date) => {
+        if(date) {
+            const newDate = date.split('-');
+            const day = newDate[2].split(' ');
+            const formatedDate = day[0] + '/' + newDate[1] + '/' + newDate[0];
+            return formatedDate;
+        }
+    };
+
     render() {
         const { courses } = this.state;
         if (this.state.viewCourse === true) {
@@ -70,13 +79,13 @@ class Page extends React.Component {
                                         <Card.Content>
                                             <Card.Header>{ course.title }</Card.Header>
                                             <Card.Meta>
-                                                <span className='date'>Criado em { course.created_at }</span>
+                                                <span className='date'>Criado em { this.formatDate(course.created_at) }</span>
                                             </Card.Meta>
                                             <Card.Description>{ course.description }</Card.Description>
                                         </Card.Content>
                                         <Card.Content extra>
-                                            <Progress percent={course.progress != null ? course.progress.toFixed(0) : 0} autoSuccess size='tiny'>
-                                                10 / 100
+                                            <Progress percent={course.progress != null ? parseFloat(course.progress).toFixed(0) : 0} autoSuccess size='tiny'>
+                                                {course.lesson_complete} / {course.total_lesson}
                                             </Progress>
                                             <div className='ui buttons'>
                                                 <Button basic color='green' onClick={this.viewCourse.bind(this, course.id)}>

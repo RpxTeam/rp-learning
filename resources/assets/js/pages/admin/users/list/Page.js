@@ -30,7 +30,7 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8000/api/users`)
+        axios.get(`${API_URL}/api/users`)
           .then(res => {
             const users = res.data;
             this.setState({ users: users });
