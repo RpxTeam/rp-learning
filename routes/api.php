@@ -35,16 +35,20 @@ Route::middleware(['jwt_auth'])->group(function(){
 Route::resource('users', 'Api\UserController');
 
 //Author routes
-Route::resource('author', 'Api\AuthorController');
+Route::resource('author', 'Api\AuthorsController');
 
 //Course routes
 Route::resource('courses', 'Api\CoursesController');
 Route::get('courses/{course}', 'Api\CoursesController@show');
 
-//lesson routes
+//Lesson routes
 Route::resource('courses/{course}/lessons', 'Api\LessonController');
 Route::get('courses/{course}/lessons', 'Api\LessonController@index');
 Route::get('courses/{course}/lessons/{lesson}', 'Api\LessonController@show');
+Route::get('courses/{course}/lessons/{lesson}/media','Api\LessonController@media');
+
+//Upload File routes
+Route::post('upload','Api\UploadController@upload');
 
 //DataCourse routes
 Route::resource('users/{user}/courses', 'Api\DataCourseController');

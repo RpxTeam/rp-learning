@@ -21,6 +21,10 @@ class CourseLessonSeed extends Seeder
 
             ['course_id' => 2 , 'lesson_id' => 7,],
             ['course_id' => 2 , 'lesson_id' => 8,],
+            ['course_id' => 2 , 'lesson_id' => 9,],
+            ['course_id' => 2 , 'lesson_id' => 10,],
+            ['course_id' => 2 , 'lesson_id' => 11,],
+            ['course_id' => 2 , 'lesson_id' => 12,],
 
             ['course_id' => 3 , 'lesson_id' => 9,],
             ['course_id' => 3 , 'lesson_id' => 10,],

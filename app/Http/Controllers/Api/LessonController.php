@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\VideoStream;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Response;
 
 class LessonController extends Controller
 {
@@ -21,11 +24,7 @@ class LessonController extends Controller
         $course = Course::where('id', $course)
                         ->orWhere('slug', $course)
                         ->firstOrFail();
-        $lessons = Lesson::courseLessons($course)->each(function($lesson){
-            if($lesson->content != null && $lesson->mime != null){
-                $lesson->content = Storage::url($lesson->content);
-            }
-        });
+        $lessons = Lesson::courseLessons($course);
 
         return response()->json($lessons,200);
         // return response()->json(array('course'=>$course,'lessons'=>$lessons),200);
@@ -49,9 +48,6 @@ class LessonController extends Controller
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
         }else{
-            if($lesson->content != null && $lesson->mime != null){
-                $lesson->content = Storage::url($lesson->content);
-            }
             return response()->json($lesson,200);
             // return response()->json(array('course'=>$course,'lesson'=>$lesson),200);
             //200: OK. The standard success code and default option.
@@ -74,7 +70,7 @@ class LessonController extends Controller
                 $lesson = Lesson::create($request->except('content'));
                 Lesson::uploadFileLesson($request , $lesson);
             }else{
-                $lesson = Lesson::create($request->except('content'));
+                $lesson = Lesson::create($request->All());
             }
             $course = Course::findOrFail($course);
             DB::table('course_lesson')->insert([
@@ -144,4 +140,13 @@ class LessonController extends Controller
         return response()->json(204);
         //204: No content. When an action was executed successfully, but there is no content to return.
     }
+
+    public function media($course,$lesson){
+        $course = Course::findOrFail($course);
+        $lesson = Lesson::findOrFail($lesson);
+
+        return response()->file(base_path() . '/storage/app/public/' . $lesson->content);
+       
+    }
+
 }
