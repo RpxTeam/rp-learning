@@ -58,14 +58,7 @@ class Page extends React.Component {
     };
 
     handleChangeDate = (event, {name, value}) => {
-        const date = value.split('/');
-        let day = date[0];
-        let month = date[1];
-        let year = date[2];
-        const updateDate = year + '-' + month + '-' + day
-        if (this.state.hasOwnProperty(name)) {
-            this.setState({ [name]: updateDate });
-        }
+
     };
 
     handleSubmit = event => {
@@ -177,13 +170,19 @@ class Page extends React.Component {
                                                 id='input-control-duration'
                                                 control={Input}
                                                 type='number'
-                                                label='Duração'
+                                                label='Duração (Horas)'
                                                 name="duration"
-                                                placeholder='Duração'
+                                                placeholder='Duração Horas'
                                                 onChange={this.handleChange}
                                             />
                                             <Form.Field>
                                                 <label>Data de Início
+                                                    <DatesRangeInput
+                                                        name="datesRange"
+                                                        placeholder="Início - Término"
+                                                        value={this.state.datesRange}
+                                                        iconPosition="left"
+                                                        onChange={this.handleChangeDate} />
                                                     <DateInput
                                                         name="start_date"
                                                         placeholder="Data"

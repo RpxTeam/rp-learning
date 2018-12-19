@@ -131,12 +131,12 @@ class Page extends React.Component {
                                                 <Icon name='eye' />
                                                 { course.viewed }
                                             </span>
-                                            {isAuthenticated ?
-                                            <a onClick={this.favoriteCourse.bind(this, course.id)}>
-                                                <Icon name={course.favorite ? 'heart' : 'heart outline'} />
-                                                { course.favorited }
-                                            </a>
-                                            : null }
+                                            {/*{isAuthenticated ?*/}
+                                            {/*<a onClick={this.favoriteCourse.bind(this, course.id)}>*/}
+                                                {/*<Icon name={course.favorite ? 'heart' : 'heart outline'} />*/}
+                                                {/*{ course.favorited }*/}
+                                            {/*</a>*/}
+                                            {/*: null }*/}
                                         </div>
                                     </Card.Content>
                                 </Card>

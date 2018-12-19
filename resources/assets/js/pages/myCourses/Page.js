@@ -74,8 +74,9 @@ class Page extends React.Component {
                             <Card.Group itemsPerRow={4}>
                                 { courses.map((course) =>
                                     <Card color='red' key={course.id}>
-                                        {console.log(course)}
-                                        <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
+                                        {course.image ?
+                                            <Image src={course.image} />
+                                            : null }
                                         <Card.Content>
                                             <Card.Header>{ course.title }</Card.Header>
                                             <Card.Meta>

@@ -17,6 +17,12 @@ import {
     Confirm,
     Header
 } from 'semantic-ui-react'
+import {
+    DateInput,
+    TimeInput,
+    DateTimeInput,
+    DatesRangeInput
+} from 'semantic-ui-calendar-react';
 import Admin from '../../Admin'
 import Dropdown from "semantic-ui-react/dist/es/modules/Dropdown/Dropdown";
 import Modal from "semantic-ui-react/dist/es/modules/Modal/Modal";
@@ -141,14 +147,17 @@ class Page extends React.Component {
         })
     };
 
-    handleSubmitLesson = (type, event) => {
+    handleSubmitLesson = (type) => {
         if (this.state.lesson.title !== '') {
-            if(type === 'video-external' || type === 'audio' || type === 'doc') {
+            if(type === 'video-external' || type === 'audio' || type === 'doc' || type === 'pdf') {
                 this.fileUpload(type);
                 this.closeModal();
                 this.setState({
                     lesson: {
                         ...this.state.lesson,
+                        type: '',
+                        title: '',
+                        content: ''
                     }
                 });
                 this.loadingLessons();
@@ -162,6 +171,12 @@ class Page extends React.Component {
                         message: 'Lição criada com sucesso',
                         error: false,
                         success: true,
+                        lesson: {
+                            ...this.state.lesson,
+                            type: '',
+                            title: '',
+                            content: ''
+                        }
                     });
                     this.closeModal();
                 }).catch(error => {
@@ -292,7 +307,7 @@ class Page extends React.Component {
             } else {
                 this.messageModal('Tipo de arquivo inválido.');
             }
-        } else if(typeLesson === 'pdf') {
+        } else if(typeLesson === 'pdf' || typeLesson === 'doc') {
             if(
                 file.type === 'application/pdf'
             ) {
@@ -440,30 +455,23 @@ class Page extends React.Component {
                                             <Form.Field
                                                 id='input-control-duration'
                                                 control={Input}
-                                                label='Duração'
+                                                label='Duração (Horas)'
                                                 name="duration"
                                                 placeholder={this.state.course.duration}
                                                 value={this.state.course.duration}
                                                 onChange={this.updateCourse}
                                             />
-                                            <Form.Field
-                                                id='input-control-startdate'
-                                                control={Input}
-                                                label='Data de Início'
-                                                name="start_date"
-                                                placeholder={this.state.course.start_date}
-                                                value={this.state.course.start_date}
-                                                onChange={this.updateCourse}
-                                            />
-                                            <Form.Field
-                                                id='input-control-enddate'
-                                                control={Input}
-                                                label='Data de Término'
-                                                name="end_date"
-                                                placeholder={this.state.course.end_date}
-                                                value={this.state.course.end_date}
-                                                onChange={this.updateCourse}
-                                            />
+                                            <Form.Field>
+                                                <label>Data de Início
+
+                                                </label>
+                                            </Form.Field>
+                                            <Form.Field>
+                                                <label>
+                                                    Data de Término
+
+                                                </label>
+                                            </Form.Field>
                                         </Segment>
                                         <Form.Field
                                             id='button-control-confirm'
@@ -497,10 +505,6 @@ class Page extends React.Component {
                                             console.log( 'Editor is ready to use!', editor );
                                         } }
                                         onChange={ this.handleEditor }
-                                        config={{
-                                            removePlugins: [ 'Heading', 'Link' ]
-                                            // toolbar: [ 'bold', 'italic' ]
-                                        }}
                                     />
                                 </Form.Field>
                                 : null}

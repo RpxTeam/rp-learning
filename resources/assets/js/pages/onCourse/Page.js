@@ -197,12 +197,12 @@ class Page extends React.Component {
                                                         width="100%" height="420"
                                                         src={lesson.content}
                                                         frameBorder="0"
-                                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" />
+                                                        allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" />
                                                 : null }
                                                 {lesson.type === 'ppt' ?
                                                     lesson.content
                                                 : null }
-                                                {lesson.type === 'pdf' ?
+                                                {lesson.type === 'doc' ?
                                                     <object data={lesson.content} type="application/pdf" width="100%" height="700px">
                                                         <iframe src={lesson.content} width="100%" height="700px"></iframe>
                                                     </object>
