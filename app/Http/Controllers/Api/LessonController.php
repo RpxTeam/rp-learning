@@ -22,7 +22,7 @@ class LessonController extends Controller
                         ->orWhere('slug', $course)
                         ->firstOrFail();
         $lessons = Lesson::courseLessons($course)->each(function($lesson){
-            if($lesson->content != null && $lesson->mime != null){
+            if($lesson->content != null && $lesson->mime != null && $lesson->type != 'text'){
                 $lesson->content = Storage::url($lesson->content);
             }
         });
@@ -49,7 +49,7 @@ class LessonController extends Controller
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
         }else{
-            if($lesson->content != null && $lesson->mime != null){
+            if($lesson->content != null && $lesson->mime != null && $lesson->type != 'text'){
                 $lesson->content = Storage::url($lesson->content);
             }
             return response()->json($lesson,200);
@@ -74,7 +74,7 @@ class LessonController extends Controller
                 $lesson = Lesson::create($request->except('content'));
                 Lesson::uploadFileLesson($request , $lesson);
             }else{
-                $lesson = Lesson::create($request->except('content'));
+                $lesson = Lesson::create($request->All());
             }
             $course = Course::findOrFail($course);
             DB::table('course_lesson')->insert([

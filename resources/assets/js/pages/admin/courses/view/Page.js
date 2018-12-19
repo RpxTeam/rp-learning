@@ -18,10 +18,12 @@ import {
     Header
 } from 'semantic-ui-react'
 import Admin from '../../Admin'
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Dropdown from "semantic-ui-react/dist/es/modules/Dropdown/Dropdown";
 import Modal from "semantic-ui-react/dist/es/modules/Modal/Modal";
+
+// CKEditor
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 class Page extends React.Component {
     constructor(props) {
@@ -43,7 +45,7 @@ class Page extends React.Component {
                 user_id: '',
                 course_id: '',
                 lesson_id: '',
-                content: ''
+                content: 'Lição'
             },
             modal: {
                 type: '',
@@ -78,7 +80,8 @@ class Page extends React.Component {
         // .then(res => {
         //     const lessons = res.data;
         //     this.setState({ lessons: lessons });
-        //     console.log(this.state.lessons);
+        //
+        // this.state.lessons);
         // });
         this.loadingLessons();
     }
@@ -102,8 +105,8 @@ class Page extends React.Component {
     };
 
     updateLesson = (event) => {
-        console.log(event);
         this.setState({ lesson: {
+            ...this.state.lesson,
             [event.target.name]: event.target.value
         } });
     };
@@ -124,8 +127,6 @@ class Page extends React.Component {
             duration: this.state.course.duration
          })
             .then(res => {
-            console.log(res);
-            console.log(res.data);
             this.setState({
                 message: 'Curso atualizado com sucesso',
                 error: false,
@@ -142,24 +143,21 @@ class Page extends React.Component {
 
     handleSubmitLesson = (type, event) => {
         if (this.state.lesson.title !== '') {
-            if(type !== 'text' || type !== 'webcontent') {
+            if(type === 'video-external' || type === 'audio' || type === 'doc') {
                 this.fileUpload(type);
                 this.closeModal();
                 this.setState({
                     lesson: {
                         ...this.state.lesson,
-                        title: '',
-                        content: '',
                     }
                 });
                 this.loadingLessons();
             } else {
                 axios.post(`${ API_URL }/api/courses/${this.state.courseID}/lessons`, {
+                    type: this.state.modal.type,
                     title: this.state.lesson.title,
                     content: this.state.lesson.content,
                 }).then(res => {
-                    console.log(res);
-                    console.log(res.data);
                     this.setState({
                         message: 'Lição criada com sucesso',
                         error: false,
@@ -198,13 +196,13 @@ class Page extends React.Component {
     };
 
     handleEditor = ( event, editor ) => {
-        // const data = editor.getData();
-        // this.setState({
-        //     lesson: {
-        //         content: data
-        //     }
-        // });
-        // console.log( { event, editor, data } );
+        const data = editor.getData();
+        this.setState({
+            lesson: {
+                ...this.state.lesson,
+                content: data
+            }
+        });
     };
 
     handleConfirm = (event) => {
@@ -219,8 +217,6 @@ class Page extends React.Component {
         if(this.state.lessonID) {
             axios.delete(`${ API_URL }/api/courses/${this.state.courseID}/lessons/${this.state.lessonID}`)
             .then(res => {
-                console.log(res);
-                console.log(res.data);
 
                 this.loadingLessons();
                 this.setState({
@@ -249,8 +245,6 @@ class Page extends React.Component {
     onChangeFile = (event) => {
         const file = event.target.files[0];
         const typeLesson = this.state.modal.type;
-        console.log(file.name);
-        console.log(typeLesson);
         if(typeLesson === 'video-internal') {
             if(
                 file.type === 'video/mp4'
@@ -503,6 +497,10 @@ class Page extends React.Component {
                                             console.log( 'Editor is ready to use!', editor );
                                         } }
                                         onChange={ this.handleEditor }
+                                        config={{
+                                            removePlugins: [ 'Heading', 'Link' ]
+                                            // toolbar: [ 'bold', 'italic' ]
+                                        }}
                                     />
                                 </Form.Field>
                                 : null}

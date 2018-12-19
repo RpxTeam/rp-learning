@@ -55,7 +55,6 @@ class Page extends React.Component {
                     this.setState({ onCourse: true })
                 }
             }).catch(res => {
-                console.log(res);
                 // this.setState({ notFound: true })
             });
 
@@ -184,11 +183,12 @@ class Page extends React.Component {
                                             <div>
                                                 <h4>{lesson.title}</h4>
                                                 {lesson.type === 'text' ?
-                                                    <div dangerouslySetInnerHTML = {{ __html : lesson.content }}></div>
+                                                    <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
                                                 : null }
                                                 {lesson.type === 'video-internal' ?
                                                     <video width="400" controls preload="metadata">
-                                                        <source src='http://localhost:8000/storage/exemple/lesson/Lorem%20ipsum%20Meaning.mp4' type='video/mp4' />
+                                                        <source src={API_URL + '/api/courses/'+ courseID +'/lessons/'+ lesson.id +'/media'} type={lesson.mime} />
+                                                        <source src={'http://rplearning-homolog.siteseguro.ws/api/courses/1/lessons/2/media'} type={lesson.mime} />
                                                         Your browser does not support HTML5 video.
                                                     </video>
                                                 : null }
