@@ -110,13 +110,12 @@ class Page extends React.Component {
                 courseEdit: true
             });
         }).catch(error => {
-            console.log(error.message)
             this.setState({
                 message: error.message,
                 error: true,
                 success: false
             })
-        })
+        });
     };
 
     handleDelete = () => {
@@ -151,8 +150,8 @@ class Page extends React.Component {
             .then(res => {
                 const optionsCount = this.state.options.length;
                 const newAuthor = { key: optionsCount + 1, value: name, text: name };
-                this.setState({ author: '', options: [ ...this.state.options, newAuthor ], authors: [ ...this.state.authors, newAuthor ] });
-                // this.getData();
+                this.setState({ author: '', options: [] });
+                this.getData();
                 this.openAuthor();
             });
     };

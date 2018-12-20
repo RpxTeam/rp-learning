@@ -43,52 +43,15 @@ class LessonSeed extends Seeder
             ],
             ['order' => 5,
              'title' => 'Mid 1990s: 3D models, beginnings of hardware acceleration',
-             'type' => 'ppt',
-             'content' => 'exemple/lesson/lesson-5.ppsx',
-             'mime' => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+             'type' => 'audio',
+             'content' => 'exemple/lesson/lesson-5.mp3',
+             'mime' => 'audio/mpeg',
             ],
             ['order' => 6,
              'title' => 'Late 1990s: Full 32-bit color, and GPUs become standard',
              'type' => 'video-external',
              'content' => 'https://www.youtube.com/embed/a7ntf6wiIik',
             ],
-
-            // ['order' => 1,
-            //  'title' => 'A interface de joystick',
-            //  'type' =>,
-            //  'cotent' =>,
-            //  'mime' =>,
-            // ],
-            // ['order' => ,
-            // 'title' =>,
-            // 'type' =>,
-            // 'cotent' =>,
-            // 'mime' =>,
-            // ],
-            // ['order' => ,
-            // 'title' =>,
-            // 'type' =>,
-            // 'cotent' =>,
-            // 'mime' =>,
-            // ],
-            // ['order' => ,
-            // 'title' =>,
-            // 'type' =>,
-            // 'cotent' =>,
-            // 'mime' =>,
-            // ],
-            // ['order' => ,
-            // 'title' =>,
-            // 'type' =>,
-            // 'cotent' =>,
-            // 'mime' =>,
-            // ],
-            // ['order' => ,
-            // 'title' =>,
-            // 'type' =>,
-            // 'cotent' =>,
-            // 'mime' =>,
-            // ],
 
         ];
 
@@ -97,13 +60,13 @@ class LessonSeed extends Seeder
         }
 
         
-        for($i=0;$i<10;$i++){
-            \App\Lesson::create([
-                'order' => $i+1,
-                'title' => $faker->word,
-                'description' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
-                'content' => $faker->paragraph($nbSentences = 5, $variableNbSentences = true),
-            ]);
-        }
+        // for($i=0;$i<10;$i++){
+        //     \App\Lesson::create([
+        //         'order' => $i+1,
+        //         'title' => $faker->word,
+        //         'description' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
+        //         'content' => $faker->paragraph($nbSentences = 5, $variableNbSentences = true),
+        //     ]);
+        // }
     }
 }

@@ -23,6 +23,7 @@
     "lodash": "^4.17.11",
     "react": "^16.0.0",
     "react-dom": "^16.2.0",
+    "react-player": "^1.8.0",
     "semantic-ui-calendar-react": "^0.12.1",
     "styled-components": "^4.1.2",
     "video-react": "^0.13.1"

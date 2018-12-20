@@ -22,6 +22,7 @@ import Footer from '../../common/mainFooter'
 import {API_URL} from "../../common/url-types";
 import "video-react/dist/video-react.css";
 import { Player } from 'video-react';
+import ReactPlayer from 'react-player'
 
 class Page extends React.Component {
     constructor(props) {
@@ -157,7 +158,7 @@ class Page extends React.Component {
                 let percentLesson = 100 / this.state.lessonsCount;
                 let progress = parseFloat(course.progress) + parseFloat(percentLesson);
                 progress = progress.toFixed(0);
-                if(progress >= 100) {
+                if(progress >= 98) {
                     progress = 100;
                 }
                 this.setState({ course: course });
@@ -277,7 +278,6 @@ class Page extends React.Component {
                                         <Header as='h2'>{lesson.title}</Header>
                                         <Divider />
                                             <div>
-                                                <h4>{lesson.title}</h4>
                                                 {lesson.type === 'text' ?
                                                     <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
                                                 : null }
@@ -289,19 +289,13 @@ class Page extends React.Component {
                                                     />
                                                 : null }
                                                 {lesson.type === 'video-external' ?
-                                                    <iframe
-                                                        width="100%" height="420"
-                                                        src={lesson.content}
-                                                        frameBorder="0"
-                                                        allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" />
+                                                    <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
                                                 : null }
                                                 {lesson.type === 'ppt' ?
                                                     lesson.content
                                                 : null }
-                                                {lesson.type === 'doc' ?
-                                                    <object data={lesson.content} type="application/pdf" width="100%" height="700px">
-                                                        <iframe src={lesson.content} width="100%" height="700px"></iframe>
-                                                    </object>
+                                                {lesson.type === 'doc' || lesson.type === 'pdf' ?
+                                                    <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
                                                 : null }
                                                 {lesson.type === 'audio' ?
                                                     <audio controls controlsList="nodownload">

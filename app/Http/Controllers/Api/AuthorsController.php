@@ -107,4 +107,27 @@ class AuthorsController extends Controller
         return response()->json(204);
         //204: No content. When an action was executed successfully, but there is no content to return.
     }
+
+    public function courseAuthor($request, $course){
+        $course = Course::findOrFail($course);
+
+        foreach($request->All() as $author){
+            DB::table('course_authors')->insert(
+                [
+                    'course_id' => $course->id,
+                    'author_id' => $author->id,
+                ]
+            );
+        }
+
+        return response()->json(204);
+    }
+
+    public function listAuthor($course){
+        $course = Course::findOrFail($course);
+        $authors = DB::table('course_authors')
+            ->where('course_id',$course->id)->get();
+
+            return response()->json($authors,200);
+    }
 }
