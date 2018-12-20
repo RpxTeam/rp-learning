@@ -39,7 +39,7 @@ class LoginController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json([
                 "error" => "could_not_create_token",
-                "message" => "Enable to process request."
+                "message" => "Enable to process request.",
             ], 422);
         }
 

@@ -31,6 +31,7 @@ Route::middleware(['jwt_auth'])->group(function(){
    });
 });
 
+
 //user routes
 Route::resource('users', 'Api\UserController');
 
@@ -40,6 +41,8 @@ Route::resource('author', 'Api\AuthorsController');
 //Course routes
 Route::resource('courses', 'Api\CoursesController');
 Route::get('courses/{course}', 'Api\CoursesController@show');
+Route::get('courses/{course}/authors', 'Api\AuthorsController@list');
+Route::post('courses/{course}/authors', 'Api\AuthorsController@courseAuthor');
 
 //Lesson routes
 Route::resource('courses/{course}/lessons', 'Api\LessonController');

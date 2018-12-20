@@ -53,43 +53,6 @@ class LessonSeed extends Seeder
              'content' => 'https://www.youtube.com/embed/a7ntf6wiIik',
             ],
 
-            // ['order' => 1,
-            //  'title' => 'A interface de joystick',
-            //  'type' =>,
-            //  'cotent' =>,
-            //  'mime' =>,
-            // ],
-            // ['order' => ,
-            // 'title' =>,
-            // 'type' =>,
-            // 'cotent' =>,
-            // 'mime' =>,
-            // ],
-            // ['order' => ,
-            // 'title' =>,
-            // 'type' =>,
-            // 'cotent' =>,
-            // 'mime' =>,
-            // ],
-            // ['order' => ,
-            // 'title' =>,
-            // 'type' =>,
-            // 'cotent' =>,
-            // 'mime' =>,
-            // ],
-            // ['order' => ,
-            // 'title' =>,
-            // 'type' =>,
-            // 'cotent' =>,
-            // 'mime' =>,
-            // ],
-            // ['order' => ,
-            // 'title' =>,
-            // 'type' =>,
-            // 'cotent' =>,
-            // 'mime' =>,
-            // ],
-
         ];
 
         foreach ($examples as $example) {
@@ -97,13 +60,13 @@ class LessonSeed extends Seeder
         }
 
         
-        for($i=0;$i<10;$i++){
-            \App\Lesson::create([
-                'order' => $i+1,
-                'title' => $faker->word,
-                'description' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
-                'content' => $faker->paragraph($nbSentences = 5, $variableNbSentences = true),
-            ]);
-        }
+        // for($i=0;$i<10;$i++){
+        //     \App\Lesson::create([
+        //         'order' => $i+1,
+        //         'title' => $faker->word,
+        //         'description' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
+        //         'content' => $faker->paragraph($nbSentences = 5, $variableNbSentences = true),
+        //     ]);
+        // }
     }
 }
