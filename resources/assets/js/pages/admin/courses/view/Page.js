@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 import { API_URL } from "../../../../common/url-types";
 import {
     Grid,
@@ -51,7 +52,7 @@ class Page extends React.Component {
                 user_id: '',
                 course_id: '',
                 lesson_id: '',
-                content: 'Lição'
+                content: ''
             },
             modal: {
                 type: '',
@@ -65,6 +66,7 @@ class Page extends React.Component {
                 name: 'Nenhum arquivo',
                 file: null,
             },
+            datesRange: ''
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -79,7 +81,11 @@ class Page extends React.Component {
         axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
         .then(res => {
             const course = res.data;
-            this.setState({ course: course });
+            let start_date, end_date, ranges;
+            start_date = this.formatDateReverse(course.start_date);
+            end_date = this.formatDateReverse(course.end_date);
+            ranges = start_date + ' - ' + end_date;
+            this.setState({ course: course, datesRange: ranges });
         });
 
         // axios.get(`${ API_URL }/api/courses/${courseID}/lessons/`)
@@ -121,15 +127,28 @@ class Page extends React.Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
+    handleChangeDate = (event, {name, value}) => {
+        this.setState({
+            datesRange: value
+        })
+    };
+
     handleSubmit = event => {
         event.preventDefault();
+
+        const date = this.state.datesRange.split(' ');
+        let start_date = date[0];
+        let end_date = date[2];
+
+        start_date = this.formatDate(start_date);
+        end_date = this.formatDate(end_date);
 
         axios.put(`${ API_URL }/api/courses/${this.state.courseID}`, {
             title: this.state.course.title,
             slug: this.state.course.slug,
             description: this.state.course.description,
-            start_date: this.state.course.start_date,
-            end_date: this.state.course.end_date,
+            start_date: start_date,
+            end_date: end_date,
             duration: this.state.course.duration
          })
             .then(res => {
@@ -149,7 +168,7 @@ class Page extends React.Component {
 
     handleSubmitLesson = (type) => {
         if (this.state.lesson.title !== '') {
-            if(type === 'video-external' || type === 'audio' || type === 'doc' || type === 'pdf') {
+            if(type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
                 this.fileUpload(type);
                 this.closeModal();
                 this.setState({
@@ -160,7 +179,6 @@ class Page extends React.Component {
                         content: ''
                     }
                 });
-                this.loadingLessons();
             } else {
                 axios.post(`${ API_URL }/api/courses/${this.state.courseID}/lessons`, {
                     type: this.state.modal.type,
@@ -179,6 +197,7 @@ class Page extends React.Component {
                         }
                     });
                     this.closeModal();
+                    this.loadingLessons();
                 }).catch(error => {
                     this.setState({
                         message: error.message,
@@ -186,7 +205,6 @@ class Page extends React.Component {
                         success: false
                     })
                 });
-                this.loadingLessons();
             }
         } else {
             this.messageModal('Por favor preencha o título');
@@ -329,6 +347,7 @@ class Page extends React.Component {
         formData.append('title', this.state.lesson.title);
         formData.append('type', this.state.modal.type);
         formData.append('content', this.state.file.file);
+        console.log(formData);
 
         const config = {
             headers: {
@@ -337,7 +356,7 @@ class Page extends React.Component {
         };
 
         axios.post(`${ API_URL }/api/courses/${this.state.courseID}/lessons`, formData, config).then((res) => {
-            console.log(res.data);
+            this.loadingLessons();
         });
     };
 
@@ -351,8 +370,30 @@ class Page extends React.Component {
             });
     };
 
+    formatDate = (date) => {
+        const oldDate = date.split('/');
+        let day, month, year;
+        day = oldDate[0];
+        month = oldDate[1];
+        year = oldDate[2];
+        const newDate = year + '-' + month + '-' + day;
+
+        return newDate
+    };
+
+    formatDateReverse = (date) => {
+        const oldDate = date.split('-');
+        let day, month, year;
+        day = oldDate[0];
+        month = oldDate[1];
+        year = oldDate[2];
+        const newDate = year + '/' + month + '/' + day;
+
+        return newDate
+    };
+
     render() {
-        const { lessons } = this.state;
+        const { course, lessons } = this.state;
         return (
             <Admin heading={"Cursos"}>
                 <Grid.Row>
@@ -376,8 +417,8 @@ class Page extends React.Component {
                                                 id='input-control-title'
                                                 control={Input}
                                                 label='Título'
-                                                placeholder={this.state.course.title}
-                                                value={this.state.course.title}
+                                                placeholder={course.title}
+                                                value={course.title}
                                                 name="title"
                                                 onChange= {this.updateCourse}
                                             />
@@ -385,8 +426,8 @@ class Page extends React.Component {
                                                 id='input-control-description'
                                                 control={TextArea}
                                                 label='Descrição'
-                                                placeholder={this.state.course.description}
-                                                value={this.state.course.description}
+                                                placeholder={course.description}
+                                                value={course.description}
                                                 name='description'
                                                 onChange={this.updateCourse}
                                                 style={{ minHeight: 150 }} />
@@ -396,18 +437,18 @@ class Page extends React.Component {
                                             {/*</Form.Field>*/}
                                         </Segment>
                                         <Grid verticalAlign='middle'>
-                                            <Grid.Column width={12}>
+                                            <Grid.Column width={12} floated='left'>
                                                 <h3>Lições</h3>
                                             </Grid.Column>
-                                            <Grid.Column width={4}>
-                                                <Dropdown text='Adicionar Lição'>
+                                            <Grid.Column width={4} floated='right' style={{ textAlign: 'right' }}>
+                                                <Dropdown text='Adicionar Lição' button floating>
                                                     <Dropdown.Menu>
                                                         <Dropdown.Item icon='file text' text="Texto" onClick={this.openModal('text')} />
                                                         {/*<Dropdown.Item icon='cloud' text="Web content" onClick={this.openModal('webcontent')} />*/}
                                                         <Dropdown.Item icon='file video' text="Vídeo Interno" onClick={this.openModal('video-internal')} />
                                                         <Dropdown.Item icon='file video outline' text="Vídeo Externo" onClick={this.openModal('video-external')} />
                                                         <Dropdown.Item icon='file audio outline' text="Áudio" onClick={this.openModal('audio')} />
-                                                        <Dropdown.Item icon='file' text="Apresentação ou documento" onClick={this.openModal('doc')} />
+                                                        <Dropdown.Item icon='file' text="Documento" onClick={this.openModal('doc')} />
                                                         {/*<Dropdown.Item icon='attention' text="Scorm" onClick={this.openModal('text')} />*/}
                                                     </Dropdown.Menu>
                                                 </Dropdown>
@@ -448,8 +489,8 @@ class Page extends React.Component {
                                                 control={Input}
                                                 label='Slug'
                                                 name="slug"
-                                                placeholder={this.state.course.slug}
-                                                value={this.state.course.slug}
+                                                placeholder={course.slug}
+                                                value={course.slug}
                                                 onChange={this.updateCourse}
                                             />
                                             <Form.Field
@@ -457,29 +498,44 @@ class Page extends React.Component {
                                                 control={Input}
                                                 label='Duração (Horas)'
                                                 name="duration"
-                                                placeholder={this.state.course.duration}
-                                                value={this.state.course.duration}
+                                                placeholder={course.duration}
+                                                value={course.duration}
                                                 onChange={this.updateCourse}
                                             />
                                             <Form.Field>
-                                                <label>Data de Início
-
-                                                </label>
-                                            </Form.Field>
-                                            <Form.Field>
-                                                <label>
-                                                    Data de Término
-
+                                                <label>Data
+                                                    <DatesRangeInput
+                                                        name="datesRange"
+                                                        dateFormat='DD/MM/YYYY'
+                                                        placeholder="Início - Término"
+                                                        value={this.state.datesRange}
+                                                        iconPosition="left"
+                                                        closable={true}
+                                                        onChange={this.handleChangeDate} />
                                                 </label>
                                             </Form.Field>
                                         </Segment>
-                                        <Form.Field
-                                            id='button-control-confirm'
-                                            control={Button}
-                                            content='Atualizar'
-                                            positive
-                                            onClick={this.handleSubmit}
-                                        />
+                                        <Grid>
+                                            <Grid.Row>
+                                                <Grid.Column floated='left' width={8}>
+                                                    <Form.Field
+                                                        id='button-control-confirm'
+                                                        control={Button}
+                                                        content='Atualizar'
+                                                        positive
+                                                        onClick={this.handleSubmit}
+                                                    />
+                                                </Grid.Column>
+                                                <Grid.Column floated='right' width={8} style={{ textAlign: 'right' }}>
+                                                    <Button
+                                                        as={Link}
+                                                        to={'/courses/'+ course.id +'/details'}
+                                                        basic
+                                                        content={'Ver Curso'}
+                                                    />
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
@@ -505,6 +561,11 @@ class Page extends React.Component {
                                             console.log( 'Editor is ready to use!', editor );
                                         } }
                                         onChange={ this.handleEditor }
+                                        config={
+                                            {
+                                                removePlugins: [ 'Link', 'ImageUpload', 'MediaEmbed' ]
+                                            }
+                                        }
                                     />
                                 </Form.Field>
                                 : null}

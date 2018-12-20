@@ -34,22 +34,43 @@ class Page extends React.Component {
             error: false,
             success: false,
             message: '',
-            author: [],
-            options: [
-                { key: 'autor1', text: 'Autor 1', value: 'autor1' },
-                { key: 'autor2', text: 'Autor 2', value: 'autor2' },
-                { key: 'autor3', text: 'Autor 3', value: 'autor3' },
-                { key: 'autor4', text: 'Autor 4', value: 'autor4' },
-            ],
+            authors: [],
+            options: [],
             lessons: {
 
             },
             start_date: '',
             end_date: '',
+            datesRange: '',
             courseID: '',
-            courseEdit: false
+            courseEdit: false,
+            author: '',
         }
     };
+
+    getData = () => {
+        axios.get(`${ API_URL }/api/authors/`)
+            .then(res => {
+                const authors = res.data;
+                console.log(authors);
+                authors.map((author) => {
+                    this.setState({
+                        options: [
+                            ...this.state.options,
+                            {
+                                key: author.id,
+                                text: author.name,
+                                value: author.name
+                            }
+                        ]
+                    })
+                });
+            })
+    };
+
+    componentDidMount() {
+        this.getData();
+    }
 
     handleChange = event => {
         this.setState({
@@ -58,18 +79,27 @@ class Page extends React.Component {
     };
 
     handleChangeDate = (event, {name, value}) => {
-
+        this.setState({
+            datesRange: value
+        })
     };
 
     handleSubmit = event => {
         event.preventDefault();
 
+        const date = this.state.datesRange.split(' ');
+        let start_date = date[0];
+        let end_date = date[2];
+
+        start_date = this.formatDate(start_date);
+        end_date = this.formatDate(end_date);
+
         axios.post(`${ API_URL }/api/courses`, {
             title: this.state.title,
             slug: this.state.slug,
             description: this.state.description,
-            start_date: this.state.start_date,
-            end_date: this.state.end_date,
+            start_date: start_date,
+            end_date: end_date,
             duration: this.state.duration
          }).then(res => {
             this.setState({
@@ -110,7 +140,38 @@ class Page extends React.Component {
 
     closeModal = () => this.setState({ modal: { open: false } });
 
+    openAuthor = () => {
+        this.setState({
+            createAuthor: !this.state.createAuthor
+        });
+    };
+
+    createAuthor = (name) => {
+        axios.post(`${ API_URL }/api/authors/`, { name: name })
+            .then(res => {
+                const optionsCount = this.state.options.length;
+                const newAuthor = { key: optionsCount + 1, value: name, text: name };
+                this.setState({ author: '', options: [ ...this.state.options, newAuthor ], authors: [ ...this.state.authors, newAuthor ] });
+                // this.getData();
+                this.openAuthor();
+            });
+    };
+
+    formatDate = (date) => {
+        const oldDate = date.split('/');
+        let day, month, year;
+        day = oldDate[0];
+        month = oldDate[1];
+        year = oldDate[2];
+        const newDate = year + '-' + month + '-' + day;
+
+        return newDate
+    };
+
+    changeAuthors = (e, { value }) => this.setState({ authors: value })
+
     render() {
+        const { authors, options } = this.state;
         if (this.state.courseEdit === true) {
             return <Redirect to={'/admin/courses/' + this.state.courseID} />
         }
@@ -149,10 +210,6 @@ class Page extends React.Component {
                                                 name='description'
                                                 onChange={this.handleChange}
                                                 style={{ minHeight: 150 }} />
-                                            {/*<Form.Field>*/}
-                                            {/*<label>Autores</label>*/}
-                                            {/*<Dropdown placeholder='Autores' fluid multiple selection options={this.state.options} value={this.state.author} onChange={this.handleChange}/>*/}
-                                            {/*</Form.Field>*/}
                                         </Segment>
                                     </Grid.Column>
                                     <Grid.Column width={4}>
@@ -176,34 +233,47 @@ class Page extends React.Component {
                                                 onChange={this.handleChange}
                                             />
                                             <Form.Field>
-                                                <label>Data de Início
+                                                <label>Data
                                                     <DatesRangeInput
                                                         name="datesRange"
+                                                        dateFormat='DD/MM/YYYY'
                                                         placeholder="Início - Término"
                                                         value={this.state.datesRange}
                                                         iconPosition="left"
-                                                        onChange={this.handleChangeDate} />
-                                                    <DateInput
-                                                        name="start_date"
-                                                        placeholder="Data"
-                                                        dateFormat="DD/MM/YYYY"
-                                                        value={this.state.start_date}
-                                                        iconPosition="left"
+                                                        closable={true}
                                                         onChange={this.handleChangeDate} />
                                                 </label>
                                             </Form.Field>
                                             <Form.Field>
-                                                <label>
-                                                    Data de Término
-                                                    <DateInput
-                                                        name="end_date"
-                                                        dateFormat="DD/MM/YYYY"
-                                                        placeholder="Data"
-                                                        value={this.state.end_date}
-                                                        iconPosition="left"
-                                                        onChange={this.handleChangeDate} />
-                                                </label>
+                                                <label>Autores</label>
+                                                <Grid>
+                                                    <Grid.Row>
+                                                        <Grid.Column width={12}>
+                                                            <Dropdown placeholder='Autores' fluid multiple search selection options={options} value={authors}
+                                                                      onChange={this.changeAuthors}/>
+                                                        </Grid.Column>
+                                                        <Grid.Column width={2}>
+                                                            <Button circular icon={this.state.createAuthor ? 'minus' : 'plus'} onClick={this.openAuthor} />
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                </Grid>
                                             </Form.Field>
+                                            {this.state.createAuthor ?
+                                            <React.Fragment>
+                                                <Form.Field>
+                                                    <input
+                                                        id='input-control-author'
+                                                        type='text'
+                                                        name="author"
+                                                        placeholder='Nome do Autor'
+                                                        onChange={this.handleChange}
+                                                    />
+                                                </Form.Field>
+                                                <Form.Field>
+                                                    <Button content='Adicionar Autor' onClick={this.createAuthor.bind(this, this.state.author)} style={{ width: '100%' }}/>
+                                                </Form.Field>
+                                            </React.Fragment>
+                                            : null }
                                         </Segment>
                                         <Form.Field
                                             id='button-control-confirm'

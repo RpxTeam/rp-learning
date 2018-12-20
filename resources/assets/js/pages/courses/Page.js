@@ -105,7 +105,7 @@ class Page extends React.Component {
                     <PageHeader heading="Cursos"/>
                     <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
                         <Container>
-                            <Card.Group itemsPerRow={4}>
+                            <Card.Group itemsPerRow={3}>
                                 { courses.map((course) => 
                                 <Card color='red' key={course.id}>
                                     <Card.Content header={ course.title } />

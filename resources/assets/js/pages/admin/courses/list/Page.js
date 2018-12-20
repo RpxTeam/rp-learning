@@ -78,7 +78,7 @@ class Page extends React.Component {
     };
 
     render() {
-        const courses = this.state.courses;
+        const { courses } = this.state;
         return (
             <Admin heading='Cursos' createLink='/admin/courses/create'>
                 <Grid.Column width={16}>
@@ -114,7 +114,10 @@ class Page extends React.Component {
                                     <Table.Cell>{course.duration}</Table.Cell>
                                     <Table.Cell>{course.description}</Table.Cell>
                                     <Table.Cell collapsing textAlign="right">
-                                        <Button icon='trash' onClick={this.handleConfirm} value={course.id}/>
+                                        <Button.Group size='small'>
+                                            <Button icon='eye' as={Link} to={'/courses/'+ course.id +'/details'} color='green' />
+                                            <Button icon='trash' onClick={this.handleConfirm} value={course.id} color='red' />
+                                        </Button.Group>
                                     </Table.Cell>
                                     </Table.Row>
                                     )

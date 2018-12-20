@@ -27,7 +27,7 @@ class CreateCoursesTable extends Migration
             $table->date('end_date')->nullable();
             
             $table->unsignedInteger('author_id')->nullable();
-            $table->foreign('author_id')->references('id')->on('author')->onDelete('cascade');
+            $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade');
             
             $table->timestamps();
             $table->softDeletes();

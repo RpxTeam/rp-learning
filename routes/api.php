@@ -35,7 +35,7 @@ Route::middleware(['jwt_auth'])->group(function(){
 Route::resource('users', 'Api\UserController');
 
 //Author routes
-Route::resource('author', 'Api\AuthorsController');
+Route::resource('authors', 'Api\AuthorsController');
 
 //Course routes
 Route::resource('courses', 'Api\CoursesController');

@@ -166,8 +166,6 @@ class Page extends React.Component {
                                         <Image src={course.image} />
                                     : null }
                                     <Divider hidden />
-                                    {course.description}
-                                    <Divider hidden />
                                     <Tab color='blue' attached={'true'} menu={{ secondary: true }} panes={panes} />
                                 </Grid.Column>
                                 <Grid.Column width={5}>
