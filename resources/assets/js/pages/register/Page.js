@@ -132,6 +132,9 @@ class Page extends React.Component {
         if (this.props.isAuthenticated) {
             return <Redirect to='/' replace/>
         }
+        if (this.state.isSuccess) {
+            return <Redirect to='/login' replace/>
+        }
         const {errors} = this.state;
         return (
             <div>
