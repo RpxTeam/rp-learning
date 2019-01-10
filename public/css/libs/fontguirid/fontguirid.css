@@ -1,0 +1,142 @@
+@font-face {
+  font-family: 'fontguirid';
+  src:  url('fonts/fontguirid.eot?fh4n77');
+  src:  url('fonts/fontguirid.eot?fh4n77#iefix') format('embedded-opentype'),
+    url('fonts/fontguirid.ttf?fh4n77') format('truetype'),
+    url('fonts/fontguirid.woff?fh4n77') format('woff'),
+    url('fonts/fontguirid.svg?fh4n77#fontguirid') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+i[class*="icon-"], span[class*="icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'fontguirid' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-search:before {
+  content: "\e91d";
+  color: #fff;
+}
+.icon-heart:before {
+  content: "\e900";
+  color: #fff;
+}
+.icon-eye-o:before {
+  content: "\e901";
+  color: #fff;
+}
+.icon-cog:before {
+  content: "\e902";
+  color: #fff;
+}
+.icon-throphy:before {
+  content: "\e903";
+  color: #fff;
+}
+.icon-heart-o:before {
+  content: "\e904";
+  color: #fff;
+}
+.icon-lotus:before {
+  content: "\e905";
+  color: #fff;
+}
+.icon-arrow-left:before {
+  content: "\e906";
+  color: #fff;
+}
+.icon-arrow-top:before {
+  content: "\e907";
+  color: #fff;
+}
+.icon-bookmark-o:before {
+  content: "\e908";
+  color: #fff;
+}
+.icon-bookmark:before {
+  content: "\e909";
+  color: #fff;
+}
+.icon-certificate:before {
+  content: "\e90a";
+  color: #fff;
+}
+.icon-eye:before {
+  content: "\e90b";
+  color: #fff;
+}
+.icon-guirid:before {
+  content: "\e90c";
+  color: #fff;
+}
+.icon-course:before {
+  content: "\e90d";
+  color: #fff;
+}
+.icon-courses:before {
+  content: "\e90e";
+  color: #fff;
+}
+.icon-zen:before {
+  content: "\e90f";
+  color: #fff;
+}
+.icon-house:before {
+  content: "\e910";
+  color: #fff;
+}
+.icon-person:before {
+  content: "\e911";
+  color: #fff;
+}
+.icon-notify:before {
+  content: "\e912";
+  color: #fff;
+}
+.icon-tv:before {
+  content: "\e913";
+  color: #fff;
+}
+.icon-book:before {
+  content: "\e914";
+  color: #fff;
+}
+.icon-alarm-clock:before {
+  content: "\e915";
+  color: #fff;
+}
+.icon-padlock:before {
+  content: "\e916";
+  color: #fff;
+}
+.icon-star:before {
+  content: "\e917";
+  color: #fff;
+}
+.icon-star-o:before {
+  content: "\e918";
+  color: #fff;
+}
+.icon-Forma--4:before {
+  content: "\e919";
+  color: #fff;
+}
+.icon-zen-2:before {
+  content: "\e91b";
+  color: #fff;
+}
+.icon-zen-1:before {
+  content: "\e91c";
+  color: #fff;
+}

@@ -1,9 +1,8 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import {
-    Button,
     Container,
     Grid,
     Header,
@@ -16,11 +15,15 @@ import {
     List,
     Tab
 } from 'semantic-ui-react'
-import PropTypes from 'prop-types'
-import PageHeader from '../../common/pageHeader'
+import Banner from '../../components/Banner'
 import Navigation from '../../common/navigation'
 import Footer from '../../common/mainFooter'
-import {API_URL} from "../../common/url-types";
+import { API_URL } from "../../common/url-types"
+import InfoCourse from '../../components/InfoCourse';
+import Button from '../../components/Button';
+import Tabs from '../../components/Tabs';
+import Detail from '../../components/details';
+import Testimonial from '../../components/Testimonial';
 
 class Page extends React.Component {
     constructor(props) {
@@ -39,23 +42,23 @@ class Page extends React.Component {
     }
 
     getData = () => {
-        if(this.props.isAuthenticated) {
-            axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`)
+        if (this.props.isAuthenticated) {
+            axios.get(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`)
                 .then(res => {
-                    const {data} = res;
-                    if(!data.view) {
-                        axios.post(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`);
-                        axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {view: 1});
+                    const { data } = res;
+                    if (!data.view) {
+                        axios.post(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`);
+                        axios.put(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`, { view: 1 });
                     }
                     this.setState({ progress: data.progress });
                 });
-            axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
+            axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
                 .then(res => {
                     const course = res.data;
                     this.setState({ course: course });
                 });
         } else {
-            axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
+            axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
                 .then(res => {
                     const course = res.data;
                     this.setState({ course: course });
@@ -69,25 +72,25 @@ class Page extends React.Component {
     }
 
     getLessons = () => {
-        axios.get(`${ API_URL }/api/courses/${this.state.courseID}/lessons`)
-        .then(res => {
-            const lessons = res.data;
-            this.setState({ lessons: lessons, lessonsCount: lessons.length });
-        });
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons`)
+            .then(res => {
+                const lessons = res.data;
+                this.setState({ lessons: lessons, lessonsCount: lessons.length });
+            });
     };
 
     startCourse = () => {
-        axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`)
-        .then(res => {
-            if(res.data.progress === null) {
-                this.updateCourse();
-            }
-            this.setState({ onCourse: true });
-        });
+        axios.get(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`)
+            .then(res => {
+                if (res.data.progress === null) {
+                    this.updateCourse();
+                }
+                this.setState({ onCourse: true });
+            });
     };
 
     updateCourse = () => {
-        axios.put(`${ API_URL }/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {
+        axios.put(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {
             progress: 0,
         })
             .then(res => {
@@ -97,7 +100,7 @@ class Page extends React.Component {
 
     formatIcons = (type) => {
         let icon = 'file';
-        switch(type) {
+        switch (type) {
             case 'text':
                 icon = icon + ' outline';
                 break;
@@ -117,33 +120,56 @@ class Page extends React.Component {
     };
 
     render() {
-        const { course, courseID, lessons, progress } = this.state;
+        const { course, courseID, lessons, lessonsCount } = this.state;
         const { isAuthenticated, user } = this.props;
         if (this.state.onCourse === true) {
             return <Redirect to={'/courses/' + courseID} />
         }
         const panes = [
             { menuItem: 'Descrição', render: () => <Tab.Pane attached={false}>{course.description}</Tab.Pane> },
-            { menuItem: 'Lições', render: () => <Tab.Pane attached={false}>
+            {
+                menuItem: 'Lições', render: () => <Tab.Pane attached={false}>
                     {
                         lessons.map((lesson) =>
                             <List divided verticalAlign='middle' key={lesson.id}>
-                                <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
+                                <List.Item style={{ paddingTop: '1em', paddingBottom: '1em' }}>
                                     <Icon name={this.formatIcons(lesson.type)} />
                                     <List.Content>{lesson.title}</List.Content>
                                 </List.Item>
                             </List>
                         )
                     }
-                </Tab.Pane> },
+                </Tab.Pane>
+            },
             { menuItem: 'Autores', render: () => <Tab.Pane attached={false}>{course.instructor}</Tab.Pane> },
             // { menuItem: 'Depoimentos', render: () => <Tab.Pane attached={false}>Tab 4 Content</Tab.Pane> },
         ];
         return (
-            <div>
-                <Navigation/>
-
+            <div id="course-page">
                 <main className="fadeIn animated">
+                    <Banner
+                        title={course.title}
+                        image={course.image}
+                    />
+                    <InfoCourse
+                        trails={1}
+                        lessons={lessonsCount}
+                        duration={course.duration}
+                    />
+                    <Tabs>
+                        <div label="DETALHES">
+                            <Detail
+                                title={course.title}
+                                description={course.description}
+                            />
+                        </div>
+                        <div label="AVALIAÇÕES">
+                            <Testimonial />
+                        </div>
+                        <div label="CONTEÚDO">
+                            <div></div>
+                        </div>
+                    </Tabs>
                     <Container style={{ marginTop: '5em' }}>
                         <Grid>
                             <Grid.Row>
@@ -152,19 +178,19 @@ class Page extends React.Component {
                                         <Header as='h2' floated='left'>
                                             {course.title}
                                         </Header>
-                                        {isAuthenticated ?
+                                        {/* {isAuthenticated ?
                                             <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>
                                                 {progress != null ? "Continuar Curso" : "Iniciar Curso" }
                                             </Button>
                                         :
                                             <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>Iniciar Curso</Button>
-                                        }
+                                        } */}
                                     </Segment>
                                     <Divider hidden clearing />
                                     <Divider />
                                     {course.image ?
                                         <Image src={course.image} />
-                                    : null }
+                                        : null}
                                     <Divider hidden />
                                     <Tab color='blue' attached={'true'} menu={{ secondary: true }} panes={panes} />
                                 </Grid.Column>
@@ -173,22 +199,22 @@ class Page extends React.Component {
                                         <Header as='h2'>Detalhes do Curso</Header>
                                         <Divider />
                                         <List divided verticalAlign='middle'>
-                                            <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
-                                                <List.Content floated='right'>{this.state.lessonsCount}</List.Content>
+                                            <List.Item style={{ paddingTop: '1em', paddingBottom: '1em' }}>
+                                                <List.Content floated='right'>{lessonsCount}</List.Content>
                                                 <Icon name='file' />
                                                 <List.Content>Lições</List.Content>
                                             </List.Item>
-                                            <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
+                                            <List.Item style={{ paddingTop: '1em', paddingBottom: '1em' }}>
                                                 <List.Content floated='right'>{course.duration}</List.Content>
                                                 <Icon name='clock outline' />
                                                 <List.Content>Duração</List.Content>
                                             </List.Item>
-                                            <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
+                                            <List.Item style={{ paddingTop: '1em', paddingBottom: '1em' }}>
                                                 <List.Content floated='right'>{course.start_date}</List.Content>
                                                 <Icon name='calendar alternate' />
                                                 <List.Content>Data de Início</List.Content>
                                             </List.Item>
-                                            <List.Item style={{paddingTop: '1em', paddingBottom: '1em'}}>
+                                            <List.Item style={{ paddingTop: '1em', paddingBottom: '1em' }}>
                                                 <List.Content floated='right'>{course.end_date}</List.Content>
                                                 <Icon name='calendar alternate' />
                                                 <List.Content>Data de Término</List.Content>
@@ -200,7 +226,7 @@ class Page extends React.Component {
                         </Grid>
                     </Container>
                 </main>
-                <Footer/>
+                <Button />
             </div>
         );
     }

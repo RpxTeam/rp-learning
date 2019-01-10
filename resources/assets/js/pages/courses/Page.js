@@ -1,22 +1,16 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {Link, Redirect} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import axios from 'axios'
 import {
-    Button,
     Container,
-    Grid,
-    Header,
-    Icon,
     Segment,
-    Card,
-    Image,
-    Progress
 } from 'semantic-ui-react'
+import Card from '../../components/Card'
+import Grid from '../../components/Grid'
 import PageHeader from '../../common/pageHeader'
 import Navigation from '../../common/navigation'
 import Footer from '../../common/mainFooter'
-import {API_URL} from "../../common/url-types";
+import {API_URL} from "../../common/url-types"
 
 class Page extends React.Component {
     constructor(props) {
@@ -102,49 +96,24 @@ class Page extends React.Component {
             <div>
                 <Navigation/>
                 <main className="fadeIn animated">
-                    <PageHeader heading="Cursos"/>
-                    <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
-                        <Container>
-                            <Card.Group itemsPerRow={3}>
+                    <Grid>
+                        <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
+                            <Container>
+                            {console.log(courses)}
                                 { courses.map((course) => 
-                                <Card color='red' key={course.id}>
-                                    <Card.Content header={ course.title } />
-                                    {course.image ?
-                                        <Image src={course.image} />
-                                    : null }
-                                    <Card.Content>
-                                        <Card.Meta>
-                                            <span className='date'>Criado em { this.formatDate(course.created_at) }</span>
-                                        </Card.Meta>
-                                        <Card.Description>{ course.description }</Card.Description>
-                                    </Card.Content>
-                                    <Card.Content extra>
-                                        <div className='ui two buttons'>
-                                            <Button basic color='green' onClick={this.viewCourse.bind(this, course.id)}>
-                                                Detalhes
-                                            </Button>
-                                        </div>
-                                    </Card.Content>
-                                    <Card.Content extra>
-                                        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                                            <span floated={'left'}>
-                                                <Icon name='eye' />
-                                                { course.viewed }
-                                            </span>
-                                            {/*{isAuthenticated ?*/}
-                                            {/*<a onClick={this.favoriteCourse.bind(this, course.id)}>*/}
-                                                {/*<Icon name={course.favorite ? 'heart' : 'heart outline'} />*/}
-                                                {/*{ course.favorited }*/}
-                                            {/*</a>*/}
-                                            {/*: null }*/}
-                                        </div>
-                                    </Card.Content>
-                                </Card>
+                                    <Card
+                                        id={course.id}
+                                        key={course.id}
+                                        name={course.title}
+                                        image={course.image}
+                                        category="Categoria"
+                                        onClick={console.log('dsadsda')}
+                                    />
                                     )
                                 }
-                            </Card.Group>
-                        </Container>
-                    </Segment>
+                            </Container>
+                        </Segment>
+                    </Grid>
                 </main>
                 <Footer/>
             </div>
