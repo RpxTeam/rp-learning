@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class DataPoint extends Model
 {
+    protected $fillable = ['user_id','course_id','lesson_id','quiz_id','point_id'];
+    protected $hidden = [];
+    public static $searchable = [
+    ];
+
     /**
      * Set to null if empty
      * @param $input
