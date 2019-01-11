@@ -2,7 +2,6 @@ import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import {
-    Button,
     Container,
     Grid,
     Header,
@@ -17,12 +16,16 @@ import {
     Progress,
     Modal
 } from 'semantic-ui-react'
-import Navigation from '../../common/navigation'
+import Menu from '../../components/Menu'
+import Banner from '../../components/Banner'
 import Footer from '../../common/mainFooter'
+import Button from '../../components/Button'
 import {API_URL} from "../../common/url-types";
 import "video-react/dist/video-react.css";
 import { Player } from 'video-react';
 import ReactPlayer from 'react-player'
+import Modules from '../../components/Modules';
+import InfoLesson from '../../components/InfoLesson';
 
 class Page extends React.Component {
     constructor(props) {
@@ -231,26 +234,53 @@ class Page extends React.Component {
         }
         return (
             <div>
-                <Navigation/>
+                <Menu />
                 <main className="fadeIn animated">
-                    <div style={{
-                        background: '#A2A2A2',
-                        marginBottom: '5em'
-                    }}>
-                        <Container>
-                            <Header
-                                as='h1'
-                                content={course.title}
-                                inverted
-                                style={{
-                                    fontSize: '3em',
-                                    fontWeight: 'normal',
-                                    paddingBottom: '1em',
-                                    paddingTop: '1em',
-                                }}
-                            />
-                        </Container>
-                    </div>
+                    <Banner
+                        internal
+                        title={course.title}
+                        image={course.image}
+                    />
+                    <Grid>
+                        <Modules />
+                        <InfoLesson />
+                        {lesson ?
+                            <div className="content-lesson">
+                                <div className="gridD">
+                                    <div className="content">
+                                        {lesson.type === 'text' ?
+                                            <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
+                                        : null }
+                                        {lesson.type === 'video-internal' ?
+                                            <Player
+                                                playsInline
+                                                poster="/assets/poster.png"
+                                                src={API_URL + '/api/courses/'+ courseID +'/lessons/'+ lesson.id +'/media'}
+                                            />
+                                        : null }
+                                        {lesson.type === 'video-external' ?
+                                            <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
+                                        : null }
+                                        {lesson.type === 'ppt' ?
+                                            lesson.content
+                                        : null }
+                                        {lesson.type === 'doc' || lesson.type === 'pdf' ?
+                                            <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
+                                        : null }
+                                        {lesson.type === 'audio' ?
+                                            <audio controls controlsList="nodownload">
+                                                <source
+                                                    src={API_URL + '/api/courses/'+ courseID +'/lessons/'+ lesson.id +'/media'}
+                                                    type={lesson.mime}
+                                                />
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        : null }
+                                    </div>
+                                </div>
+                            </div>
+                        : null }
+                    </Grid>
                     <Container>
                         <Grid>
                             <Grid.Row>
@@ -308,19 +338,20 @@ class Page extends React.Component {
                                                 : null }
                                             </div>
                                     </Segment>
-                                    {!lesson.view ?
+                                    {/* {!lesson.view ?
                                         <Button positive floated='right' onClick={this.endLesson.bind(this, lesson.id)}>Finalizar
                                             lição</Button>
                                         :
                                         this.state.last != lesson.id ?
                                             <Button positive basic floated='right' onClick={this.nextLesson.bind(this, lesson.id)}>Próxima lição</Button>
                                         : null
-                                    }
+                                    } */}
                                 </Grid.Column>
                                 : null }
                             </Grid.Row>
                         </Grid>
                     </Container>
+                    <Button type='success' />
                 </main>
                 <Footer/>
                 <Modal size={'tiny'} dimmer={'blurring'} open={modal.open} onClose={this.close}>
@@ -332,13 +363,13 @@ class Page extends React.Component {
                         </Modal.Description>
                     </Modal.Content>
                     <Modal.Actions style={{ textAlign: 'center' }}>
-                        <Button color='black' onClick={this.closeModal} content="Voltar" />
-                        <Button
+                        {/* <Button color='black' onClick={this.closeModal} content="Voltar" /> */}
+                        {/* <Button
                             positive
                             content="Ir para a Lista de Cursos"
                             as={Link}
                             to={'/courses'}
-                        />
+                        /> */}
                     </Modal.Actions>
                 </Modal>
             </div>

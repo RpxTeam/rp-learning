@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-const Container = styled.div `
+const Container = styled.div`
     max-width: 100%;
     margin-right: 19px;
     margin-left: 19px;
@@ -9,13 +9,13 @@ const Container = styled.div `
 `
 
 export class Grid extends Component {
-  render() {
-    return (
-      <Container>
-        {this.props.children}
-      </Container>
-    )
-  }
+    render() {
+        return (
+            <Container>
+                {this.props.children}
+            </Container>
+        )
+    }
 }
 
 export default Grid

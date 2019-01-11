@@ -120,7 +120,7 @@ class Page extends React.Component {
     };
 
     render() {
-        const { course, courseID, lessons, lessonsCount } = this.state;
+        const { course, courseID, lessons, lessonsCount, progress } = this.state;
         const { isAuthenticated, user } = this.props;
         if (this.state.onCourse === true) {
             return <Redirect to={'/courses/' + courseID} />
@@ -148,6 +148,7 @@ class Page extends React.Component {
             <div id="course-page">
                 <main className="fadeIn animated">
                     <Banner
+                        internal
                         title={course.title}
                         image={course.image}
                     />
@@ -161,6 +162,7 @@ class Page extends React.Component {
                             <Detail
                                 title={course.title}
                                 description={course.description}
+                                instructor={course.instructor}
                             />
                         </div>
                         <div label="AVALIAÇÕES">
@@ -175,58 +177,24 @@ class Page extends React.Component {
                             <Grid.Row>
                                 <Grid.Column width={11}>
                                     <Segment basic>
-                                        <Header as='h2' floated='left'>
-                                            {course.title}
-                                        </Header>
-                                        {/* {isAuthenticated ?
-                                            <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>
-                                                {progress != null ? "Continuar Curso" : "Iniciar Curso" }
-                                            </Button>
-                                        :
-                                            <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>Iniciar Curso</Button>
-                                        } */}
                                     </Segment>
-                                    <Divider hidden clearing />
-                                    <Divider />
-                                    {course.image ?
-                                        <Image src={course.image} />
-                                        : null}
-                                    <Divider hidden />
                                     <Tab color='blue' attached={'true'} menu={{ secondary: true }} panes={panes} />
-                                </Grid.Column>
-                                <Grid.Column width={5}>
-                                    <Segment>
-                                        <Header as='h2'>Detalhes do Curso</Header>
-                                        <Divider />
-                                        <List divided verticalAlign='middle'>
-                                            <List.Item style={{ paddingTop: '1em', paddingBottom: '1em' }}>
-                                                <List.Content floated='right'>{lessonsCount}</List.Content>
-                                                <Icon name='file' />
-                                                <List.Content>Lições</List.Content>
-                                            </List.Item>
-                                            <List.Item style={{ paddingTop: '1em', paddingBottom: '1em' }}>
-                                                <List.Content floated='right'>{course.duration}</List.Content>
-                                                <Icon name='clock outline' />
-                                                <List.Content>Duração</List.Content>
-                                            </List.Item>
-                                            <List.Item style={{ paddingTop: '1em', paddingBottom: '1em' }}>
-                                                <List.Content floated='right'>{course.start_date}</List.Content>
-                                                <Icon name='calendar alternate' />
-                                                <List.Content>Data de Início</List.Content>
-                                            </List.Item>
-                                            <List.Item style={{ paddingTop: '1em', paddingBottom: '1em' }}>
-                                                <List.Content floated='right'>{course.end_date}</List.Content>
-                                                <Icon name='calendar alternate' />
-                                                <List.Content>Data de Término</List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Segment>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
                     </Container>
                 </main>
-                <Button />
+                {/* {isAuthenticated ?
+                    <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>
+                        {progress != null ? "Continuar Curso" : "Iniciar Curso" }
+                    </Button>
+                :
+                    <Button size='big' basic color='blue' floated='right' onClick={}>Iniciar Curso</Button>
+                } */}
+                <Button
+                    title={isAuthenticated ? progress != null ? "Continuar Curso" : "Iniciar Curso" : "Iniciar Curso"  }
+                    onClick={this.startCourse}
+                />
             </div>
         );
     }

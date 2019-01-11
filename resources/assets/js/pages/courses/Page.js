@@ -11,6 +11,8 @@ import PageHeader from '../../common/pageHeader'
 import Navigation from '../../common/navigation'
 import Footer from '../../common/mainFooter'
 import {API_URL} from "../../common/url-types"
+import Banner from '../../components/Banner';
+import Menu from '../../components/Menu';
 
 class Page extends React.Component {
     constructor(props) {
@@ -93,30 +95,25 @@ class Page extends React.Component {
         }
 
         return (
-            <div>
-                <Navigation/>
+            <React.Fragment>
+                <Menu />
                 <main className="fadeIn animated">
+                    <Banner />
                     <Grid>
-                        <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
-                            <Container>
-                            {console.log(courses)}
-                                { courses.map((course) => 
-                                    <Card
-                                        id={course.id}
-                                        key={course.id}
-                                        name={course.title}
-                                        image={course.image}
-                                        category="Categoria"
-                                        onClick={console.log('dsadsda')}
-                                    />
-                                    )
-                                }
-                            </Container>
-                        </Segment>
+                        { courses.map((course) => 
+                            <Card
+                                id={course.id}
+                                key={course.id}
+                                name={course.title}
+                                image={course.image}
+                                category="Categoria"
+                                onClick={console.log('dsadsda')}
+                            />
+                            )
+                        }
                     </Grid>
                 </main>
-                <Footer/>
-            </div>
+            </React.Fragment>
         );
     }
 }

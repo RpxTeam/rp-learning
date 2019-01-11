@@ -33,8 +33,8 @@ class Tabs extends Component {
 
         return (
             <div className="tabs">
-                <div class="navtabs">
-                    <div class="gridD">
+                <div className="navtabs">
+                    <div className="gridD">
                         <ul>
                             {children.map((child) => {
                                 const { label } = child.props;
@@ -49,10 +49,10 @@ class Tabs extends Component {
                                 );
                             })}
                         </ul>
-                        <div class="navtabs-bar"></div>
+                        <div className="navtabs-bar"></div>
                     </div>
                 </div>
-                <div class="navtabs-content">
+                <div className="navtabs-content">
                     <div className="tab-content">
                         {children.map((child) => {
                             if (child.props.label !== activeTab) return undefined;

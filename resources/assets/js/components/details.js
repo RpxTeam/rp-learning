@@ -5,22 +5,23 @@ export class Detail extends Component {
   render() {
     return (
       <React.Fragment>
-        <div class="gridD">
-            <div class="course-name">
+        <div className="gridD">
+            <div className="course-name">
                 <p>{this.props.title}</p>
             </div>
-            <div class="about-course">
+            <div className="about-course">
                 <p><small>Sobre o Curso</small></p>
             </div>
-            <div class="content-course">
+            <div className="content-course">
                 <p>{this.props.description}</p>
             </div>
         </div>
-        <div class="intructors">
-            <div class="gridD">
+        <div className="intructors">
+            <div className="gridD">
                 <span>Instrutores:</span>
                 <p>
-                    <span>Instructor 1</span><span>Instructor 2</span><span>Instructor 3</span>.</p>
+                    <span>{this.props.instructor}</span>
+                </p>
             </div>
         </div>
       </React.Fragment>
@@ -30,7 +31,8 @@ export class Detail extends Component {
 
 Detail.PropTypes = {
     title: PropTypes.string,
-    description: PropTypes.string
+    description: PropTypes.string,
+    instructor: PropTypes.string
 }
 
 export default Detail
