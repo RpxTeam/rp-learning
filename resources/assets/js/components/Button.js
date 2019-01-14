@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 
 const Link = styled.div `
-    ${props => props.type && css`
+    ${props => props.type === 'success' && css`
         background: #2EC600;
         border: 1px solid limegreen;`
     }
@@ -12,11 +12,9 @@ const Link = styled.div `
 export class Button extends Component {
     render() {
         return (
-            <Link className="btn-start">
-                <a href="#modal-login" onClick={this.props.onClick}>
-                    <i className="icon-courses"></i>
-                    {this.props.title}
-            </a>
+            <Link className="btn-start success" onClick={this.props.onClick}>
+                <i className="icon-courses"></i>
+                {this.props.title}
             </Link>
         )
     }

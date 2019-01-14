@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 export class InfoLesson extends Component {
     render() {
@@ -9,13 +10,18 @@ export class InfoLesson extends Component {
                         <i className="icon-zen-1" />
                     </div>
                     <div className="text">
-                        <p>Aula 1</p>
-                        <p><small>Tutoriais</small></p>
+                        <p>{this.props.title}</p>
+                            <p><small>{this.props.theme}</small></p>
                     </div>
                 </div>
             </div>
         )
     }
+}
+
+InfoLesson.PropTypes = {
+    title: PropTypes.string,
+    theme: PropTypes.string
 }
 
 export default InfoLesson

@@ -107,7 +107,7 @@ class Page extends React.Component {
                                 name={course.title}
                                 image={course.image}
                                 category="Categoria"
-                                onClick={console.log('dsadsda')}
+                                onClick={this.viewCourse.bind(this, course.id)}
                             />
                             )
                         }

@@ -26,6 +26,7 @@ import { Player } from 'video-react';
 import ReactPlayer from 'react-player'
 import Modules from '../../components/Modules';
 import InfoLesson from '../../components/InfoLesson';
+import Module from '../../components/Module';
 
 class Page extends React.Component {
     constructor(props) {
@@ -169,7 +170,8 @@ class Page extends React.Component {
             });
 
         const day = new Date();
-        const finish = day.getFullYear() + '-' + day.getMonth() + '-' + day.getDate();
+        const month = day.getMonth() + 1;
+        const finish = day.getFullYear() + '-' + month + '-' + day.getDate();
 
         axios.put(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${id}`, {
             view: 1,
@@ -242,43 +244,52 @@ class Page extends React.Component {
                         image={course.image}
                     />
                     <Grid>
-                        <Modules />
-                        <InfoLesson />
+                        <Modules>
+                            {
+                                lessons ?
+                                    lessons.map((lesson) =>
+                                    <Module key={lesson.id} title={'Lição ' +lesson.id} disabled={lesson.view === null} onClick={this.getLesson.bind(this, lesson.id)} />
+                                ) : null
+                            }
+                        </Modules>
                         {lesson ?
-                            <div className="content-lesson">
-                                <div className="gridD">
-                                    <div className="content">
-                                        {lesson.type === 'text' ?
-                                            <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
-                                        : null }
-                                        {lesson.type === 'video-internal' ?
-                                            <Player
-                                                playsInline
-                                                poster="/assets/poster.png"
-                                                src={API_URL + '/api/courses/'+ courseID +'/lessons/'+ lesson.id +'/media'}
-                                            />
-                                        : null }
-                                        {lesson.type === 'video-external' ?
-                                            <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
-                                        : null }
-                                        {lesson.type === 'ppt' ?
-                                            lesson.content
-                                        : null }
-                                        {lesson.type === 'doc' || lesson.type === 'pdf' ?
-                                            <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
-                                        : null }
-                                        {lesson.type === 'audio' ?
-                                            <audio controls controlsList="nodownload">
-                                                <source
+                            <React.Fragment>
+                                <InfoLesson title={lesson.title} theme="" />
+                                <div className="content-lesson">
+                                    <div className="gridD">
+                                        <div className="content">
+                                            {lesson.type === 'text' ?
+                                                <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
+                                            : null }
+                                            {lesson.type === 'video-internal' ?
+                                                <Player
+                                                    playsInline
+                                                    poster="/assets/poster.png"
                                                     src={API_URL + '/api/courses/'+ courseID +'/lessons/'+ lesson.id +'/media'}
-                                                    type={lesson.mime}
                                                 />
-                                                Your browser does not support the audio element.
-                                            </audio>
-                                        : null }
+                                            : null }
+                                            {lesson.type === 'video-external' ?
+                                                <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
+                                            : null }
+                                            {lesson.type === 'ppt' ?
+                                                lesson.content
+                                            : null }
+                                            {lesson.type === 'doc' || lesson.type === 'pdf' ?
+                                                <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
+                                            : null }
+                                            {lesson.type === 'audio' ?
+                                                <audio controls controlsList="nodownload">
+                                                    <source
+                                                        src={API_URL + '/api/courses/'+ courseID +'/lessons/'+ lesson.id +'/media'}
+                                                        type={lesson.mime}
+                                                    />
+                                                    Your browser does not support the audio element.
+                                                </audio>
+                                            : null }
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </React.Fragment>
                         : null }
                     </Grid>
                     <Container>
@@ -346,12 +357,16 @@ class Page extends React.Component {
                                             <Button positive basic floated='right' onClick={this.nextLesson.bind(this, lesson.id)}>Próxima lição</Button>
                                         : null
                                     } */}
+                                    <Button
+                                        type='success'
+                                        title={!lesson.view ? 'Finalizar lição': 'Próxima Lição'}
+                                        onClick={!lesson.view ? this.endLesson.bind(this, lesson.id) : this.nextLesson.bind(this, lesson.id) }
+                                    />
                                 </Grid.Column>
                                 : null }
                             </Grid.Row>
                         </Grid>
-                    </Container>
-                    <Button type='success' />
+                    </Container>/>
                 </main>
                 <Footer/>
                 <Modal size={'tiny'} dimmer={'blurring'} open={modal.open} onClose={this.close}>

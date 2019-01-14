@@ -4,18 +4,19 @@ import axios from 'axios'
 import {
     Button,
     Container,
-    Grid,
     Header,
     Icon,
     Segment,
-    Card,
     Image, Progress
 } from 'semantic-ui-react'
 import PageHeader from '../../common/pageHeader'
-import Navigation from '../../common/navigation'
+import Menu from '../../components/Menu'
+import Banner from '../../components/Banner'
+import Card from '../../components/Card'
 import Footer from '../../common/mainFooter'
 import {API_URL} from "../../common/url-types";
 import {Redirect} from "react-router-dom";
+import Grid from '../../components/Grid';
 
 class Page extends React.Component {
     constructor(props) {
@@ -66,10 +67,23 @@ class Page extends React.Component {
         }
         return (
             <div>
-                <Navigation/>
+                <Menu />
                 <main className="fadeIn animated">
-                    <PageHeader heading="Meus Cursos"/>
-                    <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
+                    <Banner />
+                    <Grid>
+                        { courses.map((course) => 
+                            <Card
+                                id={course.id}
+                                key={course.id}
+                                name={course.title}
+                                image={course.image}
+                                category="Categoria"
+                                onClick={this.viewCourse.bind(this, course.id)}
+                            />
+                            )
+                        }
+                    </Grid>
+                    {/* <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
                         <Container>
                             <Card.Group itemsPerRow={3}>
                                 { courses.map((course) =>
@@ -99,9 +113,8 @@ class Page extends React.Component {
                                 }
                             </Card.Group>
                         </Container>
-                    </Segment>
+                    </Segment> */}
                 </main>
-                <Footer/>
             </div>
         );
     }
