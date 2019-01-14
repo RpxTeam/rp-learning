@@ -38,6 +38,9 @@ Route::resource('users', 'Api\UserController');
 //Author routes
 Route::resource('authors', 'Api\AuthorsController');
 
+//Point routes
+Route::resource('points', 'Api\PointsController');
+
 //Course routes
 Route::resource('courses', 'Api\CoursesController');
 Route::get('courses/{course}', 'Api\CoursesController@show');

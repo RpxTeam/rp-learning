@@ -22,8 +22,9 @@ class CreateDataPointsTable extends Migration
             $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
             $table->unsignedInteger('quiz_id')->nullable();
             $table->foreign('quiz_id')->references('id')->on('quiz')->onDelete('cascade');
-            $table->unsignedInteger('point_id')->nullable();
+            $table->unsignedInteger('point_id');
             $table->foreign('point_id')->references('id')->on('points')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

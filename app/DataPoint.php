@@ -3,6 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use App\Point;
+use App\User;
+use App\Course;
 
 class DataPoint extends Model
 {
@@ -79,5 +83,21 @@ class DataPoint extends Model
     public function point()
     {
         return $this->belongsTo(Point::class, 'point_id')->withTrashed();
+    }
+
+    public static function coursePoints($user,$course){
+        $user = User::findOrFail($user);
+        $course = Course::findOrFail($course);
+        $point = Point::where('name','course')->first();
+
+        $a = DataPoint::updateOrCreate([
+            'user_id' => $user->id,
+            'course_id' => $course->id,
+            'point_id' => $point->id,
+        ],[
+            'updated_at' => now(),
+        ]);
+
+        return $a;
     }
 }
