@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Point;
 use App\User;
 use App\Course;
+use App\Lesson;
+use App\Quiz;
 
 class DataPoint extends Model
 {
@@ -86,18 +88,46 @@ class DataPoint extends Model
     }
 
     public static function coursePoints($user,$course){
-        $user = User::findOrFail($user);
-        $course = Course::findOrFail($course);
-        $point = Point::where('name','course')->first();
+        $point = Point::where('name','courses')->first();
 
-        $a = DataPoint::updateOrCreate([
-            'user_id' => $user->id,
-            'course_id' => $course->id,
+        $data = DataPoint::updateOrCreate([
+            'user_id' => $user,
+            'course_id' => $course,
             'point_id' => $point->id,
         ],[
             'updated_at' => now(),
         ]);
 
-        return $a;
+        return $data;
+    }
+
+    public static function lessonPoints($user,$course,$lesson){
+        $point = Point::where('name','lessons')->first();
+
+        $data = DataPoint::updateOrCreate([
+            'user_id' => $user,
+            'course_id' => $course,
+            'lesson_id' => $lesson,
+            'point_id' => $point->id,
+        ],[
+            'updated_at' => now(),
+        ]);
+
+        return $data;
+    }
+
+    public static function quizPoints($user,$course,$quiz){
+        $point = Point::where('name','quiz')->first();
+
+        $data = DataPoint::updateOrCreate([
+            'user_id' => $user,
+            'course_id' => $course,
+            'quiz_id' => $quiz,
+            'point_id' => $point->id,
+        ],[
+            'updated_at' => now(),
+        ]);
+
+        return $data;
     }
 }

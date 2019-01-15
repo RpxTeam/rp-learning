@@ -82,7 +82,7 @@ class UserController extends Controller
             if($user->image != null){
                 $user->image = Storage::url($user->image);
             }
-            //Mail::to('fehiya@gmail.com')->send(new teste());
+            //Mail::to('email@email.com')->send(new teste());
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.

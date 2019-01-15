@@ -16,7 +16,10 @@ class PointsController extends Controller
      */
     public function index()
     {
-        return DataPoint::coursePoints(1,1);
+        //return DataPoint::coursePoints(1,1);
+        $points = Point::All();
+
+        return response()->json($points, 200);
     }
 
     /**
@@ -25,9 +28,13 @@ class PointsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($point)
     {
-        //
+        $point = Point::where('id',$point)
+                      ->orWhere('name',$point)
+                      ->first();
+
+        return response()->json($point, 200);
     }
 
     /**
@@ -38,7 +45,13 @@ class PointsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $point = Point::create($request);
+
+        if($point){
+            return response()->json(204);
+        }else{
+            return response()->json(400);
+        }
     }
     
     /**
@@ -48,9 +61,19 @@ class PointsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $point)
     {
-        //
+        $point = Point::where('id',$point)
+                      ->orWhere('name',$point)
+                      ->first();
+                      
+        if($point->isEmpty()){
+            return response()->json(400);
+        }
+
+        Point::whereId($point->id)->update($request);
+
+        return response()->json(204);
     }
 
     /**
@@ -59,8 +82,18 @@ class PointsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($point)
     {
-        //
+        $point = Point::where('id',$point)
+                      ->orWhere('name',$point)
+                      ->first();
+                      
+        if($point->isEmpty()){
+            return response()->json(400);
+        }
+
+        $point->delete();
+
+        return response()->json(204);
     }
 }

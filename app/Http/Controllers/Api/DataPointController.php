@@ -4,82 +4,53 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use App\DataPoint;
+use App\User;
+use App\Course;
+use App\Lesson;
+use App\Quiz;
 
 class DataPointController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function course($user, $course){
+        $user = User::findOrFail($user);
+        $course = Course::findOrFail($course);
+
+        DataPoint::coursePoints($user->id, $course->id);
+
+        return response()->json(204);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function lesson($user, $course, $lesson){
+        $user = User::findOrFail($user);
+        $course = Course::findOrFail($course);
+        $lesson = Lesson::findOrFail($lesson);
+
+        DataPoint::lessonPoints($user->id, $course->id, $lesson->id);
+
+        return response()->json(204);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function quiz($user, $course, $quiz){
+        $user = User::findOrFail($user);
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
+
+        DataPoint::quizPoints($user->id, $course->id, $quiz->id);
+
+        return response()->json(204);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    public function user($user){
+        $user = User::findOrFail($user);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $total = DB::table('data_points')
+                    ->leftjoin('points', 'data_points.point_id','=','points.id')
+                    ->where('user_id',$user->id)
+                    ->sum('point');
+        
+        return response()->json(['total' => $total], 200);
     }
 }
