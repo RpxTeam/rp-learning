@@ -9,7 +9,6 @@ import {
     Header,
     Icon,
     Segment,
-    Card,
     Image,
     Progress
 } from 'semantic-ui-react'
@@ -18,6 +17,7 @@ import Menu from '../../components/Menu'
 import Footer from '../../common/mainFooter'
 import { API_URL } from "../../common/url-types";
 import Tabs from '../../components/Tabs';
+import Card from '../../components/Card'
 
 class Page extends React.Component {
     constructor(props) {
@@ -60,35 +60,12 @@ class Page extends React.Component {
                         </div>
                         <div className="divider-horizontal"></div>
                         <div className="gridD">
-                            <div className="card card-profile card-open">
-                                <div className="card-header top">
-                                    <i className="icon-lotus icon-bg"></i>
-                                    <div className="left">
-                                        <div className="icon-gamification">
-                                            <i className="icon-lotus"></i>
-                                        </div>
-                                        <div className="status">
-                                            <p>Nv. Lótus 1</p>
-                                            <p><small>150/600 atividades</small></p>
-                                        </div>
-                                    </div>
-                                    <div className="right">
-                                        <a href="#" className="card-btn active"><i className="icon-arrow-top rotate180"></i></a>
-                                    </div>
-                                </div>
-                                <div className="card-content content-active">
-                                    <div className="progress">
-                                        <div className="row right">
-                                            <div className="percent">
-                                                <p>30% </p>
-                                            </div>
-                                        </div>
-                                        <div className="progress-bar">
-                                            <div className="bar" style={{ width: '50%' }}></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <Card
+                            defaultHeight={20}
+                            profile={true}
+                            collapsed={false}
+                            padding="21px"
+                        />
                         </div>
                     </div>
                     <div className="content">

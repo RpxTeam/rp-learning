@@ -11,7 +11,7 @@ import {
 } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 import AuthService from '../../services'
-import Navigation from '../../common/navigation'
+import Menu from '../../components/Menu'
 import Footer from '../../common/mainFooter'
 
 class Page extends React.Component {
@@ -46,7 +46,7 @@ class Page extends React.Component {
     render() {
         return (
             <div>
-                <Navigation/>
+                <Menu />
                 <main className="fadeIn animated">
                     <Segment
                         inverted

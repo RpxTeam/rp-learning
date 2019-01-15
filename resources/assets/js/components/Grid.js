@@ -6,6 +6,7 @@ const Container = styled.div`
     margin-right: 19px;
     margin-left: 19px;
     position: relative;
+    height: 100%;
 `
 
 export class Grid extends Component {

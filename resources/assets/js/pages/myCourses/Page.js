@@ -79,6 +79,8 @@ class Page extends React.Component {
                                 image={course.image}
                                 category="Categoria"
                                 onClick={this.viewCourse.bind(this, course.id)}
+                                type=""
+                                defaultHeight={0}
                             />
                             )
                         }

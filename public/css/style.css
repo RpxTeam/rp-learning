@@ -695,8 +695,8 @@ a.btn {
 
 .card .card-content {
   background: #EEEEEE;
-  padding: 21px;
-  display: none;
+  /* padding: 21px; */
+  /* display: none; */
 }
 
 .card .card-content.content-active {
