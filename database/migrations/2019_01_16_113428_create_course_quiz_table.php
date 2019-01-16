@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQuizQuestionTable extends Migration
+class CreateCourseQuizTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateQuizQuestionTable extends Migration
      */
     public function up()
     {
-        Schema::create('quiz_question', function (Blueprint $table) {
+        Schema::create('course_quiz', function (Blueprint $table) {
+            $table->unsignedInteger('course_id')->nullable();
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->unsignedInteger('quiz_id')->nullable();
             $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
-            $table->unsignedInteger('question_id')->nullable();
-            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateQuizQuestionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quiz_question');
+        Schema::dropIfExists('course_quiz');
     }
 }

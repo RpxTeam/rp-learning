@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Answer extends Model
 {
@@ -11,4 +12,13 @@ class Answer extends Model
     public static $searchable = [
     ];
 
+    public static function questionAnswers($question){
+
+        $answers = DB::table('question_answer')
+                    ->leftjoin('answers','question_answer.answer_id','=','answers.id')
+                    ->where('question_id', $question)
+                    ->get();
+
+        return $answers;
+    }
 }

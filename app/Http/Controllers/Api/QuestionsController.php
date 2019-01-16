@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use App\Quiz;
+use App\Course;
 use App\Question;
+use App\Answer;
 
 class QuestionsController extends Controller
 {
@@ -13,9 +17,22 @@ class QuestionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($course, $quiz)
     {
-        //
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
+
+        $questions = Question::quizQuestions($course->id, $quiz->id);
+
+        $data = collect();
+
+        
+        foreach($questions as $question){
+            $data->push(Question::questionAnswers($question->question_id));
+        }
+
+        return response()->json($data, 200);
+        // return response()->json(array('course'=>$mycourse,'lessons'=>$lessons),200);
     }
 
     /**
@@ -24,9 +41,9 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($course, $quiz, $question)
     {
-        //
+        
     }
 
     /**
@@ -37,7 +54,7 @@ class QuestionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //criar pouca info e relacioar ao curso
     }
     
     /**
