@@ -20,7 +20,7 @@ import Menu from '../../components/Menu'
 import Banner from '../../components/Banner'
 import Footer from '../../common/mainFooter'
 import Button from '../../components/Button'
-import {API_URL} from "../../common/url-types";
+import { API_URL } from "../../common/url-types";
 import "video-react/dist/video-react.css";
 import { Player } from 'video-react';
 import ReactPlayer from 'react-player'
@@ -54,9 +54,9 @@ class Page extends React.Component {
     }
 
     getData = () => {
-        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
+        axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
             .then(res => {
-                if(res.data.progress != null) {
+                if (res.data.progress != null) {
                     const progress = res.data.progress;
                     const course = res.data;
                     this.setState({ course: course, progress: progress });
@@ -67,34 +67,34 @@ class Page extends React.Component {
                 // this.setState({ notFound: true })
             });
 
-        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
-        .then(res => {
-            const lessons = res.data.lessons;
-            let endLessons = lessons.filter(lesson => {
-                if (lesson.view === false || lesson.view === null) {
-                    return lessons
-                }
-            });
-
-            if(endLessons.length > 0) {
-                this.setState({
-                    lesson: endLessons[0]
+        axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
+            .then(res => {
+                const lessons = res.data.lessons;
+                let endLessons = lessons.filter(lesson => {
+                    if (lesson.view === false || lesson.view === null) {
+                        return lessons
+                    }
                 });
-            } else {
+
+                if (endLessons.length > 0) {
+                    this.setState({
+                        lesson: endLessons[0]
+                    });
+                } else {
+                    this.setState({
+                        last: true
+                    })
+                }
+
+                const last = lessons.length - 1;
+
                 this.setState({
-                    last: true
-                })
-            }
-
-            const last = lessons.length - 1;
-
-            this.setState({
-                last: lessons[last].id,
-                lessons: lessons,
-                lessonsCount: lessons.length,
-                endLessons: endLessons.length,
+                    last: lessons[last].id,
+                    lessons: lessons,
+                    lessonsCount: lessons.length,
+                    endLessons: endLessons.length,
+                });
             });
-        });
     };
 
     componentDidMount() {
@@ -102,7 +102,7 @@ class Page extends React.Component {
     }
 
     getLessons = () => {
-        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
+        axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
             .then(res => {
                 const lessons = res.data.lessons;
                 let endLessons = lessons.filter(lesson => {
@@ -120,15 +120,15 @@ class Page extends React.Component {
     };
 
     getLesson = (id) => {
-        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${id}`)
-        .then(res => {
-            const lesson = res.data.lessons;
-            this.setState({lesson: lesson})
-        });
+        axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${id}`)
+            .then(res => {
+                const lesson = res.data.lessons;
+                this.setState({ lesson: lesson })
+            });
     };
 
     nextLesson = () => {
-        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
+        axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
             .then(res => {
                 const lessons = res.data.lessons;
                 let endLessons = lessons.filter(lesson => {
@@ -137,7 +137,7 @@ class Page extends React.Component {
                     }
                 });
 
-                if(endLessons.length > 0) {
+                if (endLessons.length > 0) {
                     this.setState({
                         lesson: endLessons[0]
                     });
@@ -156,13 +156,13 @@ class Page extends React.Component {
     };
 
     endLesson = (id) => {
-        axios.get(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
+        axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
             .then(res => {
                 const course = res.data;
                 let percentLesson = 100 / this.state.lessonsCount;
                 let progress = parseFloat(course.progress) + parseFloat(percentLesson);
                 progress = progress.toFixed(0);
-                if(progress >= 98) {
+                if (progress >= 98) {
                     progress = 100;
                 }
                 this.setState({ course: course });
@@ -173,7 +173,7 @@ class Page extends React.Component {
         const month = day.getMonth() + 1;
         const finish = day.getFullYear() + '-' + month + '-' + day.getDate();
 
-        axios.put(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${id}`, {
+        axios.put(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${id}`, {
             view: 1,
             finish: finish
         })
@@ -185,21 +185,21 @@ class Page extends React.Component {
     };
 
     updateProgress = (progress) => {
-        axios.put(`${ API_URL }/api/users/${this.state.user.id}/courses/${this.state.courseID}`, {
+        axios.put(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}`, {
             progress: progress
         })
             .then(() => {
-                    this.setState({ progress: progress });
-                    if(progress === 100) {
-                        this.openModal();
-                    }
+                this.setState({ progress: progress });
+                if (progress === 100) {
+                    this.openModal();
                 }
+            }
             );
     };
 
     formatIcons = (type) => {
         let icon = 'file';
-        switch(type) {
+        switch (type) {
             case 'text':
                 icon = icon + ' outline';
                 break;
@@ -218,7 +218,7 @@ class Page extends React.Component {
         return icon;
     };
 
-    openModal = () => this.setState({ modal: { open: true} });
+    openModal = () => this.setState({ modal: { open: true } });
     closeModal = () => this.setState({
         modal: {
             ...this.state.modal,
@@ -231,7 +231,7 @@ class Page extends React.Component {
         const { course, modal, courseID, lessons, lesson, endLessons, progress } = this.state;
         if (this.state.onCourse === true) {
             return <Redirect to={'/courses/' + courseID + '/details'} />
-        } else if(this.state.notFound) {
+        } else if (this.state.notFound) {
             return <Redirect from='*' to='/404' />
         }
         return (
@@ -248,8 +248,8 @@ class Page extends React.Component {
                             {
                                 lessons ?
                                     lessons.map((lesson) =>
-                                    <Module key={lesson.id} title={'Lição ' +lesson.id} disabled={lesson.view === null} onClick={this.getLesson.bind(this, lesson.id)} />
-                                ) : null
+                                        <Module key={lesson.id} title={'Lição ' + lesson.id} disabled={lesson.view === null} onClick={this.getLesson.bind(this, lesson.id)} />
+                                    ) : null
                             }
                         </Modules>
                         {lesson ?
@@ -260,37 +260,37 @@ class Page extends React.Component {
                                         <div className="content">
                                             {lesson.type === 'text' ?
                                                 <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
-                                            : null }
+                                                : null}
                                             {lesson.type === 'video-internal' ?
                                                 <Player
                                                     playsInline
                                                     poster="/assets/poster.png"
-                                                    src={API_URL + '/api/courses/'+ courseID +'/lessons/'+ lesson.id +'/media'}
+                                                    src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
                                                 />
-                                            : null }
+                                                : null}
                                             {lesson.type === 'video-external' ?
                                                 <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
-                                            : null }
+                                                : null}
                                             {lesson.type === 'ppt' ?
                                                 lesson.content
-                                            : null }
+                                                : null}
                                             {lesson.type === 'doc' || lesson.type === 'pdf' ?
                                                 <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
-                                            : null }
+                                                : null}
                                             {lesson.type === 'audio' ?
                                                 <audio controls controlsList="nodownload">
                                                     <source
-                                                        src={API_URL + '/api/courses/'+ courseID +'/lessons/'+ lesson.id +'/media'}
+                                                        src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
                                                         type={lesson.mime}
                                                     />
                                                     Your browser does not support the audio element.
                                                 </audio>
-                                            : null }
+                                                : null}
                                         </div>
                                     </div>
                                 </div>
                             </React.Fragment>
-                        : null }
+                            : null}
                     </Grid>
                     <Container>
                         <Grid>
@@ -314,42 +314,42 @@ class Page extends React.Component {
                                     </Step.Group>
                                 </Grid.Column>
                                 {lesson ?
-                                <Grid.Column width={11}>
-                                    <Segment>
-                                        <Header as='h2'>{lesson.title}</Header>
-                                        <Divider />
+                                    <Grid.Column width={11}>
+                                        <Segment>
+                                            <Header as='h2'>{lesson.title}</Header>
+                                            <Divider />
                                             <div>
                                                 {lesson.type === 'text' ?
                                                     <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
-                                                : null }
+                                                    : null}
                                                 {lesson.type === 'video-internal' ?
                                                     <Player
                                                         playsInline
                                                         poster="/assets/poster.png"
-                                                        src={API_URL + '/api/courses/'+ courseID +'/lessons/'+ lesson.id +'/media'}
+                                                        src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
                                                     />
-                                                : null }
+                                                    : null}
                                                 {lesson.type === 'video-external' ?
                                                     <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
-                                                : null }
+                                                    : null}
                                                 {lesson.type === 'ppt' ?
                                                     lesson.content
-                                                : null }
+                                                    : null}
                                                 {lesson.type === 'doc' || lesson.type === 'pdf' ?
                                                     <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
-                                                : null }
+                                                    : null}
                                                 {lesson.type === 'audio' ?
                                                     <audio controls controlsList="nodownload">
                                                         <source
-                                                            src={API_URL + '/api/courses/'+ courseID +'/lessons/'+ lesson.id +'/media'}
+                                                            src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
                                                             type={lesson.mime}
                                                         />
                                                         Your browser does not support the audio element.
                                                     </audio>
-                                                : null }
+                                                    : null}
                                             </div>
-                                    </Segment>
-                                    {/* {!lesson.view ?
+                                        </Segment>
+                                        {/* {!lesson.view ?
                                         <Button positive floated='right' onClick={this.endLesson.bind(this, lesson.id)}>Finalizar
                                             lição</Button>
                                         :
@@ -357,24 +357,25 @@ class Page extends React.Component {
                                             <Button positive basic floated='right' onClick={this.nextLesson.bind(this, lesson.id)}>Próxima lição</Button>
                                         : null
                                     } */}
-                                    <Button
-                                        type='success'
-                                        title={!lesson.view ? 'Finalizar lição': 'Próxima Lição'}
-                                        onClick={!lesson.view ? this.endLesson.bind(this, lesson.id) : this.nextLesson.bind(this, lesson.id) }
-                                    />
-                                </Grid.Column>
-                                : null }
+                                        <Button
+                                            className="btn-start"
+                                            type='success'
+                                            title={!lesson.view ? 'Finalizar lição' : 'Próxima Lição'}
+                                            onClick={!lesson.view ? this.endLesson.bind(this, lesson.id) : this.nextLesson.bind(this, lesson.id)}
+                                        />
+                                    </Grid.Column>
+                                    : null}
                             </Grid.Row>
                         </Grid>
                     </Container>/>
                 </main>
-                <Footer/>
+                <Footer />
                 <Modal size={'tiny'} dimmer={'blurring'} open={modal.open} onClose={this.close}>
                     <Modal.Content style={{ textAlign: 'center' }}>
                         <Image wrapped size='medium' src='/images/conclusion.jpg' style={{ display: 'block', margin: '0 auto' }} />
                         <Modal.Description style={{ paddingTop: '20px' }}>
                             <Header>Parabéns {this.props.user.name} você concluiu o curso</Header>
-                            <p>Você concluiu o curso de { course.title }</p>
+                            <p>Você concluiu o curso de {course.title}</p>
                         </Modal.Description>
                     </Modal.Content>
                     <Modal.Actions style={{ textAlign: 'center' }}>

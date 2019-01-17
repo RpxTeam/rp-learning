@@ -48,7 +48,7 @@ class Page extends React.Component {
                             <a href="#" className="btn-top btn-config"><i className="icon-cog"></i></a>
                             <a href="#" className="btn-top btn-notify"><i className="icon-notify"></i></a>
                             <div className="avatar">
-                                <div className="image" data-bg="{{ url('assets') }}/img/avatar.png"></div>
+                                <div className="image" style={{backgroundImage: `url(${require("../../../img/avatar.png")})`}}></div>
                             </div>
                             <div className="name">
                                 <h3>Aluno Lore Ipsum</h3>
@@ -64,7 +64,6 @@ class Page extends React.Component {
                             defaultHeight={20}
                             profile={true}
                             collapsed={false}
-                            padding="21px"
                         />
                         </div>
                     </div>

@@ -19,11 +19,11 @@ import Banner from '../../components/Banner'
 import Navigation from '../../common/navigation'
 import Footer from '../../common/mainFooter'
 import { API_URL } from "../../common/url-types"
-import InfoCourse from '../../components/InfoCourse';
-import Button from '../../components/Button';
-import Tabs from '../../components/Tabs';
-import Detail from '../../components/details';
-import Testimonial from '../../components/Testimonial';
+import InfoCourse from '../../components/InfoCourse'
+import Button from '../../components/Button'
+import Tabs from '../../components/Tabs'
+import Detail from '../../components/details'
+import Testimonial from '../../components/Testimonial'
 
 class Page extends React.Component {
     constructor(props) {
@@ -192,8 +192,10 @@ class Page extends React.Component {
                     <Button size='big' basic color='blue' floated='right' onClick={}>Iniciar Curso</Button>
                 } */}
                 <Button
+                    className="btn-start"
                     title={isAuthenticated ? progress != null ? "Continuar Curso" : "Iniciar Curso" : "Iniciar Curso"  }
                     onClick={this.startCourse}
+                    icon="courses"
                 />
             </div>
         );

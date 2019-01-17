@@ -388,7 +388,7 @@ a.btn {
   text-transform: uppercase;
 }
 
-.btn-start a {
+.btn-start .link {
   height: 100%;
   color: #FFFFFF;
   display: -webkit-box;
@@ -410,22 +410,22 @@ a.btn {
   -ms-flex-pack: center;
 }
 
-.btn-start a i {
+.btn-start .link i {
   color: #FFFFFF;
   font-size: 20px;
   margin-right: 8px;
 }
 
-.btn-start a[disabled] {
+.btn-start .link[disabled] {
   background: #DDDDDD;
   pointer-events: none;
 }
 
-.btn-start a.success {
+.btn-start .link.success {
   background: #2EC600;
 }
 
-.btn-start a.error {
+.btn-start .link.error {
   background: #E60000;
 }
 

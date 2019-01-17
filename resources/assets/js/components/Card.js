@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
@@ -9,7 +10,15 @@ const Container = styled.div`
 const Overflow = styled.div`
     position: relative;
     transition: height 250ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
+`
+
+const Content = styled.div`
+    transition: height 250ms ease;
+    padding: 21px
 `
 
 export class Card extends Component {
@@ -17,21 +26,20 @@ export class Card extends Component {
         super(props);
         this.state = {
             collapsed: this.props.collapsed ? this.props.collapsed : true,
-            height: this.props.defaultHeight
+            height: this.props.defaultHeight,
+            padding: this.props.collapsed ? 21 : 0
         }
         this.toggleCollapse = this.toggleCollapse.bind(this);
     }
 
-    toggleCollapse = (e) => {
+    toggleCollapse = (e) => {   
         e.preventDefault();
         const contentHeight = e.target.parentNode.parentNode.parentNode.parentNode.querySelector('.card-collapse').offsetHeight;
-        const contentPadding = 21;
         const newHeight = contentHeight;
 
         this.setState({
             collapsed: !this.state.collapsed,
-            height: this.state.collapsed ? newHeight : this.props.defaultHeight,
-            padding: this.props.padding ? this.props.padding : '21px'
+            height: this.state.collapsed ? newHeight : this.props.defaultHeight
         });
     }
 
@@ -47,14 +55,8 @@ export class Card extends Component {
         const Image = styled.div`
             background: url(${this.props.image})
         `
-        const Content = styled.div`
-            height: ${this.state.height};
-            background: #EEEEEE;
-            padding: ${this.state.collapsed ? '21px' : this.state.padding};
-            transition: height 250ms ease;
-        `
         return (
-            <Container className={this.props.profile ? 'card card-profile' : 'card'}>
+            <Container className={this.props.profile ? 'card card-profile' : this.state.collapsed ? 'card' : 'card card-open'}>
                 {this.props.profile ?
                     <div className="card-header top">
                         <i className="icon-lotus icon-bg"></i>
@@ -91,40 +93,49 @@ export class Card extends Component {
                         <Image className="card-image" />
                     </React.Fragment>
                 }
-                <Overflow>
-                    {this.props.type === 'resume' ?
-                        <Content className="card-collapse card-resume">
-                            <p>$course->introduction</p>
-                        </Content>
-                        :
-                        <Content className='card-collapse card-content'>
-                            <div className="progress">
-                                <div className={this.props.profile ? 'row right' : 'row'}>
-                                    {this.props.profile ? null :
-                                        <div className="activity">
-                                            <p><strong>Seu avanço</strong></p>
-                                            <p>150/600 atividades</p>
+                <Overflow style={{height:this.state.height, padding:this.state.padding}}>
+                    <div style={{width: '100%'}}>
+                        {this.props.type === 'resume' ?
+                            <Content className="card-collapse card-resume">
+                                <p>$course->introduction</p>
+                            </Content>
+                            :
+                            <Content className='card-collapse card-content'>
+                                <div className="progress">
+                                    <div className={this.props.profile ? 'row right' : 'row'}>
+                                        {this.props.profile ? null :
+                                            <div className="activity">
+                                                <p><strong>Seu avanço</strong></p>
+                                                <p>150/600 atividades</p>
+                                            </div>
+                                        }
+                                        <div className="percent">
+                                            {/* @if ($mycourse->progress === null) */}
+                                            <p>0% </p>
+                                            {/* @else */}
+                                            {/* <p>number_format($mycourse->progress, 0, '.', '') %</p> */}
+                                            {/* @endif */}
                                         </div>
-                                    }
-                                    <div className="percent">
+                                    </div>
+                                    <div className="progress-bar">
                                         {/* @if ($mycourse->progress === null) */}
-                                        <p>0% </p>
+                                        <div className="bar"></div>
                                         {/* @else */}
-                                        {/* <p>number_format($mycourse->progress, 0, '.', '') %</p> */}
+                                        {/* <div className="bar" style="width: {{ number_format($mycourse->progress, 0, '.', '') }}%;"></div> */}
                                         {/* @endif */}
                                     </div>
                                 </div>
-                                <div className="progress-bar">
-                                    {/* @if ($mycourse->progress === null) */}
-                                    <div className="bar"></div>
-                                    {/* @else */}
-                                    {/* <div className="bar" style="width: {{ number_format($mycourse->progress, 0, '.', '') }}%;"></div> */}
-                                    {/* @endif */}
-                                </div>
-                            </div>
-                        </Content>
-                    }
+                            </Content>
+                        }
+                    </div>
                 </Overflow>
+                {this.props.profile ? null :
+                    <div className="card-footer buttons">
+                        <a href="#"><i className="icon-heart"></i></a>
+                        <a href="#"><i className="icon-bookmark"></i></a>
+                        <a href="#" onClick={this.props.onClick}><i className="icon-arrow-left rotate180"></i></a>
+                    </div>
+                }
             </Container>
         )
     }
@@ -132,7 +143,7 @@ export class Card extends Component {
 
 Card.propTypes = {
     id: PropTypes.number,
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     category: PropTypes.string,
     url: PropTypes.string,
     image: PropTypes.string,
@@ -141,7 +152,8 @@ Card.propTypes = {
     defaultHeight: PropTypes.number,
     profile: PropTypes.bool,
     collapsed: PropTypes.bool,
-    padding: PropTypes.string
+    padding: PropTypes.string,
+    link: PropTypes.string
 };
 
 export default Card;

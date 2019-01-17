@@ -98,7 +98,9 @@ class Page extends React.Component {
             <React.Fragment>
                 <Menu />
                 <main className="fadeIn animated">
-                    <Banner />
+                    <Banner title="Biblioteca" icon="course">
+                        <p>Aqui está a biblioteca de cursos.</p>
+                    </Banner>
                     <Grid>
                         { courses.map((course) => 
                             <Card

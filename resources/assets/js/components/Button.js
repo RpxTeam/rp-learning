@@ -19,10 +19,12 @@ export class Button extends Component {
                     <button type="submit" className="btn btn-grey btn-center" onClick={this.props.onClick}>{this.props.title}</button>
                 : 
                 <Link className={this.props.className} onClick={this.props.onClick}>
-                {this.props.icon ?
-                    <i className={'icon-' + this.props.icon}></i>
-                : null }
-                    {this.props.title}
+                    <div className="link">
+                        {this.props.icon ?
+                            <i className={'icon-' + this.props.icon}></i>
+                        : null }
+                        {this.props.title}
+                    </div>
                 </Link>
                 }
             </React.Fragment>
