@@ -9,6 +9,7 @@ use App\Quiz;
 use App\Course;
 use App\Question;
 use App\Answer;
+use App\Level;
 
 class QuestionsController extends Controller
 {
@@ -26,6 +27,7 @@ class QuestionsController extends Controller
 
         $data = collect();
 
+        // Level::userLevel(1);
         
         foreach($questions as $question){
             $data->push(Question::questionAnswers($question->question_id));
@@ -43,7 +45,13 @@ class QuestionsController extends Controller
      */
     public function show($course, $quiz, $question)
     {
-        
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
+        $question = Question::findOrFail($question);
+
+        $question = Question::questionAnswers($question->id);
+
+        return response()->json($question, 200);
     }
 
     /**
@@ -52,9 +60,19 @@ class QuestionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $course, $quiz)
     {
-        //criar pouca info e relacioar ao curso
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
+
+        $question = question::create($request->All());
+
+        DB::table('quiz_question')->insert([
+            'quiz_id' => $quiz->id,
+            'question_id' => $question->id
+        ]);
+
+        return response()->json(201);
     }
     
     /**
@@ -64,9 +82,15 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $course, $quiz, $question)
     {
-        //
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
+        $question = Question::findOrFail($question);
+
+        $question = Question::whereId($question->id)->update($request->All());
+
+        return response()->json(204);
     }
 
     /**
@@ -75,8 +99,28 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($course, $quiz, $question)
     {
-        //
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
+        $question = Question::findOrFail($question);
+
+        $answers = Question::questionAnswers($question->id);
+
+        foreach($answers as $answer){
+            DB::table('question_answer')
+            ->where('question_id', $question->id)
+            ->where('answer_id', $answer->id)
+            ->delete();
+
+            DB::table('answers')
+            ->where('id',$answer->id)
+            ->delete();
+        }
+
+        $question->delete();
+
+        return response()->json(204);
+            //204: No content. When an action was executed successfully, but there is no content to return.
     }
 }

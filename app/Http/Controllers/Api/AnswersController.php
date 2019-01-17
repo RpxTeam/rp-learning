@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Answer;
+use App\Question;
 
 class AnswersController extends Controller
 {
@@ -35,9 +36,15 @@ class AnswersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $question, $answer)
     {
-        //
+        $question = Question::findOrFail($question);
+        $Answer = Answer::findOrFail($Answer);
+
+        $answer = Answer::whereId($answer->id)->update($request->All());
+
+        return response()->json(204);
+        //204: No content. When an action was executed successfully, but there is no content to return.
     }
 
     /**
@@ -46,8 +53,18 @@ class AnswersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($question, $answer)
     {
-        //
+        $question = Question::findOrFail($question);
+        $Answer = Answer::findOrFail($Answer);
+
+        $answer->delete();
+        DB::table('question_answer')
+            ->where('question_id','=', $question->id)
+            ->where('answer_id','=', $answer->id)
+            ->delete();
+
+            return response()->json(204);
+            //204: No content. When an action was executed successfully, but there is no content to return.
     }
 }

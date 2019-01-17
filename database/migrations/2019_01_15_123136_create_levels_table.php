@@ -17,6 +17,7 @@ class CreateLevelsTable extends Migration
             $table->increments('id');
             $table->integer('level');
             $table->float('point', 10 , 3);
+            $table->float('total_point', 10 , 3);
             $table->timestamps();
         });
     }

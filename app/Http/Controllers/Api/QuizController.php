@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Quiz;
 use App\Course;
+use App\Question;
+use App\Answer;
 
 class QuizController extends Controller
 {
@@ -87,8 +89,44 @@ class QuizController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($course, $quiz)
     {
-        //deletar em cascada(quiz > questions > answers)
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
+
+        $questions = Question::quizQuestions($quiz->id);
+        
+        foreach($questions as $question){
+            
+            $answers = Answer::questionAnswers($question->id);
+            
+            foreach($answers as $answer){
+                DB::table('question_answer')
+                ->where('question_id', $question->question_id)
+                ->where('answer_id', $answer->answer_id)
+                ->delete();
+                
+                DB::table('answers')
+                ->whereId($answer->id)
+                ->delete();
+            }
+            DB::table('quiz_question')
+            ->where('quiz_id', $quiz->quiz_id)
+            ->where('question_id', $question->question_id)
+            ->delete();
+            
+            // dd($question->id);
+            DB::table('questions')
+                ->whereId($question->id)
+                ->delete();
+        }
+
+        DB::table('quizzes')
+                ->whereId($quiz->id)
+                ->delete();
+            
+        return response()->json(204);
+        //204: No content. When an action was executed successfully, but there is no content to return.
+        }
     }
-}
+    

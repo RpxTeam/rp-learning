@@ -13,7 +13,7 @@ class AnswerSeed extends Seeder
     {
         $faker = Faker\Factory::create();
 
-        for($i=0;$i<15;$i++){
+        for($i=0;$i<30;$i++){
             App\Answer::create([
                 'text' => $faker->word,
             ]);

@@ -48,10 +48,15 @@ Route::get('users/{user}/courses/{course}/lessons/{lesson}/points', 'Api\DataPoi
 Route::get('users/{user}/courses/{course}/quiz/{quiz}/points', 'Api\DataPointController@quiz');
 
 //Quiz routes
-Route::resource('courses/{course}/quiz', 'QuizController');
+Route::resource('courses/{course}/quiz', 'Api\QuizController');
 
 //Questions routes
 Route::resource('courses/{course}/quiz/{quiz}/questions', 'Api\QuestionsController');
+
+//Answers routes
+Route::post('questions/{question}/answers/','Api\AnswersController@store');
+Route::put('questions/{question}/answers/{answer}','Api\AnswersController@update');
+Route::delete('questions/{question}/answers/{answer}','Api\AnswersController@delete');
 
 //Course routes
 Route::resource('courses', 'Api\CoursesController');
