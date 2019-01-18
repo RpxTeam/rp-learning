@@ -11,6 +11,7 @@ use App\User;
 use App\Course;
 use App\Lesson;
 use App\Quiz;
+use App\Level;
 
 class DataPointController extends Controller
 {
@@ -19,6 +20,8 @@ class DataPointController extends Controller
         $course = Course::findOrFail($course);
 
         DataPoint::coursePoints($user->id, $course->id);
+
+        Level::userLevel($user->id);
 
         return response()->json(204);
     }
@@ -30,6 +33,8 @@ class DataPointController extends Controller
 
         DataPoint::lessonPoints($user->id, $course->id, $lesson->id);
 
+        Level::userLevel($user->id);
+
         return response()->json(204);
     }
 
@@ -39,6 +44,8 @@ class DataPointController extends Controller
         $quiz = Quiz::findOrFail($quiz);
 
         DataPoint::quizPoints($user->id, $course->id, $quiz->id);
+
+        Level::userLevel($user->id);
 
         return response()->json(204);
     }

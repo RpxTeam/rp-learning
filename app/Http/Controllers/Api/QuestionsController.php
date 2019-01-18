@@ -27,8 +27,6 @@ class QuestionsController extends Controller
 
         $data = collect();
 
-        // Level::userLevel(1);
-        
         foreach($questions as $question){
             $data->push(Question::questionAnswers($question->question_id));
         }

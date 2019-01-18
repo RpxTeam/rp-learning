@@ -43,12 +43,15 @@ Route::resource('points', 'Api\PointsController');
 
 //DataPoints routes
 Route::get('users/{user}/points', 'Api\DataPointController@user');
-Route::get('users/{user}/courses/{course}/points', 'Api\DataPointController@course');
-Route::get('users/{user}/courses/{course}/lessons/{lesson}/points', 'Api\DataPointController@lesson');
-Route::get('users/{user}/courses/{course}/quiz/{quiz}/points', 'Api\DataPointController@quiz');
+Route::post('users/{user}/courses/{course}/points', 'Api\DataPointController@course');
+Route::post('users/{user}/courses/{course}/lessons/{lesson}/points', 'Api\DataPointController@lesson');
+Route::post('users/{user}/courses/{course}/quiz/{quiz}/points', 'Api\DataPointController@quiz');
 
 //Quiz routes
 Route::resource('courses/{course}/quiz', 'Api\QuizController');
+
+//Level routes
+Route::post('levels', 'Api\LevelsController@makeLevels');
 
 //Questions routes
 Route::resource('courses/{course}/quiz/{quiz}/questions', 'Api\QuestionsController');
