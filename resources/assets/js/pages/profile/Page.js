@@ -13,7 +13,7 @@ import {
     Progress
 } from 'semantic-ui-react'
 import PageHeader from '../../common/pageHeader'
-import Menu from '../../components/Menu'
+import Menu from '../../common/menu'
 import Footer from '../../common/mainFooter'
 import { API_URL } from "../../common/url-types";
 import Tabs from '../../components/Tabs';
@@ -64,6 +64,7 @@ class Page extends React.Component {
                             defaultHeight={20}
                             profile={true}
                             collapsed={false}
+                            icon="lesson"
                         />
                         </div>
                     </div>

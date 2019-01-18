@@ -10,7 +10,7 @@ export class Menu extends Component {
                     <li><Link to="/courses" replace><i className="icon-course"></i></Link></li>
                     {/* @if (Auth::check()) */}
                     <li><Link to="/my-courses" replace><i className="icon-courses"></i></Link></li>
-                    <li><Link to="/profile"><i className="icon-zen"></i></Link></li>
+                    <li><Link to="/profile"><i className="icon-profile-o"></i></Link></li>
                     {/* @endif */}
                 </ul>
             </div>

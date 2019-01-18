@@ -79,7 +79,7 @@ export class Card extends Component {
                             <div className="left">
                                 {this.props.profile}
                                 <div className="icon">
-                                    <i className="icon-zen-2"></i>
+                                    <i className="icon-modules"></i>
                                 </div>
                                 <div className="info">
                                     <h4>{this.props.category}</h4>
@@ -95,9 +95,9 @@ export class Card extends Component {
                 }
                 <Overflow style={{height:this.state.height, padding:this.state.padding}}>
                     <div style={{width: '100%'}}>
-                        {this.props.type === 'resume' ?
+                        {this.props.description ?
                             <Content className="card-collapse card-resume">
-                                <p>$course->introduction</p>
+                                <p>{this.props.description}</p>
                             </Content>
                             :
                             <Content className='card-collapse card-content'>
@@ -109,17 +109,19 @@ export class Card extends Component {
                                                 <p>150/600 atividades</p>
                                             </div>
                                         }
-                                        <div className="percent">
-                                            {/* @if ($mycourse->progress === null) */}
-                                            <p>0% </p>
-                                            {/* @else */}
-                                            {/* <p>number_format($mycourse->progress, 0, '.', '') %</p> */}
-                                            {/* @endif */}
-                                        </div>
+                                        {this.props.progress ?
+                                            <div className="percent">
+                                                {/* @if ($mycourse->progress === null) */}
+                                                <p>0% </p>
+                                                {/* @else */}
+                                                {/* <p>number_format($mycourse->progress, 0, '.', '') %</p> */}
+                                                {/* @endif */}
+                                            </div>
+                                        : null }
                                     </div>
                                     <div className="progress-bar">
                                         {/* @if ($mycourse->progress === null) */}
-                                        <div className="bar"></div>
+                                        <div className="bar" style={{width: this.props.progress}}></div>
                                         {/* @else */}
                                         {/* <div className="bar" style="width: {{ number_format($mycourse->progress, 0, '.', '') }}%;"></div> */}
                                         {/* @endif */}
@@ -153,7 +155,9 @@ Card.propTypes = {
     profile: PropTypes.bool,
     collapsed: PropTypes.bool,
     padding: PropTypes.string,
-    link: PropTypes.string
+    link: PropTypes.string,
+    progress: PropTypes.number,
+    description: PropTypes.string
 };
 
 export default Card;

@@ -122,7 +122,7 @@ small {
 }
 
 .bg-orange-gradient {
-  background: url("../img/bg-loader.png") center center no-repeat #FF7933;
+  background: url("../img/bg-loader.png") center center no-repeat #23106E;
   background-size: cover;
 }
 
@@ -135,7 +135,7 @@ small {
 }
 
 [class*="icon"] {
-  color: #FF7933;
+  color: #23106E;
 }
 
 [class*="icon"].success {
@@ -355,7 +355,7 @@ small {
 }
 
 .btn.btn-orange {
-  background: #FF9100;
+  background: #635DC2;
 }
 
 .btn.btn-green {
@@ -384,7 +384,7 @@ a.btn {
   left: 0;
   height: 60px;
   text-align: center;
-  background: #FF891D;
+  background: #23106E;
   text-transform: uppercase;
 }
 
@@ -464,8 +464,8 @@ a.btn {
 }
 
 .checkbox-container:hover input ~ .checkmark {
-  background-color: #FF9100;
-  border-color: #FF9100;
+  background-color: #635DC2;
+  border-color: #635DC2;
 }
 
 .checkbox-container input:checked ~ .checkmark {
@@ -548,7 +548,7 @@ a.btn {
 }
 
 .progress-bar .bar {
-  background: #FF9100;
+  background: #635DC2;
   height: 100%;
   width: 0%;
 }
@@ -620,7 +620,7 @@ a.btn {
 .card .card-header .icon {
   height: 40px;
   width: 40px;
-  background: #FF9100;
+  background: #635DC2;
   display: -webkit-box;
   display: -moz-box;
   display: box;
@@ -723,7 +723,7 @@ a.btn {
 
 .card .card-footer a {
   margin-left: 33px;
-  color: #FF7933;
+  color: #23106E;
   text-transform: uppercase;
 }
 
@@ -740,7 +740,7 @@ a.btn {
 .card.card-profile .icon-bg {
   top: 16px;
   right: 16px;
-  color: #FF9100;
+  color: #635DC2;
   opacity: .05;
   font-size: 50px;
 }
@@ -757,7 +757,7 @@ a.btn {
 .card.card-profile .card-header .icon-gamification {
   height: 40px;
   width: 40px;
-  background: #FF9100;
+  background: #635DC2;
   border-radius: 50%;
   display: -webkit-box;
   display: -moz-box;
@@ -852,7 +852,7 @@ a.btn {
 }
 
 #fixed-menu ul li.active a i {
-  color: #FF7933;
+  color: #23106E;
 }
 
 .icon-bg {
@@ -930,7 +930,7 @@ a.btn {
 
 .secondary-banner h2 {
   font-weight: 700;
-  color: #FF891D;
+  color: #23106E;
   padding-left: 14px;
   padding-right: 90px;
 }
@@ -942,7 +942,7 @@ a.btn {
 }
 
 .notification {
-  background: #FF891D;
+  background: #23106E;
   text-align: center;
   padding-top: 22px;
   padding-bottom: 22px;
@@ -1030,7 +1030,7 @@ a.btn {
   width: 8px;
   overflow: hidden;
   font-size: 0;
-  border: 2px solid #FF7933;
+  border: 2px solid #23106E;
   display: inline-block;
   margin-right: 8px;
   border-radius: 50%;
@@ -1052,7 +1052,7 @@ a.btn {
 }
 
 .slick-dots li.slick-active {
-  background: #FF7933;
+  background: #23106E;
 }
 
 .slick-dots li:last-child {
@@ -1132,7 +1132,7 @@ a.btn {
   height: 3px;
   width: 20%;
   border-radius: 5px;
-  background: #FF7933;
+  background: #23106E;
   position: relative;
   left: 0;
 }
@@ -1226,7 +1226,7 @@ a.btn {
 }
 
 .collection .collection-item .icon.icon-circle.orange {
-  background: #FF9100;
+  background: #635DC2;
 }
 
 .collection .collection-item .icon.icon-circle i {
@@ -1276,7 +1276,7 @@ a.btn {
 }
 
 .banner-course h1 {
-  color: #FF891D;
+  color: #635DC2;
   font-weight: 700;
   margin-bottom: 30px;
 }
@@ -1562,7 +1562,7 @@ a.btn {
   -o-align-items: center;
   align-items: center;
   -ms-flex-align: center;
-  background: #FF9100;
+  background: #635DC2;
   margin-bottom: 6px;
 }
 
@@ -1635,7 +1635,7 @@ a.btn {
   height: 40px;
   width: 40px;
   min-width: 40px;
-  background: #FF9100;
+  background: #635DC2;
   font-size: 25px;
   display: -webkit-box;
   display: -moz-box;
@@ -1711,7 +1711,7 @@ a.btn {
   height: 40px;
   width: 40px;
   min-width: 40px;
-  background: #FF9100;
+  background: #635DC2;
   display: -webkit-box;
   display: -moz-box;
   display: box;
@@ -1802,7 +1802,7 @@ a.btn {
   display: block;
   height: 20px;
   width: 20px;
-  border: 2px solid #FF9100;
+  border: 2px solid #635DC2;
   background-color: #eee;
   border-radius: 50%;
   margin-right: 9px;
@@ -1813,7 +1813,7 @@ a.btn {
 }
 
 .radio-container input:checked ~ .checkmark-radio {
-  background-color: #FF9100;
+  background-color: #635DC2;
 }
 
 .checkmark-radio:after {
@@ -1834,7 +1834,7 @@ a.btn {
   height: 13px;
   width: 13px;
   border-radius: 50%;
-  background: #FF9100;
+  background: #635DC2;
 }
 
 .question {
@@ -1960,11 +1960,11 @@ a.btn {
 }
 
 #modal-conclusion .stars-rating ul > li.star.hover i {
-  color: #FF9100;
+  color: #635DC2;
 }
 
 #modal-conclusion .stars-rating ul > li.star.selected i {
-  color: #FF7933;
+  color: #23106E;
 }
 
 @keyframes pulse {
@@ -2106,6 +2106,7 @@ a.btn {
 
 #login-page #logo {
   margin-bottom: 44px;
+  max-width: 150px;
 }
 
 #login-page #logo img {
@@ -2252,7 +2253,7 @@ a.btn {
   bottom: 0;
   left: 0;
   height: 56px;
-  background: #FF9100;
+  background: #635DC2;
   padding-right: 18px;
   padding-left: 18px;
   display: -webkit-box;

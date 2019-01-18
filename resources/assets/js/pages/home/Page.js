@@ -13,7 +13,7 @@ import {
 import AuthService from '../../services'
 import Card from '../../components/Card'
 import Grid from '../../components/Grid'
-import Menu from '../../components/Menu'
+import Menu from '../../common/menu'
 import Banner from '../../components/Banner'
 import Button from '../../components/Button'
 
@@ -96,12 +96,13 @@ class Page extends React.Component {
             <React.Fragment>
                 <Menu />
                 <main className="fadeIn animated">
-                    <Banner title="Bem vindo ao RP Learning" icon="guirid">
+                    <Banner title="Bem vindo ao RP Learning" icon="logo">
                         <p>Seja bem-vindo(a) ao RP Learning – Cursos  com certificado de conclusão válido para: atividades extracurriculares, avaliações de empresas, provas de títulos, concursos públicos, enriquecer o seu currículo e muito mais!</p>
                         {/* <h3>A importância da qualificação profissional</h3> */}
                         {/* <p>Por conta da alta concorrência e competitividade, o mercado de trabalho está cada vez mais exigente na seleção de profissionais e quem está mais preparado tem mais oportunidades. A qualificação, portanto, é uma ferramenta fundamental para o sucesso profissional, sendo um fator determinante tanto para aqueles que estão em busca de uma vaga, para quem deseja crescer na empresa e para quem pensa em manter sua posição.</p> */}
                     </Banner>
                     <Grid>
+                        {console.log(courses)}
                         { courses.map((course) => 
                             <Card
                                 id={course.id}
@@ -113,6 +114,7 @@ class Page extends React.Component {
                                 defaultHeight={0}
                                 padding={'21px'}
                                 collapsed={false}
+                                progress={course.progress != null ? parseFloat(course.progress).toFixed(0) : 0}
                             />
                         )
                         }

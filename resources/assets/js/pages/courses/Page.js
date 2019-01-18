@@ -12,7 +12,7 @@ import Navigation from '../../common/navigation'
 import Footer from '../../common/mainFooter'
 import {API_URL} from "../../common/url-types"
 import Banner from '../../components/Banner';
-import Menu from '../../components/Menu';
+import Menu from '../../common/menu';
 
 class Page extends React.Component {
     constructor(props) {
@@ -102,6 +102,7 @@ class Page extends React.Component {
                         <p>Aqui está a biblioteca de cursos.</p>
                     </Banner>
                     <Grid>
+                        {console.log(courses)}
                         { courses.map((course) => 
                             <Card
                                 id={course.id}
@@ -111,6 +112,7 @@ class Page extends React.Component {
                                 category="Categoria"
                                 onClick={this.viewCourse.bind(this, course.id)}
                                 defaultHeight={0}
+                                description={course.description}
                             />
                             )
                         }

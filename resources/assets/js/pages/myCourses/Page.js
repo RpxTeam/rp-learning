@@ -10,7 +10,7 @@ import {
     Image, Progress
 } from 'semantic-ui-react'
 import PageHeader from '../../common/pageHeader'
-import Menu from '../../components/Menu'
+import Menu from '../../common/menu'
 import Banner from '../../components/Banner'
 import Card from '../../components/Card'
 import Footer from '../../common/mainFooter'
