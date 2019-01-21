@@ -57,9 +57,9 @@ Route::post('levels', 'Api\LevelsController@makeLevels');
 Route::resource('courses/{course}/quiz/{quiz}/questions', 'Api\QuestionsController');
 
 //Answers routes
-Route::post('questions/{question}/answers/','Api\AnswersController@store');
-Route::put('questions/{question}/answers/{answer}','Api\AnswersController@update');
-Route::delete('questions/{question}/answers/{answer}','Api\AnswersController@delete');
+Route::post('courses/{course}/quiz/{quiz}/questions/{question}/answers/','Api\AnswersController@store');
+Route::put('courses/{course}/quiz/{quiz}/questions/{question}/answers/{answer}','Api\AnswersController@update');
+Route::delete('courses/{course}/quiz/{quiz}/questions/{question}/answers/{answer}','Api\AnswersController@delete');
 
 //Course routes
 Route::resource('courses', 'Api\CoursesController');

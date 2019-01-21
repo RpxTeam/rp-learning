@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Answer;
+use App\Course;
+use App\Quiz;
 use App\Question;
+use App\Answer;
 
 class AnswersController extends Controller
 {
@@ -15,8 +17,10 @@ class AnswersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $question)
+    public function store(Request $request,$course, $quiz, $question)
     {
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
         $question = Question::findOrFail($question);
 
         $answer = Answer::create($request->All());
@@ -36,8 +40,10 @@ class AnswersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $question, $answer)
+    public function update(Request $request,$course, $quiz, $question, $answer)
     {
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
         $question = Question::findOrFail($question);
         $Answer = Answer::findOrFail($Answer);
 
@@ -53,8 +59,10 @@ class AnswersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($question, $answer)
+    public function destroy($course, $quiz, $question, $answer)
     {
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
         $question = Question::findOrFail($question);
         $Answer = Answer::findOrFail($Answer);
 
