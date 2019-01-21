@@ -1,37 +1,40 @@
 import React from 'react'
-import {NavLink, Link} from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {
-    Button,
-    Container,
-    Dropdown,
-    Divider,
-    Image,
-    Menu,
-    Responsive,
-    Segment
-} from 'semantic-ui-react';
 import * as actions from '../../store/actions'
 import styled from 'styled-components';
 
-const Logo = styled.a`
-    max-width: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 15px;
-    &:hover {
-        background: transparent;
-    }
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-`;
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+
+const styles = {
+    root: {
+        flexGrow: 1,
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginLeft: -12,
+        marginRight: 20,
+    },
+};
 
 class Page extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            auth: true,
+            anchorEl: null,
+        };
+
         this.handleLogout = this.handleLogout.bind(this);
     }
 
@@ -40,69 +43,63 @@ class Page extends React.Component {
         this.props.dispatch(actions.authLogout());
     }
 
+    handleMenu = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
 
     render() {
+        const { classes } = this.props;
+        const { auth, anchorEl } = this.state;
+        const open = Boolean(anchorEl);
         this.avatar = (
             <span>
-                 <Image avatar src={require('../../../images/avatar/boy.png')}
-                        verticalAlign='middle'/> {this.props.user.name}
+                <Image avatar src={require('../../../images/avatar/boy.png')}
+                    verticalAlign='middle' /> {this.props.user.name}
             </span>
         );
         return (
-            <div>
-                <Responsive as={Segment} maxWidth={768} className="mobile-navbar">
-                    <Menu size="large" secondary>
-                        <Menu.Item as={Link} to="/" className="logo" replace>
-                            <img
-                                src={require('../../../images/theme/logo.png')} alt="infoTiq"/>
-                        </Menu.Item>
-                        <Menu.Menu position="right">
-                            <Menu.Item>
-                                <Dropdown icon="bars" className="collapsible-menu">
-                                    <Dropdown.Menu className='bounceIn animated'>
-                                        {this.props.isAuthenticated
-                                            ?
-                                            <Dropdown.Item
-                                                onClick={this.handleLogout}
-                                                text="logout"
-                                                icon='sign out'
-                                                key='logout'/>
-                                            :
-                                            <div>
-                                                <Dropdown.Item as={NavLink} to="/login" text="login"/>
-                                                <Divider/>
-                                                <Dropdown.Item as={NavLink} to="/register" text="register"/>
-                                            </div>
-                                        }
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </Menu.Item>
-                        </Menu.Menu>
-                    </Menu>
-                </Responsive>
-                <Responsive className="navbar" minWidth={769}>
-                    <Menu size='small' inverted style={{marginLeft: '150px', borderRadius: '0'}}>
-                        <Container fluid>
-                            <Logo as={Link} to="/" className="logo" replace>
-                                <img src={require('../../../images/theme/logo.png')} alt="infoTiq" />
-                            </Logo>
-                            <Menu.Item position='right'>
-                                <Dropdown trigger={this.avatar} pointing='top right' className='user-dropdown'>
-                                    <Dropdown.Menu className='bounceIn animated'>
-                                        <Dropdown.Item
-                                            text={"Está logado como " + this.props.user.name}
-                                            disabled key='user'/>
-                                        <Dropdown.Item as={Link} to="/dashboard" text="Perfil" icon='user' />
-                                        <Dropdown.Divider />
-                                        <Dropdown.Item onClick={this.handleLogout} text="Sair" icon='sign out'
-                                                    key='logout'/>
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </Menu.Item>
-                        </Container>
-                    </Menu>
-                </Responsive>
-            </div>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" color="inherit" className={classes.grow}>
+                        Photos
+                    </Typography>
+                    <div>
+                        <IconButton
+                            aria-owns={open ? 'menu-appbar' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.handleMenu}
+                            color="inherit"
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={this.state.anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={open}
+                            onClose={this.handleClose}
+                        >
+                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                        </Menu>
+                    </div>
+                </Toolbar>
+            </AppBar>
         );
     }
 }
@@ -111,4 +108,4 @@ Page.propTypes = {
     dispatch: PropTypes.func.isRequired,
 };
 
-export default Page;
+export default withStyles(styles)(Page);
