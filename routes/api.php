@@ -59,7 +59,7 @@ Route::resource('courses/{course}/quiz/{quiz}/questions', 'Api\QuestionsControll
 //Answers routes
 Route::post('courses/{course}/quiz/{quiz}/questions/{question}/answers/','Api\AnswersController@store');
 Route::put('courses/{course}/quiz/{quiz}/questions/{question}/answers/{answer}','Api\AnswersController@update');
-Route::delete('courses/{course}/quiz/{quiz}/questions/{question}/answers/{answer}','Api\AnswersController@delete');
+Route::delete('courses/{course}/quiz/{quiz}/questions/{question}/answers/{answer}','Api\AnswersController@destroy');
 
 //Course routes
 Route::resource('courses', 'Api\CoursesController');

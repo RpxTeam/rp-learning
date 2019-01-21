@@ -37,4 +37,15 @@ class Question extends Model
         
         return array('question'=>$question,'answers'=> $answers);
     }
+
+    public static function onlyAnswers($question){
+        $question = Question::findOrFail($question);
+
+        $answers = DB::table('question_answer')
+                    ->leftjoin('answers', 'question_answer.answer_id','=','answers.id')
+                    ->where('question_id',$question->id)
+                    ->get();
+        
+        return $answers;
+    }
 }

@@ -86,7 +86,7 @@ class QuestionsController extends Controller
         $quiz = Quiz::findOrFail($quiz);
         $question = Question::findOrFail($question);
 
-        $question = Question::whereId($question->id)->update($request->All());
+        $question = Question::whereId($question->id)->update($request->except(['_method',]));
 
         return response()->json(204);
     }
@@ -103,8 +103,9 @@ class QuestionsController extends Controller
         $quiz = Quiz::findOrFail($quiz);
         $question = Question::findOrFail($question);
 
-        $answers = Question::questionAnswers($question->id);
+        $answers = Question::onlyAnswers($question->id);
 
+        // dd($answers);
         foreach($answers as $answer){
             DB::table('question_answer')
             ->where('question_id', $question->id)

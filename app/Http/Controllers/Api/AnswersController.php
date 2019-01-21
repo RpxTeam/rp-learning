@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use App\Course;
 use App\Quiz;
 use App\Question;
@@ -45,9 +46,9 @@ class AnswersController extends Controller
         $course = Course::findOrFail($course);
         $quiz = Quiz::findOrFail($quiz);
         $question = Question::findOrFail($question);
-        $Answer = Answer::findOrFail($Answer);
+        $answer = Answer::findOrFail($answer);
 
-        $answer = Answer::whereId($answer->id)->update($request->All());
+        $answer = Answer::whereId($answer->id)->update($request->except(['_method',]));
 
         return response()->json(204);
         //204: No content. When an action was executed successfully, but there is no content to return.
@@ -64,13 +65,13 @@ class AnswersController extends Controller
         $course = Course::findOrFail($course);
         $quiz = Quiz::findOrFail($quiz);
         $question = Question::findOrFail($question);
-        $Answer = Answer::findOrFail($Answer);
+        $answer = Answer::findOrFail($answer);
 
-        $answer->delete();
         DB::table('question_answer')
-            ->where('question_id','=', $question->id)
-            ->where('answer_id','=', $answer->id)
-            ->delete();
+        ->where('question_id','=', $question->id)
+        ->where('answer_id','=', $answer->id)
+        ->delete();
+        $answer->delete();
 
             return response()->json(204);
             //204: No content. When an action was executed successfully, but there is no content to return.

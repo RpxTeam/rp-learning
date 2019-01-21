@@ -78,7 +78,7 @@ class QuizController extends Controller
         $course = Course::findOrFail($course);
         $quiz = Quiz::findOrFail($quiz);
 
-        $quiz = Quiz::whereId($quiz->id)->update($request->All());
+        $quiz = Quiz::whereId($quiz->id)->update($request->except(['_method',]));
 
         return response()->json(204);
     }
