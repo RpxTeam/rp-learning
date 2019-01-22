@@ -63,7 +63,7 @@ class Page extends React.Component {
             </span>
         );
         return (
-            <AppBar position="static">
+            <AppBar position={this.props.position} className={this.props.className}>
                 <Toolbar>
                     <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
                         <MenuIcon />
@@ -106,6 +106,8 @@ class Page extends React.Component {
 
 Page.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    position: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(Page);

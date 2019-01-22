@@ -19,6 +19,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Dashboard from '@material-ui/icons/Dashboard';
+import People from '@material-ui/icons/People';
+import LocalLibrary from '@material-ui/icons/LocalLibrary'
 
 const drawerWidth = 240;
 
@@ -49,13 +52,23 @@ class Admin extends React.Component {
     constructor(props) {
         super(props);
     }
+
+
+    handleDrawerOpen = () => {
+        setOpen(true);
+    }
+
+    handleDrawerClose = () => {
+        setOpen(false);
+    }
+
     render() {
         const { classes } = this.props;
 
         return (
-            <div>
-                <Topbar></Topbar>
-                <Sidebar className={classes.appBar} />
+            <div className={classes.root}>
+                <Topbar position="fixed" className={classes.appBar} />
+                {/* <Sidebar className={classes.appBar} /> */}
                 <Drawer
                     className={classes.drawer}
                     variant="permanent"
@@ -64,27 +77,33 @@ class Admin extends React.Component {
                     }}
                     anchor="left"
                 >
-                    <div className={classes.toolbar} />
+                    <div className={classes.toolbar}>
+                        <img src={require('../../../images/logo.png')}></img>
+                    </div>
                     <Divider />
                     <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
+                        <Link to="/dashboard">
+                            <ListItem button>
+                                <ListItemIcon><Dashboard /></ListItemIcon>
+                                <ListItemText primary="Dashboard" />
                             </ListItem>
-                        ))}
-                    </List>
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
+                        </Link>
+                        <Link to="/admin/users">
+                            <ListItem button>
+                                <ListItemIcon><People /></ListItemIcon>
+                                <ListItemText primary="Usuários" />
                             </ListItem>
-                        ))}
+                        </Link>
+                        <Link to="/admin/courses">
+                            <ListItem button>
+                                <ListItemIcon><LocalLibrary /></ListItemIcon>
+                                <ListItemText primary="Cursos" />
+                            </ListItem>
+                        </Link>
                     </List>
                 </Drawer>
-                <main className="fadeIn animated" style={{ marginLeft: '150px', padding: '30px 20px' }}>
+                <main className={classes.content + ' fadeIn animated'}>
+                    <div className={classes.toolbar} />
                     <Grid>
                         <Grid.Row>
                             <Grid.Column width={14}>

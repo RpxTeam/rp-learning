@@ -3,17 +3,19 @@ import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import { API_URL } from "../../../../common/url-types";
 import PropTypes from 'prop-types'
-import {
-    Button,
-    Icon,
-    Table,
-    Grid,
-    Menu,
-    Message,
-    Confirm
-} from 'semantic-ui-react'
+// import {
+//     Button,
+//     Icon,
+//     Table,
+//     Grid,
+//     Menu,
+//     Message,
+//     Confirm
+// } from 'semantic-ui-react'
 import Admin from '../../Admin'
 import axios from 'axios'
+
+import Table from '../../../../components/Table'
 
 class Page extends React.Component {
     constructor(props) {
@@ -81,51 +83,7 @@ class Page extends React.Component {
         const { courses } = this.state;
         return (
             <Admin heading='Cursos' createLink='/admin/courses/create'>
-                <Grid.Column width={16}>
-                    {this.state.message ?
-                    <Message success={this.state.success} negative={this.state.error}>
-                        {/* <Message.Header>{this.state.success ? 'Sucesso' : "Erro" }</Message.Header> */}
-                        <p>
-                            {this.state.message}
-                        </p>
-                    </Message>
-                    : null }
-                    <Table celled>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell colSpan='4'>Lista</Table.HeaderCell>
-                            </Table.Row>
-                            <Table.Row>
-                                <Table.HeaderCell>Título</Table.HeaderCell>
-                                <Table.HeaderCell>Duração</Table.HeaderCell>
-                                <Table.HeaderCell>Descrição</Table.HeaderCell>
-                                <Table.HeaderCell>  </Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
-                    
-                        <Table.Body>
-                            { courses.map((course) => 
-                                <Table.Row key={course.id}>
-                                    <Table.Cell>
-                                        <Menu.Item as={ Link } to={'/admin/courses/' + course.id}>
-                                            {course.title}
-                                        </Menu.Item>
-                                    </Table.Cell>
-                                    <Table.Cell>{course.duration}</Table.Cell>
-                                    <Table.Cell>{course.description}</Table.Cell>
-                                    <Table.Cell collapsing textAlign="right">
-                                        <Button.Group size='small'>
-                                            <Button icon='eye' as={Link} to={'/courses/'+ course.id +'/details'} color='green' />
-                                            <Button icon='trash' onClick={this.handleConfirm} value={course.id} color='red' />
-                                        </Button.Group>
-                                    </Table.Cell>
-                                    </Table.Row>
-                                    )
-                                }
-                            <Confirm open={this.state.open} onCancel={this.close} onConfirm={this.handleDelete} />
-                        </Table.Body>
-                    </Table>
-                </Grid.Column>
+                <Table />
             </Admin>
         );
     }
