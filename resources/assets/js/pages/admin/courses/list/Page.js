@@ -38,9 +38,7 @@ class Page extends React.Component {
           .then(res => {
             const courses = res.data;
             this.setState({ courses: courses });
-            console.log(res.data);
         });
-        console.log(this.state.courses);
     }
 
     show = () => this.setState({ open: true });
@@ -58,8 +56,6 @@ class Page extends React.Component {
         let courseID = this.state.course;
         axios.delete(`${ API_URL }/api/courses/${courseID}`)
         .then(res => {
-            console.log(res);
-            console.log(res.data);
             this.setState({
                 message: 'Curso deletado',
                 error: false,
@@ -83,7 +79,8 @@ class Page extends React.Component {
         const { courses } = this.state;
         return (
             <Admin heading='Cursos' createLink='/admin/courses/create'>
-                <Table />
+                <Table data={courses} columns={courses} />
+                {console.log(courses)}
             </Admin>
         );
     }
