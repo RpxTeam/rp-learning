@@ -4,11 +4,7 @@ import axios from 'axios'
 import {
     Label,
     Form,
-    Input,
-    Grid,
-    Button,
     Segment,
-    Message,
     TextArea,
     Divider,
     Table,
@@ -25,7 +21,26 @@ import {
     DatesRangeInput
 } from 'semantic-ui-calendar-react';
 import Admin from '../../Admin'
-import {Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Card from '@material-ui/core/Card';
+import Button from '@material-ui/core/Button';
+import Message from '../../../../components/Message';
+import styled from 'styled-components';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import Fab from '@material-ui/core/Fab';
+// import ExpandLess from '@material-ui/icons/ExpandLess';
+// import ExpandMore from '@material-ui/icons/ExpandMore';
+// import Input from '@material-ui/core/Input';
+// import InputLabel from '@material-ui/core/InputLabel';
+// import FormControl from '@material-ui/core/FormControl';
+// import Chip from '@material-ui/core/Chip';
+// import Select from '@material-ui/core/Select';
+
+const CardContainer = styled(Card)`
+    padding: 10px 20px;
+`;
 
 class Page extends React.Component {
     constructor(props) {
@@ -33,7 +48,12 @@ class Page extends React.Component {
         this.state = {
             error: false,
             success: false,
-            message: '',
+            message: {
+                open: false,
+                vertical: 'top',
+                horizontal: 'center',
+                text: 'Snackbar its works'
+            },
             authors: [],
             options: [],
             lessons: {
@@ -46,13 +66,13 @@ class Page extends React.Component {
             courseEdit: false,
             author: '',
         }
+        this.openMessage = this.openMessage.bind(this);
     };
 
     getData = () => {
-        axios.get(`${ API_URL }/api/authors/`)
+        axios.get(`${API_URL}/api/authors/`)
             .then(res => {
                 const authors = res.data;
-                console.log(authors);
                 authors.map((author) => {
                     this.setState({
                         options: [
@@ -78,7 +98,7 @@ class Page extends React.Component {
         });
     };
 
-    handleChangeDate = (event, {name, value}) => {
+    handleChangeDate = (event, { name, value }) => {
         this.setState({
             datesRange: value
         })
@@ -87,35 +107,40 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        const date = this.state.datesRange.split(' ');
-        let start_date = date[0];
-        let end_date = date[2];
+        if(!this.state.title || !this.state.datesRange || !this.state.description || !this.state.duration) {
+            this.setState({ message: {
+                ...this.state,
+                open: true,
+                text: 'Existem campos vázios'
+            } })
+        } else {
+            const date = this.state.datesRange.split(' ');
+            const start_date = this.formatDate(date[0]);
+            const end_date = this.formatDate(date[2]);
 
-        start_date = this.formatDate(start_date);
-        end_date = this.formatDate(end_date);
-
-        axios.post(`${ API_URL }/api/courses`, {
-            title: this.state.title,
-            slug: this.state.slug,
-            description: this.state.description,
-            start_date: start_date,
-            end_date: end_date,
-            duration: this.state.duration
-         }).then(res => {
-            this.setState({
-                message: 'Usuário criado com sucesso',
-                error: false,
-                success: true,
-                courseID: res.data,
-                courseEdit: true
+            axios.post(`${API_URL}/api/courses`, {
+                title: this.state.title,
+                slug: this.state.slug,
+                description: this.state.description,
+                start_date: start_date,
+                end_date: end_date,
+                duration: this.state.duration
+            }).then(res => {
+                this.setState({
+                    error: false,
+                    success: true,
+                    courseID: res.data,
+                    courseEdit: true
+                });
+                this.openMessage({ text: 'Curso criado com sucesso'})
+            }).catch(error => {
+                this.setState({
+                    error: true,
+                    success: false
+                })
+                this.openMessage({ text: error.message})
             });
-        }).catch(error => {
-            this.setState({
-                message: error.message,
-                error: true,
-                success: false
-            })
-        });
+        }
     };
 
     handleDelete = () => {
@@ -126,7 +151,7 @@ class Page extends React.Component {
         console.log('Copy');
     };
 
-    handleEditor = ( event, editor ) => {
+    handleEditor = (event, editor) => {
         const data = editor.getData();
         this.setState({
             lesson: {
@@ -135,7 +160,7 @@ class Page extends React.Component {
         });
     };
 
-    openModal = type => () => this.setState({ modal: { type: type, open: true} });
+    openModal = type => () => this.setState({ modal: { type: type, open: true } });
 
     closeModal = () => this.setState({ modal: { open: false } });
 
@@ -146,7 +171,7 @@ class Page extends React.Component {
     };
 
     createAuthor = (name) => {
-        axios.post(`${ API_URL }/api/authors/`, { name: name })
+        axios.post(`${API_URL}/api/authors/`, { name: name })
             .then(res => {
                 const optionsCount = this.state.options.length;
                 const newAuthor = { key: optionsCount + 1, value: name, text: name };
@@ -169,124 +194,167 @@ class Page extends React.Component {
 
     changeAuthors = (e, { value }) => this.setState({ authors: value })
 
+    openMessage = newState => () => {
+        this.setState({
+            message: {
+                open: true,
+                ...newState
+            }
+        });
+    };
+
+    closeMessage = () => {
+        this.setState({
+            message: {
+                ...this.state.message,
+                open: false
+            }
+        });
+    }
+
     render() {
-        const { authors, options } = this.state;
+        const { message, authors, options } = this.state;
         if (this.state.courseEdit === true) {
             return <Redirect to={'/admin/courses/' + this.state.courseID} />
         }
         return (
             <Admin heading="Create">
-                <Grid.Row>
-                    {this.state.message ?
-                    <Message success={this.state.success} negative={this.state.error}>
-                        <Message.Header>{this.state.success ? 'Sucesso' : "Erro" }</Message.Header>
-                        <p>
-                            {this.state.message}
-                        </p>
-                    </Message>
-                    : null }
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column width={16}>
-                        <Form>
-                            <Grid>
-                                <Grid.Row>
-                                    <Grid.Column width={12}>
-                                        <Segment color="black">
-                                            <Form.Field
-                                                id='input-control-title'
-                                                control={Input}
-                                                label='Título'
-                                                placeholder='Título'
-                                                name="title"
+                <Message text={message.text} open={message.open} close={this.closeMessage} />
+                <Form>
+                    <Grid container spacing={8}>
+                        <Grid item xs={12} md={9}>
+                            <CardContainer>
+                                <Grid>
+                                    <TextField
+                                        id="input-title"
+                                        label="Título"
+                                        onChange={this.handleChange}
+                                        margin="normal"
+                                        variant="outlined"
+                                        name="title"
+                                        fullWidth
+                                    />
+                                </Grid>
+                                <TextField
+                                    id="input-description"
+                                    label="Descrição"
+                                    name="description"
+                                    onChange={this.handleChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    rows={8}
+                                    multiline={true}
+                                    rowsMax={10}
+                                    fullWidth
+                                />
+                            </CardContainer>
+                        </Grid>
+
+                        <Grid item xs={12} md={3}>
+                            <CardContainer>
+
+                                <TextField
+                                    id="input-slug"
+                                    label="Slug"
+                                    name="slug"
+                                    onChange={this.handleChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    fullWidth
+                                />
+
+                                <TextField
+                                    id="input-duration"
+                                    label="Duração (horas)"
+                                    name="duration"
+                                    onChange={this.handleChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    type={'number'}
+                                    fullWidth
+                                />
+
+                                <Form.Field>
+                                    <label>Data
+                                        <DatesRangeInput
+                                            name="datesRange"
+                                            dateFormat='DD/MM/YYYY'
+                                            placeholder="Início - Término"
+                                            value={this.state.datesRange}
+                                            iconPosition="left"
+                                            closable={true}
+                                            onChange={this.handleChangeDate} />
+                                    </label>
+                                </Form.Field>
+                                {/* <Form.Field>
+                                    <label>Autores</label>
+                                    <Grid>
+                                        <FormControl>
+                                            <InputLabel htmlFor="select-multiple-chip">Autores</InputLabel>
+                                            <Select
+                                                multiple
+                                                value={authors}
                                                 onChange={this.handleChange}
-                                            />
-                                            <Form.Field
-                                                id='input-control-description'
-                                                control={TextArea}
-                                                label='Descrição'
-                                                placeholder='Descrição'
-                                                name='description'
-                                                onChange={this.handleChange}
-                                                style={{ minHeight: 150 }} />
-                                        </Segment>
-                                    </Grid.Column>
-                                    <Grid.Column width={4}>
-                                        <Segment color="black">
-                                            <Form.Field
-                                                id='input-control-slug'
-                                                control={Input}
-                                                label='Slug'
-                                                name="slug"
-                                                disabled
-                                                placeholder='Slug'
-                                                onChange={this.handleChange}
-                                            />
-                                            <Form.Field
-                                                id='input-control-duration'
-                                                control={Input}
-                                                type='number'
-                                                label='Duração (Horas)'
-                                                name="duration"
-                                                placeholder='Duração Horas'
-                                                onChange={this.handleChange}
-                                            />
-                                            <Form.Field>
-                                                <label>Data
-                                                    <DatesRangeInput
-                                                        name="datesRange"
-                                                        dateFormat='DD/MM/YYYY'
-                                                        placeholder="Início - Término"
-                                                        value={this.state.datesRange}
-                                                        iconPosition="left"
-                                                        closable={true}
-                                                        onChange={this.handleChangeDate} />
-                                                </label>
-                                            </Form.Field>
-                                            <Form.Field>
-                                                <label>Autores</label>
-                                                <Grid>
-                                                    <Grid.Row>
-                                                        <Grid.Column width={12}>
-                                                            <Dropdown placeholder='Autores' fluid multiple search selection options={options} value={authors}
-                                                                      onChange={this.changeAuthors}/>
-                                                        </Grid.Column>
-                                                        <Grid.Column width={2}>
-                                                            <Button circular icon={this.state.createAuthor ? 'minus' : 'plus'} onClick={this.openAuthor} />
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                </Grid>
-                                            </Form.Field>
+                                                input={<Input id="select-multiple-chip" />}
+                                                renderValue={selected => (
+                                                    <div>
+                                                        {selected.map(value => (
+                                                            <Chip key={value} label={value} />
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            >
+                                                {authors.map(author => (
+                                                    <MenuItem key={author.id} value={author.name}>
+                                                        {author.name}
+                                                        {console.log}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                        <Dropdown placeholder='Autores' fluid multiple search selection options={options} value={authors}
+                                            onChange={this.changeAuthors} />
+                                        <Fab size="small" color="secondary" aria-label={this.state.createAuthor ? 'Criar' : ''} onClick={this.openAuthor}>
                                             {this.state.createAuthor ?
-                                            <React.Fragment>
-                                                <Form.Field>
-                                                    <input
-                                                        id='input-control-author'
-                                                        type='text'
-                                                        name="author"
-                                                        placeholder='Nome do Autor'
-                                                        onChange={this.handleChange}
-                                                    />
-                                                </Form.Field>
-                                                <Form.Field>
-                                                    <Button content='Adicionar Autor' onClick={this.createAuthor.bind(this, this.state.author)} style={{ width: '100%' }}/>
-                                                </Form.Field>
-                                            </React.Fragment>
-                                            : null }
-                                        </Segment>
-                                        <Form.Field
-                                            id='button-control-confirm'
-                                            control={Button}
-                                            content='Criar'
-                                            positive
-                                            onClick={this.handleSubmit}
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Form>
-                    </Grid.Column>
-                </Grid.Row>
+                                                <ExpandLess />
+                                                :
+                                                <ExpandMore />
+                                            }
+                                        </Fab>
+                                    </Grid>
+                                </Form.Field> */}
+                                {this.state.createAuthor ?
+                                    <React.Fragment>
+                                        <Form.Field>
+                                            <TextField
+                                                id="input-author"
+                                                label="Autor"
+                                                name="author"
+                                                onChange={this.handleChange}
+                                                margin="normal"
+                                                variant="outlined"
+                                                fullWidth
+                                            />
+                                        </Form.Field>
+                                        <Form.Field>
+                                            <Button onClick={this.createAuthor.bind(this, this.state.author)} style={{ width: '100%' }}>Adicionar Autor</Button>
+                                        </Form.Field>
+                                    </React.Fragment>
+                                    : null}
+                            </CardContainer>
+                            <br />
+
+                            <Button variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit} style={{ width: '100%' }}>Criar</Button>
+                            {/* <Form.Field
+                                id='button-control-confirm'
+                                control={Button}
+                                content='Criar'
+                                positive
+                                onClick={this.handleSubmit}
+                            /> */}
+                        </Grid>
+                    </Grid>
+                </Form>
             </Admin>
         );
     }

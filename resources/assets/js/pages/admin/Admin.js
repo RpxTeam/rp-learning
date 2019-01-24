@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Grid, Segment, Button } from 'semantic-ui-react'
 import Footer from '../../common/mainFooter'
 import Topbar from '../../common/topbar'
 import Sidebar from '../../common/sidebar'
@@ -22,6 +21,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import Dashboard from '@material-ui/icons/Dashboard';
 import People from '@material-ui/icons/People';
 import LocalLibrary from '@material-ui/icons/LocalLibrary'
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 const drawerWidth = 240;
 
@@ -104,19 +105,19 @@ class Admin extends React.Component {
                 </Drawer>
                 <main className={classes.content + ' fadeIn animated'}>
                     <div className={classes.toolbar} />
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={14}>
-                                <h2>{this.props.heading}</h2>
-                            </Grid.Column>
-                            {this.props.createLink ?
-                                <Grid.Column floated='right' width={2}>
-                                    <Button as={Link} to={this.props.createLink} floated='right'>Criar</Button>
-                                </Grid.Column>
-                                : null}
-                        </Grid.Row>
-                        {this.props.children}
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-between"
+                        alignItems="center"
+                    >
+                        <h2>{this.props.heading}</h2>
+                        {this.props.createLink ?
+                            <Button variant="contained" component={Link} to={this.props.createLink} color='primary'>Criar</Button>
+                        : null }
                     </Grid>
+                    <br />
+                    {this.props.children}
                 </main>
             </div>
         );

@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-alignment": "^10.0.4",
+    "@date-io/date-fns": "^1.0.1",
     "axios": "^0.18.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-react": "^6.24.1",
@@ -19,8 +20,10 @@
     "browser-sync": "^2.26.3",
     "browser-sync-webpack-plugin": "^2.0.1",
     "cross-env": "^5.1",
+    "date-fns": "^2.0.0-alpha.25",
     "laravel-mix": "^2.1.14",
     "lodash": "^4.17.11",
+    "material-ui-pickers": "^2.1.2",
     "namor": "^1.1.1",
     "react": "^16.0.0",
     "react-dom": "^16.2.0",
