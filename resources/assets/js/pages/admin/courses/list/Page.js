@@ -41,7 +41,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import Message from '../../../../components/Message';
 import Card from '@material-ui/core/Card';
-import { Grid } from '@material-ui/core';
+import { Grid, MenuItem } from '@material-ui/core';
 
 class Page extends React.Component {
     constructor(props) {
@@ -195,15 +195,15 @@ class Page extends React.Component {
                         <TableBody>
                             {courses.map((course) =>
                                 <TableRow key={course.id}>
-                                    <TableCell>{course.title}</TableCell>
+                                    <TableCell><Button component={Link} to={'/admin/courses/' + course.id}>{course.title}</Button></TableCell>
                                     <TableCell>{course.duration}</TableCell>
                                     <TableCell>
-                                        <Fab size="small" color="primary" aria-label="Delete" style={{ margin: '0 5px' }} component={Link} to={'/courses/' + course.id + '/details'}>
+                                        <IconButton size="small" color="primary" aria-label="Delete" component={Link} to={'/courses/' + course.id + '/details'}>
                                             <RemoveRedEye />
-                                        </Fab>
-                                        <Fab size="small" color="secondary" aria-label="Add" style={{ margin: '0 5px' }} onClick={this.handleConfirm.bind(this, course.id)} value={course.id}>
+                                        </IconButton>
+                                        <IconButton size="small" color="secondary" aria-label="Add" onClick={this.handleConfirm.bind(this, course.id)} value={course.id}>
                                             <DeleteIcon />
-                                        </Fab>
+                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
                             )}

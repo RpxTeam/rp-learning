@@ -2,17 +2,7 @@ import React from 'react'
 import { API_URL } from "../../../../common/url-types";
 import axios from 'axios'
 import {
-    Label,
     Form,
-    Segment,
-    TextArea,
-    Divider,
-    Table,
-    Icon,
-    Modal,
-    Header,
-    Image,
-    Dropdown
 } from 'semantic-ui-react'
 import {
     DateInput,
@@ -220,21 +210,19 @@ class Page extends React.Component {
         return (
             <Admin heading="Create">
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
-                <Form>
-                    <Grid container spacing={8}>
+                <form>
+                    <Grid container spacing={16}>
                         <Grid item xs={12} md={9}>
                             <CardContainer>
-                                <Grid>
-                                    <TextField
-                                        id="input-title"
-                                        label="Título"
-                                        onChange={this.handleChange}
-                                        margin="normal"
-                                        variant="outlined"
-                                        name="title"
-                                        fullWidth
-                                    />
-                                </Grid>
+                                <TextField
+                                    id="input-title"
+                                    label="Título"
+                                    onChange={this.handleChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    name="title"
+                                    fullWidth
+                                />
                                 <TextField
                                     id="input-description"
                                     label="Descrição"
@@ -286,43 +274,6 @@ class Page extends React.Component {
                                             onChange={this.handleChangeDate} />
                                     </label>
                                 </Form.Field>
-                                {/* <Form.Field>
-                                    <label>Autores</label>
-                                    <Grid>
-                                        <FormControl>
-                                            <InputLabel htmlFor="select-multiple-chip">Autores</InputLabel>
-                                            <Select
-                                                multiple
-                                                value={authors}
-                                                onChange={this.handleChange}
-                                                input={<Input id="select-multiple-chip" />}
-                                                renderValue={selected => (
-                                                    <div>
-                                                        {selected.map(value => (
-                                                            <Chip key={value} label={value} />
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            >
-                                                {authors.map(author => (
-                                                    <MenuItem key={author.id} value={author.name}>
-                                                        {author.name}
-                                                        {console.log}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                        <Dropdown placeholder='Autores' fluid multiple search selection options={options} value={authors}
-                                            onChange={this.changeAuthors} />
-                                        <Fab size="small" color="secondary" aria-label={this.state.createAuthor ? 'Criar' : ''} onClick={this.openAuthor}>
-                                            {this.state.createAuthor ?
-                                                <ExpandLess />
-                                                :
-                                                <ExpandMore />
-                                            }
-                                        </Fab>
-                                    </Grid>
-                                </Form.Field> */}
                                 {this.state.createAuthor ?
                                     <React.Fragment>
                                         <Form.Field>
@@ -345,16 +296,9 @@ class Page extends React.Component {
                             <br />
 
                             <Button variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit} style={{ width: '100%' }}>Criar</Button>
-                            {/* <Form.Field
-                                id='button-control-confirm'
-                                control={Button}
-                                content='Criar'
-                                positive
-                                onClick={this.handleSubmit}
-                            /> */}
                         </Grid>
                     </Grid>
-                </Form>
+                </form>
             </Admin>
         );
     }

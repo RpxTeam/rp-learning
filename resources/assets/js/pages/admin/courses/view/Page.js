@@ -3,20 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { API_URL } from "../../../../common/url-types";
 import {
-    Grid,
     Form,
-    Input,
-    TextArea,
-    Button,
-    Icon,
-    Select,
-    Message,
-    Segment,
-    Divider,
-    Label,
-    Table,
-    Confirm,
-    Header
 } from 'semantic-ui-react'
 import {
     DateInput,
@@ -25,12 +12,41 @@ import {
     DatesRangeInput
 } from 'semantic-ui-calendar-react';
 import Admin from '../../Admin'
-import Dropdown from "semantic-ui-react/dist/es/modules/Dropdown/Dropdown";
-import Modal from "semantic-ui-react/dist/es/modules/Modal/Modal";
+import { Redirect } from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Card from '@material-ui/core/Card';
+import Button from '@material-ui/core/Button';
+import Message from '../../../../components/Message';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Dialog from '@material-ui/core/Dialog';
+import Fab from '@material-ui/core/Fab';
+import styled from 'styled-components';
+// import Dropdown from "semantic-ui-react/dist/es/modules/Dropdown/Dropdown";
+// import Modal from "semantic-ui-react/dist/es/modules/Modal/Modal";
 
 // CKEditor
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
+const CardContainer = styled(Card)`
+    padding: 10px 20px;
+`;
 
 class Page extends React.Component {
     constructor(props) {
@@ -45,7 +61,7 @@ class Page extends React.Component {
                 end_date: '',
                 description: '',
             },
-            edit: false,
+            edit: true,
             lessons: [],
             lesson: {
                 title: '',
@@ -66,7 +82,17 @@ class Page extends React.Component {
                 name: 'Nenhum arquivo',
                 file: null,
             },
-            datesRange: ''
+            datesRange: '',
+            message: {
+                open: false,
+                vertical: 'top',
+                horizontal: 'center',
+                text: 'Snackbar its works'
+            },
+            menu: {
+                open: false
+            },
+            open: false,
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -78,14 +104,14 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`${ API_URL }/api/courses/${this.state.courseID}`)
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
             .then(res => {
                 const course = res.data;
                 let start_date, end_date, ranges;
                 start_date = this.formatDateReverse(course.start_date);
                 end_date = this.formatDateReverse(course.end_date);
                 ranges = start_date + ' - ' + end_date;
-                this.setState({course: course, datesRange: ranges});
+                this.setState({ course: course, datesRange: ranges });
             });
 
         // axios.get(`${ API_URL }/api/courses/${courseID}/lessons/`)
@@ -128,10 +154,10 @@ class Page extends React.Component {
     };
 
     handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({ [event.target.name]: event.target.value });
     };
 
-    handleChangeDate = (event, {name, value}) => {
+    handleChangeDate = (event, { name, value }) => {
         this.setState({
             datesRange: value
         })
@@ -147,7 +173,7 @@ class Page extends React.Component {
         start_date = this.formatDate(start_date);
         end_date = this.formatDate(end_date);
 
-        axios.put(`${ API_URL }/api/courses/${this.state.courseID}`, {
+        axios.put(`${API_URL}/api/courses/${this.state.courseID}`, {
             title: this.state.course.title,
             slug: this.state.course.slug,
             description: this.state.course.description,
@@ -162,12 +188,12 @@ class Page extends React.Component {
                     success: true,
                 });
             }).catch(error => {
-            this.setState({
-                message: error.message,
-                error: true,
-                success: false
+                this.setState({
+                    message: error.message,
+                    error: true,
+                    success: false
+                })
             })
-        })
     };
 
     handleSubmitLesson = (type) => {
@@ -188,7 +214,7 @@ class Page extends React.Component {
                     }
                 });
             } else {
-                axios.post(`${ API_URL }/api/courses/${this.state.courseID}/lessons`, {
+                axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, {
                     type: this.state.modal.type,
                     title: this.state.lesson.title,
                     content: this.state.lesson.content,
@@ -233,7 +259,7 @@ class Page extends React.Component {
                     }
                 });
             } else {
-                axios.put(`${ API_URL }/api/courses/${this.state.courseID}/lessons/${id}`, {
+                axios.put(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}`, {
                     type: this.state.modal.type,
                     title: this.state.lesson.title,
                     content: this.state.lesson.content,
@@ -274,10 +300,10 @@ class Page extends React.Component {
     };
 
     loadingLessons = () => {
-        axios.get(`${ API_URL }/api/courses/${this.state.courseID}/lessons/`)
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons/`)
             .then(res => {
                 const lessons = res.data;
-                this.setState({lessons: lessons});
+                this.setState({ lessons: lessons });
             });
     };
 
@@ -291,17 +317,23 @@ class Page extends React.Component {
         });
     };
 
-    handleConfirm = (event) => {
-        let lessonID = event.target.value;
+    handleConfirm = (value) => {
         this.setState({
-            lessonID: lessonID,
-            confirm: {open: true}
+            lessonID: value,
+            open: true
         })
     };
 
+    handleCancel = () => {
+        this.setState({
+            lessonID: '',
+            open: false
+        })
+    }
+
     handleDelete = () => {
         if (this.state.lessonID) {
-            axios.delete(`${ API_URL }/api/courses/${this.state.courseID}/lessons/${this.state.lessonID}`)
+            axios.delete(`${API_URL}/api/courses/${this.state.courseID}/lessons/${this.state.lessonID}`)
                 .then(res => {
 
                     this.loadingLessons();
@@ -309,13 +341,14 @@ class Page extends React.Component {
                         message: 'Lição deletado',
                         error: false,
                         success: true,
-                        confirm: {open: false}
+                        confirm: { open: false }
                     })
+                    this.handleCancel();
                 });
         }
     };
 
-    openModal = type => () => this.setState({modal: {type: type, open: true, edit: false}});
+    openModal = type => () => this.setState({ modal: { type: type, open: true, edit: false } });
 
     closeModal = () => this.setState({
         modal: {
@@ -326,8 +359,24 @@ class Page extends React.Component {
         }
     });
 
-    showConfirm = () => this.setState({confirm: {open: true}});
-    closeConfirm = () => this.setState({confirm: {open: false}});
+    showConfirm = () => this.setState({ confirm: { open: true } });
+    closeConfirm = () => this.setState({ confirm: { open: false } });
+
+    openMenu = () => {
+        this.setState({
+            menu: {
+                open: true
+            }
+        })
+    }
+
+    closeMenu = () => {
+        this.setState({
+            menu: {
+                open: false
+            }
+        })
+    }
 
     onChangeFile = (event) => {
         const file = event.target.files[0];
@@ -398,7 +447,7 @@ class Page extends React.Component {
 
     fileUpload = (type) => {
         const formData = new FormData();
-        if(type === 'PUT') {
+        if (type === 'PUT') {
             formData.append('_method', type);
         }
         formData.append('title', this.state.lesson.title);
@@ -412,13 +461,13 @@ class Page extends React.Component {
             }
         };
 
-        axios.post(`${ API_URL }/api/courses/${this.state.courseID}/lessons`, formData, config).then((res) => {
+        axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, formData, config).then((res) => {
             this.loadingLessons();
         });
     };
 
     editLesson = (id) => {
-        axios.get(`${ API_URL }/api/courses/${this.state.courseID}/lessons/${id}`)
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}`)
             .then(res => {
                 const lesson = res.data;
                 this.setState({
@@ -429,7 +478,7 @@ class Page extends React.Component {
                         edit: true
                     }
                 });
-                if(lesson.type === 'video-internal' || lesson.type === 'audio' || lesson.type === 'doc' || lesson.type === 'pdf') {
+                if (lesson.type === 'video-internal' || lesson.type === 'audio' || lesson.type === 'doc' || lesson.type === 'pdf') {
                     const archive = lesson.content.split('/');
                     const archiveCount = archive.length - 1;
                     this.setState({
@@ -464,170 +513,227 @@ class Page extends React.Component {
         return newDate
     };
 
+    handleEdit = () => {
+        this.setState({
+            edit: !this.state.edit
+        })
+    }
+
     render() {
-        const {course, lessons} = this.state;
+        const { course, lessons, message, menu, edit } = this.state;
         return (
             <Admin heading={"Cursos"}>
-                <Grid.Row>
-                    {this.state.message ?
-                        <Message floating success={this.state.success} negative={this.state.error}>
-                            <Message.Header>{this.state.success ? 'Sucesso' : "Erro"}</Message.Header>
-                            <p>
-                                {this.state.message}
-                            </p>
-                        </Message>
-                        : null}
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column width={16}>
-                        <Form>
-                            <Grid>
-                                <Grid.Row>
-                                    <Grid.Column width={12}>
-                                        <Segment color="black">
-                                            <Form.Field
-                                                id='input-control-title'
-                                                control={Input}
-                                                label='Título'
-                                                placeholder={course.title}
-                                                value={course.title}
-                                                name="title"
-                                                onChange={this.updateCourse}
-                                            />
-                                            <Form.Field
-                                                id='input-control-description'
-                                                control={TextArea}
-                                                label='Descrição'
-                                                placeholder={course.description}
-                                                value={course.description}
-                                                name='description'
-                                                onChange={this.updateCourse}
-                                                style={{minHeight: 150}}/>
-                                            {/*<Form.Field>*/}
-                                            {/*<label>Autores</label>*/}
-                                            {/*<Dropdown placeholder='Autores' fluid multiple selection options={this.state.options} value={this.state.author} onChange={this.handleChange}/>*/}
-                                            {/*</Form.Field>*/}
-                                        </Segment>
-                                        <Grid verticalAlign='middle'>
-                                            <Grid.Column width={12} floated='left'>
-                                                <h3>Lições</h3>
-                                            </Grid.Column>
-                                            <Grid.Column width={4} floated='right' style={{textAlign: 'right'}}>
-                                                <Dropdown text='Adicionar Lição' button floating>
-                                                    <Dropdown.Menu>
-                                                        <Dropdown.Item icon='file text' text="Texto" onClick={this.openModal('text')}/>
-                                                        {/*<Dropdown.Item icon='cloud' text="Web content" onClick={this.openModal('webcontent')} />*/}
-                                                        <Dropdown.Item icon='file video' text="Vídeo Interno" onClick={this.openModal('video-internal')}/>
-                                                        <Dropdown.Item icon='file video outline' text="Vídeo Externo" onClick={this.openModal('video-external')}/>
-                                                        <Dropdown.Item icon='file audio outline' text="Áudio" onClick={this.openModal('audio')}/>
-                                                        <Dropdown.Item icon='file' text="Documento" onClick={this.openModal('doc')}/>
-                                                        {/*<Dropdown.Item icon='attention' text="Scorm" onClick={this.openModal('text')} />*/}
-                                                    </Dropdown.Menu>
-                                                </Dropdown>
-                                            </Grid.Column>
-                                        </Grid>
-                                        <Segment.Group>
-                                            <Segment>
-                                                <Table singleLine>
-                                                    <Table.Body>
-                                                        {lessons.map((lesson) =>
-                                                            <Table.Row key={lesson.id}>
-                                                                <Table.Cell collapsing>
-                                                                    <Icon name={'circle outline'}/>
-                                                                </Table.Cell>
-                                                                <Table.Cell>
-                                                                    {lesson.title}
-                                                                </Table.Cell>
-                                                                <Table.Cell collapsing>
-                                                                    <Button.Group size='small'>
-                                                                        {/*<Button icon='edit' basic color='green'*/}
-                                                                                {/*value={this.state.courseID}*/}
-                                                                                {/*onClick={this.editLesson.bind(this, lesson.id)}/>*/}
-                                                                        {/*<Button icon='copy' basic color='blue' value={this.state.courseID} onClick={this.EditLesson} />*/}
-                                                                        <Button icon='trash' basic color='red'
-                                                                                value={lesson.id}
-                                                                                onClick={this.handleConfirm}/>
-                                                                    </Button.Group>
-                                                                </Table.Cell>
-                                                            </Table.Row>
-                                                        )
-                                                        }
-                                                        <Confirm open={this.state.confirm.open}
-                                                                 onCancel={this.closeConfirm}
-                                                                 onConfirm={this.handleDelete}/>
-                                                    </Table.Body>
-                                                </Table>
-                                            </Segment>
-                                        </Segment.Group>
-                                    </Grid.Column>
-                                    <Grid.Column width={4}>
-                                        <Segment color="black">
-                                            <Form.Field
-                                                id='input-control-slug'
-                                                control={Input}
-                                                label='Slug'
-                                                name="slug"
-                                                placeholder={course.slug}
-                                                value={course.slug}
-                                                onChange={this.updateCourse}
-                                            />
-                                            <Form.Field
-                                                id='input-control-duration'
-                                                control={Input}
-                                                label='Duração (Horas)'
-                                                name="duration"
-                                                placeholder={course.duration}
-                                                value={course.duration}
-                                                onChange={this.updateCourse}
-                                            />
-                                            <Form.Field>
-                                                <label>Data
-                                                    <DatesRangeInput
-                                                        name="datesRange"
-                                                        dateFormat='DD/MM/YYYY'
-                                                        placeholder="Início - Término"
-                                                        value={this.state.datesRange}
-                                                        iconPosition="left"
-                                                        closable={true}
-                                                        onChange={this.handleChangeDate}/>
-                                                </label>
-                                            </Form.Field>
-                                        </Segment>
-                                        <Grid>
-                                            <Grid.Row>
-                                                <Grid.Column floated='left' width={8}>
-                                                    <Form.Field
-                                                        id='button-control-confirm'
-                                                        control={Button}
-                                                        content='Atualizar'
-                                                        positive
-                                                        onClick={this.handleSubmit}
-                                                    />
-                                                </Grid.Column>
-                                                <Grid.Column floated='right' width={8} style={{textAlign: 'right'}}>
-                                                    <Button
-                                                        as={Link}
-                                                        to={'/courses/' + course.id + '/details'}
-                                                        basic
-                                                        content={'Ver Curso'}
-                                                    />
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        </Grid>
-                                    </Grid.Column>
-                                </Grid.Row>
+                <Message text={message.text} open={message.open} close={this.closeMessage} />
+                <Form>
+                    <Grid container spacing={16}>
+                        <Grid item xs={12} md={9}>
+                            <CardContainer>
+                                <Grid>
+                                    <TextField
+                                        disabled={edit}
+                                        id="input-title"
+                                        label="Título"
+                                        onChange={this.updateCourse}
+                                        margin="normal"
+                                        variant="outlined"
+                                        name="title"
+                                        placeholder={course.title}
+                                        defaultValue={course.title}
+                                        value={course.title}
+                                        fullWidth
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                    <TextField
+                                        disabled={edit}
+                                        id="input-description"
+                                        label="Descrição"
+                                        name="description"
+                                        onChange={this.updateCourse}
+                                        margin="normal"
+                                        variant="outlined"
+                                        rows={8}
+                                        multiline={true}
+                                        rowsMax={10}
+                                        placeholder={course.description}
+                                        defaultValue={course.description}
+                                        value={course.description}
+                                        fullWidth
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </Grid>
+                            </CardContainer>
+                        </Grid>
+                        <Grid item xs={12} md={3}>
+                            <CardContainer>
+                                <TextField
+                                    disabled={edit}
+                                    id="input-slug"
+                                    label="Slug"
+                                    name="slug"
+                                    onChange={this.updateCourse}
+                                    margin="normal"
+                                    variant="outlined"
+                                    placeholder={course.slug}
+                                    defaultValue={course.slug}
+                                    value={course.slug}
+                                    fullWidth
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                                <TextField
+                                    disabled={edit}
+                                    id="input-duration"
+                                    label="Duração (horas)"
+                                    name="duration"
+                                    onChange={this.updateCourse}
+                                    margin="normal"
+                                    variant="outlined"
+                                    type='number'
+                                    placeholder={course.duration}
+                                    defaultValue={course.duration}
+                                    value={course.duration}
+                                    fullWidth
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                                <Form.Field>
+                                    <label>Data
+                                        <DatesRangeInput
+                                            name="datesRange"
+                                            dateFormat='DD/MM/YYYY'
+                                            placeholder="Início - Término"
+                                            value={this.state.datesRange}
+                                            iconPosition="left"
+                                            closable={true}
+                                            onChange={this.handleChangeDate} />
+                                    </label>
+                                </Form.Field>
+                            </CardContainer>
+                            <br />
+                            <Grid container spacing={8}>
+                                <Grid item xs={6} md={3}>
+                                    <Button variant="contained" size="small" aria-label="Editar" onClick={this.handleEdit}>
+                                        <EditIcon />
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={6} md={9}>
+                                    <Button disabled={edit} variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit} style={{ width: '100%' }}>Atualizar</Button>
+                                </Grid>
                             </Grid>
-                        </Form>
-                    </Grid.Column>
-                </Grid.Row>
+                        </Grid>
+                    </Grid>
+                </Form>
 
-                <Modal dimmer={'blurring'} open={this.state.modal.open} onClose={this.closeModal}>
+                <Grid container spacing={8}>
+                    <Grid item xs={12} md={9}>
+                        <Button
+                            aria-owns={menu.open ? 'menu-lessons' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.openMenu}
+                        >
+                            Adicionar lição
+                        </Button>
+                        <Menu id='menu-lessons' open={menu.open} onClose={this.closeMenu}>
+                            <MenuItem onClick={this.openModal('text')}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Texto
+                                </ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={this.openModal('video-internal')}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Vídeo Interno
+                                </ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={this.openModal('video-external')}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Vídeo Externo
+                                </ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={this.openModal('audio')}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Áudio
+                                </ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={this.openModal('doc')}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Documento
+                                </ListItemText>
+                            </MenuItem>
+                        </Menu>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={8}>
+                    <Grid item xs={12} md={9}>
+                        <Card>
+                            <Table>
+                                <TableBody>
+                                    {lessons.map((lesson) =>
+                                        <TableRow key={lesson.id}>
+                                            <TableCell>
+                                                {lesson.title}
+                                            </TableCell>
+                                            <TableCell align={'right'}>
+                                                <IconButton color="secondary" aria-label="Delete" style={{ margin: '0 5px' }} value={lesson.id} onClick={this.handleConfirm.bind(this, lesson.id)}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                    }
+                                </TableBody>
+                            </Table>
+                        </Card>
+                    </Grid>
+                </Grid>
+
+
+                <Dialog
+                    open={this.state.open}
+                    maxWidth="xs"
+                    aria-labelledby="confirmation-dialog-title"
+                >
+                    <DialogTitle id="confirmation-dialog-title">Excluir Lição</DialogTitle>
+                    <DialogContent>
+                        Você tem certeza que deseja excluir?
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleCancel} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={this.handleDelete} color="primary">
+                            Ok
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+                {/* <Modal dimmer={'blurring'} open={this.state.modal.open} onClose={this.closeModal}>
                     <Modal.Header>Criar uma Lição</Modal.Header>
                     <Modal.Content scrolling>
                         <Form>
                             <Form.Group widths='equal'>
                                 <Form.Field control={Input} label='Título' placeholder='Título' name='title'
-                                            value={this.state.lesson.title} onChange={this.updateLesson}/>
+                                    value={this.state.lesson.title} onChange={this.updateLesson} />
                             </Form.Group>
                             {this.state.modal.type === 'text' ?
                                 <Form.Field>
@@ -652,14 +758,14 @@ class Page extends React.Component {
                                 <Form.Field>
                                     <label htmlFor="web-content">Conteúdo online</label>
                                     <Input placeholder='Url' name="web-content" id="web-content"
-                                           onChange={this.updateLesson}/>
+                                        onChange={this.updateLesson} />
                                 </Form.Field>
                                 : null}
                             {this.state.modal.type === 'video-external' ?
                                 <Form.Field>
                                     <label htmlFor="web-content">Conteúdo online</label>
                                     <Input placeholder='Url' name="content" id="web-content"
-                                           onChange={this.updateLesson}/>
+                                        onChange={this.updateLesson} />
                                 </Form.Field>
                                 : null}
                             {this.state.modal.type === 'video-internal' || this.state.modal.type === 'audio' || this.state.modal.type === 'doc' ?
@@ -692,15 +798,15 @@ class Page extends React.Component {
                                                         hidden
                                                         id="upload"
                                                         type="file"
-                                                        onChange={this.onChangeFile}/>
+                                                        onChange={this.onChangeFile} />
                                                 </Label>
                                             </Grid.Column>
                                             <Grid.Column>
                                                 <Header floated={'left'} as='h5'>
                                                     <small>
                                                         Formatos aceitos: mp4, webm, ogg, ogv,
-                                                        <br/> avi, mpeg, mpg, mov, wmv, 3gp, flv
-                                                        <br/>Max file size: 20 MB
+                                                        <br /> avi, mpeg, mpg, mov, wmv, 3gp, flv
+                                                        <br />Max file size: 20 MB
                                                     </small>
                                                 </Header>
                                             </Grid.Column>
@@ -727,7 +833,7 @@ class Page extends React.Component {
                                 content="Editar Lição"
                                 onClick={this.handleEditLesson.bind(this, this.state.modal.type, this.state.lesson.id)}
                             />
-                        :
+                            :
                             <Button
                                 positive
                                 icon='checkmark'
@@ -738,7 +844,7 @@ class Page extends React.Component {
                         }
                     </Modal.Actions>
 
-                </Modal>
+                </Modal> */}
             </Admin>
         );
     }

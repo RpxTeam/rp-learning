@@ -65,11 +65,11 @@ class Page extends React.Component {
         return (
             <AppBar position={this.props.position} className={this.props.className}>
                 <Toolbar>
-                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+                    {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
                         <MenuIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <Typography variant="h6" color="inherit" className={classes.grow}>
-                        Photos
+                        LMS
                     </Typography>
                     <div>
                         <IconButton
@@ -94,8 +94,8 @@ class Page extends React.Component {
                             open={open}
                             onClose={this.handleClose}
                         >
-                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                            <MenuItem component={Link} to={'/profile'}>Perfil</MenuItem>
+                            <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
                         </Menu>
                     </div>
                 </Toolbar>
