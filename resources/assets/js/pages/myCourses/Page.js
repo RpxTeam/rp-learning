@@ -73,6 +73,7 @@ class Page extends React.Component {
                         <p>Essa é a sua biblioteca de cursos, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet commodi delectus, excepturi ipsum dolor sit amet.</p>
                     </Banner>
                     <Grid>
+                        {console.log(courses)}
                         { courses.map((course) => 
                             <Card
                                 id={course.id}
@@ -83,6 +84,7 @@ class Page extends React.Component {
                                 onClick={this.viewCourse.bind(this, course.id)}
                                 type=""
                                 defaultHeight={0}
+                                progress={course.progress}
                             />
                             )
                         }

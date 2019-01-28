@@ -164,6 +164,7 @@ class Page extends React.Component {
                 progress = progress.toFixed(0);
                 if (progress >= 98) {
                     progress = 100;
+                    this.updateLevel(this.state.user.id, this.state.courseID);
                 }
                 this.setState({ course: course });
                 this.updateProgress(progress);
@@ -180,9 +181,25 @@ class Page extends React.Component {
             .then(res => {
                 this.getLessons();
                 this.getLesson(id);
+
+                this.updateLevel(this.state.user.id, this.state.courseID, id);
             });
 
     };
+
+    updateLevel = (user, course, lesson) => {
+        if (lesson) {
+            axios.post(`${API_URL}/api/users/${user}/courses/${course}/lessons/${lesson}/points`)
+                .then(res => {
+                    console.log(res);
+                })
+        } else {
+            axios.post(`${API_URL}/api/users/${user}/courses/${course}/points`)
+                .then(res => {
+                    console.log(res);
+                })
+        }
+    }
 
     updateProgress = (progress) => {
         axios.put(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}`, {

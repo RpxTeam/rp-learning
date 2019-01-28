@@ -102,7 +102,6 @@ class Page extends React.Component {
                         {/* <p>Por conta da alta concorrência e competitividade, o mercado de trabalho está cada vez mais exigente na seleção de profissionais e quem está mais preparado tem mais oportunidades. A qualificação, portanto, é uma ferramenta fundamental para o sucesso profissional, sendo um fator determinante tanto para aqueles que estão em busca de uma vaga, para quem deseja crescer na empresa e para quem pensa em manter sua posição.</p> */}
                     </Banner>
                     <Grid>
-                        {console.log(courses)}
                         { courses.map((course) => 
                             <Card
                                 id={course.id}
@@ -112,9 +111,7 @@ class Page extends React.Component {
                                 category="Categoria"
                                 onClick={this.viewCourse.bind(this, course.id)}
                                 defaultHeight={0}
-                                padding={'21px'}
-                                collapsed={false}
-                                progress={course.progress != null ? parseFloat(course.progress).toFixed(0) : 0}
+                                description={course.description}
                             />
                         )
                         }

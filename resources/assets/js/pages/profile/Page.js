@@ -2,22 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
-import {
-    Button,
-    Container,
-    Grid,
-    Header,
-    Icon,
-    Segment,
-    Image,
-    Progress
-} from 'semantic-ui-react'
-import PageHeader from '../../common/pageHeader'
 import Menu from '../../common/menu'
-import Footer from '../../common/mainFooter'
 import { API_URL } from "../../common/url-types";
 import Tabs from '../../components/Tabs';
 import Card from '../../components/Card'
+import { userInfo } from 'os';
 
 class Page extends React.Component {
     constructor(props) {
@@ -26,11 +15,32 @@ class Page extends React.Component {
             courses: [],
             message: '',
             courseID: '',
-            viewCourse: false
+            viewCourse: false,
+            points: 0,
+            userID: this.props.user.id,
+            user: {}
         }
     }
 
+    getData = () => {
+        axios.get(`${API_URL}/api/users/1/points`)
+            .then(res => {
+                const points = res.data;
+                this.setState({
+                    points: points.total
+                });
+            })
+        axios.get(`${API_URL}/api/users/${this.state.userID}`)
+        .then(res => {
+            const user = res.data;
+            this.setState({
+                user: user
+            })
+        })
+    }
+
     componentDidMount() {
+        this.getData();
         axios.get(`${API_URL}/api/courses`)
             .then(res => {
                 const courses = res.data;
@@ -39,6 +49,7 @@ class Page extends React.Component {
     }
 
     render() {
+        const { points, user } = this.state;
         return (
             <div>
                 <Menu />
@@ -48,24 +59,25 @@ class Page extends React.Component {
                             <a href="#" className="btn-top btn-config"><i className="icon-cog"></i></a>
                             <a href="#" className="btn-top btn-notify"><i className="icon-notify"></i></a>
                             <div className="avatar">
-                                <div className="image" style={{backgroundImage: `url(${require("../../../img/avatar.png")})`}}></div>
+                                <div className="image" style={{ backgroundImage: `url(${require("../../../img/avatar.png")})` }}></div>
                             </div>
                             <div className="name">
                                 <h3>Aluno Lore Ipsum</h3>
                             </div>
                             <div className="points">
                                 <i className="icon-lotus"></i>
-                                <span>500 Soul Points</span>
+                                <span>{points > 0 ? points + ' pontos' : points + ' ponto'}</span>
                             </div>
                         </div>
                         <div className="divider-horizontal"></div>
                         <div className="gridD">
-                        <Card
-                            defaultHeight={20}
-                            profile={true}
-                            collapsed={false}
-                            icon="lesson"
-                        />
+                            <Card
+                                defaultHeight={20}
+                                profile={true}
+                                collapsed={false}
+                                icon="lesson"
+                                level={user.level}
+                            />
                         </div>
                     </div>
                     <div className="content">
