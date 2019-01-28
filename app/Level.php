@@ -18,13 +18,20 @@ class Level extends Model
                     ->leftjoin('points', 'data_points.point_id','=','points.id')
                     ->where('user_id',$user)
                     ->sum('point');
+        
+        $levelMin = DB::table('levels')
+                    ->where('level', 1)
+                    ->first();
 
-        $level = DB::table('levels')
-        ->where('total_point','<=', $total)
-        ->orderBy('level','desc')
-        ->first();
-
-        User::whereId($user)->update('level' , $level->level);
+        if($total < $levelMin->point){
+            User::whereId($user)->update(['level' => 0]);
+        }else{
+            $level = DB::table('levels')
+            ->where('total_point','<=', $total)
+            ->orderBy('level','desc')
+            ->first();
+            User::whereId($user)->update(['level' => $level->level]);
+        }
     }
 
     public static function setLevel($startPoints,$maxLevel,$levelUp){
