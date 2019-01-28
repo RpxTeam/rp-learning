@@ -38,6 +38,29 @@ Route::resource('users', 'Api\UserController');
 //Author routes
 Route::resource('authors', 'Api\AuthorsController');
 
+//Point routes
+Route::resource('points', 'Api\PointsController');
+
+//DataPoints routes
+Route::get('users/{user}/points', 'Api\DataPointController@user');
+Route::post('users/{user}/courses/{course}/points', 'Api\DataPointController@course');
+Route::post('users/{user}/courses/{course}/lessons/{lesson}/points', 'Api\DataPointController@lesson');
+Route::post('users/{user}/courses/{course}/quiz/{quiz}/points', 'Api\DataPointController@quiz');
+
+//Quiz routes
+Route::resource('courses/{course}/quiz', 'Api\QuizController');
+
+//Level routes
+Route::post('levels', 'Api\LevelsController@makeLevels');
+
+//Questions routes
+Route::resource('courses/{course}/quiz/{quiz}/questions', 'Api\QuestionsController');
+
+//Answers routes
+Route::post('courses/{course}/quiz/{quiz}/questions/{question}/answers/','Api\AnswersController@store');
+Route::put('courses/{course}/quiz/{quiz}/questions/{question}/answers/{answer}','Api\AnswersController@update');
+Route::delete('courses/{course}/quiz/{quiz}/questions/{question}/answers/{answer}','Api\AnswersController@destroy');
+
 //Course routes
 Route::resource('courses', 'Api\CoursesController');
 Route::get('courses/{course}', 'Api\CoursesController@show');

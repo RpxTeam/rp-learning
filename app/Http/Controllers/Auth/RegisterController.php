@@ -26,6 +26,9 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+        if($request->role_id != 3){
+            $request['role_id'] = 3;
+        }
         $validator =  Validator::make($request->all(),[
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',

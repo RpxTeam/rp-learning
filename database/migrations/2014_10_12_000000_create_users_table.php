@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->integer('age')->nullable();
             $table->string('image')->nullable();
             $table->string('mime')->nullable();
+            $table->integer('level')->nullable();
 
             $table->unsignedInteger('role_id')->nullable();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');

@@ -82,7 +82,7 @@ class UserController extends Controller
             if($user->image != null){
                 $user->image = Storage::url($user->image);
             }
-            //Mail::to('fehiya@gmail.com')->send(new teste());
+            //Mail::to('email@email.com')->send(new teste());
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -129,13 +129,12 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try{
+            $user = User::findOrFail($id);
             if($request->hasFile('image') && $request->file('image')->isValid()) {
-                $user = User::findOrFail($id);
                 $request['password'] = Hash::make($request->password);
                 User::whereId($user->id)->update($request->except(['_method','image']));
                 User::updateImageUser($request,$user);
             }else{
-                $user = User::findOrFail($id);
                 $request['password'] = Hash::make($request->password);
                 User::whereId($user->id)->update($request->except(['_method','image']));
             }
