@@ -22,20 +22,20 @@ class UserSeed extends Seeder
             \App\User::create($item);
         }
 
-        $faker = Faker\Factory::create();
-
-        for($i=0;$i<10;$i++){
-            DB::table('users')->insert([
-                'name' => $faker->firstName,
-                'email' => $faker->email,
-                'password' => Hash::make('password'),
-                'birthday' => Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 years', 'now')->getTimestamp())->format('Y/m/d'),
-                'adress' => $faker->word,
-                'age' => $faker->numberBetween($min = 18, $max = 60),
-                'role_id' => 3,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+        // $faker = Faker\Factory::create();
+        //
+        // for($i=0;$i<10;$i++){
+        //     DB::table('users')->insert([
+        //         'name' => $faker->firstName,
+        //         'email' => $faker->email,
+        //         'password' => Hash::make('password'),
+        //         'birthday' => Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 years', 'now')->getTimestamp())->format('Y/m/d'),
+        //         'adress' => $faker->word,
+        //         'age' => $faker->numberBetween($min = 18, $max = 60),
+        //         'role_id' => 3,
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]);
+        // }
     }
 }
