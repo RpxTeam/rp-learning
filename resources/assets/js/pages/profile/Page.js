@@ -62,7 +62,7 @@ class Page extends React.Component {
                                 <div className="image" style={{ backgroundImage: `url(${require("../../../img/avatar.png")})` }}></div>
                             </div>
                             <div className="name">
-                                <h3>Aluno Lore Ipsum</h3>
+                                <h3>{user.name}</h3>
                             </div>
                             <div className="points">
                                 <i className="icon-lotus"></i>
