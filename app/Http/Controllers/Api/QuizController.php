@@ -63,7 +63,7 @@ class QuizController extends Controller
             'quiz_id' => $quiz->id
         ]);
 
-        return response()->json(201);
+        return response()->json($quiz->id,200);
     }
     
     /**

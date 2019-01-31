@@ -70,7 +70,7 @@ class QuestionsController extends Controller
             'question_id' => $question->id
         ]);
 
-        return response()->json(201);
+        return response()->json($question->id,200);
     }
     
     /**
