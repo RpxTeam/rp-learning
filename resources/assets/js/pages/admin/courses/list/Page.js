@@ -164,7 +164,7 @@ class Page extends React.Component {
                             <TableRow>
                                 <TableCell> Nome</TableCell>
                                 <TableCell>Duração</TableCell>
-                                <TableCell>Ações</TableCell>
+                                <TableCell align={'right'}>Ações</TableCell>
                                 {/* {rows.map(
                                 row => (
                                     <TableCell
@@ -197,7 +197,7 @@ class Page extends React.Component {
                                 <TableRow key={course.id}>
                                     <TableCell><Button component={Link} to={'/admin/courses/' + course.id}>{course.title}</Button></TableCell>
                                     <TableCell>{course.duration}</TableCell>
-                                    <TableCell>
+                                    <TableCell align={'right'}>
                                         <IconButton size="small" color="primary" aria-label="Delete" component={Link} to={'/courses/' + course.id + '/details'}>
                                             <RemoveRedEye />
                                         </IconButton>

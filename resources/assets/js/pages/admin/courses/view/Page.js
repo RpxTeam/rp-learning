@@ -37,6 +37,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
 import Fab from '@material-ui/core/Fab';
 import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography';
 // import Dropdown from "semantic-ui-react/dist/es/modules/Dropdown/Dropdown";
 // import Modal from "semantic-ui-react/dist/es/modules/Modal/Modal";
 
@@ -60,6 +61,7 @@ class Page extends React.Component {
                 start_date: '',
                 end_date: '',
                 description: '',
+                image: ''
             },
             edit: true,
             lessons: [],
@@ -327,7 +329,17 @@ class Page extends React.Component {
     handleCancel = () => {
         this.setState({
             lessonID: '',
-            open: false
+            open: false,
+            modal: {
+                ...this.state.modal,
+                type: '',
+                open: false,
+                message: '',
+            },
+            lesson: {
+                title: '',
+                content: ''
+            }
         })
     }
 
@@ -348,7 +360,10 @@ class Page extends React.Component {
         }
     };
 
-    openModal = type => () => this.setState({ modal: { type: type, open: true, edit: false } });
+    openModal = type => () => {
+        this.setState({ modal: { type: type, open: true, edit: false } });
+        this.closeMenu();
+    };
 
     closeModal = () => this.setState({
         modal: {
@@ -362,10 +377,11 @@ class Page extends React.Component {
     showConfirm = () => this.setState({ confirm: { open: true } });
     closeConfirm = () => this.setState({ confirm: { open: false } });
 
-    openMenu = () => {
+    openMenu = (event) => {
         this.setState({
             menu: {
-                open: true
+                open: true,
+                anchorEl: event.currentTarget
             }
         })
     }
@@ -520,7 +536,7 @@ class Page extends React.Component {
     }
 
     render() {
-        const { course, lessons, message, menu, edit } = this.state;
+        const { course, lessons, message, menu, edit, modal } = this.state;
         return (
             <Admin heading={"Cursos"}>
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
@@ -556,7 +572,6 @@ class Page extends React.Component {
                                         rows={8}
                                         multiline={true}
                                         rowsMax={10}
-                                        placeholder={course.description}
                                         defaultValue={course.description}
                                         value={course.description}
                                         fullWidth
@@ -566,6 +581,83 @@ class Page extends React.Component {
                                     />
                                 </Grid>
                             </CardContainer>
+                            <Grid container spacing={8}>
+                                <Grid item xs={12} md={12}>
+                                    <Button
+                                        aria-owns={menu.open ? 'simple-menu' : undefined}
+                                        aria-haspopup="true"
+                                        onClick={this.openMenu}
+                                    >
+                                        Adicionar lição
+                                    </Button>
+                                    <Menu id='menu-lessons' anchorEl={this.state.anchorEl} open={menu.open} onClose={this.closeMenu}>
+                                        <MenuItem onClick={this.openModal('text')}>
+                                            <ListItemIcon>
+                                                <InboxIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Texto
+                                            </ListItemText>
+                                        </MenuItem>
+                                        <MenuItem onClick={this.openModal('video-internal')}>
+                                            <ListItemIcon>
+                                                <InboxIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Vídeo Interno
+                                            </ListItemText>
+                                        </MenuItem>
+                                        <MenuItem onClick={this.openModal('video-external')}>
+                                            <ListItemIcon>
+                                                <InboxIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Vídeo Externo
+                                            </ListItemText>
+                                        </MenuItem>
+                                        <MenuItem onClick={this.openModal('audio')}>
+                                            <ListItemIcon>
+                                                <InboxIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Áudio
+                                            </ListItemText>
+                                        </MenuItem>
+                                        <MenuItem onClick={this.openModal('doc')}>
+                                            <ListItemIcon>
+                                                <InboxIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Documento
+                                            </ListItemText>
+                                        </MenuItem>
+                                    </Menu>
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={8}>
+                                <Grid item xs={12} md={12}>
+                                    <Card>
+                                        <Table>
+                                            <TableBody>
+                                                {lessons.map((lesson) =>
+                                                    <TableRow key={lesson.id}>
+                                                        <TableCell>
+                                                            {/* <Button onClick={this.handleEditLesson.bind(this)}>{lesson.title}</Button> */}
+                                                            {lesson.title}
+                                                        </TableCell>
+                                                        <TableCell align={'right'}>
+                                                            <IconButton color="secondary" aria-label="Delete" style={{ margin: '0 5px' }} value={lesson.id} onClick={this.handleConfirm.bind(this, lesson.id)}>
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                )
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                    </Card>
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid item xs={12} md={3}>
                             <CardContainer>
@@ -594,7 +686,6 @@ class Page extends React.Component {
                                     margin="normal"
                                     variant="outlined"
                                     type='number'
-                                    placeholder={course.duration}
                                     defaultValue={course.duration}
                                     value={course.duration}
                                     fullWidth
@@ -616,6 +707,22 @@ class Page extends React.Component {
                                 </Form.Field>
                             </CardContainer>
                             <br />
+                            {course.image ?
+                                <CardContainer>
+                                    {/* <Button
+                                    variant="contained"
+                                    component='label'
+                                >
+                                    IMAGEM
+                                    <input type="file" style={{ display: 'none' }} onChange={this.onChangeFile} />
+                                </Button> */}
+                                    <Typography variant="caption" gutterBottom>
+                                        Imagem
+                                    </Typography>
+                                    <img src={course.image} />
+                                </CardContainer>
+                                : null}
+                            <br />
                             <Grid container spacing={8}>
                                 <Grid item xs={6} md={3}>
                                     <Button variant="contained" size="small" aria-label="Editar" onClick={this.handleEdit}>
@@ -629,84 +736,6 @@ class Page extends React.Component {
                         </Grid>
                     </Grid>
                 </Form>
-
-                <Grid container spacing={8}>
-                    <Grid item xs={12} md={9}>
-                        <Button
-                            aria-owns={menu.open ? 'menu-lessons' : undefined}
-                            aria-haspopup="true"
-                            onClick={this.openMenu}
-                        >
-                            Adicionar lição
-                        </Button>
-                        <Menu id='menu-lessons' open={menu.open} onClose={this.closeMenu}>
-                            <MenuItem onClick={this.openModal('text')}>
-                                <ListItemIcon>
-                                    <InboxIcon />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Texto
-                                </ListItemText>
-                            </MenuItem>
-                            <MenuItem onClick={this.openModal('video-internal')}>
-                                <ListItemIcon>
-                                    <InboxIcon />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Vídeo Interno
-                                </ListItemText>
-                            </MenuItem>
-                            <MenuItem onClick={this.openModal('video-external')}>
-                                <ListItemIcon>
-                                    <InboxIcon />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Vídeo Externo
-                                </ListItemText>
-                            </MenuItem>
-                            <MenuItem onClick={this.openModal('audio')}>
-                                <ListItemIcon>
-                                    <InboxIcon />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Áudio
-                                </ListItemText>
-                            </MenuItem>
-                            <MenuItem onClick={this.openModal('doc')}>
-                                <ListItemIcon>
-                                    <InboxIcon />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Documento
-                                </ListItemText>
-                            </MenuItem>
-                        </Menu>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={8}>
-                    <Grid item xs={12} md={9}>
-                        <Card>
-                            <Table>
-                                <TableBody>
-                                    {lessons.map((lesson) =>
-                                        <TableRow key={lesson.id}>
-                                            <TableCell>
-                                                {lesson.title}
-                                            </TableCell>
-                                            <TableCell align={'right'}>
-                                                <IconButton color="secondary" aria-label="Delete" style={{ margin: '0 5px' }} value={lesson.id} onClick={this.handleConfirm.bind(this, lesson.id)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    )
-                                    }
-                                </TableBody>
-                            </Table>
-                        </Card>
-                    </Grid>
-                </Grid>
-
 
                 <Dialog
                     open={this.state.open}
@@ -724,6 +753,131 @@ class Page extends React.Component {
                         <Button onClick={this.handleDelete} color="primary">
                             Ok
                         </Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog
+                    onClose={this.handleCancel}
+                    open={modal.open}
+                    maxWidth="lg"
+                    aria-labelledby="confirmation-dialog-title"
+                    variant="outlined"
+                >
+                    <DialogTitle id="confirmation-dialog-title">Criar lição</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            label="Título"
+                            name="title"
+                            onChange={this.updateLesson}
+                            margin="normal"
+                            variant="outlined"
+                            placeholder={this.state.lesson.title}
+                            defaultValue={this.state.lesson.title}
+                            value={this.state.lesson.title}
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        {this.state.modal.type === 'text' ?
+                            <CKEditor
+                                editor={ClassicEditor}
+                                data={this.state.lesson.content}
+                                onInit={editor => {
+                                    // You can store the "editor" and use when it is needed.
+                                    console.log('Editor is ready to use!', editor);
+                                }}
+                                onChange={this.handleEditor}
+                                config={
+                                    {
+                                        removePlugins: ['Link', 'ImageUpload', 'MediaEmbed']
+                                    }
+                                }
+                            />
+                            : null}
+                        {this.state.modal.type === 'webcontent' ?
+                            <TextField
+                                label="Conteúdo Web"
+                                name="web-content"
+                                onChange={this.updateLesson}
+                                margin="normal"
+                                variant="outlined"
+                                fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            : null}
+                        {this.state.modal.type === 'video-external' ?
+                            <TextField
+                                label="Url"
+                                name="content"
+                                onChange={this.updateLesson}
+                                margin="normal"
+                                variant="outlined"
+                                fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            : null}
+                        {this.state.modal.type === 'video-internal' || this.state.modal.type === 'audio' || this.state.modal.type === 'doc' ?
+                            <React.Fragment>
+                                <Grid container spacing={16}>
+                                    <p>{this.state.file.name}</p>
+                                </Grid>
+                                <Grid container md={12}>
+                                    <Grid item md={6}>
+                                        <Button
+                                            variant="contained"
+                                            component='label' // <-- Just add me!
+                                        >
+                                            File
+                                            <input type="file" onChange={this.onChangeFile} />
+                                        </Button>
+                                        {/* <Label
+                                            floated={'left'}
+                                            as="label"
+                                            basic
+                                            htmlFor="upload">
+                                            <Button
+                                                icon="upload"
+                                                label={{
+                                                    basic: true,
+                                                    content: 'Selecione o Arquivo'
+                                                }}
+                                                htmlFor="upload"
+                                                labelPosition="right"
+                                            />
+                                            <input
+                                                hidden
+                                                id="upload"
+                                                type="file"
+                                                onChange={this.onChangeFile} />
+                                        </Label> */}
+                                    </Grid>
+                                    <Grid item md={6}>
+                                        <Typography variant="overline" gutterBottom>
+                                            Formatos aceitos: mp4, webm, ogg, ogv, avi, mpeg, mpg, mov, wmv, 3gp, flv. Max file size: 20 MB
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            </React.Fragment>
+                            : null}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleCancel} color="primary">
+                            Cancel
+                        </Button>
+                        {this.state.modal.edit ?
+                            <Button onClick={this.handleSubmitLesson.bind(this, this.state.modal.type, this.state.lesson.id)} color="primary">
+                                Editar
+                            </Button>
+                            :
+                            <Button onClick={this.handleSubmitLesson.bind(this, this.state.modal.type)} color="primary">
+                                Criar
+                            </Button>
+                        }
                     </DialogActions>
                 </Dialog>
 

@@ -80,7 +80,7 @@ class Page extends React.Component {
                             />
                         </div>
                     </div>
-                    <div className="content">
+                    {/* <div className="content">
                         <Tabs>
                             <div label="Histórico">
                                 <div className="collection">
@@ -193,7 +193,7 @@ class Page extends React.Component {
                                 </div>
                             </div>
                         </Tabs>
-                    </div>
+                    </div> */}
                 </main>
             </div>
         );

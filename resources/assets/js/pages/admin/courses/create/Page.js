@@ -18,6 +18,7 @@ import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import Message from '../../../../components/Message';
 import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography';
 // import MenuItem from '@material-ui/core/MenuItem';
 // import Fab from '@material-ui/core/Fab';
 // import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -55,6 +56,7 @@ class Page extends React.Component {
             courseID: '',
             courseEdit: false,
             author: '',
+            image: ''
         }
         this.openMessage = this.openMessage.bind(this);
     };
@@ -97,39 +99,46 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        if(!this.state.title || !this.state.datesRange || !this.state.description || !this.state.duration) {
-            this.setState({ message: {
-                ...this.state,
-                open: true,
-                text: 'Existem campos vázios'
-            } })
+        if (!this.state.title || !this.state.datesRange || !this.state.description || !this.state.duration) {
+            this.setState({
+                message: {
+                    ...this.state,
+                    open: true,
+                    text: 'Existem campos vázios'
+                }
+            })
         } else {
             const date = this.state.datesRange.split(' ');
             const start_date = this.formatDate(date[0]);
             const end_date = this.formatDate(date[2]);
 
-            axios.post(`${API_URL}/api/courses`, {
-                title: this.state.title,
-                slug: this.state.slug,
-                description: this.state.description,
-                start_date: start_date,
-                end_date: end_date,
-                duration: this.state.duration
-            }).then(res => {
-                this.setState({
-                    error: false,
-                    success: true,
-                    courseID: res.data,
-                    courseEdit: true
+            if(this.state.image.name) {
+                this.fileUpload();
+            } else {
+                axios.post(`${API_URL}/api/courses`, {
+                    title: this.state.title,
+                    slug: this.state.slug,
+                    description: this.state.description,
+                    start_date: start_date,
+                    end_date: end_date,
+                    duration: this.state.duration,
+                    image: this.state.image.file
+                }).then(res => {
+                    this.setState({
+                        error: false,
+                        success: true,
+                        courseID: res.data,
+                        courseEdit: true
+                    });
+                    this.openMessage({ text: 'Curso criado com sucesso' })
+                }).catch(error => {
+                    this.setState({
+                        error: true,
+                        success: false
+                    })
+                    this.openMessage({ text: error.message })
                 });
-                this.openMessage({ text: 'Curso criado com sucesso'})
-            }).catch(error => {
-                this.setState({
-                    error: true,
-                    success: false
-                })
-                this.openMessage({ text: error.message})
-            });
+            }
         }
     };
 
@@ -202,8 +211,45 @@ class Page extends React.Component {
         });
     }
 
+    onChangeFile = (event) => {
+        const file = event.target.files[0];
+        if (file.type === 'image/jpeg' || file.type === 'image/png') {
+            this.setState({
+                image: {
+                    file: file,
+                    name: file.name
+                }
+            });
+        }
+    };
+
+    fileUpload = () => {
+        const formData = new FormData();
+        // if (type === 'PUT') {
+        //     formData.append('_method', type);
+        // }
+        formData.append('title', this.state.image.title);
+        formData.append('content', this.state.image.file);
+        console.log(formData);
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+
+        axios.post(`${API_URL}/api/courses`, formData, config).then((res) => {
+            this.setState({
+                error: false,
+                success: true,
+                courseID: res.data,
+                courseEdit: true
+            });
+        });
+    };
+
     render() {
-        const { message, authors, options } = this.state;
+        const { message, authors, options, image } = this.state;
         if (this.state.courseEdit === true) {
             return <Redirect to={'/admin/courses/' + this.state.courseID} />
         }
@@ -274,6 +320,7 @@ class Page extends React.Component {
                                             onChange={this.handleChangeDate} />
                                     </label>
                                 </Form.Field>
+
                                 {this.state.createAuthor ?
                                     <React.Fragment>
                                         <Form.Field>
@@ -292,6 +339,22 @@ class Page extends React.Component {
                                         </Form.Field>
                                     </React.Fragment>
                                     : null}
+                            </CardContainer>
+                            <br />
+                            <CardContainer>
+                                <Button
+                                    variant="contained"
+                                    component='label'
+                                >
+                                    IMAGEM
+                                    <input type="file" style={{ display: 'none' }} onChange={this.onChangeFile} />
+                                </Button>
+                                <br /><br />
+                                {image.name ?
+                                    <Typography variant="caption" gutterBottom>
+                                        {image.name}
+                                    </Typography>
+                                : null }
                             </CardContainer>
                             <br />
 
