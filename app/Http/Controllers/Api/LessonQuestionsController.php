@@ -5,34 +5,27 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Quiz;
 use App\Course;
+use App\Lesson;
 use App\Question;
-use App\Answer;
-use App\Level;
 
-class QuestionsController extends Controller
+
+class LessonQuestionsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($course, $quiz)
+    public function index($course, $lesson)
     {
         $course = Course::findOrFail($course);
-        $quiz = Quiz::findOrFail($quiz);
+        $lesson = Lesson::findOrFail($lesson);
 
-        $questions = Question::quizQuestions($course->id, $quiz->id);
+        $question = Question::lessonQuestion($course->id, $lesson->id);
+        $answers = Question::onlyAnswers($question->id);
 
-        $data = collect();
-
-        foreach($questions as $question){
-            $data->push(Question::questionAnswers($question->question_id));
-        }
-
-        return response()->json($data, 200);
-        // return response()->json(array('course'=>$mycourse,'lessons'=>$lessons),200);
+        return response()->json(['question'=>$question,'answers'=> $answers], 200);
     }
 
     /**
@@ -41,15 +34,15 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($course, $quiz, $question)
+    public function show($course, $lesson, $question)
     {
         $course = Course::findOrFail($course);
-        $quiz = Quiz::findOrFail($quiz);
+        $lesson = Lesson::findOrFail($lesson);
         $question = Question::findOrFail($question);
 
-        $question = Question::questionAnswers($question->id);
+        $data = Question::questionAnswers($question->id);
 
-        return response()->json($question, 200);
+        return response()->json($data, 200);
     }
 
     /**
@@ -58,21 +51,16 @@ class QuestionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $course, $quiz)
+    public function store(Request $request, $course, $lesson)
     {
         $course = Course::findOrFail($course);
-        $quiz = Quiz::findOrFail($quiz);
+        $lesson = Lesson::findOrFail($lesson);
 
-        $question = question::create($request->All() + ['course_id' => $course->id]);
+        $question = question::create($request->All() + ['course_id' => $course->id, 'lesson_id' => $lesson->id]);
 
-        DB::table('quiz_question')->insert([
-            'quiz_id' => $quiz->id,
-            'question_id' => $question->id
-        ]);
-
-        return response()->json($question->id,200);
+        return response()->json(204);
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -80,10 +68,10 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $course, $quiz, $question)
+    public function update(Request $request, $course, $lesson, $question)
     {
         $course = Course::findOrFail($course);
-        $quiz = Quiz::findOrFail($quiz);
+        $lesson = Lesson::findOrFail($lesson);
         $question = Question::findOrFail($question);
 
         $question = Question::whereId($question->id)->update($request->except(['_method',]));
@@ -97,12 +85,12 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($course, $quiz, $question)
+    public function destroy($course, $lesson, $question)
     {
         $course = Course::findOrFail($course);
-        $quiz = Quiz::findOrFail($quiz);
+        $lesson = Lesson::findOrFail($lesson);
         $question = Question::findOrFail($question);
-
+        
         $answers = Question::onlyAnswers($question->id);
 
         foreach($answers as $answer){

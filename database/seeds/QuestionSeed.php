@@ -17,6 +17,7 @@ class QuestionSeed extends Seeder
             App\Question::create([
                 'text' => $faker->word,
                 'correct' => $faker->numberBetween(1,5),
+                'active' => 1,
             ]);
         }
     }

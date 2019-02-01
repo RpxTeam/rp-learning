@@ -73,6 +73,14 @@ Route::get('courses/{course}/lessons', 'Api\LessonController@index');
 Route::get('courses/{course}/lessons/{lesson}', 'Api\LessonController@show');
 Route::get('courses/{course}/lessons/{lesson}/media','Api\LessonController@media');
 
+//Lesson Question route
+Route::resource('courses/{course}/lessons/{lesson}/questions', 'Api\LessonQuestionsController');
+
+//Lesson Answers routes
+Route::post('courses/{course}/lessons/{lesson}/questions/{question}/answers/','Api\LessonAnswersController@store');
+Route::put('courses/{course}/lessons/{lesson}/questions/{question}/answers/{answer}','Api\LessonAnswersController@update');
+Route::delete('courses/{course}/lessons/{lesson}/questions/{question}/answers/{answer}','Api\LessonAnswersController@destroy');
+
 //Upload File routes
 Route::post('upload','Api\UploadController@upload');
 
