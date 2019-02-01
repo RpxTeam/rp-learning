@@ -29,6 +29,14 @@ import Typography from '@material-ui/core/Typography';
 // import Chip from '@material-ui/core/Chip';
 // import Select from '@material-ui/core/Select';
 
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { TimePicker } from 'material-ui-pickers';
+import { DatePicker } from 'material-ui-pickers';
+import { DateTimePicker } from 'material-ui-pickers';
+import { InlineDatePicker } from 'material-ui-pickers';
+import brLocale from 'date-fns/locale/pt-BR';
+
 const CardContainer = styled(Card)`
     padding: 10px 20px;
 `;
@@ -50,8 +58,8 @@ class Page extends React.Component {
             lessons: {
 
             },
-            start_date: '',
-            end_date: '',
+            start_date: new Date(),
+            end_date: new Date(),
             datesRange: '',
             courseID: '',
             courseEdit: false,
@@ -90,16 +98,16 @@ class Page extends React.Component {
         });
     };
 
-    handleChangeDate = (event, { name, value }) => {
+    handleChangeDate = (field, date) => {
         this.setState({
-            datesRange: value
+            [field]: date
         })
     };
 
     handleSubmit = event => {
         event.preventDefault();
 
-        if (!this.state.title || !this.state.datesRange || !this.state.description || !this.state.duration) {
+        if (!this.state.title || !this.state.start_date || !this.state.end_date || !this.state.description || !this.state.duration) {
             this.setState({
                 message: {
                     ...this.state,
@@ -108,11 +116,10 @@ class Page extends React.Component {
                 }
             })
         } else {
-            const date = this.state.datesRange.split(' ');
-            const start_date = this.formatDate(date[0]);
-            const end_date = this.formatDate(date[2]);
+            const start_date = this.formatDate(this.state.start_date);
+            const end_date = this.formatDate(this.state.end_date);
 
-            if(this.state.image.name) {
+            if (this.state.image.name) {
                 this.fileUpload();
             } else {
                 axios.post(`${API_URL}/api/courses`, {
@@ -128,9 +135,17 @@ class Page extends React.Component {
                         error: false,
                         success: true,
                         courseID: res.data,
-                        courseEdit: true
+                        message: {
+                            ...this.state.message,
+                            open: true,
+                            text: 'Curso criado com sucesso!',
+                        }
                     });
-                    this.openMessage({ text: 'Curso criado com sucesso' })
+                    setTimeout(function () {
+                        this.setState({
+                            courseEdit: true
+                        })
+                    }.bind(this), 2000);
                 }).catch(error => {
                     this.setState({
                         error: true,
@@ -181,11 +196,11 @@ class Page extends React.Component {
     };
 
     formatDate = (date) => {
-        const oldDate = date.split('/');
         let day, month, year;
-        day = oldDate[0];
-        month = oldDate[1];
-        year = oldDate[2];
+        day = date.getDate();
+        month = date.getMonth() + 1;
+        year = date.getFullYear();
+        console.log(typeof day);
         const newDate = year + '-' + month + '-' + day;
 
         return newDate
@@ -307,8 +322,36 @@ class Page extends React.Component {
                                     type={'number'}
                                     fullWidth
                                 />
-
-                                <Form.Field>
+                                <br /><br />
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <Grid container spacing={8}>
+                                        <Grid item md={6} xs={12}>
+                                            <InlineDatePicker
+                                                keyboard
+                                                variant="outlined"
+                                                label="Data de Início"
+                                                value={this.state.start_date}
+                                                onChange={this.handleChangeDate.bind(this, 'start_date')}
+                                                format='dd/MM/yy'
+                                                mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
+                                                locale={brLocale}
+                                            />
+                                        </Grid>
+                                        <Grid item md={6} xs={12}>
+                                            <InlineDatePicker
+                                                keyboard
+                                                variant="outlined"
+                                                label="Data de Término"
+                                                value={this.state.end_date}
+                                                onChange={this.handleChangeDate.bind(this, 'end_date')}
+                                                format='dd/MM/yy'
+                                                mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
+                                                locale={brLocale}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </MuiPickersUtilsProvider>
+                                {/* <Form.Field>
                                     <label>Data
                                         <DatesRangeInput
                                             name="datesRange"
@@ -319,7 +362,7 @@ class Page extends React.Component {
                                             closable={true}
                                             onChange={this.handleChangeDate} />
                                     </label>
-                                </Form.Field>
+                                </Form.Field> */}
 
                                 {this.state.createAuthor ?
                                     <React.Fragment>
@@ -354,7 +397,7 @@ class Page extends React.Component {
                                     <Typography variant="caption" gutterBottom>
                                         {image.name}
                                     </Typography>
-                                : null }
+                                    : null}
                             </CardContainer>
                             <br />
 

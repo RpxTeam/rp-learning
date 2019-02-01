@@ -13,7 +13,7 @@ import {
 import AuthService from '../../services'
 import Card from '../../components/Card'
 import Grid from '../../components/Grid'
-import Menu from '../../common/menu'
+import Navigation from '../../common/navigation'
 import Banner from '../../components/Banner'
 import Button from '../../components/Button'
 
@@ -94,7 +94,7 @@ class Page extends React.Component {
         const { courses } = this.state;
         return (
             <React.Fragment>
-                <Menu />
+                <Navigation />
                 <main className="fadeIn animated">
                     <Banner title="Bem vindo ao RP Learning" icon="logo">
                         <p>Seja bem-vindo(a) ao RP Learning – Cursos  com certificado de conclusão válido para: atividades extracurriculares, avaliações de empresas, provas de títulos, concursos públicos, enriquecer o seu currículo e muito mais!</p>

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
-import Menu from '../../common/menu'
+import Navigation from '../../common/navigation'
 import { API_URL } from "../../common/url-types";
 import Tabs from '../../components/Tabs';
 import Card from '../../components/Card'
@@ -52,7 +52,7 @@ class Page extends React.Component {
         const { points, user } = this.state;
         return (
             <div>
-                <Menu />
+                <Navigation />
                 <main className="fadeIn animated" id="profile-page">
                     <div className="banner-infos">
                         <div className="gridD">

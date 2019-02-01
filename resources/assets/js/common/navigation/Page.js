@@ -1,18 +1,18 @@
 import React from 'react'
-import {NavLink, Link} from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {
-    Button,
-    Container,
-    Dropdown,
-    Divider,
-    Image,
-    Menu,
-    Responsive,
-    Segment
-} from 'semantic-ui-react';
 import * as actions from '../../store/actions'
 import styled from 'styled-components';
+
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 
 const Logo = styled.a`
     max-width: 150px;
@@ -32,6 +32,9 @@ const Logo = styled.a`
 class Page extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            menu: null
+        }
         this.handleLogout = this.handleLogout.bind(this);
     }
 
@@ -40,86 +43,63 @@ class Page extends React.Component {
         this.props.dispatch(actions.authLogout());
     }
 
+    handleMenu = event => {
+        this.setState({ menu: event.currentTarget });
+    };
+
+    handleClose = () => {
+        this.setState({ menu: null });
+    };
+
 
     render() {
         this.avatar = (
             <span>
-                 <Image avatar src={require('../../../images/avatar/boy.png')}
-                        verticalAlign='middle'/> {this.props.user === '' || this.props.user !== null ? this.props.user.name : null}
+                <Image avatar src={require('../../../images/avatar/boy.png')}
+                    verticalAlign='middle' /> {this.props.user === '' || this.props.user !== null ? this.props.user.name : null}
             </span>
         );
+        const { menu } = this.state;
+        const { isAuthenticated } = this.props;
         return (
-            <div>
-                <Responsive as={Segment} maxWidth={768} className="mobile-navbar">
-                    <Menu size="large" secondary>
-                        <Menu.Item as={Link} to="/" className="logo" replace>
-                            <img
-                                src={require('../../../images/theme/logo.png')} alt="infoTiq"/>
-                        </Menu.Item>
-                        <Menu.Menu position="right">
-                            <Menu.Item>
-                                <Dropdown icon="bars" className="collapsible-menu">
-                                    <Dropdown.Menu className='bounceIn animated'>
-                                        {this.props.isAuthenticated
-                                            ?
-                                            <Dropdown.Item
-                                                onClick={this.handleLogout}
-                                                text="logout"
-                                                icon='sign out'
-                                                key='logout'/>
-                                            :
-                                            <div>
-                                                <Dropdown.Item as={NavLink} to="/login" text="login"/>
-                                                <Divider/>
-                                                <Dropdown.Item as={NavLink} to="/register" text="register"/>
-                                            </div>
-                                        }
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </Menu.Item>
-                        </Menu.Menu>
-                    </Menu>
-                </Responsive>
-                <Responsive className="navbar" minWidth={769}>
-                    <Segment>
-                        <Menu secondary size='large'>
-                            <Container>
-                                <Logo as={Link} to="/" className="logo" replace>
-                                    <img src={require('../../../images/theme/logo.png')} alt="infoTiq" />
-                                </Logo>
-                                <Menu.Item as={NavLink} to="/courses">Cursos</Menu.Item>
-
-                                {this.props.isAuthenticated ?
-                                    <Menu.Item as={NavLink} to="/my-courses">Meus Cursos</Menu.Item>
-                                : null}
-                                <Menu.Item position='right'>
-                                    {this.props.isAuthenticated
-                                        ? <Dropdown trigger={this.avatar} pointing='top right' className='user-dropdown'>
-                                            <Dropdown.Menu className='bounceIn animated'>
-                                                <Dropdown.Item
-                                                    text={"Está logado como " + this.props.userName}
-                                                    disabled key='user'/>
-                                                {/*<Dropdown.Item as={Link} to="/profile" text="Perfil" icon='user' />*/}
-                                                <Dropdown.Item as={Link} to="/admin/courses" text="Painel" icon='dashboard' />
-                                                <Dropdown.Divider />
-                                                <Dropdown.Item onClick={this.handleLogout} text="Sair" icon='sign out'
-                                                            key='logout'/>
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                        : <Button.Group>
-                                            <Button as={Link} to="/login" replace positive compact
-                                                    style={{lineHeight: '2em'}}>Login</Button>
-                                            <Button.Or />
-                                            <Button as={Link} to="/register" replace color='blue' compact
-                                                    style={{lineHeight: '2em'}}>Registrar</Button>
-                                        </Button.Group>
-                                    }
-                                </Menu.Item>
-                            </Container>
-                        </Menu>
-                    </Segment>
-                </Responsive>
-            </div>
+            <AppBar position="static" color="default" style={{ flexGrow: 1 }}>
+                <Toolbar>
+                    <div style={{ flexGrow: 1 }}>
+                        <Button component={Link} to={'/'} color="inherit">Home</Button>
+                        <Button component={Link} to={'/courses'} color="inherit">Cursos</Button>
+                        <Button component={Link} to={'/my-courses'} color="inherit">Meus Cursos</Button>
+                    </div>
+                    {isAuthenticated ?
+                        <React.Fragment>
+                            <IconButton
+                                aria-owns={Boolean(menu) ? 'menu-appbar' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleMenu}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={menu}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(menu)}
+                                onClose={this.handleClose}
+                            >
+                                <MenuItem component={Link} to={'/profile'}>Profile</MenuItem>
+                                <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
+                            </Menu>
+                        </React.Fragment>
+                        : <Button component={Link} to={'/login'} color="inherit">Login</Button>}
+                </Toolbar>
+            </AppBar>
         );
     }
 }

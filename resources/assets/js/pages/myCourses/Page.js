@@ -10,7 +10,7 @@ import {
     Image, Progress
 } from 'semantic-ui-react'
 import PageHeader from '../../common/pageHeader'
-import Menu from '../../common/menu'
+import Navigation from '../../common/navigation'
 import Banner from '../../components/Banner'
 import Card from '../../components/Card'
 import Footer from '../../common/mainFooter'
@@ -67,7 +67,7 @@ class Page extends React.Component {
         }
         return (
             <div>
-                <Menu />
+                <Navigation />
                 <main className="fadeIn animated">
                     <Banner title="Meus Cursos" icon="courses">
                         <p>Essa é a sua biblioteca de cursos, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet commodi delectus, excepturi ipsum dolor sit amet.</p>

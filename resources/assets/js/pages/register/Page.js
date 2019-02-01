@@ -1,12 +1,31 @@
 import React from 'react'
-import {Button, Dimmer, Form, Grid, Header, Loader, Message, Segment} from 'semantic-ui-react'
 import {Link, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ReeValidate from 'ree-validate'
 import AuthService from '../../services'
-import PageHeader from '../../common/pageHeader'
-import Navigation from '../../common/navigation'
-import Footer from '../../common/mainFooter'
+// import PageHeader from '../../common/pageHeader'
+// import Navigation from '../../common/navigation'
+// import Footer from '../../common/mainFooter'
+
+import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Lock from '@material-ui/icons/Lock';
+import Person from '@material-ui/icons/Person';
+
+import styled from 'styled-components';
+
+const CardContainer = styled(Card)`
+    padding: 10px 20px;
+`;
 
 class Page extends React.Component {
     constructor(props) {
@@ -31,10 +50,15 @@ class Page extends React.Component {
             },
             isSuccess: false,
             isLoading: false,
-            errors: this.validator.errors
+            errors: this.validator.errors,
+            message: {
+                open: false,
+                message: ''
+            }
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.openMessage = this.openMessage.bind(this);
     }
 
     handleChange(event) {
@@ -72,6 +96,8 @@ class Page extends React.Component {
                             code: 401,
                             text: "Oops! Password confirmation didn't match"
                         };
+
+                        this.openMessage("Oops! Password confirmation didn't match");
                         this.setState({responseError});
                     }
 
@@ -94,7 +120,6 @@ class Page extends React.Component {
             .then((result)  => {
                 this.setState({
                     isLoading: false,
-                    isSuccess: true,
                     credentials: {
                         name: '',
                         email: '',
@@ -107,6 +132,12 @@ class Page extends React.Component {
                         text: ''
                     }
                 });
+                this.openMessage('Usuário criado com sucesso');
+                setTimeout(function () {
+                    this.setState({
+                        isSuccess: true
+                    })
+                }.bind(this), 2000);
 
             })
             .catch(({error, statusCode}) => {
@@ -119,7 +150,26 @@ class Page extends React.Component {
                 this.setState({
                     isLoading: false
                 });
+                this.openMessage(error);
             })
+    }
+
+    openMessage = (message) => {
+        this.setState({
+            message: {
+                open: true,
+                text: message
+            }
+        })
+    }
+
+    closeMessage = () => {
+        this.setState({
+            message: {
+                open: false,
+                text: ''
+            }
+        })
     }
 
     componentDidMount() {
@@ -135,96 +185,103 @@ class Page extends React.Component {
         if (this.state.isSuccess) {
             return <Redirect to='/login' replace/>
         }
-        const {errors} = this.state;
+        const {message, errors} = this.state;
         return (
             <div>
-                <Navigation/>
-                <main className="fadeIn animated">
-                    <PageHeader heading="Registro"/>
-                    <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
-                        <Dimmer active inverted>
-                            <Loader size='large'>Registrando...</Loader>
-                        </Dimmer>
-                    </Segment>
-
-                    <Grid
-                        textAlign='center'
-                        verticalAlign='middle'
-                        className='login-form'
-                    >
-                        <Grid.Column style={{paddingTop: '100px', maxWidth: '450px'}}>
-                            <Header as='h2' color='teal' textAlign='center'>
-                                Registrar uma nova conta
-                            </Header>
-                            {this.state.responseError.isError && <Message negative>
-                                <Message.Content>
-                                    {this.state.responseError.text}
-                                </Message.Content>
-                            </Message>}
-                            {this.state.isSuccess && <Message positive>
-                                <Message.Content>
-                                    Registro feito com sucesso ! <Link to='/login' replace>Login</Link> aqui
-                                </Message.Content>
-                            </Message>}
-                            <Form size='large'>
-                                <Segment stacked>
-                                    <Form.Input
-                                        fluid
-                                        icon='user'
-                                        iconPosition='left'
-                                        name='name'
-                                        placeholder='Nome'
-                                        onChange={this.handleChange}
-                                    />
-                                    {errors.has('name') && <Header size='tiny' className='custom-error' color='red'>
-                                        {errors.first('name')}
-                                    </Header>}
-                                    <Form.Input
-                                        fluid
-                                        icon='mail'
-                                        iconPosition='left'
-                                        name='email'
-                                        placeholder='E-mail'
-                                        onChange={this.handleChange}
-                                    />
-                                    {errors.has('email') && <Header size='tiny' className='custom-error' color='red'>
-                                        {errors.first('email')}
-                                    </Header>}
-                                    <Form.Input
-                                        fluid
-                                        icon='lock'
-                                        iconPosition='left'
-                                        name='password'
-                                        placeholder='Senha'
-                                        type='password'
-                                        onChange={this.handleChange}
-                                    />
-                                    {errors.has('password') && <Header size='tiny' className='custom-error' color='red'>
-                                        {errors.first('password')}
-                                    </Header>}
-                                    <Form.Input
-                                        fluid
-                                        icon='refresh'
-                                        iconPosition='left'
-                                        name='password_confirmation'
-                                        placeholder='Confirmar senha'
-                                        type='password'
-                                        onChange={this.handleChange}
-                                    />
-                                    {errors.has('password_confirmation') &&
-                                    <Header size='tiny' className='custom-error' color='red'>
-                                        {errors.first('password_confirmation')}
-                                    </Header>}
-                                    <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Registrar</Button>
-                                </Segment>
-                            </Form>
-                            <Message>
-                                Já é registrado ? <Link to='/login' replace>Login</Link>
-                            </Message>
-                        </Grid.Column>
-                    </Grid>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                    open={message.open}
+                    autoHideDuration={6000}
+                    onClose={this.closeMessage}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">{message.text}</span>}
+                    action={[
+                        <Button key="undo" color="secondary" size="small" onClick={this.closeMessage}>
+                            UNDO
+                </Button>,
+                        <IconButton
+                            key="close"
+                            aria-label="Close"
+                            color="inherit"
+                            onClick={this.closeMessage}
+                        >
+                            <CloseIcon />
+                        </IconButton>,
+                    ]}
+                />
+                <main className="fadeIn animated" id="login-page" style={{ alignItems: 'center' }}>
+                    <div className="center">
+                        <div id="logo">
+                            <img src={require('../../../img/logo.png')} alt="" />
+                        </div>
+                        <form onSubmit={this.handleSubmit}>
+                            <Grid container justify={'center'}>
+                                <Grid item md={4}>
+                                    <CardContainer>
+                                        <TextField
+                                            error={errors.has('name')}
+                                            id="input-name"
+                                            label="Nome Completo"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            name="name"
+                                            fullWidth
+                                        />
+                                        <TextField
+                                            error={errors.has('email')}
+                                            id="input-email"
+                                            label="Email"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            name="email"
+                                            fullWidth
+                                        />
+                                        <TextField
+                                            error={errors.has('password')}
+                                            id="input-password"
+                                            label="Password"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            fullWidth
+                                            type='text'
+                                            value={this.state.password}
+                                            name="password"
+                                        />
+                                        <TextField
+                                            error={errors.has('password_confirmation')}
+                                            id="input-confirm-password"
+                                            label="Confirmar Senha"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            fullWidth
+                                            type='text'
+                                            value={this.state.password_confirmation}
+                                            name="password_confirmation"
+                                        />
+                                    </CardContainer>
+                                </Grid>
+                            </Grid>
+                            <div className="btns btns-center">
+                                <div>
+                                    <Button type='submit' variant="contained" color="primary">Registrar</Button>
+                                </div>
+                                <br />
+                                <div>
+                                    <Button component={Link} to='/register' variant="contained" color="default">Login</Button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </main>
-                <Footer/>
             </div>
         );
     }

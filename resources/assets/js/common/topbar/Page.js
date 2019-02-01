@@ -94,6 +94,7 @@ class Page extends React.Component {
                             open={open}
                             onClose={this.handleClose}
                         >
+                            <MenuItem component={Link} to={'/courses'}>Voltar para cursos</MenuItem>
                             <MenuItem component={Link} to={'/profile'}>Perfil</MenuItem>
                             <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
                         </Menu>

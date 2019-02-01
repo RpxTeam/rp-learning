@@ -1,10 +1,6 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
-import {
-    Container,
-    Segment,
-} from 'semantic-ui-react'
 import Card from '../../components/Card'
 import Grid from '../../components/Grid'
 import PageHeader from '../../common/pageHeader'
@@ -96,7 +92,7 @@ class Page extends React.Component {
 
         return (
             <React.Fragment>
-                <Menu />
+                <Navigation />
                 <main className="fadeIn animated">
                     <Banner title="Biblioteca" icon="course">
                         <p>Aqui está a biblioteca de cursos.</p>

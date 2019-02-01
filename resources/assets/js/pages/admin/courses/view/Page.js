@@ -31,6 +31,11 @@ import TableRow from '@material-ui/core/TableRow';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import QuestionAnswer from '@material-ui/icons/QuestionAnswer';
+import VideoCam from '@material-ui/icons/VideoCam';
+import VideoLibrary from '@material-ui/icons/VideoLibrary';
+import AudioTrack from '@material-ui/icons/AudioTrack';
+import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -38,12 +43,21 @@ import Dialog from '@material-ui/core/Dialog';
 import Fab from '@material-ui/core/Fab';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 // import Dropdown from "semantic-ui-react/dist/es/modules/Dropdown/Dropdown";
 // import Modal from "semantic-ui-react/dist/es/modules/Modal/Modal";
 
 // CKEditor
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { TimePicker } from 'material-ui-pickers';
+import { DatePicker } from 'material-ui-pickers';
+import { DateTimePicker } from 'material-ui-pickers';
+import { InlineDatePicker } from 'material-ui-pickers';
+import brLocale from 'date-fns/locale/pt-BR';
 
 const CardContainer = styled(Card)`
     padding: 10px 20px;
@@ -58,8 +72,8 @@ class Page extends React.Component {
                 title: '',
                 slug: '',
                 duration: '',
-                start_date: '',
-                end_date: '',
+                start_date: new Date(),
+                end_date: new Date(),
                 description: '',
                 image: ''
             },
@@ -109,11 +123,19 @@ class Page extends React.Component {
         axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
             .then(res => {
                 const course = res.data;
-                let start_date, end_date, ranges;
+                let start_date, end_date;
                 start_date = this.formatDateReverse(course.start_date);
                 end_date = this.formatDateReverse(course.end_date);
-                ranges = start_date + ' - ' + end_date;
-                this.setState({ course: course, datesRange: ranges });
+                this.setState({
+                    course: {
+                        title: course.title,
+                        description: course.description,
+                        slug: course.slug,
+                        duration: course.duration,
+                        start_date: start_date,
+                        end_date: end_date
+                    },
+                });
             });
 
         // axios.get(`${ API_URL }/api/courses/${courseID}/lessons/`)
@@ -159,21 +181,20 @@ class Page extends React.Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
-    handleChangeDate = (event, { name, value }) => {
+    handleChangeDate = (field, date) => {
         this.setState({
-            datesRange: value
+            course: {
+                ...this.state.course,
+                [field]: date
+            }
         })
     };
 
     handleSubmit = event => {
         event.preventDefault();
 
-        const date = this.state.datesRange.split(' ');
-        let start_date = date[0];
-        let end_date = date[2];
-
-        start_date = this.formatDate(start_date);
-        end_date = this.formatDate(end_date);
+        const start_date = this.formatDate(this.state.course.start_date);
+        const end_date = this.formatDate(this.state.course.end_date);
 
         axios.put(`${API_URL}/api/courses/${this.state.courseID}`, {
             title: this.state.course.title,
@@ -185,13 +206,20 @@ class Page extends React.Component {
         })
             .then(res => {
                 this.setState({
-                    message: 'Curso atualizado com sucesso',
+                    message: {
+                        open: true,
+                        text: 'Curso atualizado com sucesso'
+                    },
                     error: false,
                     success: true,
+                    edit: false
                 });
             }).catch(error => {
                 this.setState({
-                    message: error.message,
+                    message: {
+                        open: true,
+                        text: error.message,
+                    },
                     error: true,
                     success: false
                 })
@@ -380,7 +408,7 @@ class Page extends React.Component {
     openMenu = (event) => {
         this.setState({
             menu: {
-                open: true,
+                open: event.currentTarget,
                 anchorEl: event.currentTarget
             }
         })
@@ -389,7 +417,7 @@ class Page extends React.Component {
     closeMenu = () => {
         this.setState({
             menu: {
-                open: false
+                open: null
             }
         })
     }
@@ -469,7 +497,6 @@ class Page extends React.Component {
         formData.append('title', this.state.lesson.title);
         formData.append('type', this.state.modal.type);
         formData.append('content', this.state.file.file);
-        console.log(formData);
 
         const config = {
             headers: {
@@ -508,11 +535,10 @@ class Page extends React.Component {
     };
 
     formatDate = (date) => {
-        const oldDate = date.split('/');
         let day, month, year;
-        day = oldDate[0];
-        month = oldDate[1];
-        year = oldDate[2];
+        day = date.getDate();
+        month = date.getMonth() + 1;
+        year = date.getFullYear();
         const newDate = year + '-' + month + '-' + day;
 
         return newDate
@@ -521,10 +547,10 @@ class Page extends React.Component {
     formatDateReverse = (date) => {
         const oldDate = date.split('-');
         let day, month, year;
-        day = oldDate[0];
-        month = oldDate[1];
-        year = oldDate[2];
-        const newDate = year + '/' + month + '/' + day;
+        day = Number(oldDate[2]);
+        month = Number(oldDate[1]) - 1;
+        year = Number(oldDate[0]);
+        const newDate = new Date(year, month, day);
 
         return newDate
     };
@@ -582,18 +608,21 @@ class Page extends React.Component {
                                 </Grid>
                             </CardContainer>
                             <Grid container spacing={8}>
-                                <Grid item xs={12} md={12}>
+                                <Grid item xs={12} md={12} align={'right'}>
+                                    <br />
                                     <Button
-                                        aria-owns={menu.open ? 'simple-menu' : undefined}
+                                        aria-owns={ menu.open ? 'menu-lesson' : undefined}
                                         aria-haspopup="true"
                                         onClick={this.openMenu}
+                                        variant="contained"
+                                        color="primary"
                                     >
                                         Adicionar lição
                                     </Button>
-                                    <Menu id='menu-lessons' anchorEl={this.state.anchorEl} open={menu.open} onClose={this.closeMenu}>
+                                    <Menu id='menu-lessons' anchorEl={menu.open} open={Boolean(menu.open)} onClose={this.closeMenu}>
                                         <MenuItem onClick={this.openModal('text')}>
                                             <ListItemIcon>
-                                                <InboxIcon />
+                                                <LibraryBooks />
                                             </ListItemIcon>
                                             <ListItemText>
                                                 Texto
@@ -601,7 +630,7 @@ class Page extends React.Component {
                                         </MenuItem>
                                         <MenuItem onClick={this.openModal('video-internal')}>
                                             <ListItemIcon>
-                                                <InboxIcon />
+                                                <VideoLibrary />
                                             </ListItemIcon>
                                             <ListItemText>
                                                 Vídeo Interno
@@ -609,7 +638,7 @@ class Page extends React.Component {
                                         </MenuItem>
                                         <MenuItem onClick={this.openModal('video-external')}>
                                             <ListItemIcon>
-                                                <InboxIcon />
+                                                <VideoCam />
                                             </ListItemIcon>
                                             <ListItemText>
                                                 Vídeo Externo
@@ -617,23 +646,33 @@ class Page extends React.Component {
                                         </MenuItem>
                                         <MenuItem onClick={this.openModal('audio')}>
                                             <ListItemIcon>
-                                                <InboxIcon />
+                                                <AudioTrack />
                                             </ListItemIcon>
                                             <ListItemText>
                                                 Áudio
                                             </ListItemText>
                                         </MenuItem>
-                                        <MenuItem onClick={this.openModal('doc')}>
+                                        {/* <MenuItem onClick={this.openModal('doc')}>
                                             <ListItemIcon>
                                                 <InboxIcon />
                                             </ListItemIcon>
                                             <ListItemText>
                                                 Documento
                                             </ListItemText>
+                                        </MenuItem> */}
+                                        <Divider />
+                                        <MenuItem component={Link} to={'/quiz/create'}>
+                                            <ListItemIcon>
+                                                <QuestionAnswer />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Quiz
+                                            </ListItemText>
                                         </MenuItem>
                                     </Menu>
                                 </Grid>
                             </Grid>
+                            <br />
                             <Grid container spacing={8}>
                                 <Grid item xs={12} md={12}>
                                     <Card>
@@ -693,18 +732,37 @@ class Page extends React.Component {
                                         shrink: true,
                                     }}
                                 />
-                                <Form.Field>
-                                    <label>Data
-                                        <DatesRangeInput
-                                            name="datesRange"
-                                            dateFormat='DD/MM/YYYY'
-                                            placeholder="Início - Término"
-                                            value={this.state.datesRange}
-                                            iconPosition="left"
-                                            closable={true}
-                                            onChange={this.handleChangeDate} />
-                                    </label>
-                                </Form.Field>
+                                <br /><br />
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <Grid container spacing={8}>
+                                        <Grid item md={6} xs={12}>
+                                            <InlineDatePicker
+                                                keyboard
+                                                variant="outlined"
+                                                label="Data de Início"
+                                                value={course.start_date}
+                                                onChange={this.handleChangeDate.bind(this, 'start_date')}
+                                                format='dd/MM/yy'
+                                                mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
+                                                locale={brLocale}
+                                                disabled={edit}
+                                            />
+                                        </Grid>
+                                        <Grid item md={6} xs={12}>
+                                            <InlineDatePicker
+                                                keyboard
+                                                variant="outlined"
+                                                label="Data de Término"
+                                                value={course.end_date}
+                                                onChange={this.handleChangeDate.bind(this, 'end_date')}
+                                                format='dd/MM/yy'
+                                                mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
+                                                locale={brLocale}
+                                                disabled={edit}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </MuiPickersUtilsProvider>
                             </CardContainer>
                             <br />
                             {course.image ?
@@ -880,125 +938,6 @@ class Page extends React.Component {
                         }
                     </DialogActions>
                 </Dialog>
-
-                {/* <Modal dimmer={'blurring'} open={this.state.modal.open} onClose={this.closeModal}>
-                    <Modal.Header>Criar uma Lição</Modal.Header>
-                    <Modal.Content scrolling>
-                        <Form>
-                            <Form.Group widths='equal'>
-                                <Form.Field control={Input} label='Título' placeholder='Título' name='title'
-                                    value={this.state.lesson.title} onChange={this.updateLesson} />
-                            </Form.Group>
-                            {this.state.modal.type === 'text' ?
-                                <Form.Field>
-                                    <label>Conteúdo</label>
-                                    <CKEditor
-                                        editor={ClassicEditor}
-                                        data={this.state.lesson.content}
-                                        onInit={editor => {
-                                            // You can store the "editor" and use when it is needed.
-                                            console.log('Editor is ready to use!', editor);
-                                        }}
-                                        onChange={this.handleEditor}
-                                        config={
-                                            {
-                                                removePlugins: ['Link', 'ImageUpload', 'MediaEmbed']
-                                            }
-                                        }
-                                    />
-                                </Form.Field>
-                                : null}
-                            {this.state.modal.type === 'webcontent' ?
-                                <Form.Field>
-                                    <label htmlFor="web-content">Conteúdo online</label>
-                                    <Input placeholder='Url' name="web-content" id="web-content"
-                                        onChange={this.updateLesson} />
-                                </Form.Field>
-                                : null}
-                            {this.state.modal.type === 'video-external' ?
-                                <Form.Field>
-                                    <label htmlFor="web-content">Conteúdo online</label>
-                                    <Input placeholder='Url' name="content" id="web-content"
-                                        onChange={this.updateLesson} />
-                                </Form.Field>
-                                : null}
-                            {this.state.modal.type === 'video-internal' || this.state.modal.type === 'audio' || this.state.modal.type === 'doc' ?
-                                <React.Fragment>
-                                    <Grid columns={1}>
-                                        <Grid.Row>
-                                            <Grid.Column>
-                                                <p>{this.state.file.name}</p>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </Grid>
-                                    <Grid verticalAlign='middle' columns={3}>
-                                        <Grid.Row>
-                                            <Grid.Column>
-                                                <Label
-                                                    floated={'left'}
-                                                    as="label"
-                                                    basic
-                                                    htmlFor="upload">
-                                                    <Button
-                                                        icon="upload"
-                                                        label={{
-                                                            basic: true,
-                                                            content: 'Selecione o Arquivo'
-                                                        }}
-                                                        htmlFor="upload"
-                                                        labelPosition="right"
-                                                    />
-                                                    <input
-                                                        hidden
-                                                        id="upload"
-                                                        type="file"
-                                                        onChange={this.onChangeFile} />
-                                                </Label>
-                                            </Grid.Column>
-                                            <Grid.Column>
-                                                <Header floated={'left'} as='h5'>
-                                                    <small>
-                                                        Formatos aceitos: mp4, webm, ogg, ogv,
-                                                        <br /> avi, mpeg, mpg, mov, wmv, 3gp, flv
-                                                        <br />Max file size: 20 MB
-                                                    </small>
-                                                </Header>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </Grid>
-                                </React.Fragment>
-                                : null}
-                        </Form>
-                        {this.state.modal.message ?
-                            <Message warning attached='bottom'>
-                                <p>{this.state.modal.message}</p>
-                            </Message>
-                            : null}
-                    </Modal.Content>
-                    <Modal.Actions>
-                        <Button color='black' onClick={this.closeModal}>
-                            Cancelar
-                        </Button>
-                        {this.state.modal.edit ?
-                            <Button
-                                positive
-                                icon='checkmark'
-                                labelPosition='right'
-                                content="Editar Lição"
-                                onClick={this.handleEditLesson.bind(this, this.state.modal.type, this.state.lesson.id)}
-                            />
-                            :
-                            <Button
-                                positive
-                                icon='checkmark'
-                                labelPosition='right'
-                                content="Criar Lição"
-                                onClick={this.handleSubmitLesson.bind(this, this.state.modal.type)}
-                            />
-                        }
-                    </Modal.Actions>
-
-                </Modal> */}
             </Admin>
         );
     }
