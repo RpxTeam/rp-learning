@@ -25,6 +25,12 @@ const routes = [
         component: Home
     },
     {
+        path: '/home',
+        exact: true,
+        auth: false,
+        component: Home
+    },
+    {
         path: '/login/:social',
         exact: false,
         auth: false,

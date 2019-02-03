@@ -861,8 +861,10 @@ a.btn {
 
 .banner {
   position: relative;
-  margin-bottom: -115px;
-  padding-bottom: 130px;
+  /* margin-bottom: -115px; */
+  margin-bottom: 20px;
+  /* padding-bottom: 130px; */
+  padding-bottom: 50px;
   overflow: hidden;
   background: url("../img/bg-top.jpg") center center no-repeat;
   background-size: cover;
