@@ -2,28 +2,36 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
-import {
-    Container,
-    Grid,
-    Header,
-    Icon,
-    Segment,
-    Card,
-    Image,
-    Divider,
-    Step,
-    List,
-    Tab
-} from 'semantic-ui-react'
+// import {
+//     Container,
+//     Grid,
+//     Header,
+//     Icon,
+//     Segment,
+//     Card,
+//     Image,
+//     Divider,
+//     Step,
+//     List,
+// } from 'semantic-ui-react'
 import Banner from '../../components/Banner'
 import Navigation from '../../common/navigation'
 import Footer from '../../common/mainFooter'
 import { API_URL } from "../../common/url-types"
 import InfoCourse from '../../components/InfoCourse'
 import Button from '../../components/Button'
-import Tabs from '../../components/Tabs'
+// import Tabs from '../../components/Tabs'
 import Detail from '../../components/details'
 import Testimonial from '../../components/Testimonial'
+
+import SwipeableViews from 'react-swipeable-views';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 class Page extends React.Component {
     constructor(props) {
@@ -119,6 +127,14 @@ class Page extends React.Component {
         return icon;
     };
 
+    handleChange = (event, value) => {
+        this.setState({ value });
+    };
+
+    handleChangeIndex = index => {
+        this.setState({ value: index });
+    };
+
     render() {
         const { course, courseID, lessons, lessonsCount, progress } = this.state;
         const { isAuthenticated, user } = this.props;
@@ -157,7 +173,47 @@ class Page extends React.Component {
                         lessons={lessonsCount}
                         duration={course.duration}
                     />
-                    <Tabs>
+                    <AppBar position="static" color="default">
+                        <Tabs
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            indicatorColor="primary"
+                            textColor="primary"
+                            variant="fullWidth"
+                        >
+                            <Tab label="Detalhes" />
+                            <Tab label="Avaliações" />
+                            <Tab label="Conteúdo" />
+                        </Tabs>
+                    </AppBar>
+                    <SwipeableViews
+                        axis={'x'}
+                        index={this.state.value}
+                        onChangeIndex={this.handleChangeIndex}
+                    >
+                        <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
+                            <Detail
+                                title={course.title}
+                                description={course.description}
+                                instructor={course.instructor}
+                            />
+                        </Typography>
+                        <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
+                            <Testimonial />
+                        </Typography>
+                        <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
+                            <List>
+                                {lessons ?
+                                    lessons.map((lesson) =>
+                                        <ListItem key={lesson.id}>
+                                            <ListItemText primary={lesson.title} secondary={lesson.type} />
+                                        </ListItem>
+                                    )
+                                : null }
+                            </List>
+                        </Typography>
+                    </SwipeableViews>
+                    {/* <Tabs>
                         <div label="DETALHES">
                             <Detail
                                 title={course.title}
@@ -171,8 +227,8 @@ class Page extends React.Component {
                         <div label="CONTEÚDO">
                             <div></div>
                         </div>
-                    </Tabs>
-                    <Container style={{ marginTop: '5em' }}>
+                    </Tabs> */}
+                    {/* <Container style={{ marginTop: '5em' }}>
                         <Grid>
                             <Grid.Row>
                                 <Grid.Column width={11}>
@@ -182,7 +238,7 @@ class Page extends React.Component {
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
-                    </Container>
+                    </Container> */}
                 </main>
                 {/* {isAuthenticated ?
                     <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>
@@ -193,7 +249,7 @@ class Page extends React.Component {
                 } */}
                 <Button
                     className="btn-start"
-                    title={isAuthenticated ? progress != null ? "Continuar Curso" : "Iniciar Curso" : "Iniciar Curso"  }
+                    title={isAuthenticated ? progress != null ? "Continuar Curso" : "Iniciar Curso" : "Iniciar Curso"}
                     onClick={this.startCourse}
                     icon="courses"
                 />
