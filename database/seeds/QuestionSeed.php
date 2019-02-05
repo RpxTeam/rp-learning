@@ -16,7 +16,6 @@ class QuestionSeed extends Seeder
         for($i=0;$i<10;$i++){
             App\Question::create([
                 'text' => $faker->word,
-                'correct' => $faker->numberBetween(1,5),
                 'active' => 1,
             ]);
         }

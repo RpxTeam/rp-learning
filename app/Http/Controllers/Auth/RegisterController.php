@@ -45,12 +45,12 @@ class RegisterController extends Controller
         $request->merge(['password' => Hash::make($request->password)]);
         try{
             User::create($request->all());
-            return response()->json(['status','registered successfully'],200);
+            return response()->json(['status','Cadastro realizado com sucesso.'],200);
         }
         catch(Exception $e){
             return response()->json([
                 "error" => "could_not_register",
-                "message" => "Unable to register user"
+                "message" => "Não foi possível realizar o cadastro"
             ], 400);
         }
 

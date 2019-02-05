@@ -6,6 +6,7 @@ use App\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Validator;
 
 
 class CoursesController extends Controller
@@ -66,15 +67,36 @@ class CoursesController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'title' => 'required|string',
+            'slug' => 'nullable|string',
+            'introduction' => 'nullable|string',
+            'description' => 'nullable|string',
+            'duration' => 'nullable|integer',
+            'image' => 'nullable|file|max:5000',
+            'mime' => 'nullable|string',
+            'instructor' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date'
+        ],[
+            'title.required' => 'O campo título está vazio.',
+            'start_date.required' => 'O campo data de início está vazio.',
+            'end_date.required' => 'O campo data de término está vazio.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),400);
+        }
+
         try{
-            if($request->slug == null){
-                $request->slug = str_slug($request->title);
+            if($request->slug == null || $request->slug == ""){
+                $slug = str_slug($request->title);
             }
             if($request->hasFile('image') && $request->file('image')->isValid()) {
-                $course = Course::create($request->except('image'));
+                $course = Course::create($request->except('image')+ ['slug' => $slug]);
                 Course::uploadImageCourse($request , $course);
             }else{
-                $course = Course::create($request->except('image'));
+                $course = Course::create($request->except('image') + ['slug' => $slug]);
             }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
@@ -93,6 +115,23 @@ class CoursesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(),[
+            'title' => 'nullable|string',
+            'slug' => 'nullable|string',
+            'introduction' => 'nullable|string',
+            'description' => 'nullable|string',
+            'duration' => 'nullable|integer',
+            'image' => 'nullable|file|max:5000',
+            'mime' => 'nullable|string',
+            'instructor' => 'nullable|string',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date'
+        ]);
+
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
+        }
+
         try{
             if($request->hasFile('image') && $request->file('image')->isValid()) {
                 $course = Course::findOrFail($id);

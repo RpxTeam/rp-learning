@@ -10,7 +10,7 @@ use App\Quiz;
 
 class Question extends Model
 {
-    protected $fillable = ['text','correct','active','course_id', 'lesson_id', 'quiz_id'];
+    protected $fillable = ['text','active','course_id', 'lesson_id', 'quiz_id'];
     protected $hidden = [];
     public static $searchable = [
     ];
@@ -39,8 +39,7 @@ class Question extends Model
 
     public static function quizQuestions($quiz){
 
-        $questions = DB::table('quiz_question')
-                    ->leftjoin('questions','quiz_question.question_id','=','questions.id')
+        $questions = DB::table('questions')
                     ->where('quiz_id', $quiz)
                     ->get();
 

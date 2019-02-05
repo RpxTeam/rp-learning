@@ -99,8 +99,30 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'birthday' => 'nullable|date',
+            'adress' => 'nullable|string|max:255',
+            'age' => 'nullable|integer',
+            'image' => 'nullable|file|max:5000',
+            'mime' => 'nullable|string',
+            'level' => 'nullable|integer',
+            'role_id' => 'nullable|integer'
+        ],[
+            'name.required' => 'O campo nome está vazio.',
+            'email.required' => 'O campo e-mail está vazio.',
+            'email.unique' => 'O e-mail já utilizado.',
+            'password.required' => 'O senha nome está vazio.',
+        ]);
+
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
+        }
+
         try{
-            if($request->role_id != 3){
+            if($request->role_id == null){
                 $request['role_id'] = 3;
             }
             if($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -128,6 +150,23 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(),[
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255|unique:users',
+            'password' => 'nullable|string|min:6|confirmed',
+            'birthday' => 'nullable|date',
+            'adress' => 'nullable|string|max:255',
+            'age' => 'nullable|integer',
+            'image' => 'nullable|file|max:5000',
+            'mime' => 'nullable|string',
+            'level' => 'nullable|integer',
+            'role_id' => 'nullable|integer'
+        ]);
+
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
+        }
+
         try{
             $user = User::findOrFail($id);
             if($request->hasFile('image') && $request->file('image')->isValid()) {
