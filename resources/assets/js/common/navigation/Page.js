@@ -93,6 +93,7 @@ class Page extends React.Component {
                                 open={Boolean(menu)}
                                 onClose={this.handleClose}
                             >
+                                <MenuItem component={Link} to={'/dashboard'}>Dashboard</MenuItem>
                                 <MenuItem component={Link} to={'/profile'}>Profile</MenuItem>
                                 <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
                             </Menu>

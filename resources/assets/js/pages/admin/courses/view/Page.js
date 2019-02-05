@@ -20,9 +20,11 @@ import Button from '@material-ui/core/Button';
 import Message from '../../../../components/Message';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -41,9 +43,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
 import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 // import Dropdown from "semantic-ui-react/dist/es/modules/Dropdown/Dropdown";
 // import Modal from "semantic-ui-react/dist/es/modules/Modal/Modal";
 
@@ -106,9 +113,35 @@ class Page extends React.Component {
                 text: 'Snackbar its works'
             },
             menu: {
-                open: false
+                open: null
             },
             open: false,
+            quiz: {
+                active: false,
+                question: {
+                    correct: 1,
+                    text: '',
+                    answers: [
+                        {
+                            id: 1,
+                            text: 'Reposta 1',
+                            correct: false
+                        },
+                        {
+                            id: 2,
+                            text: 'Resposta 2',
+                            correct: true
+                        },
+                        {
+                            id: 3,
+                            text: 'Reposta 3',
+                            correct: false
+                        }
+                    ]
+                }
+            },
+            answerField: '',
+            questionField: ''
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -117,6 +150,9 @@ class Page extends React.Component {
         this.updateLesson = this.updateLesson.bind(this);
         this.onChangeFile = this.onChangeFile.bind(this);
         this.fileUpload = this.fileUpload.bind(this);
+        this.removeAnswer = this.removeAnswer.bind(this);
+        this.correctAnswser = this.correctAnswser.bind(this);
+        this.openMessage = this.openMessage.bind(this);
     }
 
     componentDidMount() {
@@ -205,21 +241,15 @@ class Page extends React.Component {
             duration: this.state.course.duration
         })
             .then(res => {
+                this.openMessage('Curso atualizado com sucesso');
                 this.setState({
-                    message: {
-                        open: true,
-                        text: 'Curso atualizado com sucesso'
-                    },
                     error: false,
                     success: true,
                     edit: false
                 });
             }).catch(error => {
+                this.openMessage(error.message);
                 this.setState({
-                    message: {
-                        open: true,
-                        text: error.message,
-                    },
                     error: true,
                     success: false
                 })
@@ -249,10 +279,8 @@ class Page extends React.Component {
                     title: this.state.lesson.title,
                     content: this.state.lesson.content,
                 }).then(res => {
+                    this.openMessage('Lição criada com sucesso');
                     this.setState({
-                        message: 'Lição criada com sucesso',
-                        error: false,
-                        success: true,
                         lesson: {
                             ...this.state.lesson,
                             type: '',
@@ -263,11 +291,7 @@ class Page extends React.Component {
                     this.closeModal();
                     this.loadingLessons();
                 }).catch(error => {
-                    this.setState({
-                        message: error.message,
-                        error: true,
-                        success: false
-                    })
+                    this.openMessage(error.message)
                 });
             }
         } else {
@@ -294,10 +318,8 @@ class Page extends React.Component {
                     title: this.state.lesson.title,
                     content: this.state.lesson.content,
                 }).then(res => {
+                    this.openMessage('Lição criada com sucesso');
                     this.setState({
-                        message: 'Lição criada com sucesso',
-                        error: false,
-                        success: true,
                         lesson: {
                             ...this.state.lesson,
                             type: '',
@@ -308,8 +330,8 @@ class Page extends React.Component {
                     this.closeModal();
                     this.loadingLessons();
                 }).catch(error => {
+                    this.openMessage(error.message);
                     this.setState({
-                        message: error.message,
                         error: true,
                         success: false
                     })
@@ -561,8 +583,113 @@ class Page extends React.Component {
         })
     }
 
+    handleCheck = (event) => {
+        this.setState({
+            quiz: {
+                ...this.state.quiz,
+                active: event.target.checked
+            }
+        })
+    }
+
+    addAnswer = () => {
+        const question = this.state.quiz.question;
+        let answers = question.answers;
+        let answerField = this.state.answerField;
+        let last = answers.length - 1;
+        let lastAnswer = answers[last];
+        let answer = {
+            id: lastAnswer.id + 1,
+            text: answerField,
+            correct: false
+        }
+        if (this.state.questionField || question.text) {
+            if (answerField) {
+                this.setState({
+                    quiz: {
+                        ...this.state.quiz,
+                        question: {
+                            ...this.state.quiz.question,
+                            answers: [
+                                ...this.state.quiz.question.answers,
+                                answer
+                            ]
+                        }
+                    },
+                    answerField: ''
+                });
+            } else {
+                this.openMessage('Não tem resposta');
+            }
+        } else {
+            this.openMessage('Insira a pergunta');
+        }
+
+    }
+
+    removeAnswer = (id) => {
+        const question = this.state.quiz.question;
+        var newAnswers = question.answers.filter((elem, i, array) => {
+            if (elem.id != id) {
+                return newAnswers != question.answers
+            }
+        });
+        this.setState({
+            quiz: {
+                ...this.state.quiz,
+                question: {
+                    ...this.state.quiz.question,
+                    answers: newAnswers
+                }
+            }
+        })
+    }
+
+    correctAnswser = (id) => {
+        const question = this.state.quiz.question;
+        var newAnswers = question.answers.filter((elem, i, array) => {
+            if (elem.id === id) {
+                if (elem.correct) {
+                    elem.correct = false;
+                } else {
+                    elem.correct = true;
+                }
+            }
+            return question.answers
+        });
+        this.setState({
+            quiz: {
+                ...this.state.quiz,
+                question: {
+                    ...this.state.quiz.question,
+                    answers: newAnswers
+                }
+            }
+        })
+    }
+
+    openMessage = (message) => {
+        this.setState({
+            message: {
+                ...this.state.message,
+                open: true,
+                text: message
+            }
+        })
+    }
+
+    closeMessage = () => {
+        this.setState({
+            message: {
+                ...this.state.message,
+                open: false,
+                text: ''
+            }
+        })
+    }
+
     render() {
-        const { course, lessons, message, menu, edit, modal } = this.state;
+        const { course, lessons, message, menu, edit, modal, quiz, answerField, questionField } = this.state;
         return (
             <Admin heading={"Cursos"}>
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
@@ -580,7 +707,6 @@ class Page extends React.Component {
                                         variant="outlined"
                                         name="title"
                                         placeholder={course.title}
-                                        defaultValue={course.title}
                                         value={course.title}
                                         fullWidth
                                         InputLabelProps={{
@@ -598,7 +724,6 @@ class Page extends React.Component {
                                         rows={8}
                                         multiline={true}
                                         rowsMax={10}
-                                        defaultValue={course.description}
                                         value={course.description}
                                         fullWidth
                                         InputLabelProps={{
@@ -611,7 +736,7 @@ class Page extends React.Component {
                                 <Grid item xs={12} md={12} align={'right'}>
                                     <br />
                                     <Button
-                                        aria-owns={ menu.open ? 'menu-lesson' : undefined}
+                                        aria-owns={menu.open ? 'menu-lesson' : undefined}
                                         aria-haspopup="true"
                                         onClick={this.openMenu}
                                         variant="contained"
@@ -661,7 +786,7 @@ class Page extends React.Component {
                                             </ListItemText>
                                         </MenuItem> */}
                                         <Divider />
-                                        <MenuItem component={Link} to={'/quiz/create'}>
+                                        <MenuItem component={Link} to={API_URL + '/quiz//create'}>
                                             <ListItemIcon>
                                                 <QuestionAnswer />
                                             </ListItemIcon>
@@ -709,8 +834,7 @@ class Page extends React.Component {
                                     margin="normal"
                                     variant="outlined"
                                     placeholder={course.slug}
-                                    defaultValue={course.slug}
-                                    value={course.slug}
+                                    value={course.slug ? course.slug : ''}
                                     fullWidth
                                     InputLabelProps={{
                                         shrink: true,
@@ -725,7 +849,6 @@ class Page extends React.Component {
                                     margin="normal"
                                     variant="outlined"
                                     type='number'
-                                    defaultValue={course.duration}
                                     value={course.duration}
                                     fullWidth
                                     InputLabelProps={{
@@ -796,6 +919,7 @@ class Page extends React.Component {
                 </Form>
 
                 <Dialog
+                    fullScreen
                     open={this.state.open}
                     maxWidth="xs"
                     aria-labelledby="confirmation-dialog-title"
@@ -815,6 +939,8 @@ class Page extends React.Component {
                 </Dialog>
 
                 <Dialog
+                    disableBackdropClick
+                    disableEscapeKeyDown
                     onClose={this.handleCancel}
                     open={modal.open}
                     maxWidth="lg"
@@ -830,7 +956,6 @@ class Page extends React.Component {
                             margin="normal"
                             variant="outlined"
                             placeholder={this.state.lesson.title}
-                            defaultValue={this.state.lesson.title}
                             value={this.state.lesson.title}
                             fullWidth
                             InputLabelProps={{
@@ -882,37 +1007,17 @@ class Page extends React.Component {
                         {this.state.modal.type === 'video-internal' || this.state.modal.type === 'audio' || this.state.modal.type === 'doc' ?
                             <React.Fragment>
                                 <Grid container spacing={16}>
-                                    <p>{this.state.file.name}</p>
-                                </Grid>
-                                <Grid container md={12}>
+                                    <Grid item xs={12}>
+                                        <p>{this.state.file.name}</p>
+                                    </Grid>
                                     <Grid item md={6}>
                                         <Button
                                             variant="contained"
                                             component='label' // <-- Just add me!
                                         >
-                                            File
+                                            Arquivo
                                             <input type="file" onChange={this.onChangeFile} />
                                         </Button>
-                                        {/* <Label
-                                            floated={'left'}
-                                            as="label"
-                                            basic
-                                            htmlFor="upload">
-                                            <Button
-                                                icon="upload"
-                                                label={{
-                                                    basic: true,
-                                                    content: 'Selecione o Arquivo'
-                                                }}
-                                                htmlFor="upload"
-                                                labelPosition="right"
-                                            />
-                                            <input
-                                                hidden
-                                                id="upload"
-                                                type="file"
-                                                onChange={this.onChangeFile} />
-                                        </Label> */}
                                     </Grid>
                                     <Grid item md={6}>
                                         <Typography variant="overline" gutterBottom>
@@ -920,6 +1025,89 @@ class Page extends React.Component {
                                         </Typography>
                                     </Grid>
                                 </Grid>
+                            </React.Fragment>
+                        : null}
+                        <FormGroup row>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={quiz.active}
+                                        onChange={this.handleCheck}
+                                        value={quiz.active}
+                                        color="primary"
+                                    />
+                                }
+                                label="Quiz"
+                            />
+                        </FormGroup>
+                        {quiz.active ?
+                            <React.Fragment>
+                                <TextField
+                                    label="Pergunta"
+                                    name="questionField"
+                                    onChange={this.handleChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    fullWidth
+                                    value={questionField}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                                <br /><br />
+                                <Grid container spacing={8} justify="space-between" alignItems="center">
+                                    <Grid item xs={12} md={12}>
+                                        <Typography variant="h6" gutterBottom>
+                                            Repostas
+                                        </Typography>
+                                        <Typography variant="overline" gutterBottom>
+                                            Escolha a resposta correta
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={11} align="left">
+                                        <TextField
+                                            label="Resposta"
+                                            name="answerField"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            value={answerField}
+                                            fullWidth
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={1}>
+                                        <Fab color="primary" aria-label="Add" size="small" onClick={this.addAnswer}>
+                                            <AddIcon />
+                                        </Fab>
+                                    </Grid>
+                                </Grid>
+                                <Divider />
+                                {quiz.question.answers ?
+                                    quiz.question.answers.map((answer) =>
+                                        <List dense={true}>
+                                            <ListItem key={answer.id}>
+                                                <ListItemText
+                                                    primary={answer.text}
+                                                />
+                                                <ListItemSecondaryAction>
+                                                    <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
+                                                        <CheckCircle color={answer.correct ? 'primary' : 'default'} />
+                                                    </IconButton>
+                                                    <IconButton aria-label="Edit">
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                    <IconButton aria-label="Delete" onClick={this.removeAnswer.bind(this, answer.id)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </ListItemSecondaryAction>
+                                            </ListItem>
+                                            <Divider />
+                                        </List>
+                                    )
+                                    : null}
                             </React.Fragment>
                             : null}
                     </DialogContent>

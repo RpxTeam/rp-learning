@@ -62,7 +62,6 @@ class Page extends React.Component {
                 const users = res.data;
                 this.setState({ users: users });
             })
-        console.log(this.state.users);
     }
 
     handleDelete = (event) => {

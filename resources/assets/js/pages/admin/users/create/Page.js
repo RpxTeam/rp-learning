@@ -17,6 +17,7 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import Message from '../../../../components/Message';
+import MenuItem from '@material-ui/core/MenuItem';
 import styled from 'styled-components';
 
 const CardContainer = styled(Card)`
@@ -35,8 +36,22 @@ class Page extends React.Component {
                 open: false,
                 vertical: 'top',
                 horizontal: 'center',
-                text: 'Snackbar its works'
+                text: ''
             },
+            profiles: [
+                {
+                    value: 3,
+                    label: 'Aluno',
+                },
+                {
+                    value: 2,
+                    label: 'Instrutor',
+                },
+                {
+                    value: 1,
+                    label: 'Administrador',
+                }
+            ]
         }
         this.openMessage = this.openMessage.bind(this);
     }
@@ -51,7 +66,8 @@ class Page extends React.Component {
         axios.post(`${API_URL}/api/users`, {
             name: this.state.name,
             email: this.state.email,
-            password: this.state.password
+            password: this.state.password,
+            role_id: this.state.profile
         })
             .then(res => {
                 console.log(res);
@@ -98,7 +114,7 @@ class Page extends React.Component {
     }
 
     render() {
-        const { message } = this.state;
+        const { message, profiles } = this.state;
         if (this.state.redirect === true) {
             return <Redirect to={'/admin/users/'} />
         }
@@ -106,45 +122,67 @@ class Page extends React.Component {
             <Admin heading="Create">
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
                 <Grid container spacing={16}>
-                    <Grid item xs={12} md={9}>
+                    <Grid item xs={12} md={12}>
                         <form onSubmit={this.handleSubmit}>
                             <CardContainer>
-                                <TextField
-                                    id="input-name"
-                                    label="Nome"
-                                    onChange={this.handleChange}
-                                    margin="normal"
-                                    variant="outlined"
-                                    name="name"
-                                    fullWidth
-                                />
-                                <TextField
-                                    id="input-email"
-                                    label="Email"
-                                    onChange={this.handleChange}
-                                    margin="normal"
-                                    variant="outlined"
-                                    name="email"
-                                    fullWidth
-                                />
-                                <TextField
-                                    id="input-password"
-                                    label="Senha"
-                                    onChange={this.handleChange}
-                                    margin="normal"
-                                    variant="outlined"
-                                    name="password"
-                                    fullWidth
-                                />
-                                {/* <Form.Field
-                                    id='input-control-confirmpassword'
-                                    type='password'
-                                    control={Input}
-                                    label='Confirmar senha'
-                                    name="confirm-password"
-                                    placeholder='Confirmar Senha'
-                                    onChange={this.handleChange}
-                                /> */}
+                                <Grid container spacing={8}>
+                                    <Grid item md={12}>
+                                        <TextField
+                                            id="input-name"
+                                            label="Nome"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            name="name"
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                    <Grid item md={4}>
+                                        <TextField
+                                            id="input-role"
+                                            select
+                                            label="Perfil"
+                                            onChange={this.handleChange}
+                                            helperText="Por favor escolha o perfil"
+                                            margin="normal"
+                                            variant="outlined"
+                                            fullWidth
+                                            name='profile'
+                                            value={this.state.profile}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        >
+                                            {profiles.map(profile => (
+                                                <MenuItem key={profile.value} value={profile.value}>
+                                                    {profile.label}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                    <Grid item md={4}>
+                                        <TextField
+                                            id="input-email"
+                                            label="Email"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            name="email"
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                    <Grid item md={4}>
+                                        <TextField
+                                            id="input-password"
+                                            label="Senha"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            name="password"
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                </Grid>
                             </CardContainer>
                             <Button variant="contained" color={'primary'} type={'submit'} style={{ width: '100%' }}>Criar</Button>
                         </form>
