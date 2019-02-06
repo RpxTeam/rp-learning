@@ -34,6 +34,12 @@ const styles = theme => ({
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
     },
+    logo: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: 64
+    },
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
@@ -69,7 +75,6 @@ class Admin extends React.Component {
         return (
             <div className={classes.root}>
                 <Topbar position="fixed" className={classes.appBar} />
-                {/* <Sidebar className={classes.appBar} /> */}
                 <Drawer
                     className={classes.drawer}
                     variant="permanent"
@@ -79,7 +84,9 @@ class Admin extends React.Component {
                     anchor="left"
                 >
                     <div className={classes.toolbar}>
-                        <img src={require('../../../images/logo.png')}></img>
+                        <Link to={'/'} className={classes.logo}>
+                            <img src={require('../../../images/logo.png')} style={{'maxWidth': '80%'}} />
+                        </Link>
                     </div>
                     <Divider />
                     <List>

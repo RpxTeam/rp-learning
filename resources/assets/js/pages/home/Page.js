@@ -127,7 +127,7 @@ class Page extends React.Component {
                         {/* <h3>A importância da qualificação profissional</h3> */}
                         {/* <p>Por conta da alta concorrência e competitividade, o mercado de trabalho está cada vez mais exigente na seleção de profissionais e quem está mais preparado tem mais oportunidades. A qualificação, portanto, é uma ferramenta fundamental para o sucesso profissional, sendo um fator determinante tanto para aqueles que estão em busca de uma vaga, para quem deseja crescer na empresa e para quem pensa em manter sua posição.</p> */}
                     </Banner>
-                    <Grid container spacing={8} style={{ maxWidth: '90%', margin: '0 auto' }}>
+                    <Grid container spacing={40} style={{ maxWidth: '90%', margin: '0 auto' }}>
                         {courses.map((course) =>
                             <Grid item md={4} xs={12} key={course.id}>
                                 <Card>
@@ -150,12 +150,13 @@ class Page extends React.Component {
                                             title={course.title}
                                             subheader="Categoria"
                                         />
-                                    </CardActionArea>
-                                    {course.image ?
-                                        <CardMedia
-                                            image={course.image}
-                                        />
+                                        {course.image ?
+                                            <CardMedia
+                                                image={course.image}
+                                                style={{height: 100}}
+                                            />
                                         : null}
+                                    </CardActionArea>
                                     <CardContent>
                                         <Typography component="p">
                                             {course.description}
@@ -165,7 +166,7 @@ class Page extends React.Component {
                                         {/* <IconButton aria-label="Add to favorites">
                                             <FavoriteIcon />
                                         </IconButton> */}
-                                        <Button size="small" color="primary">
+                                        <Button size="small" color="primary" onClick={this.viewCourse.bind(this, course.id)}>
                                             Detalhes
                                         </Button>
                                     </CardActions>

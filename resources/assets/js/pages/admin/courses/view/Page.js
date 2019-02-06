@@ -164,6 +164,7 @@ class Page extends React.Component {
                 end_date = this.formatDateReverse(course.end_date);
                 this.setState({
                     course: {
+                        id: course.id,
                         title: course.title,
                         description: course.description,
                         slug: course.slug,
@@ -174,13 +175,6 @@ class Page extends React.Component {
                 });
             });
 
-        // axios.get(`${ API_URL }/api/courses/${courseID}/lessons/`)
-        // .then(res => {
-        //     const lessons = res.data;
-        //     this.setState({ lessons: lessons });
-        //
-        // this.state.lessons);
-        // });
         this.loadingLessons();
     }
 
@@ -676,7 +670,7 @@ class Page extends React.Component {
                 text: message
             }
         })
-    }
+    } 
 
     closeMessage = () => {
         this.setState({
@@ -786,7 +780,8 @@ class Page extends React.Component {
                                             </ListItemText>
                                         </MenuItem> */}
                                         <Divider />
-                                        <MenuItem component={Link} to={API_URL + '/quiz//create'}>
+                                        {console.log(course)}
+                                        <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
                                             <ListItemIcon>
                                                 <QuestionAnswer />
                                             </ListItemIcon>
@@ -1015,7 +1010,6 @@ class Page extends React.Component {
                                             variant="contained"
                                             component='label' // <-- Just add me!
                                         >
-                                            Arquivo
                                             <input type="file" onChange={this.onChangeFile} />
                                         </Button>
                                     </Grid>
@@ -1061,7 +1055,7 @@ class Page extends React.Component {
                                             Repostas
                                         </Typography>
                                         <Typography variant="overline" gutterBottom>
-                                            Escolha a resposta correta
+                                            Defina uma ou mais respostas corretas
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} md={11} align="left">

@@ -30,6 +30,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Fab from '@material-ui/core/Fab';
@@ -198,6 +199,9 @@ class Page extends React.Component {
                                     <TableCell><Button component={Link} to={'/admin/courses/' + course.id}>{course.title}</Button></TableCell>
                                     <TableCell>{course.duration}</TableCell>
                                     <TableCell align={'right'}>
+                                        <IconButton size="small" aria-label="Edit" component={Link} to={'/admin/courses/' + course.id}>
+                                            <EditIcon />
+                                        </IconButton>
                                         <IconButton size="small" color="primary" aria-label="Delete" component={Link} to={'/courses/' + course.id + '/details'}>
                                             <RemoveRedEye />
                                         </IconButton>

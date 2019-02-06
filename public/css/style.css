@@ -198,7 +198,7 @@ small {
 }
 
 .back-button {
-  position: fixed;
+  position: absolute;
   top: 15px;
   left: 18px;
   z-index: 10;
@@ -378,6 +378,7 @@ a.btn {
 }
 
 .btn-start {
+  cursor: pointer;
   position: fixed;
   right: 0;
   bottom: 0;
@@ -1270,17 +1271,18 @@ a.btn {
   bottom: 0;
   left: 0;
   background: #292929;
-  opacity: .41;
+  opacity: .71;
 }
 
 .banner-course .gridD {
-  position: relative;
+  position: initial;
 }
 
 .banner-course h1 {
   color: #635DC2;
   font-weight: 700;
   margin-bottom: 30px;
+  position: relative;
 }
 
 .banner-course p {

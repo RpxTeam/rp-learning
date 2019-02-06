@@ -18,24 +18,14 @@ import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import Message from '../../../../components/Message';
 import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import Fab from '@material-ui/core/Fab';
-// import ExpandLess from '@material-ui/icons/ExpandLess';
-// import ExpandMore from '@material-ui/icons/ExpandMore';
-// import Input from '@material-ui/core/Input';
-// import InputLabel from '@material-ui/core/InputLabel';
-// import FormControl from '@material-ui/core/FormControl';
-// import Chip from '@material-ui/core/Chip';
-// import Select from '@material-ui/core/Select';
 
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { TimePicker } from 'material-ui-pickers';
-import { DatePicker } from 'material-ui-pickers';
-import { DateTimePicker } from 'material-ui-pickers';
-import { InlineDatePicker } from 'material-ui-pickers';
-import brLocale from 'date-fns/locale/pt-BR';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Switch from '@material-ui/core/Switch';
+import Divider from '@material-ui/core/Divider';
+import Avatar from '@material-ui/core/Avatar';
+import ImageIcon from '@material-ui/icons/Image';
 
 const CardContainer = styled(Card)`
     padding: 10px 20px;
@@ -45,6 +35,7 @@ class Page extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            course: this.props.match.params.id,
             error: false,
             success: false,
             message: {
@@ -53,24 +44,29 @@ class Page extends React.Component {
                 horizontal: 'center',
                 text: 'Snackbar its works'
             },
-            authors: [],
-            options: [],
-            lessons: {
-
-            },
-            start_date: new Date(),
-            end_date: new Date(),
-            datesRange: '',
-            courseID: '',
-            courseEdit: false,
-            author: '',
-            image: ''
+            questions: []
         }
         this.openMessage = this.openMessage.bind(this);
+        this.handleToggle = this.handleToggle.bind(this);
     };
 
     getData = () => {
+        axios.get(`${API_URL}/api/courses/${this.state.course}/quiz`)
+            .then(res => {
+                if (res.data) {
+                    axios.get(`${API_URL}/api/courses/${this.state.course}/quiz/`)
+                        .then(res => {
+                            const questions = res.data;
+                            this.setState({
+                                questions: questions
+                            });
+                        }).catch(error => {
+                            console.log(error)
+                        })
+                } else {
 
+                }
+            });
     };
 
     componentDidMount() {
@@ -86,40 +82,40 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        if (!this.state.title) {
-            this.setState({
-                message: {
-                    ...this.state,
-                    open: true,
-                    text: 'Preencha o título'
-                }
-            })
-        } else {
-            axios.post(`${API_URL}/api/courses`, {
-                title: this.state.title
-            }).then(res => {
-                console.log(res.data)
-                this.setState({
-                    quizID: res.data,
-                    message: {
-                        ...this.state.message,
-                        open: true,
-                        text: 'Quiz criado com sucesso!',
-                    }
-                });
-                setTimeout(function () {
-                    this.setState({
-                        quizEdit: true
-                    })
-                }.bind(this), 2000);
-            }).catch(error => {
-                this.setState({
-                    error: true,
-                    success: false
-                })
-                this.openMessage({ text: error.message })
-            });
-        }
+        // if (!this.state.title) {
+        //     this.setState({
+        //         message: {
+        //             ...this.state,
+        //             open: true,
+        //             text: 'Preencha o título'
+        //         }
+        //     })
+        // } else {
+        //     axios.post(`${API_URL}/api/courses`, {
+        //         title: this.state.title
+        //     }).then(res => {
+        //         console.log(res.data)
+        //         this.setState({
+        //             quizID: res.data,
+        //             message: {
+        //                 ...this.state.message,
+        //                 open: true,
+        //                 text: 'Quiz criado com sucesso!',
+        //             }
+        //         });
+        //         setTimeout(function () {
+        //             this.setState({
+        //                 quizEdit: true
+        //             })
+        //         }.bind(this), 2000);
+        //     }).catch(error => {
+        //         this.setState({
+        //             error: true,
+        //             success: false
+        //         })
+        //         this.openMessage({ text: error.message })
+        //     });
+        // }
     };
 
     handleDelete = () => {
@@ -134,10 +130,6 @@ class Page extends React.Component {
             }
         });
     };
-
-    openModal = type => () => this.setState({ modal: { type: type, open: true } });
-
-    closeModal = () => this.setState({ modal: { open: false } });
 
     openMessage = newState => () => {
         this.setState({
@@ -157,8 +149,21 @@ class Page extends React.Component {
         });
     }
 
+    handleToggle = id => event => {
+        const questions = this.state.questions;
+        var newQuestions = questions.filter((elem, i, array) => {
+            if (elem.id === id) {
+                elem.correct = event.target.checked;
+            }
+            return questions
+        });
+        this.setState({
+            questions: newQuestions
+        })
+    };
+
     render() {
-        const { message } = this.state;
+        const { message, questions } = this.state;
         // if (this.state.quizEdit === true) {
         //     return <Redirect to={'/admin/courses/' + this.state.courseID} />
         // }
@@ -167,7 +172,27 @@ class Page extends React.Component {
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
                 <form>
                     <Grid container spacing={16} justify="flex-end">
-                        <Grid item xs={12} md={12}>
+                        <Grid item xs={12}>
+                            <List>
+                                {questions ?
+                                    questions.map((question, index) =>
+                                        <React.Fragment key={question.id}>
+                                            <Divider />
+                                            <ListItem>
+                                                <Switch
+                                                    onChange={this.handleToggle(question.id)}
+                                                    color='primary'
+                                                    value={question.correct}
+                                                    checked={question.correct}
+                                                />
+                                                <ListItemText primary={question.title} secondary="Jan 9, 2014" />
+                                            </ListItem>
+                                        </React.Fragment>
+                                    )
+                                    : null}
+                            </List>
+                        </Grid>
+                        {/* <Grid item xs={12} md={12}>
                             <CardContainer>
                                 <TextField
                                     id="input-title"
@@ -179,10 +204,10 @@ class Page extends React.Component {
                                     fullWidth
                                 />
                             </CardContainer>
-                        </Grid>
-                        <Grid item md={2}>
+                        </Grid> */}
+                        {/* <Grid item md={2}>
                             <Button variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit} style={{ width: '100%' }}>Criar Quiz</Button>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </form>
             </Admin>

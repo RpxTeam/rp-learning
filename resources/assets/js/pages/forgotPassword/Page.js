@@ -125,7 +125,7 @@ class Page extends React.Component {
                         verticalAlign='middle'
                         className='login-form'
                     >
-                        <Grid.Column style={{maxWidth: '450px'}}>
+                        <Grid.Column>
                             <Header as='h2' color='teal' textAlign='center'>
                                 Reset your password
                             </Header>

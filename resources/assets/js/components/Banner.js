@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 export class Banner extends Component {
@@ -14,7 +15,7 @@ export class Banner extends Component {
                         <Image className="banner-course">
                             <div className="gridD">
                                 <div className="back-button">
-                                    <a href="{{ url('/library') }}"><i className="icon-arrow-left"></i></a>
+                                    <Link to={'/courses'}><i className="icon-arrow-left"></i></Link>
                                 </div>
                                 <h1>{this.props.title}</h1>
                                 {/* <div className="rating">

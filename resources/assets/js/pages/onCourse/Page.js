@@ -3,23 +3,21 @@ import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import {
     Container,
-    Grid,
     Header,
     Icon,
     Segment,
     Card,
     Image,
     Divider,
-    Step,
     List,
     Tab,
     Progress,
     Modal
 } from 'semantic-ui-react'
-import Menu from '../../components/Menu'
+import Navigation from '../../common/navigation'
 import Banner from '../../components/Banner'
 import Footer from '../../common/mainFooter'
-import Button from '../../components/Button'
+// import Button from '../../components/Button'
 import { API_URL } from "../../common/url-types";
 import "video-react/dist/video-react.css";
 import { Player } from 'video-react';
@@ -27,6 +25,32 @@ import ReactPlayer from 'react-player'
 import Modules from '../../components/Modules';
 import InfoLesson from '../../components/InfoLesson';
 import Module from '../../components/Module';
+
+import Grid from '@material-ui/core/Grid';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepButton from '@material-ui/core/StepButton';
+import StepContent from '@material-ui/core/StepContent';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+
+import styled from 'styled-components';
+
+const Btn = styled(Button)`
+    margin: 0 100px!important;
+`
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
+}
 
 class Page extends React.Component {
     constructor(props) {
@@ -50,6 +74,7 @@ class Page extends React.Component {
             modal: {
                 open: false
             },
+            activeLesson: 0
         }
     }
 
@@ -244,8 +269,34 @@ class Page extends React.Component {
         }
     });
 
+    handleStep = (step) => {
+        this.setState({
+            activeLesson: step,
+        });
+    };
+
+    handleNextStep = () => {
+        this.setState(state => ({
+            activeLesson: state.activeLesson + 1,
+        }));
+    };
+
+    handleBackStep = () => {
+        this.setState(state => ({
+            activeLesson: state.activeLesson - 1,
+        }));
+    };
+
+    handleClickOpen = () => {
+        this.setState({
+            modal: {
+                open: true
+            }
+        });
+    };
+
     render() {
-        const { course, modal, courseID, lessons, lesson, endLessons, progress } = this.state;
+        const { course, modal, courseID, lessons, lesson, endLessons, progress, activeLesson } = this.state;
         if (this.state.onCourse === true) {
             return <Redirect to={'/courses/' + courseID + '/details'} />
         } else if (this.state.notFound) {
@@ -253,14 +304,14 @@ class Page extends React.Component {
         }
         return (
             <div>
-                <Menu />
+                <Navigation />
                 <main className="fadeIn animated">
                     <Banner
                         internal
                         title={course.title}
                         image={course.image}
                     />
-                    <Grid>
+                    {/* <Grid>
                         <Modules>
                             {
                                 lessons ?
@@ -308,9 +359,95 @@ class Page extends React.Component {
                                 </div>
                             </React.Fragment>
                             : null}
-                    </Grid>
+                    </Grid> */}
                     <Container>
-                        <Grid>
+                        {lessons ?
+                            <Stepper
+                                activeStep={activeLesson}
+                                orientation="vertical"
+                                nonLinear
+                                style={{ maxWidth: 992, margin: '0 auto' }}
+                            >
+                                {lessons.map((lesson, index) => (
+                                    <Step key={lesson.id}>
+                                        <StepButton onClick={this.handleStep.bind(this, index)} completed={lesson.view}>
+                                            {lesson.title} | {index}
+                                        </StepButton>
+                                        <StepContent>
+                                            <Grid container>
+                                                <Grid item xs={12}>
+                                                    {lesson.type === 'text' ?
+                                                        <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
+                                                        : null}
+                                                    {lesson.type === 'video-internal' ?
+                                                        <Player
+                                                            playsInline
+                                                            poster="/assets/poster.png"
+                                                            src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
+                                                        />
+                                                        : null}
+                                                    {lesson.type === 'video-external' ?
+                                                        <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
+                                                        : null}
+                                                    {lesson.type === 'ppt' ?
+                                                        lesson.content
+                                                        : null}
+                                                    {lesson.type === 'doc' || lesson.type === 'pdf' ?
+                                                        <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
+                                                        : null}
+                                                    {lesson.type === 'audio' ?
+                                                        <audio controls controlsList="nodownload">
+                                                            <source
+                                                                src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
+                                                                type={lesson.mime}
+                                                            />
+                                                            Your browser does not support the audio element.
+                                                        </audio>
+                                                        : null}
+                                                </Grid>
+                                                <Grid item xs={12} style={{ margin: 10 }}>
+                                                    <Grid container justify={'flex-end'} align={'center'}>
+                                                        <Grid item xs={2}>
+                                                            <Button
+                                                                disabled={activeLesson === 0}
+                                                                onClick={this.handleBackStep}
+                                                            >
+                                                                Anterior
+                                                            </Button>
+                                                        </Grid>
+                                                        {activeLesson === lessons.length - 1 ?
+                                                            null
+                                                            :
+                                                            <Grid item xs={2}>
+                                                                <Button
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    onClick={this.handleNextStep}
+                                                                >
+                                                                    Próxima
+                                                                </Button>
+                                                            </Grid>
+                                                        }
+                                                        {lesson.view ? null :
+                                                            <Grid item xs={2}>
+                                                                <Button
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    onClick={this.endLesson.bind(this, lesson.id)}
+                                                                >
+                                                                    Finalizar Lição
+                                                                </Button>
+                                                            </Grid>
+                                                        }
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        </StepContent>
+                                    </Step>
+                                ))}
+                            </Stepper>
+                            : null}
+                        {/* <Grid>
                             <Grid.Row>
                                 <Grid.Column width={16}>
                                     <Progress percent={progress} progress autoSuccess />
@@ -365,8 +502,8 @@ class Page extends React.Component {
                                                     </audio>
                                                     : null}
                                             </div>
-                                        </Segment>
-                                        {/* {!lesson.view ?
+                                        </Segment> */}
+                        {/* {!lesson.view ?
                                         <Button positive floated='right' onClick={this.endLesson.bind(this, lesson.id)}>Finalizar
                                             lição</Button>
                                         :
@@ -374,20 +511,19 @@ class Page extends React.Component {
                                             <Button positive basic floated='right' onClick={this.nextLesson.bind(this, lesson.id)}>Próxima lição</Button>
                                         : null
                                     } */}
-                                        <Button
+                        {/* <Button
                                             className="btn-start"
                                             type='success'
                                             title={!lesson.view ? 'Finalizar lição' : 'Próxima Lição'}
                                             onClick={!lesson.view ? this.endLesson.bind(this, lesson.id) : this.nextLesson.bind(this, lesson.id)}
-                                        />
-                                    </Grid.Column>
+                                        /> */}
+                        {/* </Grid.Column>
                                     : null}
                             </Grid.Row>
-                        </Grid>
-                    </Container>/>
+                        </Grid> */}
+                    </Container>
                 </main>
-                <Footer />
-                <Modal size={'tiny'} dimmer={'blurring'} open={modal.open} onClose={this.close}>
+                {/* <Modal size={'tiny'} dimmer={'blurring'} open={modal.open} onClose={this.close}>
                     <Modal.Content style={{ textAlign: 'center' }}>
                         <Image wrapped size='medium' src='/images/conclusion.jpg' style={{ display: 'block', margin: '0 auto' }} />
                         <Modal.Description style={{ paddingTop: '20px' }}>
@@ -396,15 +532,40 @@ class Page extends React.Component {
                         </Modal.Description>
                     </Modal.Content>
                     <Modal.Actions style={{ textAlign: 'center' }}>
-                        {/* <Button color='black' onClick={this.closeModal} content="Voltar" /> */}
-                        {/* <Button
+                        <Button color='black' onClick={this.closeModal} content="Voltar" />
+                        <Button
                             positive
                             content="Ir para a Lista de Cursos"
                             as={Link}
                             to={'/courses'}
-                        /> */}
+                        />
                     </Modal.Actions>
-                </Modal>
+                </Modal> */}
+                <Dialog
+                    open={modal.open}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={this.closeModal}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle id="alert-dialog-slide-title">
+                        Parabéns {this.props.user.name} você concluiu o curso
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            <img src='/images/conclusion.jpg' style={{ display: 'block', margin: '0 auto' }} />
+                            <Typography>
+                                Você concluiu o curso de {course.title}
+                            </Typography>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.closeModal} color="primary">
+                            OK
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }
