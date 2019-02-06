@@ -37,9 +37,10 @@ class Question extends Model
 
     
 
-    public static function quizQuestions($quiz){
+    public static function quizQuestions($course, $quiz){
 
         $questions = DB::table('questions')
+                    ->where('course_id', $course)
                     ->where('quiz_id', $quiz)
                     ->get();
 

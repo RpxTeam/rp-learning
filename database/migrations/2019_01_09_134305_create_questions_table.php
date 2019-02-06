@@ -16,7 +16,7 @@ class CreateQuestionsTable extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
             $table->text('text');
-            $table->integer('active');
+            $table->boolean('active')->default(0);
             $table->integer('course_id')->unsigned()->nullable();
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->integer('lesson_id')->unsigned()->nullable();

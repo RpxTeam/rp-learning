@@ -68,20 +68,22 @@ class CoursesController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'title' => 'required|string',
+            'title' => 'required|string|max:255',
             'slug' => 'nullable|string',
             'introduction' => 'nullable|string',
             'description' => 'nullable|string',
-            'duration' => 'nullable|integer',
-            'image' => 'nullable|file|max:5000',
+            'duration' => 'nullable|numeric',
+            'image' => 'nullable|file|size:5000|mimetypes:jpeg,png',
             'mime' => 'nullable|string',
             'instructor' => 'nullable|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date'
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after_or_equal:start_date'
         ],[
             'title.required' => 'O campo título está vazio.',
             'start_date.required' => 'O campo data de início está vazio.',
+            'start_date.after_or_equal' => 'O campo data de início é inválido.',
             'end_date.required' => 'O campo data de término está vazio.',
+            'end_date.after_or_equal' => 'O campo data de término é inválido.',
         ]);
 
         if ($validator->fails()) {
@@ -120,12 +122,15 @@ class CoursesController extends Controller
             'slug' => 'nullable|string',
             'introduction' => 'nullable|string',
             'description' => 'nullable|string',
-            'duration' => 'nullable|integer',
-            'image' => 'nullable|file|max:5000',
+            'duration' => 'nullable|numeric',
+            'image' => 'nullable|file|size:5000|mimetypes:jpeg,png',
             'mime' => 'nullable|string',
             'instructor' => 'nullable|string',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date'
+            'start_date' => 'nullable|date|after_or_equal:today',
+            'end_date' => 'nullable|date|after_or_equal:start_date'
+        ],[
+            'start_date.after_or_equal' => 'O campo data de início é inválido.',
+            'end_date.after_or_equal' => 'O campo data de término é inválido.',
         ]);
 
         if($validator->fails()){

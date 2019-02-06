@@ -105,11 +105,11 @@ class UserController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'birthday' => 'nullable|date',
             'adress' => 'nullable|string|max:255',
-            'age' => 'nullable|integer',
-            'image' => 'nullable|file|max:5000',
+            'age' => 'nullable|numeric',
+            'image' => 'nullable|file|size:5000|mimetypes:jpeg,png',
             'mime' => 'nullable|string',
-            'level' => 'nullable|integer',
-            'role_id' => 'nullable|integer'
+            'level' => 'nullable|numeric',
+            'role_id' => 'nullable|numeric'
         ],[
             'name.required' => 'O campo nome está vazio.',
             'email.required' => 'O campo e-mail está vazio.',
@@ -156,11 +156,11 @@ class UserController extends Controller
             'password' => 'nullable|string|min:6|confirmed',
             'birthday' => 'nullable|date',
             'adress' => 'nullable|string|max:255',
-            'age' => 'nullable|integer',
-            'image' => 'nullable|file|max:5000',
+            'age' => 'nullable|numeric',
+            'image' => 'nullable|file|size:5000|mimetypes:jpeg,png',
             'mime' => 'nullable|string',
-            'level' => 'nullable|integer',
-            'role_id' => 'nullable|integer'
+            'level' => 'nullable|numeric',
+            'role_id' => 'nullable|numeric'
         ]);
 
         if($validator->fails()){

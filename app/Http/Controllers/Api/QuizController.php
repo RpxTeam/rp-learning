@@ -22,10 +22,13 @@ class QuizController extends Controller
         $course = Course::findOrFail($course);
         
         $quiz = Quiz::courseQuiz($course->id);
-        //colocar total de questoes(criar na model)
 
-        return response()->json($quiz, 200);
-        // return response()->json(array('course'=>$mycourse,'lessons'=>$lessons),200);
+        if($quiz != null){
+            return response()->json($quiz, 200);
+        }else{
+            return response()->json(400);
+        }
+
     }
 
     /**
@@ -40,10 +43,15 @@ class QuizController extends Controller
         $quiz = Quiz::findOrFail($quiz);
 
         $quiz = Quiz::courseQuiz($course->id)
+                ->where('course_id', $course->id)
                 ->where('quiz_id', $quiz->id)
                 ->first();
 
-        return response()->json($quiz, 200);
+        if($quiz != null){
+            return response()->json($quiz, 200);
+        }else{
+            return response()->json(400);
+        }
     }
 
     /**

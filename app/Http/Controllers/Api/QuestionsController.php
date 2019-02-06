@@ -10,6 +10,7 @@ use App\Course;
 use App\Question;
 use App\Answer;
 use App\Level;
+use Validator;
 
 class QuestionsController extends Controller
 {
@@ -28,7 +29,7 @@ class QuestionsController extends Controller
         $data = collect();
 
         foreach($questions as $question){
-            $data->push(Question::questionAnswers($question->question_id));
+            $data->push(Question::questionAnswers($question->id));
         }
 
         return response()->json($data, 200);
@@ -60,10 +61,45 @@ class QuestionsController extends Controller
      */
     public function store(Request $request, $course, $quiz)
     {
+        $validator = Validator::make($request->all(),[
+            'text' => 'required|string',
+            'active' => 'nullable|numeric',
+            'course_id' => 'nullable|numeric',
+            'lesson_id' => 'nullable|numeric',
+            'quiz_id' => 'nullable|numeric',
+            'content' => 'nullable|json',
+        ],[
+            'text.required' => 'O campo texto está vazio.',
+            'content' => 'O formulário é inválido.'
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors(), 400);
+        }
+
         $course = Course::findOrFail($course);
         $quiz = Quiz::findOrFail($quiz);
+        
+        $data = json_decode($request->getContent(), true);
 
-        $question = question::create($request->All() + ['course_id' => $course->id]);
+        if($data['question']['course_id'] == null){
+            $data['question']['course_id'] = $course->id;
+        }
+
+        if($data['question']['quiz_id'] == null){
+            $data['question']['quiz_id'] = $quiz->id;
+        }
+        
+        $question = Question::create($data['question']);
+
+        foreach($data['answers'] as $answer){
+            $a = Answer::create($answer);
+            DB::table('question_answer')->insert([
+                'question_id' => $question->id,
+                'answer_id' => $a->id
+            ]);
+
+        }
 
         DB::table('quiz_question')->insert([
             'quiz_id' => $quiz->id,
@@ -82,6 +118,18 @@ class QuestionsController extends Controller
      */
     public function update(Request $request, $course, $quiz, $question)
     {
+        $validator = Validator::make($request->all(),[
+            'text' => 'nullable|string',
+            'active' => 'nullable|numeric',
+            'course_id' => 'nullable|numeric',
+            'lesson_id' => 'nullable|numeric',
+            'quiz_id' => 'nullable|numeric',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors(), 400);
+        }
+
         $course = Course::findOrFail($course);
         $quiz = Quiz::findOrFail($quiz);
         $question = Question::findOrFail($question);

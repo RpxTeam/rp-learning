@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Course;
 use App\Lesson;
 use App\Question;
+use Validator;
 
 
 class LessonQuestionsController extends Controller
@@ -53,12 +54,45 @@ class LessonQuestionsController extends Controller
      */
     public function store(Request $request, $course, $lesson)
     {
-        $course = Course::findOrFail($course);
-        $lesson = Lesson::findOrFail($lesson);
+        $validator = Validator::make($request->all(),[
+        'text' => 'required|string',
+        'active' => 'nullable|numeric',
+        'course_id' => 'nullable|numeric',
+        'lesson_id' => 'nullable|numeric',
+        'quiz_id' => 'nullable|numeric',
+        'content' => 'nullable|json',
+    ],[
+        'text.required' => 'O campo texto está vazio.',
+        'content' => 'O formulário é inválido.'
+    ]);
 
-        $question = question::create($request->All() + ['course_id' => $course->id, 'lesson_id' => $lesson->id]);
+    if($validator->fails()){
+        return response()->json($validator->errors(), 400);
+    }
 
-        return response()->json(204);
+    $course = Course::findOrFail($course);
+    $lesson = Lesson::findOrFail($lesson);
+    
+    $data = json_decode($request->getContent(), true);
+
+    if($data['question']['course_id'] == null){
+        $data['question']['course_id'] = $course->id;
+    }
+
+    if($data['question']['lesson_id'] == null){
+        $data['question']['lesson_id'] = $lesson->id;
+    }
+    
+    $question = Question::create($data['question']);
+
+    foreach($data['answers'] as $answer){
+        $a = Answer::create($answer);
+        DB::table('question_answer')->insert([
+            'question_id' => $question->id,
+            'answer_id' => $a->id
+        ]);
+    }
+        return response()->json($question->id, 200);
     }
 
     /**
@@ -70,6 +104,18 @@ class LessonQuestionsController extends Controller
      */
     public function update(Request $request, $course, $lesson, $question)
     {
+        $validator = Validator::make($request->all(),[
+            'text' => 'nullable|string',
+            'active' => 'nullable|numeric',
+            'course_id' => 'nullable|numeric',
+            'lesson_id' => 'nullable|numeric',
+            'quiz_id' => 'nullable|numeric',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors(), 400);
+        }
+
         $course = Course::findOrFail($course);
         $lesson = Lesson::findOrFail($lesson);
         $question = Question::findOrFail($question);

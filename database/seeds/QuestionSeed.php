@@ -16,8 +16,10 @@ class QuestionSeed extends Seeder
         for($i=0;$i<10;$i++){
             App\Question::create([
                 'text' => $faker->word,
-                'active' => 1,
-            ]);
+                'active' => 0,
+                'course_id' => '1',
+                'quiz_id' => '1',
+                ]);
         }
     }
 }
