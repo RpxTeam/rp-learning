@@ -135,6 +135,60 @@ class QuizController extends Controller
             
         return response()->json(204);
         //204: No content. When an action was executed successfully, but there is no content to return.
+    }
+
+    public function final($course){
+        $course = Course::findOrFail($course);
+
+        $questions = DB::table('questions')
+                    ->where('active', 1)
+                    ->where('course_id',$course->id)
+                    ->get();
+
+        if($questions != null){
+            $data = collect();
+
+        foreach($questions as $question){
+            $data->push(Question::questionAnswers($question->id));
+        }
+
+            return response()->json($data, 200);
+        }else{
+            return response()->json(400);
         }
     }
-    
+
+    public function questions($course){
+        $course = Course::findOrFail($course);
+
+        $questions = DB::table('questions')
+                    ->where('course_id',$course->id)
+                    ->get();
+
+        if($questions != null){
+            return response()->json($questions, 200);
+        }else{
+            return response()->json(400);
+        }
+    }
+
+    public function activeteFinal($course){
+        $course = Course::findOrFail($course);
+
+        $questions = DB::table('questions')
+                    ->where('course_id',$course->id)
+                    ->update(['active' => 1]);
+
+        return response()->json(204);
+    }
+
+    public function deactivateFinal($course){
+        $course = Course::findOrFail($course);
+
+        $questions = DB::table('questions')
+                    ->where('course_id',$course->id)
+                    ->update(['active' => 0]);
+
+        return response()->json(204);
+    }
+}
