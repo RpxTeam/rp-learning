@@ -13,12 +13,12 @@ class QuizQuestionSeed extends Seeder
     {
         $items = [
             ['quiz_id'=> 1,'question_id'=>1],
-            ['quiz_id'=> 1,'question_id'=>2],
-            ['quiz_id'=> 1,'question_id'=>3],
+            // ['quiz_id'=> 1,'question_id'=>2],
+            // ['quiz_id'=> 1,'question_id'=>3],
 
-            ['quiz_id'=> 2,'question_id'=>4],
-            ['quiz_id'=> 2,'question_id'=>5],
-            ['quiz_id'=> 2,'question_id'=>6],
+            // ['quiz_id'=> 2,'question_id'=>4],
+            // ['quiz_id'=> 2,'question_id'=>5],
+            // ['quiz_id'=> 2,'question_id'=>6],
         ];
 
         foreach ($items as $item) {
