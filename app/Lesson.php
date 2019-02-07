@@ -56,6 +56,16 @@ class Lesson extends Model
             if($lesson->content != null && $lesson->mime != null && $lesson->type != 'text'){
                 $lesson->content = Storage::url($lesson->content);
             }
+            $question = DB::table('questions')
+            ->where('course_id',$course)
+            ->where('lesson_id',$lesson->id)
+            ->first();
+
+            if($question != null){
+                $lesson->question = $question->id; 
+            }else{
+                $lesson->question = null;
+            }
         }
 
         return $lessons;
