@@ -13,7 +13,6 @@ class CourseQuizSeed extends Seeder
     {
         $items = [
             ['course_id'=> 1,'quiz_id'=>1],
-            ['course_id'=> 1,'quiz_id'=>2],
         ];
 
         foreach ($items as $item) {
