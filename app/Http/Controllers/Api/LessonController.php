@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Helpers\VideoStream;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Response;
+use Validator;
 
 class LessonController extends Controller
 {
