@@ -325,21 +325,22 @@ class Page extends React.Component {
         });
     };
 
-    handleCheckQuiz = name => event => {
-        let newChooses = this.state.chooses.filter(choose => {
-            if (choose.text === name) {
-                return this.state.chooses
+    handleCheckQuiz = id => event => {
+        const answers = this.state.question.answers;
+        let newChooses = answers.filter(answer => {
+            if(answer.id) {
+                return answers
             }
         });
-        this.setState(prevState => ({
-            chooses: [
-                ...prevState.chooses,
-                {
-                    text: name,
-                },
-            ]
-        }));
-        console.log(newChooses);
+        console.log(newChooses)
+        // this.setState(prevState => ({
+        //     chooses: [
+        //         ...prevState.chooses,
+        //         {
+        //             text: name,
+        //         },
+        //     ]
+        // }));
     };
 
     openQuiz = () => {
@@ -352,7 +353,7 @@ class Page extends React.Component {
         this.setState({
             quiz: false,
             question: {
-                text: '',
+                text: 'Por que responder esse quiz?',
                 answers: [
                     {
                         text: 'Resposta 1',
@@ -519,7 +520,7 @@ class Page extends React.Component {
                                 {question.answers.map((answer, index) =>
                                     <FormControlLabel
                                         control={
-                                            <Checkbox color={'primary'} checked={question.id} onChange={this.handleCheckQuiz(answer.text)} value={answer.correct} />
+                                            <Checkbox color={'primary'} checked={question.id} onChange={this.handleCheckQuiz(answer.id)} value={answer.correct} />
                                         }
                                         label={answer.text}
                                     />
