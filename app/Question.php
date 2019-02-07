@@ -4,23 +4,43 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Course;
+use App\Lesson;
+use App\Quiz;
 
 class Question extends Model
 {
-    protected $fillable = ['text','correct'];
+    protected $fillable = ['text','active','course_id', 'lesson_id', 'quiz_id'];
     protected $hidden = [];
     public static $searchable = [
     ];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id')->withTrashed();
+    }
+
+    public function lesson()
+    {
+        return $this->belongsTo(Lesson::class, 'lesson_id')->withTrashed();
+    }
+
+    public function quiz()
+    {
+        return $this->belongsTo(Quiz::class, 'quiz_id')->withTrashed();
+    }
 
     public function answers()
     {
         return $this->belongsToMany(Answer::class, 'question_answer')->withTrashed();
     }
 
-    public static function quizQuestions($quiz){
+    
 
-        $questions = DB::table('quiz_question')
-                    ->leftjoin('questions','quiz_question.question_id','=','questions.id')
+    public static function quizQuestions($course, $quiz){
+
+        $questions = DB::table('questions')
+                    ->where('course_id', $course)
                     ->where('quiz_id', $quiz)
                     ->get();
 
@@ -47,5 +67,15 @@ class Question extends Model
                     ->get();
         
         return $answers;
+    }
+
+    public static function lessonQuestion($course, $lesson){
+
+        $question = DB::table('questions')
+                    ->where('course_id', $course)
+                    ->where('lesson_id', $lesson)
+                    ->get();
+
+        return $question;
     }
 }

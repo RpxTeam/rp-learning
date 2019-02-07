@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Answer extends Model
 {
-    protected $fillable = ['text'];
+    protected $fillable = ['text','correct'];
     protected $hidden = [];
     public static $searchable = [
     ];

@@ -47,11 +47,15 @@ Route::post('users/{user}/courses/{course}/points', 'Api\DataPointController@cou
 Route::post('users/{user}/courses/{course}/lessons/{lesson}/points', 'Api\DataPointController@lesson');
 Route::post('users/{user}/courses/{course}/quiz/{quiz}/points', 'Api\DataPointController@quiz');
 
-//Quiz routes
-Route::resource('courses/{course}/quiz', 'Api\QuizController');
-
 //Level routes
 Route::post('levels', 'Api\LevelsController@makeLevels');
+
+//Quiz routes
+Route::resource('courses/{course}/quiz', 'Api\QuizController');
+Route::get('courses/{course}/final', 'Api\QuizController@final');
+Route::get('courses/{course}/questions', 'Api\QuizController@questions');
+Route::post('courses/{course}/final/activate', 'Api\QuizController@activeteFinal');
+Route::post('courses/{course}/final/deactivate', 'Api\QuizController@deactiveteFinal');
 
 //Questions routes
 Route::resource('courses/{course}/quiz/{quiz}/questions', 'Api\QuestionsController');
@@ -72,6 +76,14 @@ Route::resource('courses/{course}/lessons', 'Api\LessonController');
 Route::get('courses/{course}/lessons', 'Api\LessonController@index');
 Route::get('courses/{course}/lessons/{lesson}', 'Api\LessonController@show');
 Route::get('courses/{course}/lessons/{lesson}/media','Api\LessonController@media');
+
+//Lesson Question route
+Route::resource('courses/{course}/lessons/{lesson}/questions', 'Api\LessonQuestionsController');
+
+//Lesson Answers routes
+Route::post('courses/{course}/lessons/{lesson}/questions/{question}/answers/','Api\LessonAnswersController@store');
+Route::put('courses/{course}/lessons/{lesson}/questions/{question}/answers/{answer}','Api\LessonAnswersController@update');
+Route::delete('courses/{course}/lessons/{lesson}/questions/{question}/answers/{answer}','Api\LessonAnswersController@destroy');
 
 //Upload File routes
 Route::post('upload','Api\UploadController@upload');

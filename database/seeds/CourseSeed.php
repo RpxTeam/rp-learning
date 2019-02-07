@@ -24,7 +24,7 @@ class CourseSeed extends Seeder
              'instructor' =>  'Sergio Fukuhara',
              'start_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 days', 'now')->getTimestamp())->format('Y/m/d'),
              'end_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+90 days')->getTimestamp())->format('Y/m/d'),
-             'image' => 'exemple/course/course-1.jpeg',
+             'image' => 'exemple/course/course-1.jpg',
              'mime'=> 'image/jpeg',
              'created_at' => now(),
              'updated_at' => now(),

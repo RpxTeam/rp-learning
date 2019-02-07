@@ -57,7 +57,11 @@ class DataPointController extends Controller
                     ->leftjoin('points', 'data_points.point_id','=','points.id')
                     ->where('user_id',$user->id)
                     ->sum('point');
+
+        $count = DB::table('data_points')
+                    ->where('user_id', $user->id)
+                    ->count();
         
-        return response()->json(['total' => $total], 200);
+        return response()->json(['count' => $count,'total' => $total], 200);
     }
 }

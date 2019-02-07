@@ -16,8 +16,10 @@ class QuestionSeed extends Seeder
         for($i=0;$i<10;$i++){
             App\Question::create([
                 'text' => $faker->word,
-                'correct' => $faker->numberBetween(1,5),
-            ]);
+                'active' => $faker->numberBetween(0,1),
+                'course_id' => '1',
+                'quiz_id' => '1',
+                ]);
         }
     }
 }

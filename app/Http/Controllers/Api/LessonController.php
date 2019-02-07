@@ -64,6 +64,22 @@ class LessonController extends Controller
      */
     public function store(Request $request,$course)
     {
+        $validator = Validator::make($request->all(),[
+            'order' => 'nullable|numeric',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'type' => 'nullable|string',
+            'content' => 'nullable|file|size:20000|mimetypes:jpeg,png',
+            'mime' => 'nullable|string'
+        ],[
+            'title.required' => 'O campo título está vazio.',
+            'content.mimetypes' => 'Tipo de arquivo inválido.'
+        ]);
+
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
+        }
+
         try{
             if($request->slug == null){
                 $request->slug = str_slug($request->title);
@@ -97,6 +113,21 @@ class LessonController extends Controller
      */
     public function update(Request $request, $course, $lesson)
     {
+        $validator = Validator::make($request->all(),[
+            'order' => 'nullable|numeric',
+            'title' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'type' => 'nullable|string',
+            'content' => 'nullable|file|size:20000|mimetypes:jpeg,png',
+            'mime' => 'nullable|string'
+        ],[
+            'content.mimetypes' => 'Tipo de arquivo inválido.',
+        ]);
+
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
+        }
+
         try{
             $lesson = Lesson::findOrFail($lesson);
             if($request->hasFile('content') && $request->file('content')->isValid()) {

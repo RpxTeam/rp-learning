@@ -22,10 +22,13 @@ class QuizController extends Controller
         $course = Course::findOrFail($course);
         
         $quiz = Quiz::courseQuiz($course->id);
-        //colocar total de questoes(criar na model)
 
-        return response()->json($quiz, 200);
-        // return response()->json(array('course'=>$mycourse,'lessons'=>$lessons),200);
+        if($quiz != null){
+            return response()->json($quiz, 200);
+        }else{
+            return response()->json(400);
+        }
+
     }
 
     /**
@@ -40,10 +43,15 @@ class QuizController extends Controller
         $quiz = Quiz::findOrFail($quiz);
 
         $quiz = Quiz::courseQuiz($course->id)
+                ->where('course_id', $course->id)
                 ->where('quiz_id', $quiz->id)
                 ->first();
 
-        return response()->json($quiz, 200);
+        if($quiz != null){
+            return response()->json($quiz, 200);
+        }else{
+            return response()->json(400);
+        }
     }
 
     /**
@@ -63,7 +71,7 @@ class QuizController extends Controller
             'quiz_id' => $quiz->id
         ]);
 
-        return response()->json(201);
+        return response()->json($quiz->id,200);
     }
     
     /**
@@ -127,6 +135,60 @@ class QuizController extends Controller
             
         return response()->json(204);
         //204: No content. When an action was executed successfully, but there is no content to return.
+    }
+
+    public function final($course){
+        $course = Course::findOrFail($course);
+
+        $questions = DB::table('questions')
+                    ->where('active', 1)
+                    ->where('course_id',$course->id)
+                    ->get();
+
+        if($questions != null){
+            $data = collect();
+
+        foreach($questions as $question){
+            $data->push(Question::questionAnswers($question->id));
+        }
+
+            return response()->json($data, 200);
+        }else{
+            return response()->json(400);
         }
     }
-    
+
+    public function questions($course){
+        $course = Course::findOrFail($course);
+
+        $questions = DB::table('questions')
+                    ->where('course_id',$course->id)
+                    ->get();
+
+        if($questions != null){
+            return response()->json($questions, 200);
+        }else{
+            return response()->json(400);
+        }
+    }
+
+    public function activeteFinal($course){
+        $course = Course::findOrFail($course);
+
+        $questions = DB::table('questions')
+                    ->where('course_id',$course->id)
+                    ->update(['active' => 1]);
+
+        return response()->json(204);
+    }
+
+    public function deactivateFinal($course){
+        $course = Course::findOrFail($course);
+
+        $questions = DB::table('questions')
+                    ->where('course_id',$course->id)
+                    ->update(['active' => 0]);
+
+        return response()->json(204);
+    }
+}

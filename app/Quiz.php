@@ -39,8 +39,5 @@ class Quiz extends Model
                         ->leftjoin('questions','quiz_question.question_id','=','questions.id')
                         ->where('quiz_id',$quiz->id)
                         ->get();
-        
-        
-
     }
 }

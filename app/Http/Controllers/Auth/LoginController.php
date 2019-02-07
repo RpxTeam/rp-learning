@@ -32,7 +32,7 @@ class LoginController extends Controller
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json([
                     "error" => "invalid_credentials",
-                    "message" => "The user credentials were incorrect. "
+                    "message" => "E-mail e senha inválidos."
                 ], 401);
             }
         } catch (JWTException $e) {
