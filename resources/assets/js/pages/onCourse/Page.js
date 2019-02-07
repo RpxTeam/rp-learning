@@ -43,6 +43,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import Checkbox from '@material-ui/core/Checkbox';
+
 import styled from 'styled-components';
 
 const Btn = styled(Button)`
@@ -77,11 +82,27 @@ class Page extends React.Component {
             activeLesson: 0,
             hasQuestion: false,
             question: {
-                text: '',
+                text: 'Por que responder esse quiz?',
                 answers: [
-
+                    {
+                        id: 1,
+                        text: 'Porque ele é legal',
+                        correct: false,
+                    },
+                    {
+                        id: 2,
+                        text: 'Não é legal',
+                        correct: true,
+                    },
+                    {
+                        id: 3,
+                        text: 'É sensacional',
+                        correct: false,
+                    }
                 ]
-            }
+            },
+            quiz: false,
+            chooses: []
         }
     }
 
@@ -304,15 +325,32 @@ class Page extends React.Component {
         });
     };
 
+    handleCheckQuiz = name => event => {
+        let newChooses = this.state.chooses.filter(choose => {
+            if (choose.text === name) {
+                return this.state.chooses
+            }
+        });
+        this.setState(prevState => ({
+            chooses: [
+                ...prevState.chooses,
+                {
+                    text: name,
+                },
+            ]
+        }));
+        console.log(newChooses);
+    };
+
     openQuiz = () => {
         this.setState({
-            hasQuestion: true
+            quiz: true
         })
     }
 
     closeQuiz = () => {
         this.setState({
-            hasQuestion: false,
+            quiz: false,
             question: {
                 text: '',
                 answers: [
@@ -334,7 +372,7 @@ class Page extends React.Component {
     }
 
     render() {
-        const { course, modal, courseID, lessons, lesson, endLessons, progress, activeLesson } = this.state;
+        const { course, modal, courseID, lessons, lesson, endLessons, progress, activeLesson, question } = this.state;
         if (this.state.onCourse === true) {
             return <Redirect to={'/courses/' + courseID + '/details'} />
         } else if (this.state.notFound) {
@@ -349,55 +387,6 @@ class Page extends React.Component {
                         title={course.title}
                         image={course.image}
                     />
-                    {/* <Grid>
-                        <Modules>
-                            {
-                                lessons ?
-                                    lessons.map((lesson) =>
-                                        <Module key={lesson.id} title={'Lição ' + lesson.id} disabled={lesson.view === null} onClick={this.getLesson.bind(this, lesson.id)} />
-                                    ) : null
-                            }
-                        </Modules>
-                        {lesson ?
-                            <React.Fragment>
-                                <InfoLesson title={lesson.title} theme="" />
-                                <div className="content-lesson">
-                                    <div className="gridD">
-                                        <div className="content">
-                                            {lesson.type === 'text' ?
-                                                <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
-                                                : null}
-                                            {lesson.type === 'video-internal' ?
-                                                <Player
-                                                    playsInline
-                                                    poster="/assets/poster.png"
-                                                    src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
-                                                />
-                                                : null}
-                                            {lesson.type === 'video-external' ?
-                                                <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
-                                                : null}
-                                            {lesson.type === 'ppt' ?
-                                                lesson.content
-                                                : null}
-                                            {lesson.type === 'doc' || lesson.type === 'pdf' ?
-                                                <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
-                                                : null}
-                                            {lesson.type === 'audio' ?
-                                                <audio controls controlsList="nodownload">
-                                                    <source
-                                                        src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
-                                                        type={lesson.mime}
-                                                    />
-                                                    Your browser does not support the audio element.
-                                                </audio>
-                                                : null}
-                                        </div>
-                                    </div>
-                                </div>
-                            </React.Fragment>
-                            : null}
-                    </Grid> */}
                     <Container>
                         {lessons ?
                             <Stepper
@@ -471,7 +460,8 @@ class Page extends React.Component {
                                                                 <Button
                                                                     variant="contained"
                                                                     color="primary"
-                                                                    onClick={this.endLesson.bind(this, lesson.id)}
+                                                                    // onClick={this.endLesson.bind(this, lesson.id)}
+                                                                    onClick={this.openQuiz}
                                                                 >
                                                                     Finalizar Lição
                                                                 </Button>
@@ -485,100 +475,8 @@ class Page extends React.Component {
                                 ))}
                             </Stepper>
                             : null}
-                        {/* <Grid>
-                            <Grid.Row>
-                                <Grid.Column width={16}>
-                                    <Progress percent={progress} progress autoSuccess />
-                                </Grid.Column>
-                                <Grid.Column width={4}>
-                                    <Step.Group vertical size='mini'>
-                                        {
-                                            lessons ?
-                                                lessons.map((lesson) =>
-                                                    <Step completed={lesson.view != null} link onClick={this.getLesson.bind(this, lesson.id)} key={lesson.id}>
-                                                        <Icon name={this.formatIcons(lesson.type)} />
-                                                        <Step.Content>
-                                                            <Step.Title>{lesson.title}</Step.Title>
-                                                        </Step.Content>
-                                                    </Step>
-                                                ) : null
-                                        }
-                                    </Step.Group>
-                                </Grid.Column>
-                                {lesson ?
-                                    <Grid.Column width={11}>
-                                        <Segment>
-                                            <Header as='h2'>{lesson.title}</Header>
-                                            <Divider />
-                                            <div>
-                                                {lesson.type === 'text' ?
-                                                    <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
-                                                    : null}
-                                                {lesson.type === 'video-internal' ?
-                                                    <Player
-                                                        playsInline
-                                                        poster="/assets/poster.png"
-                                                        src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
-                                                    />
-                                                    : null}
-                                                {lesson.type === 'video-external' ?
-                                                    <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
-                                                    : null}
-                                                {lesson.type === 'ppt' ?
-                                                    lesson.content
-                                                    : null}
-                                                {lesson.type === 'doc' || lesson.type === 'pdf' ?
-                                                    <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
-                                                    : null}
-                                                {lesson.type === 'audio' ?
-                                                    <audio controls controlsList="nodownload">
-                                                        <source
-                                                            src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
-                                                            type={lesson.mime}
-                                                        />
-                                                        Your browser does not support the audio element.
-                                                    </audio>
-                                                    : null}
-                                            </div>
-                                        </Segment> */}
-                        {/* {!lesson.view ?
-                                        <Button positive floated='right' onClick={this.endLesson.bind(this, lesson.id)}>Finalizar
-                                            lição</Button>
-                                        :
-                                        this.state.last != lesson.id ?
-                                            <Button positive basic floated='right' onClick={this.nextLesson.bind(this, lesson.id)}>Próxima lição</Button>
-                                        : null
-                                    } */}
-                        {/* <Button
-                                            className="btn-start"
-                                            type='success'
-                                            title={!lesson.view ? 'Finalizar lição' : 'Próxima Lição'}
-                                            onClick={!lesson.view ? this.endLesson.bind(this, lesson.id) : this.nextLesson.bind(this, lesson.id)}
-                                        /> */}
-                        {/* </Grid.Column>
-                                    : null}
-                            </Grid.Row>
-                        </Grid> */}
                     </Container>
                 </main>
-                {/* <Modal size={'tiny'} dimmer={'blurring'} open={modal.open} onClose={this.close}>
-                    <Modal.Content style={{ textAlign: 'center' }}>
-                        <Image wrapped size='medium' src='/images/conclusion.jpg' style={{ display: 'block', margin: '0 auto' }} />
-                        <Modal.Description style={{ paddingTop: '20px' }}>
-                            <Header>Parabéns {this.props.user.name} você concluiu o curso</Header>
-                            <p>Você concluiu o curso de {course.title}</p>
-                        </Modal.Description>
-                    </Modal.Content>
-                    <Modal.Actions style={{ textAlign: 'center' }}>
-                        <Button color='black' onClick={this.closeModal} content="Voltar" />
-                        <Button
-                            positive
-                            content="Ir para a Lista de Cursos"
-                            as={Link}
-                            to={'/courses'}
-                        />
-                    </Modal.Actions>
-                </Modal> */}
                 <Dialog
                     open={modal.open}
                     TransitionComponent={Transition}
@@ -601,6 +499,38 @@ class Page extends React.Component {
                     <DialogActions>
                         <Button onClick={this.closeModal} color="primary">
                             OK
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog
+                    open={this.state.quiz}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={this.closeQuiz}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle id="alert-dialog-slide-title">
+                        {question.text}
+                    </DialogTitle>
+                    <DialogContent>
+                        <FormControl component="fieldset">
+                            <FormGroup>
+                                {question.answers.map((answer, index) =>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox color={'primary'} checked={question.id} onChange={this.handleCheckQuiz(answer.text)} value={answer.correct} />
+                                        }
+                                        label={answer.text}
+                                    />
+                                )}
+                            </FormGroup>
+                            {console.log(this.state.chooses)}
+                        </FormControl>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.closeQuiz} color="primary" autoFocus>
+                            Enviar
                         </Button>
                     </DialogActions>
                 </Dialog>

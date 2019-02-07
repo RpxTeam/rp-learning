@@ -30,6 +30,17 @@ class Lesson extends Model
             if($lesson->content != null && $lesson->mime != null && $lesson->type != 'text'){
                 $lesson->content = Storage::url($lesson->content);
             }
+            // var_dump($lesson);
+            $question = DB::table('questions')
+                        ->where('course_id',$course->id)
+                        ->where('lesson_id',$lesson->id)
+                        ->first();
+
+            if(empty($question)){
+                $lesson->question = 'false'; 
+            }else{
+                $lesson->question = 'true'; 
+            }
         }
 
         return $lessons;
