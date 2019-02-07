@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Course;
 use App\Lesson;
+use App\Answer;
 use App\Question;
 use Validator;
 
