@@ -55,15 +55,15 @@ class LessonQuestionsController extends Controller
     public function store(Request $request, $course, $lesson)
     {
         $validator = Validator::make($request->all(),[
-        'text' => 'required|string',
+        'text' => 'nullable|string',
         'active' => 'nullable|numeric',
         'course_id' => 'nullable|numeric',
         'lesson_id' => 'nullable|numeric',
         'quiz_id' => 'nullable|numeric',
-        'content' => 'nullable|json',
+        // 'content' => 'nullable|json',
     ],[
-        'text.required' => 'O campo texto está vazio.',
-        'content' => 'O formulário é inválido.'
+        // 'text.required' => 'O campo texto está vazio.',
+        // 'content' => 'O formulário é inválido.'
     ]);
 
     if($validator->fails()){
@@ -85,7 +85,7 @@ class LessonQuestionsController extends Controller
     
     $question = Question::create($data['question']);
 
-    foreach($data['answers'] as $answer){
+    foreach($data['question']['answers'] as $answer){
         $a = Answer::create($answer);
         DB::table('question_answer')->insert([
             'question_id' => $question->id,

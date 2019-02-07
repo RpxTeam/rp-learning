@@ -65,6 +65,7 @@ import { DatePicker } from 'material-ui-pickers';
 import { DateTimePicker } from 'material-ui-pickers';
 import { InlineDatePicker } from 'material-ui-pickers';
 import brLocale from 'date-fns/locale/pt-BR';
+import { ListItemAvatar } from '@material-ui/core';
 
 const CardContainer = styled(Card)`
     padding: 10px 20px;
@@ -116,30 +117,15 @@ class Page extends React.Component {
                 open: null
             },
             open: false,
-            quiz: {
-                active: false,
-                question: {
-                    correct: 1,
-                    text: '',
-                    answers: [
-                        {
-                            id: 1,
-                            text: 'Reposta 1',
-                            correct: false
-                        },
-                        {
-                            id: 2,
-                            text: 'Resposta 2',
-                            correct: true
-                        },
-                        {
-                            id: 3,
-                            text: 'Reposta 3',
-                            correct: false
-                        }
-                    ]
-                }
+            question: {
+                course_id: null,
+                quiz_id: null,
+                text: '',
+                active: true,
+                answers: [
+                ]
             },
+            hasQuiz: false,
             answerField: '',
             questionField: ''
         };
@@ -173,6 +159,19 @@ class Page extends React.Component {
                         end_date: end_date
                     },
                 });
+            });
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}/quiz`)
+            .then(res => {
+                if(res.data === 400) {
+                    axios.post(`${API_URL}/api/courses/${this.state.courseID}/quiz`, {
+                        title: 'quiz_' + this.state.courseID
+                    }).then( console.log('Quiz Criado') );
+                } else {
+                    this.setState({
+                        hasQuiz: true,
+                        quiz_id: res.data
+                    });
+                }
             });
 
         this.loadingLessons();
@@ -252,44 +251,70 @@ class Page extends React.Component {
 
     handleSubmitLesson = (type) => {
         if (this.state.lesson.title !== '') {
-            if (type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
-                this.fileUpload();
-                this.closeModal();
-                this.setState({
-                    lesson: {
-                        ...this.state.lesson,
-                        file: {
-                            file: null,
-                            name: ''
-                        },
-                        type: '',
-                        title: '',
-                        content: ''
-                    }
-                });
+            if (this.state.quiz && this.state.questionField === '') {
+                this.openMessage('Insira a pergunta');
             } else {
-                axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, {
-                    type: this.state.modal.type,
-                    title: this.state.lesson.title,
-                    content: this.state.lesson.content,
-                }).then(res => {
-                    this.openMessage('Lição criada com sucesso');
-                    this.setState({
-                        lesson: {
-                            ...this.state.lesson,
-                            type: '',
-                            title: '',
-                            content: ''
-                        }
+                if (this.state.question.answers.length > 0) {
+                    console.log('Tem Respostas')
+                    const question = this.state.question;
+                    axios.post(`${API_URL}/api/courses/${this.state.courseID}/quiz/${this.state.quiz_id}/questions`, {question})
+                    .then(res => {
+                        console.log(res);
                     });
-                    this.closeModal();
-                    this.loadingLessons();
-                }).catch(error => {
-                    this.openMessage(error.message)
-                });
+                } else {
+                    console.log('Não tem respostas para essa pergunta');
+                }
+                if(this.state.question.answers) {
+                    if (type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
+                        this.fileUpload();
+                        this.closeModal();
+                        this.setState({
+                            lesson: {
+                                ...this.state.lesson,
+                                file: {
+                                    file: null,
+                                    name: ''
+                                },
+                                type: '',
+                                title: '',
+                                content: ''
+                            }
+                        });
+                    } else {
+                        axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, {
+                            type: this.state.modal.type,
+                            title: this.state.lesson.title,
+                            content: this.state.lesson.content,
+                        }).then(res => {
+                            this.openMessage('Lição criada com sucesso');
+                            this.setState({
+                                lesson: {
+                                    ...this.state.lesson,
+                                    type: '',
+                                    title: '',
+                                    content: ''
+                                },
+                                question: {
+                                    course_id: null,
+                                    quiz_id: null,
+                                    text: '',
+                                    active: true,
+                                    answers: [
+                                    ]
+                                },
+                            });
+                            this.closeModal();
+                            this.loadingLessons();
+                        }).catch(error => {
+                            this.openMessage(error.message)
+                        });
+                    }
+                } else {
+                    this.openMessage('Não tem respostas para essa pergunta');
+                }
             }
         } else {
-            this.messageModal('Por favor preencha o título');
+            this.openMessage('Por favor preencha o título');
         }
     };
 
@@ -332,7 +357,7 @@ class Page extends React.Component {
                 });
             }
         } else {
-            this.messageModal('Por favor preencha o título');
+            this.openMessage('Por favor preencha o título');
         }
     };
 
@@ -460,9 +485,9 @@ class Page extends React.Component {
                         name: file.name
                     }
                 });
-                this.messageModal('');
+                this.openMessage('');
             } else {
-                this.messageModal('Tipo de arquivo inválido.');
+                this.openMessage('Tipo de arquivo inválido.');
             }
         } else if (typeLesson === 'audio') {
             if (
@@ -484,9 +509,9 @@ class Page extends React.Component {
                         name: file.name
                     }
                 });
-                this.messageModal('');
+                this.openMessage('');
             } else {
-                this.messageModal('Tipo de arquivo inválido.');
+                this.openMessage('Tipo de arquivo inválido.');
             }
         } else if (typeLesson === 'pdf' || typeLesson === 'doc') {
             if (
@@ -498,9 +523,9 @@ class Page extends React.Component {
                         name: file.name
                     }
                 });
-                this.messageModal('');
+                this.openMessage('');
             } else {
-                this.messageModal('Tipo de arquivo inválido.');
+                this.openMessage('Tipo de arquivo inválido.');
             }
         }
     };
@@ -521,7 +546,18 @@ class Page extends React.Component {
         };
 
         axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, formData, config).then((res) => {
+            this.openMessage('Lição inserida com sucesso');
             this.loadingLessons();
+            this.setState({
+                question: {
+                    course_id: null,
+                    quiz_id: null,
+                    text: '',
+                    active: true,
+                    answers: [
+                    ]
+                },
+            })
         });
     };
 
@@ -579,36 +615,39 @@ class Page extends React.Component {
 
     handleCheck = (event) => {
         this.setState({
-            quiz: {
-                ...this.state.quiz,
-                active: event.target.checked
-            }
+            quiz: event.target.checked
         })
     }
 
     addAnswer = () => {
-        const question = this.state.quiz.question;
+        const question = this.state.question;
         let answers = question.answers;
         let answerField = this.state.answerField;
-        let last = answers.length - 1;
-        let lastAnswer = answers[last];
+        let last;
+        let id;
+        if (answers.length === 0) {
+            last = 0;
+            id = 1;
+        } else {
+            last = answers.length - 1;
+            let lastAnswer = answers[last];
+            id = lastAnswer.id + 1
+        }
         let answer = {
-            id: lastAnswer.id + 1,
+            id: id,
             text: answerField,
             correct: false
         }
         if (this.state.questionField || question.text) {
             if (answerField) {
                 this.setState({
-                    quiz: {
-                        ...this.state.quiz,
-                        question: {
-                            ...this.state.quiz.question,
-                            answers: [
-                                ...this.state.quiz.question.answers,
-                                answer
-                            ]
-                        }
+                    question: {
+                        ...this.state.question,
+                        text: this.state.questionField,
+                        answers: [
+                            ...this.state.question.answers,
+                            answer
+                        ]
                     },
                     answerField: ''
                 });
@@ -622,25 +661,22 @@ class Page extends React.Component {
     }
 
     removeAnswer = (id) => {
-        const question = this.state.quiz.question;
+        const question = this.state.question;
         var newAnswers = question.answers.filter((elem, i, array) => {
             if (elem.id != id) {
                 return newAnswers != question.answers
             }
         });
         this.setState({
-            quiz: {
-                ...this.state.quiz,
-                question: {
-                    ...this.state.quiz.question,
-                    answers: newAnswers
-                }
+            question: {
+                ...this.state.question,
+                answers: newAnswers
             }
         })
     }
 
     correctAnswser = (id) => {
-        const question = this.state.quiz.question;
+        const question = this.state.question;
         var newAnswers = question.answers.filter((elem, i, array) => {
             if (elem.id === id) {
                 if (elem.correct) {
@@ -652,12 +688,9 @@ class Page extends React.Component {
             return question.answers
         });
         this.setState({
-            quiz: {
-                ...this.state.quiz,
-                question: {
-                    ...this.state.quiz.question,
-                    answers: newAnswers
-                }
+            question: {
+                ...this.state.question,
+                answers: newAnswers
             }
         })
     }
@@ -670,7 +703,7 @@ class Page extends React.Component {
                 text: message
             }
         })
-    } 
+    }
 
     closeMessage = () => {
         this.setState({
@@ -683,7 +716,7 @@ class Page extends React.Component {
     }
 
     render() {
-        const { course, lessons, message, menu, edit, modal, quiz, answerField, questionField } = this.state;
+        const { course, lessons, message, menu, edit, modal, quiz, question, answerField, questionField } = this.state;
         return (
             <Admin heading={"Cursos"}>
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
@@ -780,7 +813,6 @@ class Page extends React.Component {
                                             </ListItemText>
                                         </MenuItem> */}
                                         <Divider />
-                                        {console.log(course)}
                                         <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
                                             <ListItemIcon>
                                                 <QuestionAnswer />
@@ -1020,21 +1052,21 @@ class Page extends React.Component {
                                     </Grid>
                                 </Grid>
                             </React.Fragment>
-                        : null}
+                            : null}
                         <FormGroup row>
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={quiz.active}
+                                        checked={quiz}
                                         onChange={this.handleCheck}
-                                        value={quiz.active}
+                                        value={quiz}
                                         color="primary"
                                     />
                                 }
                                 label="Quiz"
                             />
                         </FormGroup>
-                        {quiz.active ?
+                        {quiz ?
                             <React.Fragment>
                                 <TextField
                                     label="Pergunta"
@@ -1079,17 +1111,17 @@ class Page extends React.Component {
                                     </Grid>
                                 </Grid>
                                 <Divider />
-                                {quiz.question.answers ?
-                                    quiz.question.answers.map((answer) =>
+                                {question.answers ?
+                                    question.answers.map((answer) =>
                                         <List dense={true}>
                                             <ListItem key={answer.id}>
+                                                <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
+                                                    <CheckCircle color={answer.correct ? 'primary' : 'secondary'} />
+                                                </IconButton>
                                                 <ListItemText
                                                     primary={answer.text}
                                                 />
                                                 <ListItemSecondaryAction>
-                                                    <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
-                                                        <CheckCircle color={answer.correct ? 'primary' : 'default'} />
-                                                    </IconButton>
                                                     <IconButton aria-label="Edit">
                                                         <EditIcon />
                                                     </IconButton>

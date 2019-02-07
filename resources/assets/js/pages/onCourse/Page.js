@@ -74,7 +74,14 @@ class Page extends React.Component {
             modal: {
                 open: false
             },
-            activeLesson: 0
+            activeLesson: 0,
+            hasQuestion: false,
+            question: {
+                text: '',
+                answers: [
+
+                ]
+            }
         }
     }
 
@@ -208,6 +215,8 @@ class Page extends React.Component {
                 this.getLesson(id);
 
                 this.updateLevel(this.state.user.id, this.state.courseID, id);
+
+                this.handleNextStep();
             });
 
     };
@@ -294,6 +303,35 @@ class Page extends React.Component {
             }
         });
     };
+
+    openQuiz = () => {
+        this.setState({
+            hasQuestion: true
+        })
+    }
+
+    closeQuiz = () => {
+        this.setState({
+            hasQuestion: false,
+            question: {
+                text: '',
+                answers: [
+                    {
+                        text: 'Resposta 1',
+                        correct: false,
+                    },
+                    {
+                        text: 'Resposta 2',
+                        correct: true,
+                    },
+                    {
+                        text: 'Resposta 3',
+                        correct: false,
+                    }
+                ]
+            }
+        });
+    }
 
     render() {
         const { course, modal, courseID, lessons, lesson, endLessons, progress, activeLesson } = this.state;

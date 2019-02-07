@@ -70,11 +70,11 @@ class LessonController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'type' => 'nullable|string',
-            'content' => 'nullable|file|size:20000|mimetypes:jpeg,png',
+            // 'content' => 'nullable|file|size:20000|mimetypes:jpeg,png',
             'mime' => 'nullable|string'
         ],[
             'title.required' => 'O campo título está vazio.',
-            'content.mimetypes' => 'Tipo de arquivo inválido.'
+            // 'content.mimetypes' => 'Tipo de arquivo inválido.'
         ]);
 
         if($validator->fails()){
@@ -119,10 +119,10 @@ class LessonController extends Controller
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'type' => 'nullable|string',
-            'content' => 'nullable|file|size:20000|mimetypes:jpeg,png',
+            // 'content' => 'nullable|file|size:20000|mimetypes:jpeg,png',
             'mime' => 'nullable|string'
         ],[
-            'content.mimetypes' => 'Tipo de arquivo inválido.',
+            // 'content.mimetypes' => 'Tipo de arquivo inválido.',
         ]);
 
         if($validator->fails()){

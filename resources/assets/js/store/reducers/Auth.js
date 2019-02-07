@@ -57,9 +57,9 @@ const checkAuth = (state) => {
     if (state.isAuthenticated) {
         Http.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwt_token')}`;
     }
-    window.onbeforeunload = function () {
-        localStorage.clear();
-    }
+    // window.onbeforeunload = function () {
+    //     localStorage.clear();
+    // }
     return state;
 };
 

@@ -21,14 +21,15 @@ class QuizController extends Controller
     {
         $course = Course::findOrFail($course);
         
-        $quiz = Quiz::courseQuiz($course->id);
-
-        if($quiz != null){
-            return response()->json($quiz, 200);
-        }else{
+        $quiz = DB::table('course_quiz')
+                    ->where('course_id', $course->id)
+                    ->first();
+        
+        if(empty($quiz)){
             return response()->json(400);
+        }else{
+            return response()->json($quiz->quiz_id, 200);
         }
-
     }
 
     /**
