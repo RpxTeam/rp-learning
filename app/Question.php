@@ -74,7 +74,7 @@ class Question extends Model
         $question = DB::table('questions')
                     ->where('course_id', $course)
                     ->where('lesson_id', $lesson)
-                    ->get();
+                    ->first();
 
         return $question;
     }
