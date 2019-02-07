@@ -10,15 +10,15 @@ const user = {
 };
 
 const initialState = {
-    isAuthenticated : false,
+    isAuthenticated: false,
     isAdmin: false,
     user: ''
 };
 
-const Auth = (state= initialState,{type,payload = null}) => {
-    switch(type){
+const Auth = (state = initialState, { type, payload = null }) => {
+    switch (type) {
         case ActionTypes.AUTH_LOGIN:
-            return authLogin(state,payload);
+            return authLogin(state, payload);
         case ActionTypes.AUTH_CHECK:
             return checkAuth(state);
         case ActionTypes.AUTH_LOGOUT:
@@ -28,15 +28,15 @@ const Auth = (state= initialState,{type,payload = null}) => {
     }
 };
 
-const authLogin = (state,payload) => {
+const authLogin = (state, payload) => {
     const jwtToken = payload.token;
     const user = payload.user[0];
-    if(!!payload.user[0].admin){
-        localStorage.setItem('is_admin',true);
+    if (payload.user[0].role_id === 1) {
+        localStorage.setItem('is_admin', true);
     } else {
-        localStorage.setItem('is_admin',false);
+        localStorage.setItem('is_admin', false);
     }
-    localStorage.setItem('jwt_token',jwtToken);
+    localStorage.setItem('jwt_token', jwtToken);
     localStorage.setItem('user', JSON.stringify(user));
     Http.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
     state = Object.assign({}, state, {
@@ -48,25 +48,28 @@ const authLogin = (state,payload) => {
 
 };
 
-const checkAuth = (state) =>{
-    state = Object.assign({},state,{
-        isAuthenticated : !!localStorage.getItem('jwt_token'),
-        isAdmin : localStorage.getItem('is_admin'),
+const checkAuth = (state) => {
+    state = Object.assign({}, state, {
+        isAuthenticated: !!localStorage.getItem('jwt_token'),
+        isAdmin: localStorage.getItem('is_admin'),
         user: JSON.parse(localStorage.getItem('user')),
     });
-    if(state.isAuthenticated){
+    if (state.isAuthenticated) {
         Http.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwt_token')}`;
+    }
+    window.onbeforeunload = function () {
+        localStorage.clear();
     }
     return state;
 };
 
 const logout = (state) => {
     localStorage.removeItem('jwt_token');
-    localStorage.setItem('is_admin',false);
+    localStorage.setItem('is_admin', false);
     localStorage.removeItem('user');
-    state = Object.assign({},state,{
+    state = Object.assign({}, state, {
         isAuthenticated: false,
-        isAdmin : false,
+        isAdmin: false,
         user: ''
     });
     return state;

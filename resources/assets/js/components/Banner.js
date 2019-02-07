@@ -14,9 +14,9 @@ export class Banner extends Component {
                     this.props.internal ?
                         <Image className="banner-course">
                             <div className="gridD">
-                                <div className="back-button">
+                                {/* <div className="back-button">
                                     <Link to={'/courses'}><i className="icon-arrow-left"></i></Link>
-                                </div>
+                                </div> */}
                                 <h1>{this.props.title}</h1>
                                 {/* <div className="rating">
                                 <div className="stars">

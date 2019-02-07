@@ -162,6 +162,7 @@ class Page extends React.Component {
         ];
         return (
             <div id="course-page">
+                <Navigation />
                 <main className="fadeIn animated">
                     <Banner
                         internal
