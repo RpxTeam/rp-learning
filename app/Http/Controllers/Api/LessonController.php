@@ -114,7 +114,7 @@ class LessonController extends Controller
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
         }
-        return response()->json(201);
+        return response()->json($lesson->id, 200);
         //201: Object created. Useful for the store actions.
     }
 

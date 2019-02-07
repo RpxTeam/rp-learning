@@ -54,11 +54,11 @@ class Page extends React.Component {
         axios.get(`${API_URL}/api/courses/${this.state.course}/quiz`)
             .then(res => {
                 if (res.data) {
-                    axios.get(`${API_URL}/api/courses/${this.state.course}/quiz/`)
+                    axios.get(`${API_URL}/api/courses/${this.state.course}/quiz/${res.data}/questions`)
                         .then(res => {
-                            const questions = res.data;
+                            const result = res.data;
                             this.setState({
-                                questions: questions
+                                result: result,
                             });
                         }).catch(error => {
                             console.log(error)
@@ -163,7 +163,7 @@ class Page extends React.Component {
     };
 
     render() {
-        const { message, questions } = this.state;
+        const { message, questions, results } = this.state;
         // if (this.state.quizEdit === true) {
         //     return <Redirect to={'/admin/courses/' + this.state.courseID} />
         // }
@@ -174,8 +174,8 @@ class Page extends React.Component {
                     <Grid container spacing={16} justify="flex-end">
                         <Grid item xs={12}>
                             <List>
-                                {questions ?
-                                    questions.map((question, index) =>
+                                {results ?
+                                    results.map((question, index) =>
                                         <React.Fragment key={question.id}>
                                             <Divider />
                                             <ListItem>
@@ -185,29 +185,13 @@ class Page extends React.Component {
                                                     value={question.correct}
                                                     checked={question.correct}
                                                 />
-                                                <ListItemText primary={question.title} secondary="Jan 9, 2014" />
+                                                <ListItemText primary={question.text} secondary={question.created_at} />
                                             </ListItem>
                                         </React.Fragment>
                                     )
                                     : null}
                             </List>
                         </Grid>
-                        {/* <Grid item xs={12} md={12}>
-                            <CardContainer>
-                                <TextField
-                                    id="input-title"
-                                    label="Título"
-                                    onChange={this.handleChange}
-                                    margin="normal"
-                                    variant="outlined"
-                                    name="title"
-                                    fullWidth
-                                />
-                            </CardContainer>
-                        </Grid> */}
-                        {/* <Grid item md={2}>
-                            <Button variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit} style={{ width: '100%' }}>Criar Quiz</Button>
-                        </Grid> */}
                     </Grid>
                 </form>
             </Admin>

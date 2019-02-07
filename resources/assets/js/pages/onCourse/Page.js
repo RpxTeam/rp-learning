@@ -82,25 +82,9 @@ class Page extends React.Component {
             activeLesson: 0,
             hasQuestion: false,
             question: {
-                text: 'Por que responder esse quiz?',
-                answers: [
-                    {
-                        id: 1,
-                        text: 'Porque ele é legal',
-                        correct: false,
-                    },
-                    {
-                        id: 2,
-                        text: 'Não é legal',
-                        correct: true,
-                    },
-                    {
-                        id: 3,
-                        text: 'É sensacional',
-                        correct: false,
-                    }
-                ]
+                text: '',
             },
+            answers: [],
             quiz: false,
             chooses: []
         }
@@ -123,6 +107,7 @@ class Page extends React.Component {
         axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
             .then(res => {
                 const lessons = res.data.lessons;
+                console.log(lessons);
                 let endLessons = lessons.filter(lesson => {
                     if (lesson.view === false || lesson.view === null) {
                         return lessons
@@ -326,54 +311,112 @@ class Page extends React.Component {
     };
 
     handleCheckQuiz = id => event => {
-        const answers = this.state.question.answers;
-        let newChooses = answers.filter(answer => {
-            if(answer.id) {
-                return answers
+        const chooses = this.state.chooses;
+        let newChooses = chooses.filter(choose => {
+            if (choose.id === id) {
+                choose.correct = event.target.checked
             }
+            return chooses
         });
-        console.log(newChooses)
-        // this.setState(prevState => ({
-        //     chooses: [
-        //         ...prevState.chooses,
-        //         {
-        //             text: name,
-        //         },
-        //     ]
-        // }));
+        this.setState({
+            chooses: newChooses
+        });
     };
 
-    openQuiz = () => {
+    openQuiz = (id) => {
         this.setState({
-            quiz: true
+            currentLesson: id
         })
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}/questions`)
+            .then(res => {
+                const result = res.data;
+                console.log(result);
+                this.setState({
+                    question: {
+                        id: result.question.id,
+                        'text': result.question.text,
+                    },
+                    quiz: true
+                })
+                result.answers.map((answer) => {
+                    this.setState(prevState => ({
+                        chooses: [
+                            ...prevState.chooses,
+                            {
+                                id: answer.id,
+                                text: answer.text,
+                                correct: false
+                            }
+                        ],
+                        answers: [
+                            ...prevState.answers,
+                            {
+                                id: answer.id,
+                                text: answer.text,
+                                correct: answer.correct === 0 ? false : true
+                            }
+                        ]
+                    }))
+                })
+            });
     }
 
     closeQuiz = () => {
         this.setState({
             quiz: false,
             question: {
-                text: 'Por que responder esse quiz?',
-                answers: [
-                    {
-                        text: 'Resposta 1',
-                        correct: false,
-                    },
-                    {
-                        text: 'Resposta 2',
-                        correct: true,
-                    },
-                    {
-                        text: 'Resposta 3',
-                        correct: false,
-                    }
-                ]
-            }
+                text: '',
+            },
+            answers: [],
+            chooses: []
         });
     }
 
+    endQuiz = (id) => {
+        const correctAnswers = this.state.answers;
+        let chooses = this.state.chooses;
+        console.log(correctAnswers);
+        console.log(chooses);
+        if (JSON.stringify(chooses) === JSON.stringify(correctAnswers)) {
+            axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
+                .then(res => {
+                    const course = res.data;
+                    let percentLesson = 100 / this.state.lessonsCount;
+                    let progress = parseFloat(course.progress) + parseFloat(percentLesson);
+                    progress = progress.toFixed(0);
+                    if (progress >= 98) {
+                        progress = 100;
+                        this.updateLevel(this.state.user.id, this.state.courseID);
+                    }
+                    this.setState({ course: course });
+                    this.updateProgress(progress);
+                });
+
+            const day = new Date();
+            const month = day.getMonth() + 1;
+            const finish = day.getFullYear() + '-' + month + '-' + day.getDate();
+
+            axios.put(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${id}`, {
+                view: 1,
+                finish: finish
+            })
+                .then(res => {
+                    this.getLessons();
+                    this.getLesson(id);
+
+                    this.updateLevel(this.state.user.id, this.state.courseID, id);
+
+                    this.handleNextStep();
+
+                    this.closeQuiz();
+                });
+        } else {
+            console.log('Diferente');
+        }
+    }
+
     render() {
-        const { course, modal, courseID, lessons, lesson, endLessons, progress, activeLesson, question } = this.state;
+        const { course, modal, courseID, lessons, lesson, endLessons, progress, activeLesson, question, chooses } = this.state;
         if (this.state.onCourse === true) {
             return <Redirect to={'/courses/' + courseID + '/details'} />
         } else if (this.state.notFound) {
@@ -461,8 +504,7 @@ class Page extends React.Component {
                                                                 <Button
                                                                     variant="contained"
                                                                     color="primary"
-                                                                    // onClick={this.endLesson.bind(this, lesson.id)}
-                                                                    onClick={this.openQuiz}
+                                                                    onClick={lesson.question ? this.openQuiz.bind(this, lesson.id) : this.endLesson.bind(this, lesson.id)}
                                                                 >
                                                                     Finalizar Lição
                                                                 </Button>
@@ -492,9 +534,7 @@ class Page extends React.Component {
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
                             <img src='/images/conclusion.jpg' style={{ display: 'block', margin: '0 auto' }} />
-                            <Typography>
-                                Você concluiu o curso de {course.title}
-                            </Typography>
+                            Você concluiu o curso de {course.title}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -517,20 +557,20 @@ class Page extends React.Component {
                     <DialogContent>
                         <FormControl component="fieldset">
                             <FormGroup>
-                                {question.answers.map((answer, index) =>
+                                {chooses.map((choose, index) =>
                                     <FormControlLabel
+                                        key={choose.id}
                                         control={
-                                            <Checkbox color={'primary'} checked={question.id} onChange={this.handleCheckQuiz(answer.id)} value={answer.correct} />
+                                            <Checkbox checked={choose.correct} color={'primary'} onChange={this.handleCheckQuiz(choose.id)} />
                                         }
-                                        label={answer.text}
+                                        label={choose.text}
                                     />
                                 )}
                             </FormGroup>
-                            {console.log(this.state.chooses)}
                         </FormControl>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.closeQuiz} color="primary" autoFocus>
+                        <Button onClick={this.endQuiz.bind(this, this.state.currentLesson)} color="primary" autoFocus>
                             Enviar
                         </Button>
                     </DialogActions>

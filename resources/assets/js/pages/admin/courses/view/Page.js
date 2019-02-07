@@ -120,6 +120,7 @@ class Page extends React.Component {
             question: {
                 course_id: null,
                 quiz_id: null,
+                lesson_id: null,
                 text: '',
                 active: true,
                 answers: [
@@ -127,7 +128,8 @@ class Page extends React.Component {
             },
             hasQuiz: false,
             answerField: '',
-            questionField: ''
+            questionField: '',
+            createQuiz: false
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -165,7 +167,13 @@ class Page extends React.Component {
                 if(res.data === 400) {
                     axios.post(`${API_URL}/api/courses/${this.state.courseID}/quiz`, {
                         title: 'quiz_' + this.state.courseID
-                    }).then( console.log('Quiz Criado') );
+                    }).then(res => {
+                        this.setState({
+                            quiz_id: res.data
+                        });
+                        console.log('Quiz criado');
+                    }
+                    );
                 } else {
                     this.setState({
                         hasQuiz: true,
@@ -250,73 +258,96 @@ class Page extends React.Component {
     };
 
     handleSubmitLesson = (type) => {
-        if (this.state.lesson.title !== '') {
-            if (this.state.quiz && this.state.questionField === '') {
-                this.openMessage('Insira a pergunta');
+        if(this.state.quiz) {
+            if(this.state.lesson.title === '' || this.state.questionField === '' || this.state.question.answers.length < 1) {
+                this.openMessage('Existem campos vazios');
             } else {
-                if (this.state.question.answers.length > 0) {
-                    console.log('Tem Respostas')
-                    const question = this.state.question;
-                    axios.post(`${API_URL}/api/courses/${this.state.courseID}/quiz/${this.state.quiz_id}/questions`, {question})
-                    .then(res => {
-                        console.log(res);
-                    });
-                } else {
-                    console.log('Não tem respostas para essa pergunta');
-                }
-                if(this.state.question.answers) {
-                    if (type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
-                        this.fileUpload();
-                        this.closeModal();
-                        this.setState({
-                            lesson: {
-                                ...this.state.lesson,
-                                file: {
-                                    file: null,
-                                    name: ''
-                                },
-                                type: '',
-                                title: '',
-                                content: ''
-                            }
-                        });
-                    } else {
-                        axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, {
-                            type: this.state.modal.type,
-                            title: this.state.lesson.title,
-                            content: this.state.lesson.content,
-                        }).then(res => {
-                            this.openMessage('Lição criada com sucesso');
-                            this.setState({
-                                lesson: {
-                                    ...this.state.lesson,
-                                    type: '',
-                                    title: '',
-                                    content: ''
-                                },
-                                question: {
-                                    course_id: null,
-                                    quiz_id: null,
-                                    text: '',
-                                    active: true,
-                                    answers: [
-                                    ]
-                                },
-                            });
-                            this.closeModal();
-                            this.loadingLessons();
-                        }).catch(error => {
-                            this.openMessage(error.message)
-                        });
-                    }
-                } else {
-                    this.openMessage('Não tem respostas para essa pergunta');
-                }
+                this.submitLesson(type, true);
             }
+        } else if(this.state.lesson.title !== '') {
+            this.submitLesson(type, false);
         } else {
             this.openMessage('Por favor preencha o título');
         }
+
+
+        // if (this.state.lesson.title !== '' && this.state.quiz) {
+        //     if (this.state.questionField === '') {
+        //         this.openMessage('Insira a pergunta');
+        //     } else {
+        //         if (this.state.question.answers.length > 0) {
+        //             this.submitLesson(type, true);
+        //         } else {
+        //             console.log('Não tem respostas para essa pergunta');
+        //         }
+        //     }
+        // }
     };
+
+    submitLesson = (type, quiz) => {
+        console.log(this.state.question);
+            if (type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
+                if(quiz) {
+                    this.fileUpload('', true);
+                } else {
+                    this.fileUpload();
+                }
+                this.closeModal();
+                this.setState({
+                    lesson: {
+                        ...this.state.lesson,
+                        file: {
+                            file: null,
+                            name: ''
+                        },
+                        type: '',
+                        title: '',
+                        content: ''
+                    }
+                });
+            } else {
+                axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, {
+                    type: this.state.modal.type,
+                    title: this.state.lesson.title,
+                    content: this.state.lesson.content,
+                }).then(res => {
+                    this.openMessage('Lição criada com sucesso');
+                    if(quiz) {
+                        this.createQuiz(res.data);
+                    }
+                    this.setState({
+                        lesson: {
+                            ...this.state.lesson,
+                            type: '',
+                            title: '',
+                            content: ''
+                        },
+                        question: {
+                            course_id: null,
+                            lesson_id: null,
+                            text: '',
+                            active: true,
+                            answers: [
+                            ]
+                        },
+                        questionField: ''
+                    });
+                    this.closeModal();
+                    this.loadingLessons();
+                }).catch(error => {
+                    this.openMessage(error.message)
+                });
+            }
+    }
+
+    createQuiz = (idLesson) => {
+        const question = this.state.question;
+        console.log(question)
+        axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons/${idLesson}/questions`, {question})
+        .then(res => {
+            console.log(res);
+        });
+    }
 
     handleEditLesson = (type, id) => {
         if (this.state.lesson.title !== '') {
@@ -530,7 +561,7 @@ class Page extends React.Component {
         }
     };
 
-    fileUpload = (type) => {
+    fileUpload = (type, quiz) => {
         const formData = new FormData();
         if (type === 'PUT') {
             formData.append('_method', type);
@@ -548,10 +579,14 @@ class Page extends React.Component {
         axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, formData, config).then((res) => {
             this.openMessage('Lição inserida com sucesso');
             this.loadingLessons();
+            if(quiz) {
+                this.createQuiz(res.data);
+            }
             this.setState({
                 question: {
                     course_id: null,
                     quiz_id: null,
+                    lesson_id: null,
                     text: '',
                     active: true,
                     answers: [
@@ -657,6 +692,8 @@ class Page extends React.Component {
         } else {
             this.openMessage('Insira a pergunta');
         }
+
+        console.log(question);
 
     }
 
