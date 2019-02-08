@@ -79,11 +79,12 @@ class Page extends React.Component {
             course: {
                 title: '',
                 slug: '',
+                image: '',
+                mime: '',
                 duration: '',
                 start_date: new Date(),
                 end_date: new Date(),
                 description: '',
-                image: ''
             },
             edit: true,
             lessons: [],
@@ -129,7 +130,8 @@ class Page extends React.Component {
             hasQuiz: false,
             answerField: '',
             questionField: '',
-            createQuiz: false
+            createQuiz: false,
+            imageEdit: false
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -147,6 +149,7 @@ class Page extends React.Component {
         axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
             .then(res => {
                 const course = res.data;
+                console.log(course);
                 let start_date, end_date;
                 start_date = this.formatDateReverse(course.start_date);
                 end_date = this.formatDateReverse(course.end_date);
@@ -158,8 +161,13 @@ class Page extends React.Component {
                         slug: course.slug,
                         duration: course.duration,
                         start_date: start_date,
-                        end_date: end_date
+                        end_date: end_date,
+                        image: course.image,
+                        mime: course.mime
                     },
+                    image: {
+                        file: course.image,
+                    }
                 });
             });
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/quiz`)
@@ -493,6 +501,19 @@ class Page extends React.Component {
             }
         })
     }
+
+    changeImage = (event) => {
+        const file = event.target.files[0];
+        if (file.type === 'image/jpeg' || file.type === 'image/png') {
+            this.setState({
+                imageEdit: true,
+                image: {
+                    file: file,
+                    name: file.name
+                }
+            });
+        }
+    };
 
     onChangeFile = (event) => {
         const file = event.target.files[0];
@@ -954,17 +975,18 @@ class Page extends React.Component {
                             <br />
                             {course.image ?
                                 <CardContainer>
-                                    {/* <Button
+                                    <Button
                                     variant="contained"
                                     component='label'
+                                    disabled={edit}
                                 >
                                     IMAGEM
-                                    <input type="file" style={{ display: 'none' }} onChange={this.onChangeFile} />
-                                </Button> */}
-                                    <Typography variant="caption" gutterBottom>
-                                        Imagem
-                                    </Typography>
-                                    <img src={course.image} />
+                                    <input type="file" style={{ display: 'none' }} onChange={this.changeImage} />
+                                </Button>
+                                    <br /><br />
+                                    {this.state.imageEdit ?
+                                        this.state.image.file.name
+                                    : <img src={course.image} /> }
                                 </CardContainer>
                                 : null}
                             <br />
@@ -983,7 +1005,6 @@ class Page extends React.Component {
                 </Form>
 
                 <Dialog
-                    fullScreen
                     open={this.state.open}
                     maxWidth="xs"
                     aria-labelledby="confirmation-dialog-title"

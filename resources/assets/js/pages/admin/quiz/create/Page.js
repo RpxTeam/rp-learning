@@ -24,6 +24,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Switch from '@material-ui/core/Switch';
 import Divider from '@material-ui/core/Divider';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Typography from '@material-ui/core/Typography';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 
@@ -44,29 +51,28 @@ class Page extends React.Component {
                 horizontal: 'center',
                 text: 'Snackbar its works'
             },
-            questions: []
+            questions: [],
+            question: {},
+            modal: {
+                open: false
+            },
+            questionField: '',
+            answerField: ''
         }
         this.openMessage = this.openMessage.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
+        this.correctAnswser = this.correctAnswser.bind(this);
     };
 
     getData = () => {
         axios.get(`${API_URL}/api/courses/${this.state.course}/quiz`)
             .then(res => {
-                if (res.data) {
-                    axios.get(`${API_URL}/api/courses/${this.state.course}/quiz/${res.data}/questions`)
-                        .then(res => {
-                            const result = res.data;
-                            this.setState({
-                                result: result,
-                            });
-                        }).catch(error => {
-                            console.log(error)
-                        })
-                } else {
-
-                }
+                this.setState({
+                    quiz_id: res.data
+                });
             });
+
+        this.getQuestions()
     };
 
     componentDidMount() {
@@ -118,6 +124,26 @@ class Page extends React.Component {
         // }
     };
 
+    getQuestions = () => {
+        axios.get(`${API_URL}/api/courses/${this.state.course}/questions`)
+            .then(res => {
+                const results = res.data;
+                this.setState({
+                    results: results,
+                });
+            }).catch(error => {
+                console.log(error)
+            })
+    };
+
+    toggleAll = () => {
+        axios.post(`${API_URL}/api/courses/${this.state.course}/final/activate`)
+            .then(res => {
+                console.log(res)
+                this.getQuestions()
+            })
+    }
+
     handleDelete = () => {
         console.log('delete');
     };
@@ -150,26 +176,121 @@ class Page extends React.Component {
     }
 
     handleToggle = id => event => {
-        const questions = this.state.questions;
+        const questions = this.state.results;
+        console.log(event.target.checked);
         var newQuestions = questions.filter((elem, i, array) => {
             if (elem.id === id) {
-                elem.correct = event.target.checked;
+                elem.active = event.target.checked;
             }
             return questions
         });
         this.setState({
-            questions: newQuestions
+            results: newQuestions
         })
     };
 
+    addAnswer = () => {
+        const question = this.state.question;
+        let answers = question.answers;
+        let answerField = this.state.answerField;
+        let last;
+        let id;
+        if (answers.length === 0) {
+            last = 0;
+            id = 1;
+        } else {
+            last = answers.length - 1;
+            let lastAnswer = answers[last];
+            id = lastAnswer.id + 1
+        }
+        let answer = {
+            id: id,
+            text: answerField,
+            correct: false
+        }
+        if (this.state.questionField || question.text) {
+            if (answerField) {
+                this.setState({
+                    question: {
+                        ...this.state.question,
+                        text: this.state.questionField,
+                        answers: [
+                            ...this.state.question.answers,
+                            answer
+                        ]
+                    },
+                    answerField: ''
+                });
+            } else {
+                this.openMessage('Não tem resposta');
+            }
+        } else {
+            this.openMessage('Insira a pergunta');
+        }
+
+        console.log(question);
+
+    }
+
+    removeAnswer = (id) => {
+        const question = this.state.question;
+        var newAnswers = question.answers.filter((elem, i, array) => {
+            if (elem.id != id) {
+                return newAnswers != question.answers
+            }
+        });
+        this.setState({
+            question: {
+                ...this.state.question,
+                answers: newAnswers
+            }
+        })
+    }
+
+    correctAnswser = (id) => {
+        const question = this.state.question;
+        var newAnswers = question.answers.filter((elem, i, array) => {
+            if (elem.id === id) {
+                if (elem.correct) {
+                    elem.correct = false;
+                } else {
+                    elem.correct = true;
+                }
+            }
+            return question.answers
+        });
+        this.setState({
+            question: {
+                ...this.state.question,
+                answers: newAnswers
+            }
+        })
+    }
+
+    handleSubmitQuestion = () => {
+        
+    }
+
     render() {
-        const { message, questions, results } = this.state;
+        const { message, questions, results, modal, questionField, answerField, question } = this.state;
         // if (this.state.quizEdit === true) {
         //     return <Redirect to={'/admin/courses/' + this.state.courseID} />
         // }
         return (
             <Admin heading="Quiz">
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
+                <Grid container justify='space-between'>
+                    <Grid item xs={3} align='left'>
+                        <Button variant="outlined" color="primary" onClick={this.toggleAll}>
+                            Adicionar todos
+                        </Button>
+                    </Grid>
+                    <Grid item xs={3} align='right'>
+                        <Button variant="contained" color="primary">
+                            Criar Nova Pergunta
+                        </Button>
+                    </Grid>
+                </Grid>
                 <form>
                     <Grid container spacing={16} justify="flex-end">
                         <Grid item xs={12}>
@@ -182,8 +303,8 @@ class Page extends React.Component {
                                                 <Switch
                                                     onChange={this.handleToggle(question.id)}
                                                     color='primary'
-                                                    value={question.correct}
-                                                    checked={question.correct}
+                                                    value={question.id}
+                                                    checked={question.active}
                                                 />
                                                 <ListItemText primary={question.text} secondary={question.created_at} />
                                             </ListItem>
@@ -194,6 +315,101 @@ class Page extends React.Component {
                         </Grid>
                     </Grid>
                 </form>
+
+                <Dialog
+                    disableBackdropClick
+                    disableEscapeKeyDown
+                    onClose={this.handleCancel}
+                    open={modal.open}
+                    maxWidth="lg"
+                    aria-labelledby="confirmation-dialog-title"
+                    variant="outlined"
+                >
+                    <DialogTitle id="confirmation-dialog-title">Criar Pergunta</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            label="Pergunta"
+                            name="questionField"
+                            onChange={this.handleChange}
+                            margin="normal"
+                            variant="outlined"
+                            fullWidth
+                            value={questionField}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <br /><br />
+                        <Grid container spacing={8} justify="space-between" alignItems="center">
+                            <Grid item xs={12} md={12}>
+                                <Typography variant="h6" gutterBottom>
+                                    Repostas
+                                        </Typography>
+                                <Typography variant="overline" gutterBottom>
+                                    Defina uma ou mais respostas corretas
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12} md={11} align="left">
+                                <TextField
+                                    label="Resposta"
+                                    name="answerField"
+                                    onChange={this.handleChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    value={answerField}
+                                    fullWidth
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={1}>
+                                <Fab color="primary" aria-label="Add" size="small" onClick={this.addAnswer}>
+                                    <AddIcon />
+                                </Fab>
+                            </Grid>
+                        </Grid>
+                        <Divider />
+                        {question.answers ?
+                            question.answers.map((answer) =>
+                                <List dense={true}>
+                                    <ListItem key={answer.id}>
+                                        <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
+                                            <CheckCircle color={answer.correct ? 'primary' : 'secondary'} />
+                                        </IconButton>
+                                        <ListItemText
+                                            primary={answer.text}
+                                        />
+                                        <ListItemSecondaryAction>
+                                            <IconButton aria-label="Edit">
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton aria-label="Delete" onClick={this.removeAnswer.bind(this, answer.id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                    <Divider />
+                                </List>
+                            )
+                            : null}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleCancel} color="primary">
+                            Cancel
+                        </Button>
+                        {this.state.modal.edit ?
+                            <Button onClick={this.handleSubmitQuestion.bind(this, this.state.modal.type, this.state.lesson.id)} color="primary">
+                                Editar
+                            </Button>
+                            :
+                            <Button onClick={this.handleSubmitQuestion.bind(this, this.state.modal.type)} color="primary">
+                                Criar
+                            </Button>
+                        }
+                    </DialogActions>
+                </Dialog>
+
             </Admin>
         );
     }

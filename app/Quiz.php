@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Quiz extends Model
 {
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'active'];
     protected $hidden = [];
     public static $searchable = [
     ];

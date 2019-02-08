@@ -151,7 +151,7 @@ class Page extends React.Component {
                         error: true,
                         success: false
                     })
-                    this.openMessage({ text: error.message })
+                    this.openMessage(error.message)
                 });
             }
         }
@@ -208,11 +208,12 @@ class Page extends React.Component {
 
     changeAuthors = (e, { value }) => this.setState({ authors: value })
 
-    openMessage = newState => () => {
+    openMessage = (newState) => {
         this.setState({
             message: {
+                ...this.state.message,
                 open: true,
-                ...newState
+                text: newState
             }
         });
     };
@@ -243,9 +244,17 @@ class Page extends React.Component {
         // if (type === 'PUT') {
         //     formData.append('_method', type);
         // }
-        formData.append('title', this.state.image.title);
-        formData.append('content', this.state.image.file);
-        console.log(formData);
+
+        const start_date = this.formatDate(this.state.start_date);
+        const end_date = this.formatDate(this.state.end_date);
+
+        formData.append('title', this.state.title);
+        formData.append('description', this.state.description);
+        formData.append('duration', this.state.duration);
+        formData.append('image', this.state.image.file);
+        formData.append('mime', this.state.image.file.type);
+        formData.append('start_date', start_date);
+        formData.append('end_date', end_date);
 
         const config = {
             headers: {
@@ -253,14 +262,19 @@ class Page extends React.Component {
             }
         };
 
-        axios.post(`${API_URL}/api/courses`, formData, config).then((res) => {
-            this.setState({
-                error: false,
-                success: true,
-                courseID: res.data,
-                courseEdit: true
+        axios.post(`${API_URL}/api/courses`, formData, config)
+            .then((res) => {
+                this.setState({
+                    error: false,
+                    success: true,
+                    courseID: res.data,
+                    courseEdit: true
+                });
+                this.openMessage('Curso criado com sucesso');
+            })
+            .catch((error) => {
+                this.openMessage(error.message);
             });
-        });
     };
 
     render() {

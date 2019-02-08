@@ -353,7 +353,7 @@ class Page extends React.Component {
                             {
                                 id: answer.id,
                                 text: answer.text,
-                                correct: answer.correct === 0 ? false : true
+                                correct: answer.correct
                             }
                         ]
                     }))
