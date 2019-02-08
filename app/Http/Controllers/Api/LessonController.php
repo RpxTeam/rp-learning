@@ -75,7 +75,6 @@ class LessonController extends Controller
                 'mime' => 'nullable|string'
             ],[
                 'title.required' => 'O campo título está vazio.',
-                'content.mimetypes' => 'Tipo de arquivo inválido.'
             ]);
         }else{
             $validator = Validator::make($request->all(),[
@@ -127,16 +126,29 @@ class LessonController extends Controller
      */
     public function update(Request $request, $course, $lesson)
     {
-        $validator = Validator::make($request->all(),[
-            'order' => 'nullable|numeric',
-            'title' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'type' => 'nullable|string',
-            'content' => 'nullable|file|size:20000|mimetypes:jpeg,png',
-            'mime' => 'nullable|string'
-        ],[
-            'content.mimetypes' => 'Tipo de arquivo inválido.',
-        ]);
+        if($request->hasFile('content')){
+            $validator = Validator::make($request->all(),[
+                'order' => 'nullable|numeric',
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'type' => 'nullable|string',
+                'content' => 'nullable|file',
+                'mime' => 'nullable|string'
+            ],[
+                'title.required' => 'O campo título está vazio.',
+            ]);
+        }else{
+            $validator = Validator::make($request->all(),[
+                'order' => 'nullable|numeric',
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'type' => 'nullable|string',
+                'content' => 'nullable|string',
+                'mime' => 'nullable|string'
+            ],[
+                'title.required' => 'O campo título está vazio.'
+            ]);
+        }
 
         if($validator->fails()){
                 return response()->json($validator->errors(), 400);
