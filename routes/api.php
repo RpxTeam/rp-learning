@@ -98,3 +98,9 @@ Route::put('users/{user}/courses/{course}', 'Api\DataCourseController@update');
 Route::resource('users/{user}/courses/{course}/lessons', 'Api\DataLessonController');
 Route::post('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@store');
 Route::put('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@update');
+
+//Certification routes
+Route::get('users/{user}/courses/{course}/certification', 'Api\CertificationController@show');
+Route::post('users/{user}/courses/{course}/certification/{certification}', 'Api\CertificationController@store');
+Route::put('users/{user}/courses/{course}/certification/{certification}', 'Api\CertificationController@update');
+Route::delete('users/{user}/courses/{course}/certification/{certification}', 'Api\CertificationController@delete');

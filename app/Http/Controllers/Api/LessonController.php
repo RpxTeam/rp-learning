@@ -162,7 +162,7 @@ class LessonController extends Controller
             }else if($request->type == 'text'){
                 $lesson = Lesson::whereId($lesson->id)->update($request->All());
             }else{
-                $lesson = Lesson::whereId($lesson->id)->update($request->except('content'));
+                $lesson = Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
             }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
