@@ -31,6 +31,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 
@@ -52,7 +57,15 @@ class Page extends React.Component {
                 text: 'Snackbar its works'
             },
             questions: [],
-            question: {},
+            question: {
+                course_id: this.props.match.params.id,
+                quiz_id: null,
+                lesson_id: null,
+                text: '',
+                active: true,
+                answers: [
+                ]
+            },
             modal: {
                 open: false
             },
@@ -72,7 +85,7 @@ class Page extends React.Component {
                 });
             });
 
-        this.getQuestions()
+        this.getQuestions();
     };
 
     componentDidMount() {
@@ -85,51 +98,22 @@ class Page extends React.Component {
         });
     };
 
-    handleSubmit = event => {
-        event.preventDefault();
-
-        // if (!this.state.title) {
-        //     this.setState({
-        //         message: {
-        //             ...this.state,
-        //             open: true,
-        //             text: 'Preencha o título'
-        //         }
-        //     })
-        // } else {
-        //     axios.post(`${API_URL}/api/courses`, {
-        //         title: this.state.title
-        //     }).then(res => {
-        //         console.log(res.data)
-        //         this.setState({
-        //             quizID: res.data,
-        //             message: {
-        //                 ...this.state.message,
-        //                 open: true,
-        //                 text: 'Quiz criado com sucesso!',
-        //             }
-        //         });
-        //         setTimeout(function () {
-        //             this.setState({
-        //                 quizEdit: true
-        //             })
-        //         }.bind(this), 2000);
-        //     }).catch(error => {
-        //         this.setState({
-        //             error: true,
-        //             success: false
-        //         })
-        //         this.openMessage({ text: error.message })
-        //     });
-        // }
-    };
-
     getQuestions = () => {
         axios.get(`${API_URL}/api/courses/${this.state.course}/questions`)
             .then(res => {
                 const results = res.data;
                 this.setState({
                     results: results,
+                    question: {
+                        course_id: this.state.course,
+                        quiz_id: null,
+                        lesson_id: null,
+                        text: '',
+                        active: true,
+                        answers: [
+                        ]
+                    },
+                    questionField: ''
                 });
             }).catch(error => {
                 console.log(error)
@@ -139,8 +123,7 @@ class Page extends React.Component {
     toggleAll = () => {
         axios.post(`${API_URL}/api/courses/${this.state.course}/final/activate`)
             .then(res => {
-                console.log(res)
-                this.getQuestions()
+                this.getQuestions();
             })
     }
 
@@ -157,14 +140,15 @@ class Page extends React.Component {
         });
     };
 
-    openMessage = newState => () => {
+    openMessage = (message) => {
         this.setState({
             message: {
+                ...this.state.message,
                 open: true,
-                ...newState
+                text: message
             }
-        });
-    };
+        })
+    }
 
     closeMessage = () => {
         this.setState({
@@ -268,8 +252,27 @@ class Page extends React.Component {
     }
 
     handleSubmitQuestion = () => {
-        
+        const question = this.state.question;
+        axios.post(`${API_URL}/api/courses/${this.state.course}/quiz/${this.state.quiz_id}/questions`, {question})
+            .then(res => {
+                this.openMessage('Questão Inserida com sucesso!');
+                this.getQuestions();
+                this.closeModal();
+            })
     }
+
+    openModal = type => () => {
+        this.setState({ modal: { type: type, open: true } });
+    };
+
+    closeModal = () => this.setState({
+        modal: {
+            ...this.state.modal,
+            type: '',
+            open: false,
+            message: ''
+        }
+    });
 
     render() {
         const { message, questions, results, modal, questionField, answerField, question } = this.state;
@@ -286,7 +289,7 @@ class Page extends React.Component {
                         </Button>
                     </Grid>
                     <Grid item xs={3} align='right'>
-                        <Button variant="contained" color="primary">
+                        <Button variant="contained" color="primary" onClick={this.openModal('quiz')}>
                             Criar Nova Pergunta
                         </Button>
                     </Grid>
@@ -304,7 +307,7 @@ class Page extends React.Component {
                                                     onChange={this.handleToggle(question.id)}
                                                     color='primary'
                                                     value={question.id}
-                                                    checked={question.active}
+                                                    checked={question.active ? true : false}
                                                 />
                                                 <ListItemText primary={question.text} secondary={question.created_at} />
                                             </ListItem>
@@ -319,7 +322,7 @@ class Page extends React.Component {
                 <Dialog
                     disableBackdropClick
                     disableEscapeKeyDown
-                    onClose={this.handleCancel}
+                    onClose={this.closeModal}
                     open={modal.open}
                     maxWidth="lg"
                     aria-labelledby="confirmation-dialog-title"
@@ -372,7 +375,7 @@ class Page extends React.Component {
                         <Divider />
                         {question.answers ?
                             question.answers.map((answer) =>
-                                <List dense={true}>
+                                <List dense={true} key={answer.id}>
                                     <ListItem key={answer.id}>
                                         <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
                                             <CheckCircle color={answer.correct ? 'primary' : 'secondary'} />
@@ -395,15 +398,15 @@ class Page extends React.Component {
                             : null}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleCancel} color="primary">
-                            Cancel
+                        <Button onClick={this.closeModal} color="primary">
+                            Cancelar
                         </Button>
                         {this.state.modal.edit ?
-                            <Button onClick={this.handleSubmitQuestion.bind(this, this.state.modal.type, this.state.lesson.id)} color="primary">
+                            <Button color='primary' variant='contained' onClick={this.handleSubmitQuestion.bind(this, this.state.modal.type, this.state.lesson.id)} color="primary">
                                 Editar
                             </Button>
                             :
-                            <Button onClick={this.handleSubmitQuestion.bind(this, this.state.modal.type)} color="primary">
+                            <Button color='primary' variant='contained' onClick={this.handleSubmitQuestion.bind(this, this.state.modal.type)} color="primary">
                                 Criar
                             </Button>
                         }
