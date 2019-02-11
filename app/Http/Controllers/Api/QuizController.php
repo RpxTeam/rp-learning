@@ -146,7 +146,7 @@ class QuizController extends Controller
                     ->where('course_id',$course->id)
                     ->get();
 
-        if($questions != null){
+        if(empty($questions)){
             $data = collect();
 
         foreach($questions as $question){
@@ -195,7 +195,7 @@ class QuizController extends Controller
 
     public function updateQuestion(Request $request, $course, $question){
         $course = Course::findOrFail($course);
-        $question = QuestionfindOrFail($question);
+        $question = Question::findOrFail($question);
 
         Question::whereId($question->id)->update($request->all());
 
