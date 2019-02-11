@@ -192,4 +192,13 @@ class QuizController extends Controller
 
         return response()->json(204);
     }
+
+    public function updateQuestion(Request $request, $course, $question){
+        $course = Course::findOrFail($course);
+        $question = QuestionfindOrFail($question);
+
+        Question::whereId($question->id)->update($request->all());
+
+        return response()->json(204);
+    }
 }
