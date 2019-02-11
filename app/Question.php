@@ -43,19 +43,19 @@ class Question extends Model
                     ->where('course_id', $course)
                     ->where('quiz_id', $quiz)
                     ->get();
-
+        
         return $questions;
     }
 
     public static function questionAnswers($question){
         $question = Question::findOrFail($question);
 
-        $answers = DB::table('question_answer')
-                    ->leftjoin('answers', 'question_answer.answer_id','=','answers.id')
-                    ->where('question_id',$question->id)
-                    ->get();
+       
+       $answers = Question::onlyAnswers($question->id);
+       
+       $question->setAttribute('answers',$answers);
         
-        return array('question'=>$question,'answers'=> $answers);
+        return $question;
     }
 
     public static function onlyAnswers($question){
@@ -75,7 +75,17 @@ class Question extends Model
                     ->where('course_id', $course)
                     ->where('lesson_id', $lesson)
                     ->first();
+        
+        if(!empty($question)) {
+            $question = Question::findOrFail($question->id);
 
-        return $question;
+            $answers = Question::onlyAnswers($question->id);
+
+            $question->setAttribute('answers',$answers);
+
+            return $question;
+        } else {
+            return null;
+        }
     }
 }

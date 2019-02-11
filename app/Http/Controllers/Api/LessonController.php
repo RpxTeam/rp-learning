@@ -75,7 +75,6 @@ class LessonController extends Controller
                 'mime' => 'nullable|string'
             ],[
                 'title.required' => 'O campo título está vazio.',
-                'content.mimetypes' => 'Tipo de arquivo inválido.'
             ]);
         }else{
             $validator = Validator::make($request->all(),[
@@ -152,24 +151,26 @@ class LessonController extends Controller
         }
 
         if($validator->fails()){
-                return response()->json($validator->errors(), 400);
+            return response()->json($validator->errors(), 400);
         }
 
+        $lesson = Lesson::findOrFail($lesson);
+
         try{
-            $lesson = Lesson::findOrFail($lesson);
             if($request->hasFile('content') && $request->file('content')->isValid()) {
                 Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
                 Lesson::updateFileLesson($request,$lesson);
             }else if($request->type == 'text'){
-                $lesson = Lesson::whereId($lesson->id)->update($request->All());
+                Lesson::whereId($lesson->id)->update($request->All());
             }else{
-                $lesson = Lesson::whereId($lesson->id)->update($request->except('content'));
+                Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
             }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
         }
-        return response()->json(204);
+        
+        return response()->json($lesson->id, 200);
         //204: No content. When an action was executed successfully, but there is no content to return.
     }
 

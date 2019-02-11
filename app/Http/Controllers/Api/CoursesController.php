@@ -118,7 +118,7 @@ class CoursesController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'title' => 'nullable|string',
+            'title' => 'required|string|max:255',
             'slug' => 'nullable|string',
             'introduction' => 'nullable|string',
             'description' => 'nullable|string',
@@ -126,10 +126,13 @@ class CoursesController extends Controller
             'image' => 'nullable|file|max:5000',
             'mime' => 'nullable|string',
             'instructor' => 'nullable|string',
-            'start_date' => 'nullable|date|after_or_equal:today',
-            'end_date' => 'nullable|date|after_or_equal:start_date'
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after_or_equal:start_date'
         ],[
+            'title.required' => 'O campo título está vazio.',
+            'start_date.required' => 'O campo data de início está vazio.',
             'start_date.after_or_equal' => 'O campo data de início é inválido.',
+            'end_date.required' => 'O campo data de término está vazio.',
             'end_date.after_or_equal' => 'O campo data de término é inválido.',
         ]);
 

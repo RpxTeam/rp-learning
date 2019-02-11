@@ -26,16 +26,20 @@ class QuestionsController extends Controller
 
         $questions = Question::quizQuestions($course->id, $quiz->id);
 
-        $data = collect();
+        if($questions->isEmpty()){
+            return response()->json(400);
+        }else{
 
-        foreach($questions as $question){
-            $data->push(Question::questionAnswers($question->id));
+            $data = collect();
+            
+            foreach($questions as $question){
+                $data->push(Question::questionAnswers($question->id));
+            }
+            
+            return response()->json($data, 200);
         }
-
-        return response()->json($data, 200);
-        // return response()->json(array('course'=>$mycourse,'lessons'=>$lessons),200);
     }
-
+        
     /**
      * Display the specified resource.
      *

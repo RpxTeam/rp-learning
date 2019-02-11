@@ -19,7 +19,7 @@ class QuestionSeed extends Seeder
                              'course_id' => 1,
                              'lesson_id' => 1]);
 
-        // for($i=0;$i<10;$i++){
+        // for($i=0;$i<5;$i++){
         //     App\Question::create([
         //         'text' => $faker->word,
         //         'active' => $faker->numberBetween(0,1),

@@ -241,9 +241,6 @@ class Page extends React.Component {
 
     fileUpload = () => {
         const formData = new FormData();
-        // if (type === 'PUT') {
-        //     formData.append('_method', type);
-        // }
 
         const start_date = this.formatDate(this.state.start_date);
         const end_date = this.formatDate(this.state.end_date);
@@ -262,15 +259,19 @@ class Page extends React.Component {
             }
         };
 
-        axios.post(`${API_URL}/api/courses`, formData, config)
+        axios.post(`${API_URL}/api/courses/${this.state.courseID}`, formData, config)
             .then((res) => {
                 this.setState({
                     error: false,
                     success: true,
-                    courseID: res.data,
-                    courseEdit: true
+                    courseID: res.data
                 });
                 this.openMessage('Curso criado com sucesso');
+                setTimeout(function () {
+                    this.setState({
+                        courseEdit: true
+                    })
+                }.bind(this), 2000);
             })
             .catch((error) => {
                 this.openMessage(error.message);

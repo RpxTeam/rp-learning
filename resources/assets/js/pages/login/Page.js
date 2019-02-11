@@ -1,14 +1,4 @@
 import React from 'react'
-import {
-    Divider,
-    Dimmer,
-    Form,
-    Header,
-    Icon,
-    Loader,
-    Message,
-    Segment
-} from 'semantic-ui-react'
 import { Link, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ReeValidate from 'ree-validate'
@@ -17,6 +7,7 @@ import PageHeader from '../../common/pageHeader'
 import Footer from '../../common/mainFooter'
 
 import Input from '../../components/Input'
+import Message from '../../components/Message';
 // import Grid from '../../components/Grid'
 // import Button from '../../components/Button'
 
@@ -64,7 +55,7 @@ class Page extends React.Component {
             },
             isLoading: false,
             errors: this.validator.errors,
-            showPassword: false
+            showPassword: false,
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -165,32 +156,7 @@ class Page extends React.Component {
 
         return (
             <div>
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
-                    }}
-                    open={message.open}
-                    autoHideDuration={6000}
-                    onClose={this.closeMessage}
-                    ContentProps={{
-                        'aria-describedby': 'message-id',
-                    }}
-                    message={<span id="message-id">{message.text}</span>}
-                    action={[
-                        <Button key="undo" color="secondary" size="small" onClick={this.closeMessage}>
-                            UNDO
-                </Button>,
-                        <IconButton
-                            key="close"
-                            aria-label="Close"
-                            color="inherit"
-                            onClick={this.closeMessage}
-                        >
-                            <CloseIcon />
-                        </IconButton>,
-                    ]}
-                />
+                <Message close={this.closeMessage} text={message.text} open={message.open} />
                 <main className="fadeIn animated" id="login-page" style={{ alignItems: 'center' }}>
                     <div className="center">
                         <div id="logo">

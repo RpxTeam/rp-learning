@@ -16,6 +16,7 @@ import { Redirect } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 import Message from '../../../../components/Message';
 import Menu from '@material-ui/core/Menu';
@@ -69,6 +70,12 @@ import { ListItemAvatar } from '@material-ui/core';
 
 const CardContainer = styled(Card)`
     padding: 10px 20px;
+`;
+
+const BtnSwitch = styled(FormControlLabel)`
+    span {
+        font-size: 16px;
+    }
 `;
 
 class Page extends React.Component {
@@ -131,7 +138,11 @@ class Page extends React.Component {
             answerField: '',
             questionField: '',
             createQuiz: false,
-            imageEdit: false
+            imageEdit: false,
+            activeQuiz: false,
+            quizCreated: false,
+            scrolled: false,
+            idQuestion: null
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -146,10 +157,46 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
+
+        this.getCourse();
+
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}/quiz`)
+            .then(res => {
+                if (res.data === 400) {
+                    axios.post(`${API_URL}/api/courses/${this.state.courseID}/quiz`, {
+                        title: 'quiz_' + this.state.courseID
+                    }).then(res => {
+                        this.setState({
+                            quiz_id: res.data
+                        });
+                        console.log('Quiz criado');
+                    }
+                    );
+                } else {
+                    this.setState({
+                        hasQuiz: true,
+                        quiz_id: res.data
+                    });
+
+                    axios.get(`${API_URL}/api/courses/${this.state.courseID}/quiz/${this.state.quiz_id}`)
+                        .then(res => {
+                            if (res.data.active != null) {
+                                this.setState({
+                                    quizCreated: true,
+                                    activeQuiz: res.data.active
+                                });
+                            }
+                        })
+                }
+            });
+
+        this.loadingLessons();
+    }
+
+    getCourse = () => {
         axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
             .then(res => {
                 const course = res.data;
-                console.log(course);
                 let start_date, end_date;
                 start_date = this.formatDateReverse(course.start_date);
                 end_date = this.formatDateReverse(course.end_date);
@@ -170,27 +217,6 @@ class Page extends React.Component {
                     }
                 });
             });
-        axios.get(`${API_URL}/api/courses/${this.state.courseID}/quiz`)
-            .then(res => {
-                if(res.data === 400) {
-                    axios.post(`${API_URL}/api/courses/${this.state.courseID}/quiz`, {
-                        title: 'quiz_' + this.state.courseID
-                    }).then(res => {
-                        this.setState({
-                            quiz_id: res.data
-                        });
-                        console.log('Quiz criado');
-                    }
-                    );
-                } else {
-                    this.setState({
-                        hasQuiz: true,
-                        quiz_id: res.data
-                    });
-                }
-            });
-
-        this.loadingLessons();
     }
 
     handleEdit = (event) => {
@@ -241,160 +267,241 @@ class Page extends React.Component {
         const start_date = this.formatDate(this.state.course.start_date);
         const end_date = this.formatDate(this.state.course.end_date);
 
-        axios.put(`${API_URL}/api/courses/${this.state.courseID}`, {
-            title: this.state.course.title,
-            slug: this.state.course.slug,
-            description: this.state.course.description,
-            start_date: start_date,
-            end_date: end_date,
-            duration: this.state.course.duration
-        })
-            .then(res => {
-                this.openMessage('Curso atualizado com sucesso');
-                this.setState({
-                    error: false,
-                    success: true,
-                    edit: false
-                });
-            }).catch(error => {
-                this.openMessage(error.message);
-                this.setState({
-                    error: true,
-                    success: false
-                })
-            })
-    };
+        if (this.state.image.file) {
 
-    handleSubmitLesson = (type) => {
-        if(this.state.quiz) {
-            if(this.state.lesson.title === '' || this.state.questionField === '' || this.state.question.answers.length < 1) {
-                this.openMessage('Existem campos vazios');
-            } else {
-                this.submitLesson(type, true);
-            }
-        } else if(this.state.lesson.title !== '') {
-            this.submitLesson(type, false);
-        } else {
-            this.openMessage('Por favor preencha o título');
-        }
+            const formData = new FormData();
 
+            formData.append('_methor', 'PUT');
+            formData.append('title', this.state.course.title);
+            formData.append('description', this.state.course.description);
+            formData.append('duration', this.state.course.duration);
+            formData.append('image', this.state.image.file);
+            formData.append('mime', this.state.image.file.type);
+            formData.append('start_date', start_date);
+            formData.append('end_date', end_date);
 
-        // if (this.state.lesson.title !== '' && this.state.quiz) {
-        //     if (this.state.questionField === '') {
-        //         this.openMessage('Insira a pergunta');
-        //     } else {
-        //         if (this.state.question.answers.length > 0) {
-        //             this.submitLesson(type, true);
-        //         } else {
-        //             console.log('Não tem respostas para essa pergunta');
-        //         }
-        //     }
-        // }
-    };
-
-    submitLesson = (type, quiz) => {
-        console.log(this.state.question);
-            if (type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
-                if(quiz) {
-                    this.fileUpload('', true);
-                } else {
-                    this.fileUpload();
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
                 }
-                this.closeModal();
-                this.setState({
-                    lesson: {
-                        ...this.state.lesson,
-                        file: {
-                            file: null,
-                            name: ''
-                        },
-                        type: '',
-                        title: '',
-                        content: ''
-                    }
-                });
-            } else {
-                axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, {
-                    type: this.state.modal.type,
-                    title: this.state.lesson.title,
-                    content: this.state.lesson.content,
-                }).then(res => {
-                    this.openMessage('Lição criada com sucesso');
-                    if(quiz) {
-                        this.createQuiz(res.data);
-                    }
-                    this.setState({
-                        lesson: {
-                            ...this.state.lesson,
-                            type: '',
-                            title: '',
-                            content: ''
-                        },
-                        question: {
-                            course_id: null,
-                            lesson_id: null,
-                            text: '',
-                            active: true,
-                            answers: [
-                            ]
-                        },
-                        questionField: ''
-                    });
-                    this.closeModal();
-                    this.loadingLessons();
-                }).catch(error => {
-                    this.openMessage(error.message)
-                });
-            }
-    }
+            };
 
-    createQuiz = (idLesson) => {
-        const question = this.state.question;
-        console.log(question)
-        axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons/${idLesson}/questions`, {question})
-        .then(res => {
-            console.log(res);
-        });
-    }
-
-    handleEditLesson = (type, id) => {
-        if (this.state.lesson.title !== '') {
-            if (type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
-                this.fileUpload('PUT');
-                this.closeModal();
-                this.setState({
-                    lesson: {
-                        ...this.state.lesson,
-                        type: '',
-                        title: '',
-                        content: ''
-                    }
-                });
-            } else {
-                axios.put(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}`, {
-                    type: this.state.modal.type,
-                    title: this.state.lesson.title,
-                    content: this.state.lesson.content,
-                }).then(res => {
-                    this.openMessage('Lição criada com sucesso');
+            axios.post(`${API_URL}/api/courses`, formData, config)
+                .then((res) => {
                     this.setState({
-                        lesson: {
-                            ...this.state.lesson,
-                            type: '',
-                            title: '',
-                            content: ''
-                        }
+                        error: false,
+                        success: true,
+                        courseID: res.data,
+                        edit: false
                     });
-                    this.closeModal();
-                    this.loadingLessons();
+
+                    this.openMessage('Curso atualizado com sucesso');
+                })
+                .catch((error) => {
+                    this.openMessage(error.message);
+                });
+        } else {
+            axios.put(`${API_URL}/api/courses/${this.state.courseID}`, {
+                title: this.state.course.title,
+                slug: this.state.course.slug,
+                description: this.state.course.description,
+                start_date: start_date,
+                end_date: end_date,
+                duration: this.state.course.duration,
+            })
+                .then(res => {
+                    this.openMessage('Curso atualizado com sucesso');
+                    this.setState({
+                        error: false,
+                        success: true,
+                        edit: false
+                    });
+                    this.getCourse();
                 }).catch(error => {
                     this.openMessage(error.message);
                     this.setState({
                         error: true,
                         success: false
                     })
-                });
+                })
+        }
+    };
+
+    handleSubmitLesson = (type) => {
+        if (this.state.quiz) {
+            if (this.state.lesson.title === '') {
+                this.openMessage('Preenche o título');
+            } else if (this.state.questionField === '') {
+                this.openMessage('Preenche a pergunta');
+            } else if (this.state.question.answers.length < 1) {
+                this.openMessage('Insira ao menos 1 reposta');
+            } else if (this.verifyAnswers() === false) {
+                this.openMessage('Selecione ao menos 1 reposta correta');
+            } else {
+                this.submitLesson(type, true);
             }
+
+        } else if (this.state.lesson.title !== '') {
+            this.submitLesson(type, false);
+        } else {
+            this.openMessage('Por favor preencha o título');
+        }
+    };
+
+    verifyAnswers = () => {
+        const answers = this.state.question.answers;
+        const newAnswers = answers.filter((elem) => {
+            if (elem.correct) {
+                return answers;
+            }
+        });
+        if (newAnswers.length < 1) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    submitLesson = (type, quiz) => {
+        if (type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
+            if (quiz) {
+                this.fileUpload('', true);
+            } else {
+                this.fileUpload();
+            }
+        } else {
+            axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, {
+                type: this.state.modal.type,
+                title: this.state.lesson.title,
+                content: this.state.lesson.content,
+            }).then(res => {
+                this.openMessage('Lição criada com sucesso');
+                if (quiz) {
+                    this.createQuiz(res.data);
+                }
+                this.setState({
+                    lesson: {
+                        ...this.state.lesson,
+                        type: '',
+                        title: '',
+                        content: ''
+                    },
+                    question: {
+                        course_id: null,
+                        lesson_id: null,
+                        text: '',
+                        active: true,
+                        answers: [
+                        ]
+                    },
+                    questionField: '',
+                    idQuestion: null
+                });
+                this.closeModal();
+                this.loadingLessons();
+            }).catch(error => {
+                this.openMessage(error.message)
+            });
+        }
+    }
+
+    submitEditLesson = (id, question, type, quiz) => {
+        if (type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
+            if (quiz) {
+                if (question) {
+                    this.fileUpload('PUT', true, this.state.idQuestion);
+                } else {
+                    this.fileUpload('PUT', true);
+                }
+            } else {
+                this.fileUpload('PUT', false, id);
+            }
+            this.closeModal();
+            this.setState({
+                lesson: {
+                    ...this.state.lesson,
+                    file: {
+                        file: null,
+                        name: ''
+                    },
+                    type: '',
+                    title: '',
+                    content: ''
+                }
+            });
+        } else {
+            axios.put(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}`, {
+                type: this.state.modal.type,
+                title: this.state.lesson.title,
+                content: this.state.lesson.content,
+            }).then(res => {
+                this.openMessage('Lição atualizada com sucesso');
+                if (quiz) {
+                    if (question) {
+                        console.log(this.state.idQuestion);
+                        console.log(res.data);
+                        this.updateQuiz(res.data, this.state.idQuestion);
+                    } else {
+                        this.createQuiz(res.data);
+                    }
+                }
+                this.setState({
+                    lesson: {
+                        ...this.state.lesson,
+                        type: '',
+                        title: '',
+                        content: ''
+                    },
+                    question: {
+                        course_id: null,
+                        lesson_id: null,
+                        text: '',
+                        active: true,
+                        answers: [
+                        ]
+                    },
+                    questionField: ''
+                });
+                this.closeModal();
+                this.loadingLessons();
+            }).catch(error => {
+                this.openMessage(error.message)
+            });
+        }
+    }
+
+    createQuiz = (idLesson) => {
+        const question = this.state.question;
+        axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons/${idLesson}/questions`, { question })
+            .then(res => {
+                console.log(res);
+            });
+    }
+
+    updateQuiz = (idLesson, idQuestion) => {
+        const question = this.state.question;
+        axios.put(`${API_URL}/api/courses/${this.state.courseID}/lessons/${idLesson}/questions/${idQuestion}`, { question })
+            .then(res => {
+                console.log(res);
+            });
+    }
+
+    handleEditLesson = (type, id) => {
+        if (this.state.quiz) {
+            if (this.state.lesson.title === '') {
+                this.openMessage('Preenche o título');
+            } else if (this.state.questionField === '') {
+                this.openMessage('Preenche a pergunta');
+            } else if (this.state.question.answers.length < 1) {
+                this.openMessage('Insira ao menos 1 reposta');
+            } else if (this.verifyAnswers() === false) {
+                this.openMessage('Selecione ao menos 1 reposta correta');
+            } else {
+                this.submitEditLesson(id, this.state.idQuestion, type, true);
+            }
+
+        } else if (this.state.lesson.title !== '') {
+            this.submitEditLesson(id, this.state.idQuestion, type, false);
         } else {
             this.openMessage('Por favor preencha o título');
         }
@@ -414,6 +521,9 @@ class Page extends React.Component {
             .then(res => {
                 const lessons = res.data;
                 this.setState({ lessons: lessons });
+                if (lessons.length > 6) {
+                    this.setState({ scrolled: true });
+                }
             });
     };
 
@@ -447,7 +557,37 @@ class Page extends React.Component {
             lesson: {
                 title: '',
                 content: ''
-            }
+            },
+            idQuestion: null
+        })
+    }
+
+    cancelEdit = () => {
+        this.setState({
+            lessonID: '',
+            open: false,
+            modal: {
+                ...this.state.modal,
+                type: '',
+                open: false,
+                message: '',
+            },
+            lesson: {
+                title: '',
+                content: ''
+            },
+            question: {
+                course_id: null,
+                quiz_id: null,
+                lesson_id: null,
+                text: '',
+                active: true,
+                answers: [
+                ]
+            },
+            questionField: '',
+            quiz: false,
+            idQuestion: null
         })
     }
 
@@ -537,7 +677,7 @@ class Page extends React.Component {
                         name: file.name
                     }
                 });
-                this.openMessage('');
+                this.openMessage('Vídeo inserido com sucesso');
             } else {
                 this.openMessage('Tipo de arquivo inválido.');
             }
@@ -561,7 +701,7 @@ class Page extends React.Component {
                         name: file.name
                     }
                 });
-                this.openMessage('');
+                this.openMessage('Áudio Inserido com sucesso');
             } else {
                 this.openMessage('Tipo de arquivo inválido.');
             }
@@ -575,20 +715,22 @@ class Page extends React.Component {
                         name: file.name
                     }
                 });
-                this.openMessage('');
+                this.openMessage('Documento Inserido com sucesso');
             } else {
                 this.openMessage('Tipo de arquivo inválido.');
             }
         }
     };
 
-    fileUpload = (type, quiz) => {
+    fileUpload = (type, quiz, id) => {
         const formData = new FormData();
         if (type === 'PUT') {
             formData.append('_method', type);
         }
+
         formData.append('title', this.state.lesson.title);
         formData.append('type', this.state.modal.type);
+
         formData.append('content', this.state.file.file);
 
         const config = {
@@ -597,27 +739,76 @@ class Page extends React.Component {
             }
         };
 
-        axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, formData, config).then((res) => {
-            this.openMessage('Lição inserida com sucesso');
-            this.loadingLessons();
-            if(quiz) {
-                this.createQuiz(res.data);
-            }
-            this.setState({
-                question: {
-                    course_id: null,
-                    quiz_id: null,
-                    lesson_id: null,
-                    text: '',
-                    active: true,
-                    answers: [
-                    ]
-                },
-            })
-        });
+        if (type === 'PUT') {
+            axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}`, formData, config).then((res) => {
+                this.openMessage('Lição atualizada com sucesso');
+                if (quiz) {
+                    if (id) {
+                        this.updateQuiz(res.data, id);
+                    } else {
+                        this.createQuiz(res.data);
+                    }
+                }
+                this.closeModal();
+                this.setState({
+                    lesson: {
+                        ...this.state.lesson,
+                        file: {
+                            file: null,
+                            name: ''
+                        },
+                        type: '',
+                        title: '',
+                        content: '',
+                        idQuestion: null
+                    },
+                    question: {
+                        course_id: null,
+                        quiz_id: null,
+                        lesson_id: null,
+                        text: '',
+                        active: true,
+                        answers: [
+                        ]
+                    },
+                });
+                this.loadingLessons();
+            });
+        } else {
+            axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, formData, config).then((res) => {
+                this.openMessage('Lição inserida com sucesso');
+                if (quiz) {
+                    this.createQuiz(res.data);
+                }
+                this.closeModal();
+                this.setState({
+                    lesson: {
+                        ...this.state.lesson,
+                        file: {
+                            file: null,
+                            name: ''
+                        },
+                        type: '',
+                        title: '',
+                        content: '',
+                        idQuestion: null
+                    },
+                    question: {
+                        course_id: null,
+                        quiz_id: null,
+                        lesson_id: null,
+                        text: '',
+                        active: true,
+                        answers: [
+                        ]
+                    },
+                });
+                this.loadingLessons();
+            });
+        }
     };
 
-    editLesson = (id) => {
+    editLesson = (type, id) => {
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}`)
             .then(res => {
                 const lesson = res.data;
@@ -639,6 +830,24 @@ class Page extends React.Component {
                         }
                     })
                 }
+
+                axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}/questions`)
+                    .then(res => {
+                        if (res.data !== 400) {
+                            const question = res.data;
+                            console.log(question);
+                            this.setState({
+                                question: question,
+                                hasQuiz: true,
+                                questionField: question.text,
+                                quiz: true,
+                                idQuestion: question.id,
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        this.openMessage(error.message)
+                    })
             });
     };
 
@@ -773,8 +982,19 @@ class Page extends React.Component {
         })
     }
 
+    toggleQuiz = id => (event) => {
+        axios.put(`${API_URL}/api/courses/${this.state.course.id}/quiz/${id}`, {
+            active: event.target.checked
+        })
+            .then(res => {
+                this.setState({
+                    activeQuiz: !this.state.activeQuiz
+                })
+            })
+    }
+
     render() {
-        const { course, lessons, message, menu, edit, modal, quiz, question, answerField, questionField } = this.state;
+        const { course, lessons, lesson, message, menu, edit, modal, quiz, question, answerField, questionField, quizCreated, activeQuiz } = this.state;
         return (
             <Admin heading={"Cursos"}>
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
@@ -817,9 +1037,23 @@ class Page extends React.Component {
                                     />
                                 </Grid>
                             </CardContainer>
-                            <Grid container spacing={8}>
-                                <Grid item xs={12} md={12} align={'right'}>
-                                    <br />
+                            <br /><br />
+                            <Grid container spacing={8} justify="flex-end" alignItems="center">
+                                {quizCreated ?
+                                    <Grid item>
+                                        <FormControlLabel
+                                            control={
+                                                <Switch
+                                                    onChange={this.toggleQuiz(this.state.quiz_id)}
+                                                    color='primary'
+                                                    checked={activeQuiz ? true : false}
+                                                />
+                                            }
+                                            label={activeQuiz ? 'Desativar Quiz Final' : 'Ativar Quiz Final'}
+                                        />
+                                    </Grid>
+                                    : null}
+                                <Grid item>
                                     <Button
                                         aria-owns={menu.open ? 'menu-lesson' : undefined}
                                         aria-haspopup="true"
@@ -829,72 +1063,24 @@ class Page extends React.Component {
                                     >
                                         Adicionar lição
                                     </Button>
-                                    <Menu id='menu-lessons' anchorEl={menu.open} open={Boolean(menu.open)} onClose={this.closeMenu}>
-                                        <MenuItem onClick={this.openModal('text')}>
-                                            <ListItemIcon>
-                                                <LibraryBooks />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                Texto
-                                            </ListItemText>
-                                        </MenuItem>
-                                        <MenuItem onClick={this.openModal('video-internal')}>
-                                            <ListItemIcon>
-                                                <VideoLibrary />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                Vídeo Interno
-                                            </ListItemText>
-                                        </MenuItem>
-                                        <MenuItem onClick={this.openModal('video-external')}>
-                                            <ListItemIcon>
-                                                <VideoCam />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                Vídeo Externo
-                                            </ListItemText>
-                                        </MenuItem>
-                                        <MenuItem onClick={this.openModal('audio')}>
-                                            <ListItemIcon>
-                                                <AudioTrack />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                Áudio
-                                            </ListItemText>
-                                        </MenuItem>
-                                        {/* <MenuItem onClick={this.openModal('doc')}>
-                                            <ListItemIcon>
-                                                <InboxIcon />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                Documento
-                                            </ListItemText>
-                                        </MenuItem> */}
-                                        <Divider />
-                                        <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
-                                            <ListItemIcon>
-                                                <QuestionAnswer />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                Quiz
-                                            </ListItemText>
-                                        </MenuItem>
-                                    </Menu>
                                 </Grid>
                             </Grid>
                             <br />
                             <Grid container spacing={8}>
                                 <Grid item xs={12} md={12}>
-                                    <Card>
+                                    <CardContainer>
+                                        <CardHeader title="Lições"></CardHeader>
                                         <Table>
                                             <TableBody>
                                                 {lessons.map((lesson) =>
                                                     <TableRow key={lesson.id}>
                                                         <TableCell>
-                                                            {/* <Button onClick={this.handleEditLesson.bind(this)}>{lesson.title}</Button> */}
                                                             {lesson.title}
                                                         </TableCell>
                                                         <TableCell align={'right'}>
+                                                            <IconButton aria-label="Edit" onClick={this.editLesson.bind(this, lesson.type, lesson.id)}>
+                                                                <EditIcon />
+                                                            </IconButton>
                                                             <IconButton color="secondary" aria-label="Delete" style={{ margin: '0 5px' }} value={lesson.id} onClick={this.handleConfirm.bind(this, lesson.id)}>
                                                                 <DeleteIcon />
                                                             </IconButton>
@@ -904,10 +1090,93 @@ class Page extends React.Component {
                                                 }
                                             </TableBody>
                                         </Table>
-                                    </Card>
+                                    </CardContainer>
                                 </Grid>
                             </Grid>
+                            {this.state.scrolled ?
+                                <React.Fragment>
+                                    <br /><br />
+                                    <Grid container spacing={8} justify="flex-end" alignItems="center">
+                                        {quizCreated ?
+                                            <Grid item>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Switch
+                                                            onChange={this.toggleQuiz(this.state.quiz_id)}
+                                                            color='primary'
+                                                            checked={activeQuiz ? true : false}
+                                                        />
+                                                    }
+                                                    label={activeQuiz ? 'Desativar Quiz Final' : 'Ativar Quiz Final'}
+                                                />
+                                            </Grid>
+                                            : null}
+                                        <Grid item>
+                                            <Button
+                                                aria-owns={menu.open ? 'menu-lesson' : undefined}
+                                                aria-haspopup="true"
+                                                onClick={this.openMenu}
+                                                variant="contained"
+                                                color="primary"
+                                            >
+                                                Adicionar lição
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </React.Fragment>
+                                : null}
                         </Grid>
+                        <Menu id='menu-lessons' anchorEl={menu.open} open={Boolean(menu.open)} onClose={this.closeMenu}>
+                            <MenuItem onClick={this.openModal('text')}>
+                                <ListItemIcon>
+                                    <LibraryBooks />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Texto
+                                            </ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={this.openModal('video-internal')}>
+                                <ListItemIcon>
+                                    <VideoLibrary />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Vídeo Interno
+                                            </ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={this.openModal('video-external')}>
+                                <ListItemIcon>
+                                    <VideoCam />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Vídeo Externo
+                                            </ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={this.openModal('audio')}>
+                                <ListItemIcon>
+                                    <AudioTrack />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Áudio
+                                            </ListItemText>
+                            </MenuItem>
+                            {/* <MenuItem onClick={this.openModal('doc')}>
+                                            <ListItemIcon>
+                                                <InboxIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Documento
+                                            </ListItemText>
+                                        </MenuItem> */}
+                            <Divider />
+                            <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
+                                <ListItemIcon>
+                                    <QuestionAnswer />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Quiz Final
+                                </ListItemText>
+                            </MenuItem>
+                        </Menu>
                         <Grid item xs={12} md={3}>
                             <CardContainer>
                                 <TextField
@@ -976,23 +1245,23 @@ class Page extends React.Component {
                             {course.image ?
                                 <CardContainer>
                                     <Button
-                                    variant="contained"
-                                    component='label'
-                                    disabled={edit}
-                                >
-                                    IMAGEM
+                                        variant="contained"
+                                        component='label'
+                                        disabled={edit}
+                                    >
+                                        IMAGEM
                                     <input type="file" style={{ display: 'none' }} onChange={this.changeImage} />
-                                </Button>
+                                    </Button>
                                     <br /><br />
                                     {this.state.imageEdit ?
                                         this.state.image.file.name
-                                    : <img src={course.image} /> }
+                                        : <img src={course.image} />}
                                 </CardContainer>
                                 : null}
                             <br />
                             <Grid container spacing={8}>
                                 <Grid item xs={6} md={3}>
-                                    <Button variant="contained" size="small" aria-label="Editar" onClick={this.handleEdit}>
+                                    <Button variant="contained" size="small" aria-label="Salvar" onClick={this.handleEdit}>
                                         <EditIcon />
                                     </Button>
                                 </Grid>
@@ -1089,7 +1358,7 @@ class Page extends React.Component {
                                 }}
                             />
                             : null}
-                        {this.state.modal.type === 'video-internal' || this.state.modal.type === 'audio' || this.state.modal.type === 'doc' ?
+                        {this.state.modal.type === 'video-internal' || this.state.modal.type === 'audio' || this.state.modal.type === 'doc' || this.state.modal.type === 'pdf' ?
                             <React.Fragment>
                                 <Grid container spacing={16}>
                                     <Grid item xs={12}>
@@ -1098,9 +1367,10 @@ class Page extends React.Component {
                                     <Grid item md={6}>
                                         <Button
                                             variant="contained"
-                                            component='label' // <-- Just add me!
+                                            component='label'
                                         >
-                                            <input type="file" onChange={this.onChangeFile} />
+                                            Arquivo
+                                            <input type="file" style={{ display: 'none' }} onChange={this.onChangeFile} />
                                         </Button>
                                     </Grid>
                                     <Grid item md={6}>
@@ -1115,7 +1385,7 @@ class Page extends React.Component {
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={quiz}
+                                        checked={quiz ? true : false}
                                         onChange={this.handleCheck}
                                         value={quiz}
                                         color="primary"
@@ -1170,8 +1440,8 @@ class Page extends React.Component {
                                 </Grid>
                                 <Divider />
                                 {question.answers ?
-                                    question.answers.map((answer) =>
-                                        <List dense={true}>
+                                    question.answers.map((answer, index) =>
+                                        <List dense={true} key={'answer' + index}>
                                             <ListItem key={answer.id}>
                                                 <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
                                                     <CheckCircle color={answer.correct ? 'primary' : 'secondary'} />
@@ -1196,15 +1466,15 @@ class Page extends React.Component {
                             : null}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleCancel} color="primary">
+                        <Button onClick={modal.edit ? this.cancelEdit : this.handleCancel} color="primary">
                             Cancel
                         </Button>
-                        {this.state.modal.edit ?
-                            <Button onClick={this.handleSubmitLesson.bind(this, this.state.modal.type, this.state.lesson.id)} color="primary">
-                                Editar
+                        {modal.edit ?
+                            <Button variant="contained" onClick={this.handleEditLesson.bind(this, modal.type, lesson.id)} color="primary">
+                                Salvar
                             </Button>
                             :
-                            <Button onClick={this.handleSubmitLesson.bind(this, this.state.modal.type)} color="primary">
+                            <Button variant="contained" onClick={this.handleSubmitLesson.bind(this, modal.type)} color="primary">
                                 Criar
                             </Button>
                         }

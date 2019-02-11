@@ -22,6 +22,7 @@ import { API_URL } from "../../common/url-types";
 import "video-react/dist/video-react.css";
 import { Player } from 'video-react';
 import ReactPlayer from 'react-player'
+import Message from '../../components/Message';
 import Modules from '../../components/Modules';
 import InfoLesson from '../../components/InfoLesson';
 import Module from '../../components/Module';
@@ -69,7 +70,10 @@ class Page extends React.Component {
                 create_at: '',
                 description: ''
             },
-            message: '',
+            message: {
+                open: false,
+                text: ''
+            },
             onCourse: false,
             progress: 0,
             endLessons: 0,
@@ -86,8 +90,16 @@ class Page extends React.Component {
             },
             answers: [],
             quiz: false,
-            chooses: []
+            chooses: [],
+            finalQuiz: false,
+            quizzes: [],
+            finalQuestions: [],
+            finalChooses: [],
+            finalAnswers: [],
+            dialogQuizFinal: false
         }
+
+        this.openMessage = this.openMessage.bind(this);
     }
 
     getData = () => {
@@ -97,6 +109,7 @@ class Page extends React.Component {
                     const progress = res.data.progress;
                     const course = res.data;
                     this.setState({ course: course, progress: progress });
+                    this.getFinalQuiz();
                 } else {
                     this.setState({ onCourse: true })
                 }
@@ -107,7 +120,6 @@ class Page extends React.Component {
         axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons`)
             .then(res => {
                 const lessons = res.data.lessons;
-                console.log(lessons);
                 let endLessons = lessons.filter(lesson => {
                     if (lesson.view === false || lesson.view === null) {
                         return lessons
@@ -133,7 +145,59 @@ class Page extends React.Component {
                     endLessons: endLessons.length,
                 });
             });
+
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}/quiz`)
+        .then(res => {
+            this.setState({
+                quiz_id: res.data
+            })
+        })
+
     };
+
+    getFinalQuiz = () => {
+        axios.get(`${API_URL}/api/users/${this.state.user.id}/points`)
+        .then(res => {
+            console.log(res);
+        })
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}/active`)
+            .then(res => {
+                if (res.data != null && res.data === 1) {
+                    this.setState({
+                        finalQuiz: true
+                    });
+                    axios.get(`${API_URL}/api/courses/${this.state.courseID}/final`)
+                        .then(res => {
+                            const questions = res.data;
+                            questions.map((question) => {
+                                question.answers.map((answer) => {
+                                    this.setState(prevState => ({
+                                        finalChooses: [
+                                            ...prevState.finalChooses,
+                                            {
+                                                id: answer.id,
+                                                text: answer.text,
+                                                correct: false
+                                            }
+                                        ],
+                                        finalAnswers: [
+                                            ...prevState.finalAnswers,
+                                            {
+                                                id: answer.id,
+                                                text: answer.text,
+                                                correct: answer.correct ? true : false
+                                            }
+                                        ],
+                                    }))
+                                })
+                            });
+                            this.setState({
+                                finalQuestions: questions,
+                            });
+                        })
+                }
+            });
+    }
 
     componentDidMount() {
         this.getData();
@@ -326,19 +390,19 @@ class Page extends React.Component {
     openQuiz = (id) => {
         this.setState({
             currentLesson: id
-        })
+        });
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}/questions`)
             .then(res => {
                 const result = res.data;
-                console.log(result);
                 this.setState({
                     question: {
-                        id: result.question.id,
-                        'text': result.question.text,
+                        id: result.id,
+                        'text': result.text,
                     },
                     quiz: true
                 })
-                result.answers.map((answer) => {
+                const answers = result.answers;
+                answers.map((answer) => {
                     this.setState(prevState => ({
                         chooses: [
                             ...prevState.chooses,
@@ -353,7 +417,7 @@ class Page extends React.Component {
                             {
                                 id: answer.id,
                                 text: answer.text,
-                                correct: answer.correct
+                                correct: answer.correct ? true : false
                             }
                         ]
                     }))
@@ -375,8 +439,6 @@ class Page extends React.Component {
     endQuiz = (id) => {
         const correctAnswers = this.state.answers;
         let chooses = this.state.chooses;
-        console.log(correctAnswers);
-        console.log(chooses);
         if (JSON.stringify(chooses) === JSON.stringify(correctAnswers)) {
             axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
                 .then(res => {
@@ -401,6 +463,7 @@ class Page extends React.Component {
                 finish: finish
             })
                 .then(res => {
+                    this.openMessage('Resposta Correta');
                     this.getLessons();
                     this.getLesson(id);
 
@@ -411,12 +474,87 @@ class Page extends React.Component {
                     this.closeQuiz();
                 });
         } else {
-            console.log('Diferente');
+            this.openMessage('Resposta Errada');
         }
     }
 
+    handleCheckFinal = (id) => event => {
+        const finalChooses = this.state.finalChooses;
+        let newChooses = finalChooses.filter(choose => {
+            if (choose.id === id) {
+                choose.correct = event.target.checked
+            }
+            return finalChooses
+        });
+        console.log(finalChooses)
+        this.setState({
+            finalChooses: newChooses
+        });
+    }
+
+    endFinal = () => {
+        const correctAnswers = this.state.finalAnswers;
+        let chooses = this.state.finalChooses;
+        console.log(correctAnswers);
+        console.log(chooses);
+        if (JSON.stringify(chooses) === JSON.stringify(correctAnswers)) {
+            this.openMessage('Parabéns');
+            this.endCourse(this.state.course.id, true);
+        } else {
+            this.openMessage('Respostas Erradas');
+        }
+    }
+
+    endCourse = (course, quiz) => {
+        const day = new Date();
+        const month = day.getMonth() + 1;
+        const finish = day.getFullYear() + '-' + month + '-' + day.getDate();
+        if (quiz) {
+            axios.post(`${API_URL}/api/users/${this.state.user.id}/courses/${course}/quiz/${this.state.quiz_id}/points`)
+                .then(res => {
+                    console.log(res);
+                })
+        }
+        axios.put(`${API_URL}/api/users/${this.state.user.id}/courses/${course}`, {
+            finish: finish
+        })
+            .then(res => {
+                console.log(res);
+            });
+    }
+
+    openFinal = () => {
+        this.setState({
+            dialogQuizFinal: true
+        })
+    }
+
+    cancelFinal = () => {
+        this.setState({
+            dialogQuizFinal: false
+        });
+    }
+
+    openMessage = (message) => {
+        this.setState({
+            message: {
+                open: true,
+                text: message
+            }
+        })
+    }
+
+    closeMessage = () => {
+        this.setState({
+            message: {
+                open: false,
+                text: ''
+            }
+        })
+    }
+
     render() {
-        const { course, modal, courseID, lessons, lesson, endLessons, progress, activeLesson, question, chooses } = this.state;
+        const { course, modal, courseID, lessons, lesson, endLessons, progress, activeLesson, question, chooses, message } = this.state;
         if (this.state.onCourse === true) {
             return <Redirect to={'/courses/' + courseID + '/details'} />
         } else if (this.state.notFound) {
@@ -424,6 +562,7 @@ class Page extends React.Component {
         }
         return (
             <div>
+                <Message close={this.closeMessage} text={message.text} open={message.open} />
                 <Navigation />
                 <main className="fadeIn animated">
                     <Banner
@@ -432,6 +571,12 @@ class Page extends React.Component {
                         image={course.image}
                     />
                     <Container>
+                        <br /><br />
+                        {this.state.finalQuiz && this.state.progress > 98 ?
+                            <Grid container justify={'center'}>
+                                <Button variant="contained" onClick={this.openFinal}>Realizar teste final</Button>
+                            </Grid>
+                            : null}
                         {lessons ?
                             <Stepper
                                 activeStep={activeLesson}
@@ -441,7 +586,7 @@ class Page extends React.Component {
                             >
                                 {lessons.map((lesson, index) => (
                                     <Step key={lesson.id}>
-                                        <StepButton onClick={this.handleStep.bind(this, index)} completed={lesson.view}>
+                                        <StepButton onClick={this.handleStep.bind(this, index)} completed={lesson.view ? true : false}>
                                             {lesson.title} | {index}
                                         </StepButton>
                                         <StepContent>
@@ -573,6 +718,52 @@ class Page extends React.Component {
                         <Button onClick={this.endQuiz.bind(this, this.state.currentLesson)} color="primary" autoFocus>
                             Enviar
                         </Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog
+                    open={this.state.dialogQuizFinal}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    fullScreen
+                    onClose={this.closeQuiz}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle id="alert-dialog-slide-title" align="center" component="h2">
+                        Teste Final
+                            </DialogTitle>
+                    <DialogContent>
+                        <FormControl component="fieldset">
+                            {this.state.finalQuestions.map((question) =>
+                                <React.Fragment key={question.id}>
+                                    <DialogTitle>
+                                        {question.text}
+                                    </DialogTitle>
+                                    <DialogContentText>
+                                        <FormGroup>
+                                            {question.answers.map((choose, index) =>
+                                                <FormControlLabel
+                                                    key={choose.id}
+                                                    control={
+                                                        <Checkbox color={'primary'} onChange={this.handleCheckFinal(choose.id)} />
+                                                    }
+                                                    label={choose.text}
+                                                />
+                                            )}
+                                        </FormGroup>
+                                    </DialogContentText>
+                                </React.Fragment>
+                            )}
+                        </FormControl>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelFinal} color="primary" autoFocus>
+                            Cancelar
+                            </Button>
+                        <Button variant="contained" onClick={this.endFinal.bind(this)} color="primary" autoFocus>
+                            Enviar
+                            </Button>
                     </DialogActions>
                 </Dialog>
             </div>

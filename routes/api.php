@@ -53,9 +53,11 @@ Route::post('levels', 'Api\LevelsController@makeLevels');
 //Quiz routes
 Route::resource('courses/{course}/quiz', 'Api\QuizController');
 Route::get('courses/{course}/final', 'Api\QuizController@final');
+Route::get('courses/{course}/active', 'Api\QuizController@quizFinalActive');
 Route::get('courses/{course}/questions', 'Api\QuizController@questions');
-Route::post('courses/{course}/final/activate', 'Api\QuizController@activeteFinal');
-Route::post('courses/{course}/final/deactivate', 'Api\QuizController@deactivateFinal');
+Route::put('courses/{course}/questions/{question}', 'Api\QuizController@updateQuestion');
+Route::post('courses/{course}/final/activate', 'Api\QuizController@activateFinal');
+Route::post('courses/{course}/final/desactivate', 'Api\QuizController@desactivateFinal');
 
 //Questions routes
 Route::resource('courses/{course}/quiz/{quiz}/questions', 'Api\QuestionsController');

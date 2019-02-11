@@ -33,6 +33,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckCircle from '@material-ui/icons/CheckCircle';
@@ -70,7 +71,9 @@ class Page extends React.Component {
                 open: false
             },
             questionField: '',
-            answerField: ''
+            answerField: '',
+            activateAll: false,
+            returnCourse: false
         }
         this.openMessage = this.openMessage.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
@@ -115,16 +118,43 @@ class Page extends React.Component {
                     },
                     questionField: ''
                 });
+                var newQuestions = results.filter((elem, i, array) => {
+                    if (elem.active === 1) {
+                        return results
+                    }
+                });
+                if (newQuestions.length < 1) {
+                    this.setState({
+                        activateAll: false
+                    })
+                } else {
+                    this.setState({
+                        activateAll: true
+                    })
+                }
             }).catch(error => {
                 console.log(error)
             })
     };
 
     toggleAll = () => {
-        axios.post(`${API_URL}/api/courses/${this.state.course}/final/activate`)
-            .then(res => {
-                this.getQuestions();
-            })
+        const questions = this.state.results;
+        var newQuestions = questions.filter((elem, i, array) => {
+            if (elem.active === 1) {
+                return questions
+            }
+        });
+        if (newQuestions.length < 1) {
+            axios.post(`${API_URL}/api/courses/${this.state.course}/final/activate`)
+                .then(res => {
+                    this.getQuestions();
+                })
+        } else {
+            axios.post(`${API_URL}/api/courses/${this.state.course}/final/desactivate`)
+                .then(res => {
+                    this.getQuestions();
+                })
+        }
     }
 
     handleDelete = () => {
@@ -161,16 +191,20 @@ class Page extends React.Component {
 
     handleToggle = id => event => {
         const questions = this.state.results;
-        console.log(event.target.checked);
         var newQuestions = questions.filter((elem, i, array) => {
             if (elem.id === id) {
                 elem.active = event.target.checked;
             }
             return questions
         });
-        this.setState({
-            results: newQuestions
+        axios.put(`${API_URL}/api/courses/${this.state.course}/questions/${id}`, {
+            active: event.target.checked
         })
+            .then(res => {
+                this.setState({
+                    results: newQuestions
+                })
+            })
     };
 
     addAnswer = () => {
@@ -253,12 +287,22 @@ class Page extends React.Component {
 
     handleSubmitQuestion = () => {
         const question = this.state.question;
-        axios.post(`${API_URL}/api/courses/${this.state.course}/quiz/${this.state.quiz_id}/questions`, {question})
-            .then(res => {
-                this.openMessage('Questão Inserida com sucesso!');
-                this.getQuestions();
-                this.closeModal();
-            })
+        const answers = question.answers;
+        const newAnswers = answers.filter((elem) => {
+            if (elem.correct) {
+                return answers
+            }
+        });
+        if (newAnswers.length < 1) {
+            this.openMessage('Selecione ao menos 1 resposta correta');
+        } else {
+            axios.post(`${API_URL}/api/courses/${this.state.course}/quiz/${this.state.quiz_id}/questions`, { question })
+                .then(res => {
+                    this.openMessage('Questão Inserida com sucesso!');
+                    this.getQuestions();
+                    this.closeModal();
+                })
+        }
     }
 
     openModal = type => () => {
@@ -274,24 +318,49 @@ class Page extends React.Component {
         }
     });
 
+    createQuiz = () => {
+        axios.put(`${API_URL}/api/courses/${this.state.course}/quiz/${this.state.quiz_id}`, {
+            active: 1
+        })
+        .then(res => {
+            this.openMessage('Quiz criado com sucesso');
+            setTimeout(function () {
+                this.setState({
+                    returnCourse: true
+                })
+            }.bind(this), 3000);
+        })
+    }
+
     render() {
-        const { message, questions, results, modal, questionField, answerField, question } = this.state;
-        // if (this.state.quizEdit === true) {
-        //     return <Redirect to={'/admin/courses/' + this.state.courseID} />
-        // }
+        const { message, questions, results, modal, questionField, answerField, question, activateAll } = this.state;
+        if (this.state.returnCourse === true) {
+            return <Redirect to={'/admin/courses/' + this.state.course} />
+        }
         return (
             <Admin heading="Quiz">
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
                 <Grid container justify='space-between'>
                     <Grid item xs={3} align='left'>
-                        <Button variant="outlined" color="primary" onClick={this.toggleAll}>
-                            Adicionar todos
-                        </Button>
+                        <br /><br /><br />
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    onChange={this.toggleAll}
+                                    color='primary'
+                                    value={activateAll}
+                                    checked={activateAll}
+                                />
+                            }
+                            label={activateAll ? 'Remover todos' : 'Adicionar todos'}
+                        />
                     </Grid>
                     <Grid item xs={3} align='right'>
                         <Button variant="contained" color="primary" onClick={this.openModal('quiz')}>
                             Criar Nova Pergunta
                         </Button>
+                        <br /><br />
+                        <Button variant={'contained'} onClick={this.createQuiz}>Salvar</Button>
                     </Grid>
                 </Grid>
                 <form>
@@ -413,6 +482,28 @@ class Page extends React.Component {
                     </DialogActions>
                 </Dialog>
 
+                {/* <Dialog
+                    open={this.state.confirm}
+                    onClose={this.handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Tem cer"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Let Google help apps determine location. This means sending anonymous location data to
+                            Google, even when no apps are running.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                            Disagree
+                        </Button>
+                        <Button onClick={this.handleClose} color="primary" autoFocus>
+                            Agree
+                        </Button>
+                    </DialogActions>
+                </Dialog> */}
             </Admin>
         );
     }
