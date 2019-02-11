@@ -16,7 +16,7 @@ class QuizQuestionSeed extends Seeder
             // ['quiz_id'=> 1,'question_id'=>2],
             // ['quiz_id'=> 1,'question_id'=>3],
 
-            // ['quiz_id'=> 2,'question_id'=>4],
+            // ['quiz_id'=> 2,'question_id'=>2],
             // ['quiz_id'=> 2,'question_id'=>5],
             // ['quiz_id'=> 2,'question_id'=>6],
         ];

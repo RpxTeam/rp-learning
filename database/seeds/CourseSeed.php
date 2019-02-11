@@ -141,7 +141,7 @@ class CourseSeed extends Seeder
 
 
 
-        // for($i=0;$i<5;$i++){
+        // for($i=0;$i<2;$i++){
         //     \App\Course::create([
         //         'title' => $faker->word,
         //         'slug' => $faker->word,

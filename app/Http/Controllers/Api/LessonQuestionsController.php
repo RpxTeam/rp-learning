@@ -25,9 +25,8 @@ class LessonQuestionsController extends Controller
         $lesson = Lesson::findOrFail($lesson);
 
         $question = Question::lessonQuestion($course->id, $lesson->id);
-        $answers = Question::onlyAnswers($question->id);
 
-        return response()->json(['question'=>$question,'answers'=> $answers], 200);
+        return response()->json($question, 200);
     }
 
     /**
