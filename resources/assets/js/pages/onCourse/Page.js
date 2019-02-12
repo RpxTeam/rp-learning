@@ -151,7 +151,6 @@ class Page extends React.Component {
                 this.setState({
                     quiz_id: res.data
                 })
-                console.log(res.data);
                 this.verifyFinalComplete();
             })
 
@@ -173,7 +172,6 @@ class Page extends React.Component {
             })
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/active`)
             .then(res => {
-                console.log(res);
                 if ((res.data != null && res.data === 1) || (res.data != null && res.data === "1")) {
                     this.setState({
                         finalQuiz: true
@@ -451,8 +449,6 @@ class Page extends React.Component {
     endQuiz = (id) => {
         const correctAnswers = this.state.answers;
         let chooses = this.state.chooses;
-        console.log(correctAnswers);
-        console.log(chooses);
         if (JSON.stringify(chooses) === JSON.stringify(correctAnswers)) {
             axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
                 .then(res => {
@@ -509,6 +505,8 @@ class Page extends React.Component {
     endFinal = () => {
         const correctAnswers = this.state.finalAnswers;
         let chooses = this.state.finalChooses;
+        console.log(correctAnswers)
+        console.log(chooses);
         if (JSON.stringify(chooses) === JSON.stringify(correctAnswers)) {
             this.endCourse(this.state.course.id, true);
             this.setState({

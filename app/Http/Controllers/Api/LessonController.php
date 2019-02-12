@@ -65,13 +65,6 @@ class LessonController extends Controller
      */
     public function store(Request $request,$course)
     {
-        /* Open a socket to port 1234 on localhost */
-        $socket = stream_socket_client('tcp://127.0.0.1:8000');
-
-        /* Send ordinary data via ordinary channels. */
-        // dd($socket, "Normal data transmit.");
-        dd($request, "Normal data transmit.");
-
         if($request->hasFile('content') && $request->file('content')->isValid()){
             $validator = Validator::make($request->all(),[
                 'order' => 'nullable|numeric',

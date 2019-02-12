@@ -299,7 +299,6 @@ class Page extends React.Component {
                     this.setState({
                         error: false,
                         success: true,
-                        courseID: res.data,
                         edit: !this.state.edit
                     });
 
@@ -363,7 +362,7 @@ class Page extends React.Component {
     verifyAnswers = () => {
         const answers = this.state.question.answers;
         const newAnswers = answers.filter((elem) => {
-            if (elem.correct) {
+            if (elem.correct === 1 || elem.correct === "1" || elem.correct === true) {
                 return answers;
             }
         });
@@ -994,7 +993,7 @@ class Page extends React.Component {
         const question = this.state.question;
         var newAnswers = question.answers.filter((elem, i, array) => {
             if (elem.id === id) {
-                if (elem.correct) {
+                if (elem.correct === 1 || elem.correct === "1"|| elem.correct === true) {
                     elem.correct = false;
                 } else {
                     elem.correct = true;
@@ -1290,22 +1289,20 @@ class Page extends React.Component {
                                 </MuiPickersUtilsProvider>
                             </CardContainer>
                             <br />
-                            {course.image ?
-                                <CardContainer>
-                                    <Button
-                                        variant="contained"
-                                        component='label'
-                                        disabled={edit}
-                                    >
-                                        IMAGEM
-                                    <input type="file" style={{ display: 'none' }} onChange={this.changeImage} />
-                                    </Button>
-                                    <br /><br />
-                                    {this.state.imageEdit ?
-                                        this.state.image.file.name
-                                        : <img src={course.image} />}
-                                </CardContainer>
-                                : null}
+                            <CardContainer>
+                                <Button
+                                    variant="contained"
+                                    component='label'
+                                    disabled={edit}
+                                >
+                                    IMAGEM
+                                <input type="file" style={{ display: 'none' }} onChange={this.changeImage} />
+                                </Button>
+                                <br /><br />
+                                {this.state.imageEdit ?
+                                    this.state.image.file.name
+                                    : <img src={course.image} />}
+                            </CardContainer>
                             <br />
                             <Grid container spacing={8}>
                                 <Grid item xs={6} md={3}>
@@ -1385,6 +1382,7 @@ class Page extends React.Component {
                                 label="Conteúdo Web"
                                 name="web-content"
                                 onChange={this.updateLesson}
+                                value={this.state.lesson.content}
                                 margin="normal"
                                 variant="outlined"
                                 fullWidth
@@ -1401,6 +1399,7 @@ class Page extends React.Component {
                                 margin="normal"
                                 variant="outlined"
                                 fullWidth
+                                value={this.state.lesson.content}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -1492,7 +1491,7 @@ class Page extends React.Component {
                                         <List dense={true} key={'answer' + index}>
                                             <ListItem key={answer.id}>
                                                 <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
-                                                    <CheckCircle color={answer.correct ? 'primary' : 'secondary'} />
+                                                    <CheckCircle color={answer.correct === 1 || answer.correct === "1" || answer.correct === true ? 'primary' : 'secondary'} />
                                                 </IconButton>
                                                 {this.state.editAnswer === answer.id ?
                                                     <TextField
