@@ -142,7 +142,8 @@ class Page extends React.Component {
             activeQuiz: false,
             quizCreated: false,
             scrolled: false,
-            idQuestion: null
+            idQuestion: null,
+            editAnswer: null
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -193,8 +194,14 @@ class Page extends React.Component {
         this.loadingLessons();
     }
 
-    getCourse = () => {
-        axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
+    getCourse = (id) => {
+        let course;
+        if (id) {
+            course = id
+        } else {
+            course = this.state.courseID
+        }
+        axios.get(`${API_URL}/api/courses/${course}`)
             .then(res => {
                 const course = res.data;
                 let start_date, end_date;
@@ -214,7 +221,8 @@ class Page extends React.Component {
                     },
                     image: {
                         file: course.image,
-                    }
+                    },
+                    imageEdit: false
                 });
             });
     }
@@ -271,7 +279,7 @@ class Page extends React.Component {
 
             const formData = new FormData();
 
-            formData.append('_methor', 'PUT');
+            formData.append('_method', 'PUT');
             formData.append('title', this.state.course.title);
             formData.append('description', this.state.course.description);
             formData.append('duration', this.state.course.duration);
@@ -286,16 +294,20 @@ class Page extends React.Component {
                 }
             };
 
-            axios.post(`${API_URL}/api/courses`, formData, config)
+            axios.post(`${API_URL}/api/courses/${this.state.courseID}`, formData, config)
                 .then((res) => {
                     this.setState({
                         error: false,
                         success: true,
                         courseID: res.data,
-                        edit: false
+                        edit: !this.state.edit
                     });
 
                     this.openMessage('Curso atualizado com sucesso');
+
+                    setTimeout(function () {
+                        this.getCourse(this.state.course.id);
+                    }.bind(this), 2000);
                 })
                 .catch((error) => {
                     this.openMessage(error.message);
@@ -314,7 +326,7 @@ class Page extends React.Component {
                     this.setState({
                         error: false,
                         success: true,
-                        edit: false
+                        edit: !this.state.edit
                     });
                     this.getCourse();
                 }).catch(error => {
@@ -395,7 +407,11 @@ class Page extends React.Component {
                         ]
                     },
                     questionField: '',
-                    idQuestion: null
+                    idQuestion: null,
+                    file: {
+                        file: null,
+                        name: ''
+                    }
                 });
                 this.closeModal();
                 this.loadingLessons();
@@ -558,7 +574,11 @@ class Page extends React.Component {
                 title: '',
                 content: ''
             },
-            idQuestion: null
+            idQuestion: null,
+            file: {
+                file: null,
+                name: ''
+            }
         })
     }
 
@@ -587,7 +607,11 @@ class Page extends React.Component {
             },
             questionField: '',
             quiz: false,
-            idQuestion: null
+            idQuestion: null,
+            file: {
+                file: null,
+                name: ''
+            }
         })
     }
 
@@ -771,6 +795,7 @@ class Page extends React.Component {
                         answers: [
                         ]
                     },
+                    quiz: false
                 });
                 this.loadingLessons();
             });
@@ -802,6 +827,7 @@ class Page extends React.Component {
                         answers: [
                         ]
                     },
+                    quiz: false
                 });
                 this.loadingLessons();
             });
@@ -940,6 +966,28 @@ class Page extends React.Component {
                 answers: newAnswers
             }
         })
+    }
+
+    editAnswer = id => (event) => {
+        this.setState({
+            editAnswer: id
+        })
+    }
+
+    handleEditAnswer = (event) => {
+        const answers = this.state.question.answers;
+        const newAnswers = answers.filter((elem) => {
+            if((elem.id === this.state.editAnswer)) {
+                elem.text = event.target.value
+            }
+            return answers;
+        });
+        this.setState(prevState => ({
+            questions: {
+                ...prevState.questions,
+                answers: newAnswers
+            }
+        }))
     }
 
     correctAnswser = (id) => {
@@ -1446,11 +1494,21 @@ class Page extends React.Component {
                                                 <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
                                                     <CheckCircle color={answer.correct ? 'primary' : 'secondary'} />
                                                 </IconButton>
-                                                <ListItemText
-                                                    primary={answer.text}
-                                                />
+                                                {this.state.editAnswer === answer.id ?
+                                                    <TextField
+                                                        id="outlined-bare"
+                                                        defaultValue={answer.text}
+                                                        margin="normal"
+                                                        variant="outlined"
+                                                        onChange={this.handleEditAnswer}
+                                                    />
+                                                    :
+                                                    <ListItemText
+                                                        primary={answer.text}
+                                                    />
+                                                }
                                                 <ListItemSecondaryAction>
-                                                    <IconButton aria-label="Edit">
+                                                    <IconButton aria-label="Edit" onClick={this.editAnswer(answer.id)}>
                                                         <EditIcon />
                                                     </IconButton>
                                                     <IconButton aria-label="Delete" onClick={this.removeAnswer.bind(this, answer.id)}>

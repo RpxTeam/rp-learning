@@ -64,4 +64,22 @@ class DataPointController extends Controller
         
         return response()->json(['count' => $count,'total' => $total], 200);
     }
+
+    public function final($user, $course, $quiz){
+        $user = User::findOrFail($user);
+        $course = Course::findOrFail($course);
+        $quiz = Quiz::findOrFail($quiz);
+
+        $final = DB::table('data_points')
+                    ->where('user_id', $user->id)
+                    ->where('course_id', $course->id)
+                    ->where('quiz_id', $quiz->id)
+                    ->first();
+        
+        if(empty($final)){
+            return response()->json(400);
+        }else{
+            return response()->json(200);
+        }
+    }
 }

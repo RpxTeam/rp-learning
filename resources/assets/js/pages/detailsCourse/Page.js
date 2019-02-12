@@ -45,7 +45,8 @@ class Page extends React.Component {
                 description: ''
             },
             message: '',
-            onCourse: false
+            onCourse: false,
+            value: 0
         }
     }
 

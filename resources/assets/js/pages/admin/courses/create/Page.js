@@ -200,7 +200,6 @@ class Page extends React.Component {
         day = date.getDate();
         month = date.getMonth() + 1;
         year = date.getFullYear();
-        console.log(typeof day);
         const newDate = year + '-' + month + '-' + day;
 
         return newDate
@@ -259,8 +258,9 @@ class Page extends React.Component {
             }
         };
 
-        axios.post(`${API_URL}/api/courses/${this.state.courseID}`, formData, config)
+        axios.post(`${API_URL}/api/courses`, formData, config)
             .then((res) => {
+                console.log(res.data);
                 this.setState({
                     error: false,
                     success: true,

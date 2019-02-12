@@ -73,7 +73,9 @@ class Page extends React.Component {
             questionField: '',
             answerField: '',
             activateAll: false,
-            returnCourse: false
+            returnCourse: false,
+            editQuestion: false,
+            editAnswer: null
         }
         this.openMessage = this.openMessage.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
@@ -119,7 +121,8 @@ class Page extends React.Component {
                     questionField: ''
                 });
                 var newQuestions = results.filter((elem, i, array) => {
-                    if (elem.active === 1) {
+                    console.log(elem.active);
+                    if (elem.active === 1 || elem.active === "1") {
                         return results
                     }
                 });
@@ -140,7 +143,7 @@ class Page extends React.Component {
     toggleAll = () => {
         const questions = this.state.results;
         var newQuestions = questions.filter((elem, i, array) => {
-            if (elem.active === 1) {
+            if (elem.active === 1 || elem.active === "1") {
                 return questions
             }
         });
@@ -197,10 +200,12 @@ class Page extends React.Component {
             }
             return questions
         });
+        console.log(newQuestions);
         axios.put(`${API_URL}/api/courses/${this.state.course}/questions/${id}`, {
             active: event.target.checked
         })
             .then(res => {
+                console.log(res);
                 this.setState({
                     results: newQuestions
                 })
@@ -250,6 +255,28 @@ class Page extends React.Component {
 
     }
 
+    editAnswer = id => (event) => {
+        this.setState({
+            editAnswer: id
+        })
+    }
+
+    handleEditAnswer = (event) => {
+        const answers = this.state.question.answers;
+        const newAnswers = answers.filter((elem) => {
+            if((elem.id === this.state.editAnswer)) {
+                elem.text = event.target.value
+            }
+            return answers;
+        });
+        this.setState(prevState => ({
+            questions: {
+                ...prevState.questions,
+                answers: newAnswers
+            }
+        }))
+    }
+
     removeAnswer = (id) => {
         const question = this.state.question;
         var newAnswers = question.answers.filter((elem, i, array) => {
@@ -269,10 +296,10 @@ class Page extends React.Component {
         const question = this.state.question;
         var newAnswers = question.answers.filter((elem, i, array) => {
             if (elem.id === id) {
-                if (elem.correct) {
-                    elem.correct = false;
+                if (elem.correct === 1 || elem.correct === "1") {
+                    elem.correct = 0;
                 } else {
-                    elem.correct = true;
+                    elem.correct = 1;
                 }
             }
             return question.answers
@@ -305,8 +332,19 @@ class Page extends React.Component {
         }
     }
 
-    openModal = type => () => {
+    openModal = (type, id) => () => {
         this.setState({ modal: { type: type, open: true } });
+        if (type === 'edit') {
+            axios.get(`${API_URL}/api/courses/${this.state.course}/questions/${id}`)
+                .then(res => {
+                    const question = res.data;
+                    this.setState({
+                        editQuestion: true,
+                        question: question,
+                        questionField: question.text
+                    })
+                })
+        }
     };
 
     closeModal = () => this.setState({
@@ -315,21 +353,63 @@ class Page extends React.Component {
             type: '',
             open: false,
             message: ''
-        }
+        },
+        question: {
+            course_id: this.props.match.params.id,
+            quiz_id: null,
+            lesson_id: null,
+            text: '',
+            active: true,
+            answers: [
+            ]
+        },
+        questionField: '',
+        editQuestion: false,
+        editAnswer: null
     });
 
     createQuiz = () => {
         axios.put(`${API_URL}/api/courses/${this.state.course}/quiz/${this.state.quiz_id}`, {
             active: 1
         })
-        .then(res => {
-            this.openMessage('Quiz criado com sucesso');
-            setTimeout(function () {
-                this.setState({
-                    returnCourse: true
-                })
-            }.bind(this), 3000);
-        })
+            .then(res => {
+                this.openMessage('Quiz criado com sucesso');
+                setTimeout(function () {
+                    this.setState({
+                        returnCourse: true
+                    })
+                }.bind(this), 3000);
+            })
+    }
+
+    handleEditQuestion = () => {
+        const question = this.state.question;
+        const answers = question.answers;
+        const newAnswers = answers.filter((elem) => {
+            if (elem.correct) {
+                return answers
+            }
+        });
+        if (newAnswers.length < 1) {
+            this.openMessage('Selecione ao menos 1 resposta correta');
+        } else {
+            console.log(question);
+            if (question.quiz_id) {
+                axios.put(`${API_URL}/api/courses/${this.state.course}/quiz/${question.quiz_id}/questions/${question.id}`, { question })
+                    .then(res => {
+                        this.openMessage('Pergunta Atualizada com sucesso!');
+                        this.getQuestions();
+                        this.closeModal();
+                    })
+            } else {
+                axios.put(`${API_URL}/api/courses/${this.state.course}/lessons/${question.lesson_id}/questions/${question.id}`, { question })
+                    .then(res => {
+                        this.openMessage('Pergunta Atualizada com sucesso!');
+                        this.getQuestions();
+                        this.closeModal();
+                    })
+            }
+        }
     }
 
     render() {
@@ -376,9 +456,14 @@ class Page extends React.Component {
                                                     onChange={this.handleToggle(question.id)}
                                                     color='primary'
                                                     value={question.id}
-                                                    checked={question.active ? true : false}
+                                                    checked={question.active === 1 || question.active === "1" || question.active === true ? true : false}
                                                 />
                                                 <ListItemText primary={question.text} secondary={question.created_at} />
+                                                <ListItemSecondaryAction>
+                                                    <IconButton aria-label="Edit" onClick={this.openModal('edit', question.id)}>
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </ListItemSecondaryAction>
                                             </ListItem>
                                         </React.Fragment>
                                     )
@@ -397,7 +482,7 @@ class Page extends React.Component {
                     aria-labelledby="confirmation-dialog-title"
                     variant="outlined"
                 >
-                    <DialogTitle id="confirmation-dialog-title">Criar Pergunta</DialogTitle>
+                    <DialogTitle id="confirmation-dialog-title">{this.state.editQuestion ? 'Editar ' : 'Criar '}Pergunta</DialogTitle>
                     <DialogContent>
                         <TextField
                             label="Pergunta"
@@ -447,13 +532,23 @@ class Page extends React.Component {
                                 <List dense={true} key={answer.id}>
                                     <ListItem key={answer.id}>
                                         <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
-                                            <CheckCircle color={answer.correct ? 'primary' : 'secondary'} />
+                                            <CheckCircle color={answer.correct === "1" || answer.correct === 1 ? 'primary' : 'secondary'} />
                                         </IconButton>
-                                        <ListItemText
-                                            primary={answer.text}
-                                        />
+                                        {this.state.editAnswer === answer.id ?
+                                            <TextField
+                                                id="outlined-bare"
+                                                defaultValue={answer.text}
+                                                margin="normal"
+                                                variant="outlined"
+                                                onChange={this.handleEditAnswer}
+                                            />
+                                        : 
+                                            <ListItemText
+                                                primary={answer.text}
+                                            />
+                                        }
                                         <ListItemSecondaryAction>
-                                            <IconButton aria-label="Edit">
+                                            <IconButton aria-label="Edit" onClick={this.editAnswer(answer.id)}>
                                                 <EditIcon />
                                             </IconButton>
                                             <IconButton aria-label="Delete" onClick={this.removeAnswer.bind(this, answer.id)}>
@@ -470,40 +565,15 @@ class Page extends React.Component {
                         <Button onClick={this.closeModal} color="primary">
                             Cancelar
                         </Button>
-                        {this.state.modal.edit ?
-                            <Button color='primary' variant='contained' onClick={this.handleSubmitQuestion.bind(this, this.state.modal.type, this.state.lesson.id)} color="primary">
-                                Editar
-                            </Button>
-                            :
-                            <Button color='primary' variant='contained' onClick={this.handleSubmitQuestion.bind(this, this.state.modal.type)} color="primary">
-                                Criar
-                            </Button>
-                        }
+                        <Button
+                            color='primary'
+                            variant='contained'
+                            onClick={this.state.editQuestion ? this.handleEditQuestion.bind(this, this.state.modal.type) : this.handleSubmitQuestion.bind(this, this.state.modal.type)}
+                            color="primary">
+                            {this.state.editQuestion ? 'Salvar' : 'Criar'}
+                        </Button>
                     </DialogActions>
                 </Dialog>
-
-                {/* <Dialog
-                    open={this.state.confirm}
-                    onClose={this.handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"Tem cer"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Let Google help apps determine location. This means sending anonymous location data to
-                            Google, even when no apps are running.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                            Disagree
-                        </Button>
-                        <Button onClick={this.handleClose} color="primary" autoFocus>
-                            Agree
-                        </Button>
-                    </DialogActions>
-                </Dialog> */}
             </Admin>
         );
     }

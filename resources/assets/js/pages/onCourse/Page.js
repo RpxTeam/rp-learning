@@ -109,7 +109,7 @@ class Page extends React.Component {
                     const progress = res.data.progress;
                     const course = res.data;
                     this.setState({ course: course, progress: progress });
-                    this.getFinalQuiz();
+                    this.verifyFinalComplete();
                 } else {
                     this.setState({ onCourse: true })
                 }
@@ -147,22 +147,34 @@ class Page extends React.Component {
             });
 
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/quiz`)
-        .then(res => {
-            this.setState({
-                quiz_id: res.data
+            .then(res => {
+                this.setState({
+                    quiz_id: res.data
+                })
+                console.log(res.data);
+                this.verifyFinalComplete();
             })
-        })
 
     };
 
+    verifyFinalComplete = () => {
+        axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/quiz/${this.state.quiz_id}/final`)
+            .then(res => {
+                if (res.data !== 200) {
+                    this.getFinalQuiz();
+                }
+            })
+    }
+
     getFinalQuiz = () => {
         axios.get(`${API_URL}/api/users/${this.state.user.id}/points`)
-        .then(res => {
-            console.log(res);
-        })
+            .then(res => {
+                console.log(res);
+            })
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/active`)
             .then(res => {
-                if (res.data != null && res.data === 1) {
+                console.log(res);
+                if ((res.data != null && res.data === 1) || (res.data != null && res.data === "1")) {
                     this.setState({
                         finalQuiz: true
                     });
@@ -185,7 +197,7 @@ class Page extends React.Component {
                                             {
                                                 id: answer.id,
                                                 text: answer.text,
-                                                correct: answer.correct ? true : false
+                                                correct: answer.correct === 1 || answer.correct === "1" ? true : false
                                             }
                                         ],
                                     }))
@@ -417,7 +429,7 @@ class Page extends React.Component {
                             {
                                 id: answer.id,
                                 text: answer.text,
-                                correct: answer.correct ? true : false
+                                correct: answer.correct === "1" || answer.correct === 1 ? true : false
                             }
                         ]
                     }))
@@ -439,6 +451,8 @@ class Page extends React.Component {
     endQuiz = (id) => {
         const correctAnswers = this.state.answers;
         let chooses = this.state.chooses;
+        console.log(correctAnswers);
+        console.log(chooses);
         if (JSON.stringify(chooses) === JSON.stringify(correctAnswers)) {
             axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
                 .then(res => {
@@ -495,11 +509,13 @@ class Page extends React.Component {
     endFinal = () => {
         const correctAnswers = this.state.finalAnswers;
         let chooses = this.state.finalChooses;
-        console.log(correctAnswers);
-        console.log(chooses);
         if (JSON.stringify(chooses) === JSON.stringify(correctAnswers)) {
-            this.openMessage('Parabéns');
             this.endCourse(this.state.course.id, true);
+            this.setState({
+                finalQuiz: false
+            })
+            this.cancelFinal();
+            this.openMessage('Quiz Finalizado com Sucesso!');
         } else {
             this.openMessage('Respostas Erradas');
         }
@@ -574,7 +590,7 @@ class Page extends React.Component {
                         <br /><br />
                         {this.state.finalQuiz && this.state.progress > 98 ?
                             <Grid container justify={'center'}>
-                                <Button variant="contained" onClick={this.openFinal}>Realizar teste final</Button>
+                                <Button variant="contained" onClick={this.openFinal} color="primary">Realizar teste final</Button>
                             </Grid>
                             : null}
                         {lessons ?

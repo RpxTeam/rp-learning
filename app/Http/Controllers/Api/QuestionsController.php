@@ -138,7 +138,23 @@ class QuestionsController extends Controller
         $quiz = Quiz::findOrFail($quiz);
         $question = Question::findOrFail($question);
 
-        $question = Question::whereId($question->id)->update($request->except(['_method',]));
+        $data = json_decode($request->getContent(), true);
+        
+        $question = Question::whereId($question->id)->update([
+            'id' => $data['question']['id'],
+            'text' => $data['question']['text'],
+            'active' => $data['question']['active'],
+            'course_id' => $data['question']['course_id'],
+            'lesson_id' => $data['question']['lesson_id'],
+            'quiz_id' => $data['question']['quiz_id'],
+        ]);
+
+        foreach($data['question']['answers'] as $answer){
+            Answer::whereId($answer['id'])->update([
+                'text' => $answer['text'],
+                'correct' => $answer['correct'],
+            ]);
+        }
 
         return response()->json(204);
     }

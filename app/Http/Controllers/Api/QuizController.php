@@ -222,4 +222,23 @@ class QuizController extends Controller
             return response()->json($quiz->active, 200);
         }
     }
+
+    public function courseQuestions($course, $question){
+        $course = Course::findOrFail($course);
+
+        $question = Question::findOrFail($question);
+
+        $question = DB::table('questions')
+                    ->where('course_id',$course->id)
+                    ->where('id',$question->id)
+                    ->first();
+
+        $question = Question::questionAnswers($question->id);
+
+        if(!empty($question)){
+            return response()->json($question, 200);
+        }else{
+            return response()->json(400);
+        }
+    }
 }

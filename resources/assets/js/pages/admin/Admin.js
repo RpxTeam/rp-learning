@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import Footer from '../../common/mainFooter'
 import Topbar from '../../common/topbar'
 import Sidebar from '../../common/sidebar'
@@ -139,3 +139,4 @@ const mapStateToProps = (state) => {
 };
 
 export default withStyles(styles)(Admin);
+// export default connect(mapStateToProps)(withStyles(styles)(Admin));

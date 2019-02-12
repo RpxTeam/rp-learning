@@ -46,6 +46,7 @@ Route::get('users/{user}/points', 'Api\DataPointController@user');
 Route::post('users/{user}/courses/{course}/points', 'Api\DataPointController@course');
 Route::post('users/{user}/courses/{course}/lessons/{lesson}/points', 'Api\DataPointController@lesson');
 Route::post('users/{user}/courses/{course}/quiz/{quiz}/points', 'Api\DataPointController@quiz');
+Route::get('users/{user}/courses/{course}/quiz/{quiz}/final', 'Api\DataPointController@final');
 
 //Level routes
 Route::post('levels', 'Api\LevelsController@makeLevels');
@@ -55,6 +56,7 @@ Route::resource('courses/{course}/quiz', 'Api\QuizController');
 Route::get('courses/{course}/final', 'Api\QuizController@final');
 Route::get('courses/{course}/active', 'Api\QuizController@quizFinalActive');
 Route::get('courses/{course}/questions', 'Api\QuizController@questions');
+Route::get('courses/{course}/questions/{question}', 'Api\QuizController@courseQuestions');
 Route::put('courses/{course}/questions/{question}', 'Api\QuizController@updateQuestion');
 Route::post('courses/{course}/final/activate', 'Api\QuizController@activateFinal');
 Route::post('courses/{course}/final/desactivate', 'Api\QuizController@desactivateFinal');
