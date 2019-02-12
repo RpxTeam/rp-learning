@@ -29,7 +29,7 @@ class CertificationController extends Controller
                     ->first();
                     
         if($complete->finish != null && $complete->progress == 100 ){
-            $certificate = DB::table('certifications')->where('id',1)->first();
+            $certificate = DB::table('templates')->where('active',1)->first();
             $data = collect();
             $data->push([
                 'user' => $user->name,
@@ -56,35 +56,20 @@ class CertificationController extends Controller
         $user = User::findOrFail($user);
         $course = Course::findOrFail($course);
 
-        //upload certificate img
+        //guardar certificado do usuario
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id, $user, $course)
-    {
+    public function user($user){
         $user = User::findOrFail($user);
-        $course = Course::findOrFail($course);
 
-        //update certificate img
-    }
+        $certificates = DB::table('certificates')
+                        ->where('user_id', $user->id)
+                        ->get();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($user, $course, $id)
-    {
-        $user = User::findOrFail($user);
-        $course = Course::findOrFail($course);
-
-        //delete
+       if(!empty($certificates)){
+           return response()->json($certificates, 200);
+       }else{
+           return response()->json(400);
+       }
     }
 }

@@ -126,12 +126,11 @@ class CoursesController extends Controller
             'image' => 'nullable|file|max:5000|mimetypes:jpeg,png,jpg',
             'mime' => 'nullable|string',
             'instructor' => 'nullable|string',
-            'start_date' => 'required|date|after_or_equal:today',
+            'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date'
         ],[
             'title.required' => 'O campo título está vazio.',
             'start_date.required' => 'O campo data de início está vazio.',
-            'start_date.after_or_equal' => 'O campo data de início é inválido.',
             'end_date.required' => 'O campo data de término está vazio.',
             'end_date.after_or_equal' => 'O campo data de término é inválido.',
         ]);

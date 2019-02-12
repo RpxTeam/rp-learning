@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCertificationTable extends Migration
+class CreateTemplateTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateCertificationTable extends Migration
      */
     public function up()
     {
-        Schema::create('certifications', function (Blueprint $table) {
+        Schema::create('templates', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->integer('course_id')->unsigned();
+            $table->string('title');
+            $table->boolean('correct')->default(0);
             $table->string('image');
             $table->string('mime');
             $table->timestamps();
@@ -30,6 +30,6 @@ class CreateCertificationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('certification');
+        Schema::dropIfExists('template');
     }
 }
