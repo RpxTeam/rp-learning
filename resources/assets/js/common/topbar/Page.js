@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import * as actions from '../../store/actions'
 import styled from 'styled-components';
 
-import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -13,19 +12,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-
-const styles = {
-    root: {
-        flexGrow: 1,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
-    },
-};
 
 class Page extends React.Component {
     constructor(props) {
@@ -53,7 +39,7 @@ class Page extends React.Component {
 
 
     render() {
-        const { classes } = this.props;
+        const { classes, user } = this.props;
         const { auth, anchorEl } = this.state;
         const open = Boolean(anchorEl);
         this.avatar = (
@@ -65,9 +51,6 @@ class Page extends React.Component {
         return (
             <AppBar position={this.props.position} className={this.props.className}>
                 <Toolbar>
-                    {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                        <MenuIcon />
-                    </IconButton> */}
                     <Typography variant="h6" color="inherit" className={classes.grow}>
                         LMS
                     </Typography>
@@ -111,4 +94,4 @@ Page.propTypes = {
     position: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(Page);
+export default Page;

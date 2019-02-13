@@ -15,6 +15,7 @@ import AdminCourses from '../pages/admin/courses/list'
 import CreateCourses from '../pages/admin/courses/create'
 import CreateQuiz from '../pages/admin/quiz/create'
 import ViewCourses from '../pages/admin/courses/view'
+import ListCertificates from '../pages/admin/certificates'
 import Profile from '../pages/profile'
 import NoMatch from '../pages/noMatch'
 
@@ -132,6 +133,12 @@ const routes = [
         exact: true,
         auth: true,
         component: ViewCourses
+    },
+    {
+        path: '/admin/certificates',
+        exact: true,
+        auth: true,
+        component: ListCertificates
     },
     {
         path: '/profile',

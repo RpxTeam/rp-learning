@@ -60,7 +60,7 @@ class Page extends React.Component {
             </span>
         );
         const { menu } = this.state;
-        const { isAuthenticated } = this.props;
+        const { isAuthenticated, user } = this.props;
         return (
             <AppBar position="static" color="default" style={{ flexGrow: 1 }}>
                 <Toolbar>
@@ -93,7 +93,9 @@ class Page extends React.Component {
                                 open={Boolean(menu)}
                                 onClose={this.handleClose}
                             >
-                                <MenuItem component={Link} to={'/dashboard'}>Dashboard</MenuItem>
+                                {user.role_id <= 2 ?
+                                    <MenuItem component={Link} to={'/dashboard'}>Dashboard</MenuItem>
+                                : null}
                                 <MenuItem component={Link} to={'/profile'}>Profile</MenuItem>
                                 <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
                             </Menu>

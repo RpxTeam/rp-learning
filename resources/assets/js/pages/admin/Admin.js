@@ -1,26 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
-import Footer from '../../common/mainFooter'
 import Topbar from '../../common/topbar'
-import Sidebar from '../../common/sidebar'
 
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import School from '@material-ui/icons/School';
 import Dashboard from '@material-ui/icons/Dashboard';
 import People from '@material-ui/icons/People';
-import LocalLibrary from '@material-ui/icons/LocalLibrary'
+import LocalLibrary from '@material-ui/icons/LocalLibrary';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
@@ -70,8 +63,11 @@ class Admin extends React.Component {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, user } = this.props; 
 
+        if(user.role_id === 3) {
+            return <Redirect to={'/'} />
+        }
         return (
             <div className={classes.root}>
                 <Topbar position="fixed" className={classes.appBar} />
@@ -96,16 +92,24 @@ class Admin extends React.Component {
                                 <ListItemText primary="Dashboard" />
                             </ListItem>
                         </Link>
-                        <Link to="/admin/users">
-                            <ListItem button>
-                                <ListItemIcon><People /></ListItemIcon>
-                                <ListItemText primary="Usuários" />
-                            </ListItem>
-                        </Link>
+                        {user.role_id === 1 ?
+                            <Link to="/admin/users">
+                                <ListItem button>
+                                    <ListItemIcon><People /></ListItemIcon>
+                                    <ListItemText primary="Usuários" />
+                                </ListItem>
+                            </Link>
+                        : null}
                         <Link to="/admin/courses">
                             <ListItem button>
                                 <ListItemIcon><LocalLibrary /></ListItemIcon>
                                 <ListItemText primary="Cursos" />
+                            </ListItem>
+                        </Link>
+                        <Link to="/admin/certificates">
+                            <ListItem button>
+                                <ListItemIcon><School /></ListItemIcon>
+                                <ListItemText primary="Certificados" />
                             </ListItem>
                         </Link>
                     </List>
@@ -134,9 +138,9 @@ class Admin extends React.Component {
 const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.Auth.isAuthenticated,
-        classes: PropTypes.object.isRequired,
+        user: state.Auth.user
     }
 };
 
-export default withStyles(styles)(Admin);
-// export default connect(mapStateToProps)(withStyles(styles)(Admin));
+// export default withStyles(styles)(Admin);
+export default connect(mapStateToProps)(withStyles(styles)(Admin));
