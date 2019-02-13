@@ -65,8 +65,7 @@ class LessonController extends Controller
      */
     public function store(Request $request,$course)
     {
-        dd($request);
-        // if($request->hasFile('content') && $request->file('content')->isValid()){
+        // if($request->hasFile('content')){
         //     $validator = Validator::make($request->all(),[
         //         'order' => 'nullable|numeric',
         //         'title' => 'required|string|max:255',
@@ -83,7 +82,7 @@ class LessonController extends Controller
         //         'title' => 'required|string|max:255',
         //         'description' => 'nullable|string',
         //         'type' => 'nullable|string',
-        //         'content' => 'nullable',
+        //         'content' => 'nullable|string',
         //         'mime' => 'nullable|string'
         //     ],[
         //         'title.required' => 'O campo título está vazio.'
@@ -93,7 +92,14 @@ class LessonController extends Controller
         // if($validator->fails()){
         //         return response()->json($validator->errors(), 400);
         // }
+        
+        // if(Storage::disk('local')->put('video.mp4', $request->content)){
+        //     dd('a');
 
+        // }else{
+        //     dd('b');
+        // }
+        
         try{
             if($request->slug == null){
                 $request->slug = str_slug($request->title);

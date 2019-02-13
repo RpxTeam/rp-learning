@@ -43,6 +43,7 @@ Route::resource('points', 'Api\PointsController');
 
 //DataPoints routes
 Route::get('users/{user}/points', 'Api\DataPointController@user');
+Route::get('users/{user}/courses/{course}/quiz/{quiz}/points', 'Api\DataPointController@final');
 Route::post('users/{user}/courses/{course}/points', 'Api\DataPointController@course');
 Route::post('users/{user}/courses/{course}/lessons/{lesson}/points', 'Api\DataPointController@lesson');
 Route::post('users/{user}/courses/{course}/quiz/{quiz}/points', 'Api\DataPointController@quiz');
@@ -101,3 +102,9 @@ Route::put('users/{user}/courses/{course}', 'Api\DataCourseController@update');
 Route::resource('users/{user}/courses/{course}/lessons', 'Api\DataLessonController');
 Route::post('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@store');
 Route::put('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@update');
+
+//Certification routes
+Route::get('users/{user}/certification', 'Api\CertificationController@user');
+Route::get('users/{user}/courses/{course}/certification', 'Api\CertificationController@show');
+Route::post('users/{user}/courses/{course}/certification/', 'Api\CertificationController@store');
+Route::resource('certification/templates', 'Api\TemplateController');

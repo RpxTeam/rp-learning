@@ -13,7 +13,7 @@ use App\Author;
 
 class Course extends Model
 {
-    protected $fillable = [ 'title', 'slug','introduction', 'description', 'duration', 'image', 'mime','instructor', 'start_date', 'end_date'];
+    protected $fillable = [ 'title', 'slug','introduction', 'description', 'duration', 'image', 'mime','instructor', 'start_date', 'end_date', 'quiz', 'template_id'];
     protected $hidden = [];
     public static $searchable = [
         'title',

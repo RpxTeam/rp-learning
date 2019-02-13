@@ -146,7 +146,7 @@ class QuizController extends Controller
                     ->where('course_id',$course->id)
                     ->get();
 
-        if($questions != null){
+        if(empty($questions)){
             $data = collect();
 
         foreach($questions as $question){
