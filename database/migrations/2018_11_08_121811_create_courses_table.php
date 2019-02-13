@@ -25,6 +25,7 @@ class CreateCoursesTable extends Migration
             $table->string('instructor')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->integer('template_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->index(['deleted_at']);

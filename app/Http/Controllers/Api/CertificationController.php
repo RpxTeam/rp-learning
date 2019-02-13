@@ -27,9 +27,10 @@ class CertificationController extends Controller
                     ->where('user_id',$user->id)
                     ->where('course_id',$course->id)
                     ->first();
-                    
+        
         if($complete->finish != null && $complete->progress == 100 ){
-            $certificate = DB::table('templates')->where('active',1)->first();
+            $certificate = DB::table('templates')->whereId($course->template_id)->first();
+            
             $data = collect();
             $data->push([
                 'user' => $user->name,
@@ -56,7 +57,14 @@ class CertificationController extends Controller
         $user = User::findOrFail($user);
         $course = Course::findOrFail($course);
 
-        //guardar certificado do usuario
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $certificate = Certification::create($request->All() + ['user_id' => $user->id, 'course_id' => $course->id]);
+            Certification::uploadImageCertification($request, $certificate);
+
+            return response()->json($certificate->id,200);
+        }else {
+            return response()->json(400);
+        }
     }
 
     public function user($user){

@@ -28,6 +28,7 @@ class CourseSeed extends Seeder
              'mime'=> 'image/jpeg',
              'created_at' => now(),
              'updated_at' => now(),
+             'template_id' => 1
             ],
             // ['title' => "Como fazer um Fliperama com Raspberry Pi",
             //  'slug' => "como-fazer-um-fliperama-com-raspberry-pi",

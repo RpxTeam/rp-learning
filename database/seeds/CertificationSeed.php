@@ -11,10 +11,9 @@ class CertificationSeed extends Seeder
      */
     public function run()
     {
-        App\Certification::create([
-            'title' => 'ceertification 01',
-            'image' => 'certification/images/1-certification.png',
-            'mime' => 'image/png'
-        ]);
+        // App\Certification::create([
+        //     'image' => 'certification/images/1-certification.png',
+        //     'mime' => 'image/png'
+        // ]);
     }
 }

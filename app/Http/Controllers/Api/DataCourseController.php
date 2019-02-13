@@ -88,7 +88,7 @@ class DataCourseController extends Controller
             $course = Course::findOrFail($course);
             DataCourse::where('data_courses.user_id','=',$user)
                       ->where('data_courses.course_id','=',$course->id)
-                      ->update($request->all());
+                      ->update($request->except('_method'));
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.

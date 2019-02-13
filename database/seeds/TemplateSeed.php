@@ -13,9 +13,9 @@ class TemplateSeed extends Seeder
     {
         App\Template::create([
             'title' => 'template 01',
-            'active' => '1',
             'image' => 'certification/template/1-template.png',
-            'mime' => 'image/png'
+            'mime' => 'image/png',
+            'user_id' => 1
         ]);
     }
 }

@@ -15,10 +15,11 @@ class CreateTemplateTable extends Migration
     {
         Schema::create('templates', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
-            $table->boolean('correct')->default(0);
-            $table->string('image');
-            $table->string('mime');
+            $table->string('title')->nullable();
+            $table->string('image')->nullable();
+            $table->string('mime')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
+use Illuminate\Support\Facades\Storage;
 use App\Template;
 
 class TemplateController extends Controller
@@ -15,9 +17,14 @@ class TemplateController extends Controller
      */
     public function index()
     {
-        $templates = Template::all();
+        $templates = Template::All()->each(function($template){
 
-        return response()->json($templates, 200);
+            if($template->image != null){
+                $template->image = Storage::url($template->image);
+            }
+        });
+
+       return response()->json($templates, 200);
     }
 
 
@@ -30,6 +37,10 @@ class TemplateController extends Controller
     public function show($template)
     {
         $template = Template::findOrFail($template);
+
+        if($template->image != null){
+            $template->image = Storage::url($template->image);
+        }
 
         return response()->json($template, 200);
     }
@@ -45,15 +56,14 @@ class TemplateController extends Controller
         if($request->hasFile('image') && $request->file('image')->isValid()){
             $template = Template::create($request->except('image'));
             Template::uploadImageTemplate($request,$template);
-        }else {
-            $template = Template::create($request->except('image'));
-        }
 
-        return response()->json($template->id,200);
+            return response()->json($template->id,200);
+        }else {
+            return response()->json(400);
+        }
     }
 
-
-
+    
     /**
      * Update the specified resource in storage.
      *

@@ -15,8 +15,10 @@ class CreateCertificationTable extends Migration
     {
         Schema::create('certifications', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->integer('course_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('course_id')->unsigned()->nullable();
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->string('image');
             $table->string('mime');
             $table->timestamps();

@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Template extends Model
 {
-    protected $fillable = ['title','image','mime'];
+    protected $fillable = ['title','active','image','mime', 'user_id'];
     protected $hidden = [];
     public static $searchable = [
     ];
