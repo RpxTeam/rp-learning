@@ -25,8 +25,8 @@ class Certification extends Model
     public static function updateImageCertification(Request $request, Certification $certification){
         $filename = $certification->id .  '-certification.' . $request->file('image')->getClientOriginalExtension();
         $filepath = 'certifications/users/' . $filename;
-        if(Storage::exists($filepath)){
-            Storage::delete($filepath);
+        if(Storage::exists($certification->image)){
+            Storage::delete($certification->image);
         }
         $request->file('image')->storeAs('certifications/users', $filename);
         $certification->image =  $filepath;

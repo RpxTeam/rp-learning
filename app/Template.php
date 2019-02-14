@@ -25,8 +25,8 @@ class Template extends Model
     public static function updateImageTemplate(Request $request, Template $template){
         $filename = $template->id .  '-template.' . $request->file('image')->getClientOriginalExtension();
         $filepath = 'certification/template/' . $filename;
-        if(Storage::exists($filepath)){
-            Storage::delete($filepath);
+        if(Storage::exists($template->image)){
+            Storage::delete($template->image);
         }
         $request->file('image')->storeAs('certification/template', $filename);
         $template->image =  $filepath;

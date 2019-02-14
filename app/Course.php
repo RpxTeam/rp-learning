@@ -57,8 +57,8 @@ class Course extends Model
     public static function updateImageCourse(Request $request, Course $course){
         $filename = $course->id . '-' . str_slug($course->title) . '.' . $request->file('image')->getClientOriginalExtension();
         $filepath = 'courses/images/' . $filename;
-        if(Storage::exists($filepath)){
-            Storage::delete($filepath);
+        if(Storage::exists($course->image)){
+            Storage::delete($course->image);
         }
         $request->file('image')->storeAs('courses/images', $filename);
         $course->image =  $filepath;

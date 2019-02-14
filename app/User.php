@@ -68,8 +68,8 @@ class User extends Authenticatable implements JWTSubject
     public static function updateImageUser(Request $request, User $user){
         $filename = $user->id . '-' . str_slug($user->name) . '.' . $request->file('image')->getClientOriginalExtension();
         $filepath = 'users/images/' . $filename;
-        if(Storage::exists($filepath)){
-            Storage::delete($filepath);
+        if(Storage::exists($user->image)){
+            Storage::delete($user->image);
         }
         $request->file('image')->storeAs('users/images', $filename);
         $user->image =  $filepath;
