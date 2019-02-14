@@ -16,26 +16,18 @@ import {
 } from 'semantic-ui-react'
 import Navigation from '../../common/navigation'
 import Banner from '../../components/Banner'
-import Footer from '../../common/mainFooter'
-// import Button from '../../components/Button'
 import { API_URL } from "../../common/url-types";
 import "video-react/dist/video-react.css";
 import { Player } from 'video-react';
 import ReactPlayer from 'react-player'
 import Message from '../../components/Message';
-import Modules from '../../components/Modules';
-import InfoLesson from '../../components/InfoLesson';
-import Module from '../../components/Module';
 
 import Grid from '@material-ui/core/Grid';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
 import StepButton from '@material-ui/core/StepButton';
 import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -601,7 +593,7 @@ class Page extends React.Component {
                                 {lessons.map((lesson, index) => (
                                     <Step key={lesson.id}>
                                         <StepButton onClick={this.handleStep.bind(this, index)} completed={lesson.view ? true : false}>
-                                            {lesson.title} | {index}
+                                            {lesson.title}
                                         </StepButton>
                                         <StepContent>
                                             <Grid container>

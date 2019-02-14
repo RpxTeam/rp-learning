@@ -1,26 +1,11 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
-// import {
-//     Container,
-//     Grid,
-//     Header,
-//     Icon,
-//     Segment,
-//     Card,
-//     Image,
-//     Divider,
-//     Step,
-//     List,
-// } from 'semantic-ui-react'
 import Banner from '../../components/Banner'
 import Navigation from '../../common/navigation'
-import Footer from '../../common/mainFooter'
 import { API_URL } from "../../common/url-types"
 import InfoCourse from '../../components/InfoCourse'
 import Button from '../../components/Button'
-// import Tabs from '../../components/Tabs'
 import Detail from '../../components/details'
 import Testimonial from '../../components/Testimonial'
 
@@ -175,6 +160,12 @@ class Page extends React.Component {
                         lessons={lessonsCount}
                         duration={course.duration}
                     />
+                    <Button
+                        className="btn-start"
+                        title={isAuthenticated ? progress != null ? "Continuar Curso" : "Iniciar Curso" : "Iniciar Curso"}
+                        onClick={this.startCourse}
+                        icon="courses"
+                    />
                     <AppBar position="static" color="default">
                         <Tabs
                             value={this.state.value}
@@ -211,50 +202,11 @@ class Page extends React.Component {
                                             <ListItemText primary={lesson.title} secondary={lesson.type} />
                                         </ListItem>
                                     )
-                                : null }
+                                    : null}
                             </List>
                         </Typography>
                     </SwipeableViews>
-                    {/* <Tabs>
-                        <div label="DETALHES">
-                            <Detail
-                                title={course.title}
-                                description={course.description}
-                                instructor={course.instructor}
-                            />
-                        </div>
-                        <div label="AVALIAÇÕES">
-                            <Testimonial />
-                        </div>
-                        <div label="CONTEÚDO">
-                            <div></div>
-                        </div>
-                    </Tabs> */}
-                    {/* <Container style={{ marginTop: '5em' }}>
-                        <Grid>
-                            <Grid.Row>
-                                <Grid.Column width={11}>
-                                    <Segment basic>
-                                    </Segment>
-                                    <Tab color='blue' attached={'true'} menu={{ secondary: true }} panes={panes} />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Container> */}
                 </main>
-                {/* {isAuthenticated ?
-                    <Button size='big' basic color='blue' floated='right' onClick={this.startCourse}>
-                        {progress != null ? "Continuar Curso" : "Iniciar Curso" }
-                    </Button>
-                :
-                    <Button size='big' basic color='blue' floated='right' onClick={}>Iniciar Curso</Button>
-                } */}
-                <Button
-                    className="btn-start"
-                    title={isAuthenticated ? progress != null ? "Continuar Curso" : "Iniciar Curso" : "Iniciar Curso"}
-                    onClick={this.startCourse}
-                    icon="courses"
-                />
             </div>
         );
     }

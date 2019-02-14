@@ -41,7 +41,13 @@ class Page extends React.Component {
     };
 
     getData = () => {
-
+        axios.get(`${API_URL}/api/certification/templates`)
+            .then(res => {
+                const certificates = res.data;
+                this.setState({
+                    certificates: certificates
+                })
+            })
     };
 
     componentDidMount() {
@@ -85,20 +91,20 @@ class Page extends React.Component {
     };
 
     viewCertificate = (id) => () => {
-        const certificates = this.state.certificates;
-        const newCertificates = certificates.filter((elem, i, index) => {
-            if (elem.id === id) {
-                return certificates;
-            }
-        })
-        this.createCertificate();
-        this.setState({
-            certificate: {
-                file: newCertificates[0].image.file,
-                name: newCertificates[0].image.name
-            }
-        })
-        this.createCertificate();
+        axios.get(`${API_URL}/api/certification/templates/${id}`)
+            .then(res => {
+                const certificate = res.data;
+
+                this.setState({
+                    view: true,
+                    certificate: {
+                        file: certificate.image,
+                        name: certificate.title
+                    }
+                });
+
+                this.createCertificate();
+            })
     }
 
     deleteCertificate = (id) => () => {
@@ -109,17 +115,21 @@ class Page extends React.Component {
     }
 
     confirmationDelete = () => {
-        const certificates = this.state.certificates;
         const id = this.state.delete;
-        const newCertificates = certificates.filter((elem, i, index) => {
-            if (elem.id != id) {
-                return certificates;
-            }
-        })
-        this.setState({
-            certificates: newCertificates,
-            confirmation: false
-        })
+        axios.delete(`${API_URL}/api/certification/templates/${id}`)
+            .then(res => {
+                const certificates = this.state.certificates;
+                const newCertificates = certificates.filter((elem, i, index) => {
+                    if (elem.id != id) {
+                        return certificates;
+                    }
+                })
+                this.setState({
+                    certificates: newCertificates,
+                    confirmation: false
+                })
+                this.openMessage('Certificado excluído com sucesso!');
+            });
     }
 
     submitCertificate = () => {
@@ -134,18 +144,6 @@ class Page extends React.Component {
         const id = total + 1;
         if (certificate.file) {
             this.fileUpload();
-            // this.setState(prevState => ({
-            //     certificates: [
-            //         ...prevState.certificates,
-            //         {
-            //             id: id,
-            //             image: {
-            //                 file: certificate.file,
-            //                 name: certificate.name
-            //             },
-            //         }
-            //     ]
-            // }));
         } else {
             this.openMessage('Insira a imagem do certificado.');
         }
@@ -175,6 +173,7 @@ class Page extends React.Component {
 
         formData.append('user_id', this.props.user.id);
         formData.append('image', this.state.certificate.file);
+        formData.append('title', this.state.certificate.file.name);
         formData.append('mime', this.state.certificate.file.type);
 
         const config = {
@@ -183,42 +182,51 @@ class Page extends React.Component {
             }
         };
 
-        axios.post(`${API_URL}/certification/templates`, formData, config)
-        .then(res => {
-            console.log(res);
+        axios.post(`${API_URL}/api/certification/templates`, formData, config)
+            .then(res => {
+                console.log(res);
 
-            this.openMessage('Certificado enviado com sucesso.');
+                this.openMessage('Certificado enviado com sucesso.');
 
-            this.cancelCertificate();
-        });
+                this.cancelCertificate();
+
+                this.getData();
+            });
+    }
+
+    updateCanvas = () => {
+        const ctx = this.refs.canvas.getContext('2d');
+        ctx.clearRect(0,0, 300, 300);
+
+        rect({ctx, x: 10, y: 10, width: 50, height: 50});
+        rect({ctx, x: 110, y: 110, width: 50, height: 50});
     }
 
     render() {
         const { modal, certificate, certificates, message, view, confirmation } = this.state;
+        const { user } = this.props;
         return (
             <Admin heading="Certificados">
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
-                {view ? null :
-                    <Grid container spacing={40} justify={'flex-end'}>
-                        <Grid item>
-                            <Button color='primary' variant='contained' onClick={this.createCertificate}>Incluir certificado</Button>
-                        </Grid>
+                <Grid container spacing={40} justify={'flex-end'}>
+                    <Grid item>
+                        <Button color='primary' variant='contained' onClick={this.createCertificate}>Incluir certificado</Button>
                     </Grid>
-                }
+                </Grid>
                 <Grid container spacing={40}>
                     {certificates.map((certificate, index) =>
                         <Grid item xl={3} lg={4} md={6} sm={12} key={index}>
                             <Card>
-                                <FilePreview file={certificate.image.file}>
-                                    {(preview) => <Image style={{ backgroundImage: `url(${preview})` }}></Image>}
-                                </FilePreview>
+                                <Image style={{ backgroundImage: `url(${certificate.image})` }}></Image>
                                 <CardActions>
                                     <Button size="small" color="primary" onClick={this.viewCertificate(certificate.id)}>
                                         Visualizar
                                 </Button>
-                                    <Button size="small" color="primary" onClick={this.deleteCertificate(certificate.id)}>
-                                        Excluir
-                                </Button>
+                                    {certificate.user_id === user.id ?
+                                        <Button size="small" color="primary" onClick={this.deleteCertificate(certificate.id)}>
+                                            Excluir
+                                    </Button>
+                                        : null}
                                 </CardActions>
                             </Card>
                         </Grid>
@@ -252,9 +260,12 @@ class Page extends React.Component {
                             }
                             <Grid item>
                                 {certificate.file ?
-                                    <FilePreview file={certificate.file}>
-                                        {(preview) => <img src={preview} />}
-                                    </FilePreview>
+                                    view ?
+                                        <img src={certificate.file} />
+                                        :
+                                        <FilePreview file={certificate.file}>
+                                            {(preview) => <img src={preview} />}
+                                        </FilePreview>
                                     : null}
                             </Grid>
                         </Grid>

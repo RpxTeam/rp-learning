@@ -220,7 +220,7 @@ class Page extends React.Component {
                         mime: course.mime
                     },
                     image: {
-                        file: course.image,
+                        url: course.image
                     },
                     imageEdit: false
                 });
@@ -242,6 +242,7 @@ class Page extends React.Component {
     updateCourse = (event) => {
         this.setState({
             course: {
+                ...this.state.course,
                 [event.target.name]: event.target.value
             }
         });
@@ -283,8 +284,10 @@ class Page extends React.Component {
             formData.append('title', this.state.course.title);
             formData.append('description', this.state.course.description);
             formData.append('duration', this.state.course.duration);
-            formData.append('image', this.state.image.file);
-            formData.append('mime', this.state.image.file.type);
+            if(this.state.image.file) {
+                formData.append('image', this.state.image.file);
+                formData.append('mime', this.state.image.file.type);
+            }
             formData.append('start_date', start_date);
             formData.append('end_date', end_date);
 
@@ -878,6 +881,7 @@ class Page extends React.Component {
 
     formatDate = (date) => {
         let day, month, year;
+        console.log(date);
         day = date.getDate();
         month = date.getMonth() + 1;
         year = date.getFullYear();

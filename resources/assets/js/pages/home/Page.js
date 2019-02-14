@@ -2,14 +2,6 @@ import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import { API_URL } from "../../common/url-types"
 import axios from 'axios'
-import {
-    Container,
-    Header,
-    Icon,
-    Responsive,
-    Segment,
-    Step
-} from 'semantic-ui-react'
 import AuthService from '../../services'
 // import Card from '../../components/Card'
 // import Grid from '../../components/Grid'
@@ -17,23 +9,19 @@ import Navigation from '../../common/navigation'
 import Banner from '../../components/Banner'
 // import Button from '../../components/Button'
 
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import red from '@material-ui/core/colors/red';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {
+    Typography,
+    Grid,
+    Card,
+    CardHeader,
+    CardMedia,
+    CardContent,
+    CardActions,
+    CardActionArea,
+    Button,
+    Collapse,
+    Avatar,
+} from '@material-ui/core';
 
 class Page extends React.Component {
     constructor(props) {
@@ -153,9 +141,9 @@ class Page extends React.Component {
                                         {course.image ?
                                             <CardMedia
                                                 image={course.image}
-                                                style={{height: 100}}
+                                                style={{ height: 100 }}
                                             />
-                                        : null}
+                                            : null}
                                     </CardActionArea>
                                     <CardContent>
                                         <Typography component="p">
