@@ -91,8 +91,8 @@ class Page extends React.Component {
                 return certificates;
             }
         })
+        this.createCertificate();
         this.setState({
-            view: true,
             certificate: {
                 file: newCertificates[0].image.file,
                 name: newCertificates[0].image.name
@@ -121,10 +121,10 @@ class Page extends React.Component {
             confirmation: false
         })
     }
+
     submitCertificate = () => {
         const certificate = this.state.certificate;
         const certificates = this.state.certificates;
-        const totalCertificates = certificates.length;
         let total;
         if ((certificates.length - 1) < 1) {
             total = certificates.length;
@@ -133,20 +133,19 @@ class Page extends React.Component {
         }
         const id = total + 1;
         if (certificate.file) {
-            this.setState(prevState => ({
-                certificates: [
-                    ...prevState.certificates,
-                    {
-                        id: id,
-                        image: {
-                            file: certificate.file,
-                            name: certificate.name
-                        },
-                    }
-                ]
-            }))
-            this.openMessage('Certificado enviado com sucesso.');
-            this.cancelCertificate();
+            this.fileUpload();
+            // this.setState(prevState => ({
+            //     certificates: [
+            //         ...prevState.certificates,
+            //         {
+            //             id: id,
+            //             image: {
+            //                 file: certificate.file,
+            //                 name: certificate.name
+            //             },
+            //         }
+            //     ]
+            // }));
         } else {
             this.openMessage('Insira a imagem do certificado.');
         }
@@ -170,6 +169,29 @@ class Page extends React.Component {
             }
         });
     };
+
+    fileUpload = () => {
+        const formData = new FormData();
+
+        formData.append('user_id', this.props.user.id);
+        formData.append('image', this.state.certificate.file);
+        formData.append('mime', this.state.certificate.file.type);
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+
+        axios.post(`${API_URL}/certification/templates`, formData, config)
+        .then(res => {
+            console.log(res);
+
+            this.openMessage('Certificado enviado com sucesso.');
+
+            this.cancelCertificate();
+        });
+    }
 
     render() {
         const { modal, certificate, certificates, message, view, confirmation } = this.state;
