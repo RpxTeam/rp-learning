@@ -110,3 +110,6 @@ Route::resource('certification/templates', 'Api\TemplateController');
 Route::resource('teams', 'Api\TeamController');
 Route::post('teams/add', 'Api\TeamController@add');
 Route::post('teams/remove', 'Api\TeamController@remove');
+
+//Trail routes
+Route::resource('trails', 'Api\TrailController');

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpadteCoursesTable extends Migration
+class CreateTrailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class UpadteCoursesTable extends Migration
      */
     public function up()
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->integer('template_id')->unsigned()->nullable();
-            $table->boolean('status')->default(0);
+        Schema::create('trails', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->text('description');
+            $table->string('image');
+            $table->string('mime');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +30,6 @@ class UpadteCoursesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('trails');
     }
 }
