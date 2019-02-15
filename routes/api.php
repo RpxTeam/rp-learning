@@ -107,4 +107,6 @@ Route::post('users/{user}/courses/{course}/certification/', 'Api\CertificationCo
 Route::resource('certification/templates', 'Api\TemplateController');
 
 //Team routes
-Route::resource('team', 'TeamController');
+Route::resource('teams', 'Api\TeamController');
+Route::post('teams/add', 'Api\TeamController@add');
+Route::post('teams/remove', 'Api\TeamController@remove');
