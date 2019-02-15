@@ -67,9 +67,10 @@ img {
   height: auto
 }
 
-/* body {
-  overflow: hidden;
-} */
+body {
+  /* overflow: hidden; */
+  background-color:#f5f5f5;
+}
 
 #main {
   height: 100%;
@@ -92,8 +93,8 @@ img {
 
 .gridD {
   max-width: 100%;
-  margin-right: 19px;
-  margin-left: 19px;
+  margin-right: auto;
+  margin-left: auto;
   position: relative;
 }
 
@@ -864,22 +865,28 @@ a.btn {
 .banner {
   position: relative;
   /* margin-bottom: -115px; */
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   /* padding-bottom: 130px; */
-  padding-bottom: 50px;
+  /* padding-bottom: 50px; */
   overflow: hidden;
-  background: url("../img/bg-top.jpg") center center no-repeat;
+  /* background: url("../img/bg-top.jpg") center center no-repeat; */
+  background: #3f51b5;
   background-size: cover;
 }
 
 .banner .icon-bg {
-  top: 40px;
-  right: -18px;
+  left: -115px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .banner .icon-bg i {
-  font-size: 148px;
-  color: rgba(255, 255, 255, 0.2);
+  font-size: 250px;
+  color: rgba(255, 255, 255, 0.07);
+}
+
+.banner .gridD {
+  max-width: 1024px;
 }
 
 .banner .title {
@@ -888,8 +895,7 @@ a.btn {
   display: box;
   display: -moz-flex;
   display: flex;
-  padding-top: 57px;
-  padding-right: 50px;
+  padding: 150px 30px;
 }
 
 .banner .title .icon {
@@ -897,12 +903,19 @@ a.btn {
   margin-top: -16px;
 }
 
-.banner .title h6, .banner .title p {
+.banner .title h2, .banner .title h6, .banner .title p {
   color: #FFFFFF;
 }
 
+.banner .title h2 {
+  font-weight: 700;
+  font-size: 35px;
+}
+
+
 .banner .title p {
   margin-top: 15px;
+  font-size: 16px;
   line-height: 1.5em;
 }
 
@@ -917,6 +930,18 @@ a.btn {
 
 .banner .search {
   margin-top: 23px;
+}
+
+@media(max-width: 768px) {
+  .banner .title {
+    padding: 70px 15px;
+  }
+  .banner .title h2 {
+    font-size: 25px;
+  }
+  .banner .title p {
+    font-size: 12px;
+  }
 }
 
 .banner.width-secondary-banner {
@@ -1258,31 +1283,35 @@ a.btn {
 }
 
 .banner-course {
-  padding-top: 147px;
-  padding-bottom: 93px;
+  /* padding-top: 147px;
+  padding-bottom: 93px; */
+  padding: 50px 0;
   background-size: cover;
   position: relative;
+  background: #FFFFFF;
+  border-bottom: 1px solid #EEEEEE;
 }
 
-.banner-course::before {
+/* .banner-course::before {
   content: '';
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background: #292929;
+  background: #FFFFFF;
   opacity: .71;
-}
+} */
 
 .banner-course .gridD {
   position: initial;
+  max-width: 1024px;
 }
 
 .banner-course h1 {
   color: #635DC2;
   font-weight: 700;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
   position: relative;
 }
 

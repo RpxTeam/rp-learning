@@ -1,19 +1,6 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
-import {
-    Container,
-    Header,
-    Icon,
-    Segment,
-    Card,
-    Image,
-    Divider,
-    List,
-    Tab,
-    Progress,
-    Modal
-} from 'semantic-ui-react'
 import Navigation from '../../common/navigation'
 import Banner from '../../components/Banner'
 import { API_URL } from "../../common/url-types";
@@ -22,29 +9,36 @@ import { Player } from 'video-react';
 import ReactPlayer from 'react-player'
 import Message from '../../components/Message';
 
-import Grid from '@material-ui/core/Grid';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
-import StepContent from '@material-ui/core/StepContent';
-import Button from '@material-ui/core/Button';
-
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Checkbox from '@material-ui/core/Checkbox';
+import {
+    Grid,
+    Stepper,
+    Step,
+    StepButton,
+    StepContent,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Slide,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    Checkbox,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Card
+} from '@material-ui/core'
 
 import styled from 'styled-components';
 
-const Btn = styled(Button)`
-    margin: 0 100px!important;
+const Container = styled(Grid)`
+    max-width: 95%;
+    margin: 0 auto;
+    width: 100%;
 `
 function Transition(props) {
     return <Slide direction="up" {...props} />;
@@ -576,100 +570,147 @@ class Page extends React.Component {
                         title={course.title}
                         image={course.image}
                     />
-                    <Container>
-                        <br /><br />
-                        {this.state.finalQuiz && this.state.progress > 98 ?
-                            <Grid container justify={'center'}>
-                                <Button variant="contained" onClick={this.openFinal} color="primary">Realizar teste final</Button>
-                            </Grid>
-                            : null}
+                    <Container container spacing={16}>
                         {lessons ?
-                            <Stepper
-                                activeStep={activeLesson}
-                                orientation="vertical"
-                                nonLinear
-                                style={{ maxWidth: 992, margin: '0 auto' }}
-                            >
-                                {lessons.map((lesson, index) => (
-                                    <Step key={lesson.id}>
-                                        <StepButton onClick={this.handleStep.bind(this, index)} completed={lesson.view ? true : false}>
-                                            {lesson.title}
-                                        </StepButton>
-                                        <StepContent>
-                                            <Grid container>
-                                                <Grid item xs={12}>
-                                                    {lesson.type === 'text' ?
-                                                        <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
-                                                        : null}
-                                                    {lesson.type === 'video-internal' ?
-                                                        <Player
-                                                            playsInline
-                                                            poster="/assets/poster.png"
+                            <Grid item md={3}>
+                                <Card>
+                                    <List>
+                                        {lessons.map((lesson, index) => (
+                                            <ListItem key={index} button onClick={this.getLesson.bind(this, lesson.id)}>
+                                                <ListItemIcon>
+                                                    <ListItemText>
+                                                        {lesson.title}
+                                                    </ListItemText>
+                                                </ListItemIcon>
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                </Card>
+                            </Grid>
+                        : null}
+                        {lesson ?
+                            <Grid item md={9}>
+                                {lesson.type === 'text' ?
+                                    <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
+                                    : null}
+                                {lesson.type === 'video-internal' ?
+                                    <Player
+                                        playsInline
+                                        poster="/assets/poster.png"
+                                        src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
+                                    />
+                                    : null}
+                                {lesson.type === 'video-external' ?
+                                    <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
+                                    : null}
+                                {lesson.type === 'ppt' ?
+                                    lesson.content
+                                    : null}
+                                {lesson.type === 'doc' || lesson.type === 'pdf' ?
+                                    <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
+                                    : null}
+                                {lesson.type === 'audio' ?
+                                    <audio controls controlsList="nodownload">
+                                        <source
+                                            src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
+                                            type={lesson.mime}
+                                        />
+                                        Your browser does not support the audio element.
+                                </audio>
+                                    : null}
+                            </Grid>
+                        : null}
+                    </Container>
+                    {this.state.finalQuiz && this.state.progress > 98 ?
+                        <Grid container justify={'center'}>
+                            <Button variant="contained" onClick={this.openFinal} color="primary">Realizar teste final</Button>
+                        </Grid>
+                        : null}
+                    {/* {lessons ?
+                        <Stepper
+                            activeStep={activeLesson}
+                            orientation="vertical"
+                            nonLinear
+                        >
+                            {lessons.map((lesson, index) => (
+                                <Step key={lesson.id}>
+                                    <StepButton onClick={this.handleStep.bind(this, index)} completed={lesson.view ? true : false}>
+                                        {lesson.title}
+                                    </StepButton>
+                                    <StepContent>
+                                        <Grid container>
+                                            <Grid item xs={12}>
+                                                {lesson.type === 'text' ?
+                                                    <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
+                                                    : null}
+                                                {lesson.type === 'video-internal' ?
+                                                    <Player
+                                                        playsInline
+                                                        poster="/assets/poster.png"
+                                                        src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
+                                                    />
+                                                    : null}
+                                                {lesson.type === 'video-external' ?
+                                                    <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
+                                                    : null}
+                                                {lesson.type === 'ppt' ?
+                                                    lesson.content
+                                                    : null}
+                                                {lesson.type === 'doc' || lesson.type === 'pdf' ?
+                                                    <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
+                                                    : null}
+                                                {lesson.type === 'audio' ?
+                                                    <audio controls controlsList="nodownload">
+                                                        <source
                                                             src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
+                                                            type={lesson.mime}
                                                         />
-                                                        : null}
-                                                    {lesson.type === 'video-external' ?
-                                                        <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
-                                                        : null}
-                                                    {lesson.type === 'ppt' ?
-                                                        lesson.content
-                                                        : null}
-                                                    {lesson.type === 'doc' || lesson.type === 'pdf' ?
-                                                        <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
-                                                        : null}
-                                                    {lesson.type === 'audio' ?
-                                                        <audio controls controlsList="nodownload">
-                                                            <source
-                                                                src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
-                                                                type={lesson.mime}
-                                                            />
-                                                            Your browser does not support the audio element.
+                                                        Your browser does not support the audio element.
                                                         </audio>
-                                                        : null}
-                                                </Grid>
-                                                <Grid item xs={12} style={{ margin: 10 }}>
-                                                    <Grid container justify={'flex-end'} align={'center'}>
+                                                    : null}
+                                            </Grid>
+                                            <Grid item xs={12} style={{ margin: 10 }}>
+                                                <Grid container justify={'flex-end'} align={'center'}>
+                                                    <Grid item xs={2}>
+                                                        <Button
+                                                            disabled={activeLesson === 0}
+                                                            onClick={this.handleBackStep}
+                                                        >
+                                                            Anterior
+                                                            </Button>
+                                                    </Grid>
+                                                    {activeLesson === lessons.length - 1 ?
+                                                        null
+                                                        :
                                                         <Grid item xs={2}>
                                                             <Button
-                                                                disabled={activeLesson === 0}
-                                                                onClick={this.handleBackStep}
+                                                                variant="contained"
+                                                                color="primary"
+                                                                onClick={this.handleNextStep}
                                                             >
-                                                                Anterior
-                                                            </Button>
+                                                                Próxima
+                                                                </Button>
                                                         </Grid>
-                                                        {activeLesson === lessons.length - 1 ?
-                                                            null
-                                                            :
-                                                            <Grid item xs={2}>
-                                                                <Button
-                                                                    variant="contained"
-                                                                    color="primary"
-                                                                    onClick={this.handleNextStep}
-                                                                >
-                                                                    Próxima
+                                                    }
+                                                    {lesson.view ? null :
+                                                        <Grid item xs={2}>
+                                                            <Button
+                                                                variant="contained"
+                                                                color="primary"
+                                                                onClick={lesson.question ? this.openQuiz.bind(this, lesson.id) : this.endLesson.bind(this, lesson.id)}
+                                                            >
+                                                                Finalizar Lição
                                                                 </Button>
-                                                            </Grid>
-                                                        }
-                                                        {lesson.view ? null :
-                                                            <Grid item xs={2}>
-                                                                <Button
-                                                                    variant="contained"
-                                                                    color="primary"
-                                                                    onClick={lesson.question ? this.openQuiz.bind(this, lesson.id) : this.endLesson.bind(this, lesson.id)}
-                                                                >
-                                                                    Finalizar Lição
-                                                                </Button>
-                                                            </Grid>
-                                                        }
-                                                    </Grid>
+                                                        </Grid>
+                                                    }
                                                 </Grid>
                                             </Grid>
-                                        </StepContent>
-                                    </Step>
-                                ))}
-                            </Stepper>
-                            : null}
-                    </Container>
+                                        </Grid>
+                                    </StepContent>
+                                </Step>
+                            ))}
+                        </Stepper>
+                        : null} */}
                 </main>
                 <Dialog
                     open={modal.open}

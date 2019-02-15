@@ -3,25 +3,40 @@ import { Redirect, Link } from 'react-router-dom'
 import { API_URL } from "../../common/url-types"
 import axios from 'axios'
 import AuthService from '../../services'
-// import Card from '../../components/Card'
-// import Grid from '../../components/Grid'
 import Navigation from '../../common/navigation'
 import Banner from '../../components/Banner'
-// import Button from '../../components/Button'
+import styled from 'styled-components'
 
 import {
     Typography,
     Grid,
     Card,
-    CardHeader,
-    CardMedia,
     CardContent,
     CardActions,
     CardActionArea,
     Button,
     Collapse,
-    Avatar,
-} from '@material-ui/core';
+    Divider
+} from '@material-ui/core'
+
+const Image = styled.div`
+    background-position: center center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    height: 150px;
+    display: block;
+`
+
+const CardContentStyle = styled(CardContent)`
+    min-height: 105px;
+`
+
+const Container = styled(Grid)`
+    max-width: 1024px;
+    margin: 0 auto!important;
+    padding: 0 15px;
+    width: 100%!important;
+`
 
 class Page extends React.Component {
     constructor(props) {
@@ -112,44 +127,25 @@ class Page extends React.Component {
                 <main className="fadeIn animated">
                     <Banner title="Bem vindo ao RP Learning" icon="logo">
                         <p>Seja bem-vindo(a) ao RP Learning – Cursos  com certificado de conclusão válido para: atividades extracurriculares, avaliações de empresas, provas de títulos, concursos públicos, enriquecer o seu currículo e muito mais!</p>
-                        {/* <h3>A importância da qualificação profissional</h3> */}
-                        {/* <p>Por conta da alta concorrência e competitividade, o mercado de trabalho está cada vez mais exigente na seleção de profissionais e quem está mais preparado tem mais oportunidades. A qualificação, portanto, é uma ferramenta fundamental para o sucesso profissional, sendo um fator determinante tanto para aqueles que estão em busca de uma vaga, para quem deseja crescer na empresa e para quem pensa em manter sua posição.</p> */}
                     </Banner>
-                    <Grid container spacing={40} style={{ maxWidth: '90%', margin: '0 auto' }}>
+                    <Container container spacing={40}>
                         {courses.map((course) =>
-                            <Grid item md={4} xs={12} key={course.id}>
+                            <Grid item md={4} sm={12} xs={12} key={course.id}>
                                 <Card>
                                     <CardActionArea onClick={this.viewCourse.bind(this, course.id)}>
-                                        <CardHeader
-                                            avatar={
-                                                <Avatar aria-label="Recipe">
-                                                    R
-                                                </Avatar>
-                                            }
-                                            // action={
-                                            //     <IconButton
-                                            //         onClick={this.handleExpandClick}
-                                            //         aria-expanded={this.state.expanded}
-                                            //         aria-label="Show more"
-                                            //     >
-                                            //         <ExpandMoreIcon />
-                                            //     </IconButton>
-                                            // }
-                                            title={course.title}
-                                            subheader="Categoria"
-                                        />
-                                        {course.image ?
-                                            <CardMedia
-                                                image={course.image}
-                                                style={{ height: 100 }}
-                                            />
-                                            : null}
+                                        <Image style={{ backgroundImage: `url(${course.image})` }} />
                                     </CardActionArea>
-                                    <CardContent>
-                                        <Typography component="p">
-                                            {course.description}
+                                    <CardContentStyle>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            {course.title.substring(0, 20)}
+                                            {course.title.length >= 20 ? ' [...]' : null }
                                         </Typography>
-                                    </CardContent>
+                                        <Typography component="p">
+                                            {course.description.substring(0, 140)}
+                                            {course.description.length >= 140 ? ' [...]' : null }
+                                        </Typography>
+                                    </CardContentStyle>
+                                    <Divider />
                                     <CardActions disableActionSpacing>
                                         {/* <IconButton aria-label="Add to favorites">
                                             <FavoriteIcon />
@@ -167,7 +163,7 @@ class Page extends React.Component {
                             </Grid>
                         )
                         }
-                    </Grid>
+                    </Container>
                 </main>
             </React.Fragment>
         );

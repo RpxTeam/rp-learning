@@ -4,19 +4,46 @@ import axios from 'axios'
 import Banner from '../../components/Banner'
 import Navigation from '../../common/navigation'
 import { API_URL } from "../../common/url-types"
-import InfoCourse from '../../components/InfoCourse'
-import Button from '../../components/Button'
-import Detail from '../../components/details'
 import Testimonial from '../../components/Testimonial'
 
-import SwipeableViews from 'react-swipeable-views';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import styled from 'styled-components'
+
+import {
+    Grid,
+    AppBar,
+    Card,
+    Tabs,
+    Tab,
+    Typography,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Divider,
+    ListSubheader,
+    Button
+} from '@material-ui/core'
+
+import Schedule from '@material-ui/icons/Schedule'
+import Event from '@material-ui/icons/Event'
+import Person from '@material-ui/icons/Person'
+import ViewHeadline from '@material-ui/icons/ViewHeadline'
+import AudioTrack from '@material-ui/icons/AudioTrack'
+import LibraryBooks from '@material-ui/icons/LibraryBooks'
+import VideoLibrary from '@material-ui/icons/VideoLibrary'
+import VideoCam from '@material-ui/icons/VideoCam'
+
+const Container = styled(Grid)`
+    max-width: 1024px;
+    margin: 0 auto!important;
+    padding: 0 15px;
+    width: 100%!important;
+    padding: 30px 0;
+`
+
+const TabStyle = styled(Tab)`
+    box-shadow: none
+`
 
 class Page extends React.Component {
     constructor(props) {
@@ -27,7 +54,8 @@ class Page extends React.Component {
                 id: '',
                 title: '',
                 create_at: '',
-                description: ''
+                description: '',
+                start_date: ''
             },
             message: '',
             onCourse: false,
@@ -93,22 +121,23 @@ class Page extends React.Component {
     };
 
     formatIcons = (type) => {
-        let icon = 'file';
+        console.log(type);
         switch (type) {
             case 'text':
-                icon = icon + ' outline';
+                return <LibraryBooks />
                 break;
             case 'video-internal':
-                icon = icon + ' video';
+                return <VideoLibrary />
                 break;
             case 'video-external':
-                icon = icon + ' video outline';
+                return <VideoCam />
                 break;
-            case 'audio':
-                icon = icon + ' audio outline';
-                break;
+            // case 'audio':
             default:
-                icon = 'file';
+                return <AudioTrack />
+            // break;
+            // default:
+            //     icon = 'file';
         }
         return icon;
     };
@@ -121,31 +150,23 @@ class Page extends React.Component {
         this.setState({ value: index });
     };
 
+    formatDateReverse = (date) => {
+        const oldDate = date.split('-');
+        let day, month, year;
+        day = Number(oldDate[2]);
+        month = Number(oldDate[1]) - 1;
+        year = Number(oldDate[0]);
+        const newDate = day + '/' + month + '/' + year;
+
+        return newDate
+    };
+
     render() {
-        const { course, courseID, lessons, lessonsCount, progress } = this.state;
+        const { course, courseID, lessons, lessonsCount, progress, value } = this.state;
         const { isAuthenticated, user } = this.props;
         if (this.state.onCourse === true) {
             return <Redirect to={'/courses/' + courseID} />
         }
-        const panes = [
-            { menuItem: 'Descrição', render: () => <Tab.Pane attached={false}>{course.description}</Tab.Pane> },
-            {
-                menuItem: 'Lições', render: () => <Tab.Pane attached={false}>
-                    {
-                        lessons.map((lesson) =>
-                            <List divided verticalAlign='middle' key={lesson.id}>
-                                <List.Item style={{ paddingTop: '1em', paddingBottom: '1em' }}>
-                                    <Icon name={this.formatIcons(lesson.type)} />
-                                    <List.Content>{lesson.title}</List.Content>
-                                </List.Item>
-                            </List>
-                        )
-                    }
-                </Tab.Pane>
-            },
-            { menuItem: 'Autores', render: () => <Tab.Pane attached={false}>{course.instructor}</Tab.Pane> },
-            // { menuItem: 'Depoimentos', render: () => <Tab.Pane attached={false}>Tab 4 Content</Tab.Pane> },
-        ];
         return (
             <div id="course-page">
                 <Navigation />
@@ -155,57 +176,94 @@ class Page extends React.Component {
                         title={course.title}
                         image={course.image}
                     />
-                    <InfoCourse
-                        trails={1}
-                        lessons={lessonsCount}
-                        duration={course.duration}
-                    />
-                    <Button
-                        className="btn-start"
-                        title={isAuthenticated ? progress != null ? "Continuar Curso" : "Iniciar Curso" : "Iniciar Curso"}
-                        onClick={this.startCourse}
-                        icon="courses"
-                    />
-                    <AppBar position="static" color="default">
-                        <Tabs
-                            value={this.state.value}
-                            onChange={this.handleChange}
-                            indicatorColor="primary"
-                            textColor="primary"
-                            variant="fullWidth"
-                        >
-                            <Tab label="Detalhes" />
-                            <Tab label="Avaliações" />
-                            <Tab label="Conteúdo" />
-                        </Tabs>
-                    </AppBar>
-                    <SwipeableViews
-                        axis={'x'}
-                        index={this.state.value}
-                        onChangeIndex={this.handleChangeIndex}
-                    >
-                        <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
-                            <Detail
-                                title={course.title}
-                                description={course.description}
-                                instructor={course.instructor}
-                            />
-                        </Typography>
-                        <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
-                            <Testimonial />
-                        </Typography>
-                        <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
-                            <List>
-                                {lessons ?
-                                    lessons.map((lesson) =>
-                                        <ListItem key={lesson.id}>
-                                            <ListItemText primary={lesson.title} secondary={lesson.type} />
-                                        </ListItem>
-                                    )
-                                    : null}
-                            </List>
-                        </Typography>
-                    </SwipeableViews>
+                    <Container container spacing={16} justify="center">
+                        <Grid item md={9}>
+                            <img src={course.image} style={{ width: '100%' }} />
+                            <Divider style={{ margin: '20px 0' }} />
+                            <Tabs
+                                value={value}
+                                onChange={this.handleChange}
+                                indicatorColor="primary"
+                                textColor="primary"
+                            >
+                                <Tab label="Detalhes" />
+                                <Tab label="Avaliações" />
+                                <Tab label="Conteúdo" />
+                            </Tabs>
+                            {value === 0 &&
+                                <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
+                                    <p>
+                                        {course.description}
+                                    </p>
+                                    <br /><br />
+                                </Typography>
+                            }
+                            {value === 1 &&
+                                <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
+                                    <Testimonial />
+                                </Typography>
+                            }
+                            {value === 2 &&
+                                <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
+                                    <List>
+                                        {lessons ?
+                                            <React.Fragment>
+                                                <Divider />
+                                                {lessons.map((lesson) =>
+                                                    <React.Fragment key={lesson.id}>
+                                                        <ListItem>
+                                                            <ListItemIcon>
+                                                                {this.formatIcons(lesson.type)}
+                                                            </ListItemIcon>
+                                                            <ListItemText primary={lesson.title} />
+                                                        </ListItem>
+                                                        <Divider />
+                                                    </React.Fragment>
+                                                )}
+                                            </React.Fragment>
+                                            : null}
+                                    </List>
+                                </Typography>
+                            }
+                        </Grid>
+                        <Grid item md={3}>
+                            <Grid container justify="center">
+                                <Grid item xs={12}>
+                                    <Card>
+                                        <List>
+                                            <ListSubheader>Detalhes</ListSubheader>
+                                            <Divider />
+                                            <ListItem>
+                                                <ListItemIcon>
+                                                    <Schedule />
+                                                </ListItemIcon>
+                                                <ListItemText primary={course.duration === 1 ? course.duration + ' hora' : course.duration + ' horas'} />
+                                            </ListItem>
+                                            <ListItem>
+                                                <ListItemIcon>
+                                                    <Event />
+                                                </ListItemIcon>
+                                                <ListItemText primary={this.formatDateReverse(course.start_date)} />
+                                            </ListItem>
+                                            <ListItem>
+                                                <ListItemIcon>
+                                                    <Person />
+                                                </ListItemIcon>
+                                                <ListItemText primary={course.instructor} />
+                                            </ListItem>
+                                            <ListItem>
+                                                <ListItemIcon>
+                                                    <ViewHeadline />
+                                                </ListItemIcon>
+                                                <ListItemText primary={lessonsCount === 1 ? lessonsCount + ' Lição' : lessonsCount + ' Lições'} />
+                                            </ListItem>
+                                        </List>
+                                    </Card>
+                                </Grid>
+                                <Button variant='contained' size="large" color='primary' style={{ marginTop: '20px' }} onClick={this.startCourse}>{isAuthenticated ? progress != null ? "Continuar Curso" : "Iniciar Curso" : "Iniciar Curso"}</Button>
+                            </Grid>
+                        </Grid>
+                    </Container>
                 </main>
             </div>
         );

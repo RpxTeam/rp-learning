@@ -51,7 +51,8 @@ class Page extends React.Component {
                     value: 1,
                     label: 'Administrador',
                 }
-            ]
+            ],
+            profile: {}
         }
         this.openMessage = this.openMessage.bind(this);
     }

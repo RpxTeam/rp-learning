@@ -65,7 +65,7 @@ class Admin extends React.Component {
     render() {
         const { classes, user } = this.props; 
 
-        if(user.role_id === 3) {
+        if(user.role_id === 3 || user.role_id === "3") {
             return <Redirect to={'/'} />
         }
         return (
@@ -92,7 +92,7 @@ class Admin extends React.Component {
                                 <ListItemText primary="Dashboard" />
                             </ListItem>
                         </Link>
-                        {user.role_id === 1 ?
+                        {user.role_id === 1 || user.role_id === "1" ?
                             <Link to="/admin/users">
                                 <ListItem button>
                                     <ListItemIcon><People /></ListItemIcon>

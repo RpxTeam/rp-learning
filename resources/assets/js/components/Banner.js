@@ -6,13 +6,13 @@ import styled from 'styled-components'
 export class Banner extends Component {
     render() {
         const Image = styled.div`
-        background-Image: url(${this.props.image})
-    `
+            background-Image: url(${this.props.image})
+        `
         return (
             <React.Fragment>
                 {
                     this.props.internal ?
-                        <Image className="banner-course">
+                        <div className="banner-course">
                             <div className="gridD">
                                 {/* <div className="back-button">
                                     <Link to={'/courses'}><i className="icon-arrow-left"></i></Link>
@@ -29,23 +29,23 @@ export class Banner extends Component {
                                 <p>87% dos alunos recomendam esse curso.</p>
                             </div> */}
                             </div>
-                        </Image>
+                        </div>
                         :
                         <div className="banner">
-                            {this.props.icon ?
-                                <div className="icon-bg">
-                                    <i className={"icon-" + this.props.icon}></i>
-                                </div>
-                                : null}
                             <div className="gridD">
+                                {this.props.icon ?
+                                    <div className="icon-bg">
+                                        <i className={"icon-" + this.props.icon}></i>
+                                    </div>
+                                : null}
                                 <div className="title">
-                                    {this.props.icon ?
+                                    {/* {this.props.icon ?
                                         <div className="icon">
                                             <i className={"icon-" + this.props.icon}></i>
                                         </div>
-                                    : null }
+                                    : null } */}
                                     <div className="info">
-                                        <h6>{this.props.title}</h6>
+                                        <h2>{this.props.title}</h2>
                                         {this.props.children}
                                     </div>
                                 </div>
