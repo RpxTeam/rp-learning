@@ -4,26 +4,41 @@ import { Link } from 'react-router-dom'
 import { API_URL } from "../../../../common/url-types";
 import Admin from '../../Admin'
 
+import FilePreview from 'react-preview-file';
+
 import { Redirect } from "react-router-dom";
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import Button from '@material-ui/core/Button';
+import {
+    Grid,
+    TextField,
+    Card,
+    CardHeader,
+    Button,
+    Menu,
+    MenuItem,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    ListItemSecondaryAction,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    IconButton,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Dialog,
+    Fab,
+    Typography,
+    Divider,
+    FormGroup,
+    FormControlLabel,
+    Switch
+} from '@material-ui/core'
+
 import Message from '../../../../components/Message';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import QuestionAnswer from '@material-ui/icons/QuestionAnswer';
@@ -31,21 +46,9 @@ import VideoCam from '@material-ui/icons/VideoCam';
 import VideoLibrary from '@material-ui/icons/VideoLibrary';
 import AudioTrack from '@material-ui/icons/AudioTrack';
 import LibraryBooks from '@material-ui/icons/LibraryBooks';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Dialog from '@material-ui/core/Dialog';
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-// import Dropdown from "semantic-ui-react/dist/es/modules/Dropdown/Dropdown";
-// import Modal from "semantic-ui-react/dist/es/modules/Modal/Modal";
 
 // CKEditor
 import CKEditor from "@ckeditor/ckeditor5-react";
@@ -53,12 +56,8 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { TimePicker } from 'material-ui-pickers';
-import { DatePicker } from 'material-ui-pickers';
-import { DateTimePicker } from 'material-ui-pickers';
 import { InlineDatePicker } from 'material-ui-pickers';
 import brLocale from 'date-fns/locale/pt-BR';
-import { ListItemAvatar } from '@material-ui/core';
 
 const CardContainer = styled(Card)`
     padding: 10px 20px;
@@ -265,71 +264,86 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        const start_date = this.formatDate(this.state.course.start_date);
-        const end_date = this.formatDate(this.state.course.end_date);
-
-        if (this.state.image.file) {
-
-            const formData = new FormData();
-
-            formData.append('_method', 'PUT');
-            formData.append('title', this.state.course.title);
-            formData.append('description', this.state.course.description);
-            formData.append('duration', this.state.course.duration);
-            if (this.state.image.file) {
-                formData.append('image', this.state.image.file);
-                formData.append('mime', this.state.image.file.type);
-            }
-            formData.append('start_date', start_date);
-            formData.append('end_date', end_date);
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            };
-
-            axios.post(`${API_URL}/api/courses/${this.state.courseID}`, formData, config)
-                .then((res) => {
-                    this.setState({
-                        error: false,
-                        success: true,
-                        edit: !this.state.edit
-                    });
-
-                    this.openMessage('Curso atualizado com sucesso');
-
-                    setTimeout(function () {
-                        this.getCourse(this.state.course.id);
-                    }.bind(this), 2000);
-                })
-                .catch((error) => {
-                    this.openMessage(error.message);
-                });
+        if (!this.state.course.title) {
+            this.openMessage('Título está vázio');
+        } else if(!this.state.course.start_date) {
+            this.openMessage('Data de início vázia');
+        } else if(!this.state.course.end_date) {
+            this.openMessage('Data de término vázia');
+        } else if(!this.state.course.description) {
+            this.openMessage('Descrição vázia');
+        } else if(!this.state.course.duration) {
+            this.openMessage('Duração vázia');
+        } else if(this.state.course.duration < 1) {
+            this.openMessage('Duração não pode ser menor que 1 hora');
         } else {
-            axios.put(`${API_URL}/api/courses/${this.state.courseID}`, {
-                title: this.state.course.title,
-                slug: this.state.course.slug,
-                description: this.state.course.description,
-                start_date: start_date,
-                end_date: end_date,
-                duration: this.state.course.duration,
-            })
-                .then(res => {
-                    this.openMessage('Curso atualizado com sucesso');
-                    this.setState({
-                        error: false,
-                        success: true,
-                        edit: !this.state.edit
-                    });
-                    this.getCourse();
-                }).catch(error => {
-                    this.openMessage(error.message);
-                    this.setState({
-                        error: true,
-                        success: false
+
+            const start_date = this.formatDate(this.state.course.start_date);
+            const end_date = this.formatDate(this.state.course.end_date);
+
+            if (this.state.image.file) {
+
+                const formData = new FormData();
+
+                formData.append('_method', 'PUT');
+                formData.append('title', this.state.course.title);
+                formData.append('description', this.state.course.description);
+                formData.append('duration', this.state.course.duration);
+                if (this.state.image.file) {
+                    formData.append('image', this.state.image.file);
+                    formData.append('mime', this.state.image.file.type);
+                }
+                formData.append('start_date', start_date);
+                formData.append('end_date', end_date);
+
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                };
+
+                axios.post(`${API_URL}/api/courses/${this.state.courseID}`, formData, config)
+                    .then((res) => {
+                        this.setState({
+                            error: false,
+                            success: true,
+                            edit: !this.state.edit
+                        });
+
+                        this.openMessage('Curso atualizado com sucesso');
+
+                        setTimeout(function () {
+                            this.getCourse(this.state.course.id);
+                        }.bind(this), 2000);
                     })
+                    .catch((error) => {
+                        this.openMessage(error.message);
+                    });
+            } else {
+                axios.put(`${API_URL}/api/courses/${this.state.courseID}`, {
+                    title: this.state.course.title,
+                    slug: this.state.course.slug,
+                    description: this.state.course.description,
+                    start_date: start_date,
+                    end_date: end_date,
+                    duration: this.state.course.duration,
                 })
+                    .then(res => {
+                        this.openMessage('Curso atualizado com sucesso');
+                        this.setState({
+                            error: false,
+                            success: true,
+                            edit: !this.state.edit
+                        });
+                        this.getCourse();
+                    }).catch(error => {
+                        this.openMessage(error.message);
+                        this.setState({
+                            error: true,
+                            success: false
+                        })
+                    })
+            }
         }
     };
 
@@ -512,6 +526,7 @@ class Page extends React.Component {
 
         } else if (this.state.lesson.title !== '') {
             this.submitEditLesson(id, this.state.idQuestion, type, false);
+            this.openMessage('Lição atualizada com sucesso');
         } else {
             this.openMessage('Por favor preencha o título');
         }
@@ -572,7 +587,8 @@ class Page extends React.Component {
             file: {
                 file: null,
                 name: ''
-            }
+            },
+            editAnswer: null
         })
     }
 
@@ -605,7 +621,8 @@ class Page extends React.Component {
             file: {
                 file: null,
                 name: ''
-            }
+            },
+            editAnswer: null
         })
     }
 
@@ -637,7 +654,9 @@ class Page extends React.Component {
             type: '',
             open: false,
             message: ''
-        }
+        },
+        editAnswer: null,
+        quiz: false
     });
 
     showConfirm = () => this.setState({ confirm: { open: true } });
@@ -1306,7 +1325,9 @@ class Page extends React.Component {
                                 </Button>
                                 <br /><br />
                                 {this.state.imageEdit ?
-                                    this.state.image.file.name
+                                    <FilePreview file={this.state.image.file}>
+                                        {(preview) => <img src={preview} />}
+                                    </FilePreview>
                                     : <img src={course.image} />}
                             </CardContainer>
                             <br />
@@ -1335,7 +1356,7 @@ class Page extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleCancel} color="primary">
-                            Cancel
+                            Cancelar
                         </Button>
                         <Button onClick={this.handleDelete} color="primary">
                             Ok
@@ -1348,7 +1369,8 @@ class Page extends React.Component {
                     disableEscapeKeyDown
                     onClose={this.handleCancel}
                     open={modal.open}
-                    maxWidth="lg"
+                    maxWidth="md"
+                    fullWidth
                     aria-labelledby="confirmation-dialog-title"
                     variant="outlined"
                 >

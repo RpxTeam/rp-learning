@@ -4,36 +4,22 @@ import axios from 'axios'
 import {
     Form,
 } from 'semantic-ui-react'
-import {
-    DateInput,
-    TimeInput,
-    DateTimeInput,
-    DatesRangeInput
-} from 'semantic-ui-calendar-react';
+import FilePreview from 'react-preview-file';
+
 import Admin from '../../Admin'
 import { Redirect } from "react-router-dom";
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Card from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
+
+import {
+    Grid,
+    TextField,
+    Card,
+    Button
+} from '@material-ui/core'
 import Message from '../../../../components/Message';
 import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import Fab from '@material-ui/core/Fab';
-// import ExpandLess from '@material-ui/icons/ExpandLess';
-// import ExpandMore from '@material-ui/icons/ExpandMore';
-// import Input from '@material-ui/core/Input';
-// import InputLabel from '@material-ui/core/InputLabel';
-// import FormControl from '@material-ui/core/FormControl';
-// import Chip from '@material-ui/core/Chip';
-// import Select from '@material-ui/core/Select';
 
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { TimePicker } from 'material-ui-pickers';
-import { DatePicker } from 'material-ui-pickers';
-import { DateTimePicker } from 'material-ui-pickers';
 import { InlineDatePicker } from 'material-ui-pickers';
 import brLocale from 'date-fns/locale/pt-BR';
 
@@ -107,16 +93,25 @@ class Page extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        if (!this.state.title || !this.state.start_date || !this.state.end_date || !this.state.description || !this.state.duration) {
-            this.setState({
-                message: {
-                    ...this.state,
-                    open: true,
-                    text: 'Existem campos vázios'
-                }
-            })
+        if (!this.state.title) {
+            this.openMessage('Título está vázio');
+        } else if(!this.state.start_date) {
+            this.openMessage('Data de início vázia');
+        } else if(!this.state.end_date) {
+            this.openMessage('Data de término vázia');
+        } else if(!this.state.description) {
+            this.openMessage('Descrição vázia');
+        } else if(!this.state.duration) {
+            this.openMessage('Duração vázia');
+        } else if(this.state.duration < 1) {
+            this.openMessage('Duração não pode ser menor que 1 hora');
         } else {
-            const start_date = this.formatDate(this.state.start_date);
+            this.submitCourse();
+        }
+    };
+
+    submitCourse = () => {
+        const start_date = this.formatDate(this.state.start_date);
             const end_date = this.formatDate(this.state.end_date);
 
             if (this.state.image.name) {
@@ -135,12 +130,8 @@ class Page extends React.Component {
                         error: false,
                         success: true,
                         courseID: res.data,
-                        message: {
-                            ...this.state.message,
-                            open: true,
-                            text: 'Curso criado com sucesso!',
-                        }
                     });
+                    this.openMessage('Curso criado com sucesso!');
                     setTimeout(function () {
                         this.setState({
                             courseEdit: true
@@ -154,8 +145,7 @@ class Page extends React.Component {
                     this.openMessage(error.message)
                 });
             }
-        }
-    };
+    }
 
     handleDelete = () => {
         console.log('delete');
@@ -409,9 +399,9 @@ class Page extends React.Component {
                                 </Button>
                                 <br /><br />
                                 {image.name ?
-                                    <Typography variant="caption" gutterBottom>
-                                        {image.name}
-                                    </Typography>
+                                    <FilePreview file={image.file}>
+                                        {(preview) => <img src={preview} />}
+                                    </FilePreview>
                                     : null}
                             </CardContainer>
                             <br />

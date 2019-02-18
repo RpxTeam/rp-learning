@@ -170,9 +170,9 @@ class Page extends React.Component {
                                         <IconButton size="small" aria-label="Edit" component={Link} to={'/admin/courses/' + course.id}>
                                             <EditIcon />
                                         </IconButton>
-                                        <IconButton size="small" color="primary" aria-label="Delete" onClick={this.viewCourse(course.id)}>
+                                        {/* <IconButton size="small" color="primary" aria-label="Delete" onClick={this.viewCourse(course.id)}>
                                             <RemoveRedEye />
-                                        </IconButton>
+                                        </IconButton> */}
                                         <IconButton size="small" color="secondary" aria-label="Add" onClick={this.handleConfirm.bind(this, course.id)} value={course.id}>
                                             <DeleteIcon />
                                         </IconButton>
