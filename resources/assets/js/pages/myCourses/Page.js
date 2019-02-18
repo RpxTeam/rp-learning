@@ -50,6 +50,7 @@ class Page extends React.Component {
         axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses`)
         .then(res => {
             const courses = Object.values(res.data);
+            console.log(courses);
             this.setState({ courses: courses });
         })
     };

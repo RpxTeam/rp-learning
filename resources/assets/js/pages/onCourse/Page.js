@@ -30,15 +30,57 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    Card
+    Card,
+    Typography
 } from '@material-ui/core'
+
+import AudioTrack from '@material-ui/icons/AudioTrack'
+import LibraryBooks from '@material-ui/icons/LibraryBooks'
+import VideoLibrary from '@material-ui/icons/VideoLibrary'
+import VideoCam from '@material-ui/icons/VideoCam'
+import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
+import CheckCircle from '@material-ui/icons/CheckCircle'
 
 import styled from 'styled-components';
 
 const Container = styled(Grid)`
-    max-width: 95%;
-    margin: 0 auto;
-    width: 100%;
+    margin: 0 -16px!important;
+    background: #eeeeee;
+    padding: 0 15px;
+`
+
+const Lesson = styled.div`
+    padding: 30px 15px;
+    p {
+        display: block;
+        font-size: 16px;
+        line-height: 1.5em;
+    }
+    img {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .audio {
+        text-align: center;
+    }
+    .video-external {
+        height: 600px;
+        @media(max-width: 1360px) {
+            height: 450px;
+        }
+        @media(max-width: 520px) {
+            height: 350px;
+        }
+    }
+    .video-external iframe {
+        height: 600px;
+        @media(max-width: 1360px) {
+            height: 450px;
+        }
+        @media(max-width: 520px) {
+            height: 350px;
+        }
+    }
 `
 function Transition(props) {
     return <Slide direction="up" {...props} />;
@@ -95,6 +137,7 @@ class Page extends React.Component {
                     const progress = res.data.progress;
                     const course = res.data;
                     this.setState({ course: course, progress: progress });
+                    this.getQuizId();
                     this.verifyFinalComplete();
                 } else {
                     this.setState({ onCourse: true })
@@ -132,15 +175,17 @@ class Page extends React.Component {
                 });
             });
 
+    };
+
+    getQuizId = () => {
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/quiz`)
             .then(res => {
+                console.log(res);
                 this.setState({
                     quiz_id: res.data
                 })
-                this.verifyFinalComplete();
             })
-
-    };
+    }
 
     verifyFinalComplete = () => {
         axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/quiz/${this.state.quiz_id}/final`)
@@ -307,6 +352,7 @@ class Page extends React.Component {
         })
             .then(() => {
                 this.setState({ progress: progress });
+                this.openMessage('Lição Finalizada com sucesso');
                 if (progress === 100) {
                     this.openModal();
                 }
@@ -315,24 +361,22 @@ class Page extends React.Component {
     };
 
     formatIcons = (type) => {
-        let icon = 'file';
         switch (type) {
             case 'text':
-                icon = icon + ' outline';
+                return <LibraryBooks />
                 break;
             case 'video-internal':
-                icon = icon + ' video';
+                return <VideoLibrary />
+                break;
+            case 'pdf':
+                return <InsertDriveFile />
                 break;
             case 'video-external':
-                icon = icon + ' video outline';
-                break;
-            case 'audio':
-                icon = icon + ' audio outline';
+                return <VideoCam />
                 break;
             default:
-                icon = 'file';
+                return <AudioTrack />
         }
-        return icon;
     };
 
     openModal = () => this.setState({ modal: { open: true } });
@@ -482,7 +526,6 @@ class Page extends React.Component {
             }
             return finalChooses
         });
-        console.log(finalChooses)
         this.setState({
             finalChooses: newChooses
         });
@@ -491,8 +534,6 @@ class Page extends React.Component {
     endFinal = () => {
         const correctAnswers = this.state.finalAnswers;
         let chooses = this.state.finalChooses;
-        console.log(correctAnswers)
-        console.log(chooses);
         if (JSON.stringify(chooses) === JSON.stringify(correctAnswers)) {
             this.endCourse(this.state.course.id, true);
             this.setState({
@@ -572,145 +613,80 @@ class Page extends React.Component {
                     />
                     <Container container spacing={16}>
                         {lessons ?
-                            <Grid item md={3}>
+                            <Grid item md={3} sm={12} xs={12}>
                                 <Card>
                                     <List>
                                         {lessons.map((lesson, index) => (
                                             <ListItem key={index} button onClick={this.getLesson.bind(this, lesson.id)}>
                                                 <ListItemIcon>
-                                                    <ListItemText>
-                                                        {lesson.title}
-                                                    </ListItemText>
+                                                    {lesson.view != null ?
+                                                        <CheckCircle color="primary" />
+                                                        : this.formatIcons(lesson.type)}
                                                 </ListItemIcon>
+                                                <ListItemText>
+                                                    {lesson.title}
+                                                </ListItemText>
                                             </ListItem>
                                         ))}
                                     </List>
                                 </Card>
+                                <br />
+                                {this.state.finalQuiz && this.state.progress > 98 ?
+                                    <Button variant="contained" fullWidth size="large" onClick={this.openFinal} color="primary">Realizar teste final</Button>
+                                    : null}
                             </Grid>
-                        : null}
+                            : null}
                         {lesson ?
-                            <Grid item md={9}>
-                                {lesson.type === 'text' ?
-                                    <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
-                                    : null}
-                                {lesson.type === 'video-internal' ?
-                                    <Player
-                                        playsInline
-                                        poster="/assets/poster.png"
-                                        src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
-                                    />
-                                    : null}
-                                {lesson.type === 'video-external' ?
-                                    <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
-                                    : null}
-                                {lesson.type === 'ppt' ?
-                                    lesson.content
-                                    : null}
-                                {lesson.type === 'doc' || lesson.type === 'pdf' ?
-                                    <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
-                                    : null}
-                                {lesson.type === 'audio' ?
-                                    <audio controls controlsList="nodownload">
-                                        <source
+                            <Grid item md={9} sm={12} xs={12}>
+                                <Lesson>
+                                    {lesson.type === 'text' ?
+                                        <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
+                                        : null}
+                                    {lesson.type === 'video-internal' ?
+                                        <Player
+                                            playsInline
+                                            poster="/assets/poster.png"
                                             src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
-                                            type={lesson.mime}
                                         />
-                                        Your browser does not support the audio element.
-                                </audio>
-                                    : null}
-                            </Grid>
-                        : null}
-                    </Container>
-                    {this.state.finalQuiz && this.state.progress > 98 ?
-                        <Grid container justify={'center'}>
-                            <Button variant="contained" onClick={this.openFinal} color="primary">Realizar teste final</Button>
-                        </Grid>
-                        : null}
-                    {/* {lessons ?
-                        <Stepper
-                            activeStep={activeLesson}
-                            orientation="vertical"
-                            nonLinear
-                        >
-                            {lessons.map((lesson, index) => (
-                                <Step key={lesson.id}>
-                                    <StepButton onClick={this.handleStep.bind(this, index)} completed={lesson.view ? true : false}>
-                                        {lesson.title}
-                                    </StepButton>
-                                    <StepContent>
-                                        <Grid container>
-                                            <Grid item xs={12}>
-                                                {lesson.type === 'text' ?
-                                                    <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
-                                                    : null}
-                                                {lesson.type === 'video-internal' ?
-                                                    <Player
-                                                        playsInline
-                                                        poster="/assets/poster.png"
-                                                        src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
-                                                    />
-                                                    : null}
-                                                {lesson.type === 'video-external' ?
-                                                    <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
-                                                    : null}
-                                                {lesson.type === 'ppt' ?
-                                                    lesson.content
-                                                    : null}
-                                                {lesson.type === 'doc' || lesson.type === 'pdf' ?
-                                                    <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
-                                                    : null}
-                                                {lesson.type === 'audio' ?
-                                                    <audio controls controlsList="nodownload">
-                                                        <source
-                                                            src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
-                                                            type={lesson.mime}
-                                                        />
-                                                        Your browser does not support the audio element.
-                                                        </audio>
-                                                    : null}
-                                            </Grid>
-                                            <Grid item xs={12} style={{ margin: 10 }}>
-                                                <Grid container justify={'flex-end'} align={'center'}>
-                                                    <Grid item xs={2}>
-                                                        <Button
-                                                            disabled={activeLesson === 0}
-                                                            onClick={this.handleBackStep}
-                                                        >
-                                                            Anterior
-                                                            </Button>
-                                                    </Grid>
-                                                    {activeLesson === lessons.length - 1 ?
-                                                        null
-                                                        :
-                                                        <Grid item xs={2}>
-                                                            <Button
-                                                                variant="contained"
-                                                                color="primary"
-                                                                onClick={this.handleNextStep}
-                                                            >
-                                                                Próxima
-                                                                </Button>
-                                                        </Grid>
-                                                    }
-                                                    {lesson.view ? null :
-                                                        <Grid item xs={2}>
-                                                            <Button
-                                                                variant="contained"
-                                                                color="primary"
-                                                                onClick={lesson.question ? this.openQuiz.bind(this, lesson.id) : this.endLesson.bind(this, lesson.id)}
-                                                            >
-                                                                Finalizar Lição
-                                                                </Button>
-                                                        </Grid>
-                                                    }
-                                                </Grid>
-                                            </Grid>
+                                        : null}
+                                    {lesson.type === 'video-external' ?
+                                        <div className="video-external">
+                                            <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
+                                        </div>
+                                        : null}
+                                    {lesson.type === 'ppt' ?
+                                        lesson.content
+                                        : null}
+                                    {lesson.type === 'doc' || lesson.type === 'pdf' ?
+                                        <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
+                                        : null}
+                                    {lesson.type === 'audio' ?
+                                        <div className="audio">
+                                            <audio controls controlsList="nodownload">
+                                                <source
+                                                    src={API_URL + '/api/courses/' + courseID + '/lessons/' + lesson.id + '/media'}
+                                                    type={lesson.mime}
+                                                />
+                                                Your browser does not support the audio element.
+                                    </audio>
+                                        </div>
+                                        : null}
+                                    {lesson.view ? null :
+                                        <Grid container justify="flex-end">
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                size="large"
+                                                onClick={lesson.question ? this.openQuiz.bind(this, lesson.id) : this.endLesson.bind(this, lesson.id)}
+                                            >
+                                                Finalizar Lição
+                                            </Button>
                                         </Grid>
-                                    </StepContent>
-                                </Step>
-                            ))}
-                        </Stepper>
-                        : null} */}
+                                    }
+                                </Lesson>
+                            </Grid>
+                            : null}
+                    </Container>
                 </main>
                 <Dialog
                     open={modal.open}

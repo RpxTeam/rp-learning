@@ -11,6 +11,7 @@ import {
     Typography,
     Button,
     IconButton,
+    Fab,
     MenuItem,
     Menu
 } from '@material-ui/core'
@@ -80,14 +81,16 @@ class Page extends React.Component {
                         </div>
                         {isAuthenticated ?
                             <React.Fragment>
-                                <IconButton
+                                <Fab
+                                    variant="extended"
+                                    color="primary"
                                     aria-owns={Boolean(menu) ? 'menu-appbar' : undefined}
                                     aria-haspopup="true"
                                     onClick={this.handleMenu}
-                                    color="inherit"
                                 >
                                     <AccountCircle />
-                                </IconButton>
+                                    {user.name}
+                                </Fab>
                                 <Menu
                                     id="menu-appbar"
                                     anchorEl={menu}
@@ -109,7 +112,13 @@ class Page extends React.Component {
                                     <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
                                 </Menu>
                             </React.Fragment>
-                            : <Button component={Link} to={'/login'} color="inherit">Login</Button>}
+                            :
+                                <React.Fragment>
+                                    <Button component={Link} to={'/login'} color="inherit">Login</Button>
+                                    |
+                                    <Button component={Link} to={'/register'} color="inherit">Registrar</Button>
+                                </React.Fragment>
+                            }
                     </Toolbar>
                 </Container>
             </AppBar>

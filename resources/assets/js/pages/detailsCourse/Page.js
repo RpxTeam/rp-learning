@@ -121,7 +121,6 @@ class Page extends React.Component {
     };
 
     formatIcons = (type) => {
-        console.log(type);
         switch (type) {
             case 'text':
                 return <LibraryBooks />
@@ -132,14 +131,9 @@ class Page extends React.Component {
             case 'video-external':
                 return <VideoCam />
                 break;
-            // case 'audio':
             default:
                 return <AudioTrack />
-            // break;
-            // default:
-            //     icon = 'file';
         }
-        return icon;
     };
 
     handleChange = (event, value) => {
@@ -187,7 +181,7 @@ class Page extends React.Component {
                                 textColor="primary"
                             >
                                 <Tab label="Detalhes" />
-                                <Tab label="Avaliações" />
+                                {/* <Tab label="Avaliações" /> */}
                                 <Tab label="Conteúdo" />
                             </Tabs>
                             {value === 0 &&
@@ -198,12 +192,12 @@ class Page extends React.Component {
                                     <br /><br />
                                 </Typography>
                             }
-                            {value === 1 &&
+                            {/* {value === 1 &&
                                 <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
                                     <Testimonial />
                                 </Typography>
-                            }
-                            {value === 2 &&
+                            } */}
+                            {value === 1 &&
                                 <Typography component="div" dir={'x'} style={{ padding: 8 * 3 }}>
                                     <List>
                                         {lessons ?

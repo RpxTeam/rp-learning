@@ -2,16 +2,8 @@ import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { API_URL } from "../../../../common/url-types";
-import {
-    Form,
-} from 'semantic-ui-react'
-import {
-    DateInput,
-    TimeInput,
-    DateTimeInput,
-    DatesRangeInput
-} from 'semantic-ui-calendar-react';
 import Admin from '../../Admin'
+
 import { Redirect } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -284,7 +276,7 @@ class Page extends React.Component {
             formData.append('title', this.state.course.title);
             formData.append('description', this.state.course.description);
             formData.append('duration', this.state.course.duration);
-            if(this.state.image.file) {
+            if (this.state.image.file) {
                 formData.append('image', this.state.image.file);
                 formData.append('mime', this.state.image.file.type);
             }
@@ -980,7 +972,7 @@ class Page extends React.Component {
     handleEditAnswer = (event) => {
         const answers = this.state.question.answers;
         const newAnswers = answers.filter((elem) => {
-            if((elem.id === this.state.editAnswer)) {
+            if ((elem.id === this.state.editAnswer)) {
                 elem.text = event.target.value
             }
             return answers;
@@ -997,7 +989,7 @@ class Page extends React.Component {
         const question = this.state.question;
         var newAnswers = question.answers.filter((elem, i, array) => {
             if (elem.id === id) {
-                if (elem.correct === 1 || elem.correct === "1"|| elem.correct === true) {
+                if (elem.correct === 1 || elem.correct === "1" || elem.correct === true) {
                     elem.correct = false;
                 } else {
                     elem.correct = true;
@@ -1049,7 +1041,7 @@ class Page extends React.Component {
         return (
             <Admin heading={"Cursos"}>
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
-                <Form>
+                <form>
                     <Grid container spacing={16}>
                         <Grid item xs={12} md={9}>
                             <CardContainer>
@@ -1102,6 +1094,9 @@ class Page extends React.Component {
                                             }
                                             label={activeQuiz ? 'Desativar Quiz Final' : 'Ativar Quiz Final'}
                                         />
+                                        <Button variant="extended" size="small" aria-label="Salvar" component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
+                                            <EditIcon /> Quiz
+                                        </Button>
                                     </Grid>
                                     : null}
                                 <Grid item>
@@ -1218,15 +1213,19 @@ class Page extends React.Component {
                                                 Documento
                                             </ListItemText>
                                         </MenuItem> */}
-                            <Divider />
-                            <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
-                                <ListItemIcon>
-                                    <QuestionAnswer />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Quiz Final
-                                </ListItemText>
-                            </MenuItem>
+                            {quizCreated ? null :
+                                <React.Fragment>
+                                    <Divider />
+                                    <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
+                                        <ListItemIcon>
+                                            <QuestionAnswer />
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            Quiz Final
+                                    </ListItemText>
+                                    </MenuItem>
+                                </React.Fragment>
+                            }
                         </Menu>
                         <Grid item xs={12} md={3}>
                             <CardContainer>
@@ -1263,7 +1262,7 @@ class Page extends React.Component {
                                 <br /><br />
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <Grid container spacing={8}>
-                                        <Grid item md={6} xs={12}>
+                                        <Grid item xl={6} lg={12} md={12} xs={12}>
                                             <InlineDatePicker
                                                 keyboard
                                                 variant="outlined"
@@ -1274,9 +1273,11 @@ class Page extends React.Component {
                                                 mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
                                                 locale={brLocale}
                                                 disabled={edit}
+                                                style={{ width: 'calc(100% - 14px)' }}
                                             />
                                         </Grid>
-                                        <Grid item md={6} xs={12}>
+                                        <br />
+                                        <Grid item xl={6} lg={12} md={12} xs={12}>
                                             <InlineDatePicker
                                                 keyboard
                                                 variant="outlined"
@@ -1287,6 +1288,7 @@ class Page extends React.Component {
                                                 mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
                                                 locale={brLocale}
                                                 disabled={edit}
+                                                style={{ width: 'calc(100% - 14px)' }}
                                             />
                                         </Grid>
                                     </Grid>
@@ -1320,7 +1322,7 @@ class Page extends React.Component {
                             </Grid>
                         </Grid>
                     </Grid>
-                </Form>
+                </form>
 
                 <Dialog
                     open={this.state.open}
@@ -1376,7 +1378,7 @@ class Page extends React.Component {
                                 onChange={this.handleEditor}
                                 config={
                                     {
-                                        removePlugins: ['Link', 'ImageUpload', 'MediaEmbed']
+                                        removePlugins: ['Link', 'ImageUpload']
                                     }
                                 }
                             />
