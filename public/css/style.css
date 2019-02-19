@@ -2467,4 +2467,10 @@ a.btn {
   transform: translate(-50%, -50%);
 }
 
+.DraftEditor-editorContainer {
+  padding: 10px 15px;
+  border: 1px solid #EEE!important;
+  min-height: 250px;
+}
+
 /*# sourceMappingURL=style.css.map */

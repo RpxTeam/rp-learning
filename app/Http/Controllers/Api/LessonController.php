@@ -165,12 +165,12 @@ class LessonController extends Controller
 
         try{
             if($request->hasFile('content') && $request->file('content')->isValid()) {
-                Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
+                Lesson::whereId($lesson->id)->update($request->except(['_method']));
                 Lesson::updateFileLesson($request,$lesson);
             }else if($request->type == 'text'){
                 Lesson::whereId($lesson->id)->update($request->All());
             }else{
-                Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
+                Lesson::whereId($lesson->id)->update($request->except(['_method']));
             }
         }catch(ModelNotFoundException $e){
             return response()->json(400);

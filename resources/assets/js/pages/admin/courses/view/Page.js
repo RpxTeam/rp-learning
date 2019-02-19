@@ -50,9 +50,13 @@ import AddIcon from '@material-ui/icons/Add';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import styled from 'styled-components';
 
-// CKEditor
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+// Editor
+import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+// import CKEditor from "@ckeditor/ckeditor5-react";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
@@ -134,7 +138,8 @@ class Page extends React.Component {
             quizCreated: false,
             scrolled: false,
             idQuestion: null,
-            editAnswer: null
+            editAnswer: null,
+            editorState: EditorState.createEmpty(),
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -390,11 +395,18 @@ class Page extends React.Component {
                 this.fileUpload();
             }
         } else {
-            axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, {
+            let content;
+            if(type === 'text') {
+                content = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+            } else {
+                content = this.state.lesson.content
+            }
+            const lesson = {
                 type: this.state.modal.type,
                 title: this.state.lesson.title,
-                content: this.state.lesson.content,
-            }).then(res => {
+                content: content
+            }
+            axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons`, lesson).then(res => {
                 this.openMessage('Lição criada com sucesso');
                 if (quiz) {
                     this.createQuiz(res.data);
@@ -454,40 +466,44 @@ class Page extends React.Component {
                 }
             });
         } else {
-            axios.put(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}`, {
+            console.log(this.state.courseID);
+            console.log(id);
+            const lessonUpdate = {
                 type: this.state.modal.type,
                 title: this.state.lesson.title,
-                content: this.state.lesson.content,
-            }).then(res => {
+                content: this.state.lesson.content
+            }
+            axios.put(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}`, lessonUpdate).then(res => {
                 this.openMessage('Lição atualizada com sucesso');
-                if (quiz) {
-                    if (question) {
-                        console.log(this.state.idQuestion);
-                        console.log(res.data);
-                        this.updateQuiz(res.data, this.state.idQuestion);
-                    } else {
-                        this.createQuiz(res.data);
-                    }
-                }
-                this.setState({
-                    lesson: {
-                        ...this.state.lesson,
-                        type: '',
-                        title: '',
-                        content: ''
-                    },
-                    question: {
-                        course_id: null,
-                        lesson_id: null,
-                        text: '',
-                        active: true,
-                        answers: [
-                        ]
-                    },
-                    questionField: ''
-                });
-                this.closeModal();
-                this.loadingLessons();
+                console.log(res);
+                // if (quiz) {
+                //     if (question) {
+                //         console.log(this.state.idQuestion);
+                //         console.log(res.data);
+                //         this.updateQuiz(res.data, this.state.idQuestion);
+                //     } else {
+                //         this.createQuiz(res.data);
+                //     }
+                // }
+                // this.setState({
+                //     lesson: {
+                //         ...this.state.lesson,
+                //         type: '',
+                //         title: '',
+                //         content: ''
+                //     },
+                //     question: {
+                //         course_id: null,
+                //         lesson_id: null,
+                //         text: '',
+                //         active: true,
+                //         answers: [
+                //         ]
+                //     },
+                //     questionField: ''
+                // });
+                // this.closeModal();
+                // this.loadingLessons();
             }).catch(error => {
                 this.openMessage(error.message)
             });
@@ -552,13 +568,11 @@ class Page extends React.Component {
             });
     };
 
-    handleEditor = (event, editor) => {
-        const data = editor.getData();
+    handleEditor = (editorState) => {
+        console.log(editorState);
+        // const data = editor.getData();
         this.setState({
-            lesson: {
-                ...this.state.lesson,
-                content: data
-            }
+            editorState
         });
     };
 
@@ -1055,6 +1069,10 @@ class Page extends React.Component {
             })
     }
 
+    uploadImageEditor = (file) => {
+        console.log(file)
+    }
+
     render() {
         const { course, lessons, lesson, message, menu, edit, modal, quiz, question, answerField, questionField, quizCreated, activeQuiz } = this.state;
         return (
@@ -1113,9 +1131,9 @@ class Page extends React.Component {
                                             }
                                             label={activeQuiz ? 'Desativar Quiz Final' : 'Ativar Quiz Final'}
                                         />
-                                        <Button variant="extended" size="small" aria-label="Salvar" component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
+                                        <Fab variant="extended" size="small" aria-label="Salvar" component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
                                             <EditIcon /> Quiz
-                                        </Button>
+                                        </Fab>
                                     </Grid>
                                     : null}
                                 <Grid item>
@@ -1233,7 +1251,7 @@ class Page extends React.Component {
                                             </ListItemText>
                                         </MenuItem> */}
                             {quizCreated ? null :
-                                <React.Fragment>
+                                <div>
                                     <Divider />
                                     <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
                                         <ListItemIcon>
@@ -1243,7 +1261,7 @@ class Page extends React.Component {
                                             Quiz Final
                                     </ListItemText>
                                     </MenuItem>
-                                </React.Fragment>
+                                </div>
                             }
                         </Menu>
                         <Grid item xs={12} md={3}>
@@ -1390,7 +1408,17 @@ class Page extends React.Component {
                             }}
                         />
                         {this.state.modal.type === 'text' ?
-                            <CKEditor
+                        <React.Fragment>
+                            <Editor
+                                initialEditorState={this.state.editorState}
+                                editorState={this.state.editorState}
+                                onEditorStateChange={this.handleEditor}
+                                toolbar={{
+                                    image: { uploadCallback: this.uploadImageEditor, alt: { present: true, mandatory: true } },
+                                }}
+                            />
+                        </React.Fragment>
+                            /* <CKEditor
                                 editor={ClassicEditor}
                                 data={this.state.lesson.content}
                                 onInit={editor => {
@@ -1403,7 +1431,7 @@ class Page extends React.Component {
                                         removePlugins: ['Link', 'ImageUpload']
                                     }
                                 }
-                            />
+                            /> */
                             : null}
                         {this.state.modal.type === 'webcontent' ?
                             <TextField

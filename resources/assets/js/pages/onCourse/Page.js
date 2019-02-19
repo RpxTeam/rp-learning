@@ -63,6 +63,11 @@ const Lesson = styled.div`
     .audio {
         text-align: center;
     }
+    iframe[frameborder] {
+        width: 650px;
+        height: 450px;
+        margin: 15px 0;
+    }
     .video-external {
         height: 600px;
         @media(max-width: 1360px) {
