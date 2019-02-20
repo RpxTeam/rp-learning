@@ -9,7 +9,7 @@ use App\Author;
 class AuthorsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all Authors
      *
      * @return \Illuminate\Http\Response
      */
@@ -30,7 +30,7 @@ class AuthorsController extends Controller
     
     
     /**
-     * Display the specified resource.
+     * Display specific author
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -49,7 +49,7 @@ class AuthorsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create new author
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -68,7 +68,7 @@ class AuthorsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update specific author
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -89,7 +89,7 @@ class AuthorsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete specific author.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -123,6 +123,12 @@ class AuthorsController extends Controller
         return response()->json(204);
     }
 
+    /**
+     * Display all authors of specific course.
+     *
+     * @param  int  $course
+     * @return \Illuminate\Http\Response
+     */
     public function listAuthor($course){
         $course = Course::findOrFail($course);
         $authors = DB::table('course_authors')

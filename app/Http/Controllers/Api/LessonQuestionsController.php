@@ -15,8 +15,10 @@ use Validator;
 class LessonQuestionsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all questions of specific lesson
      *
+     * @param int $course
+     * @param int $lesson
      * @return \Illuminate\Http\Response
      */
     public function index($course, $lesson)
@@ -30,9 +32,11 @@ class LessonQuestionsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display specific questions of specific lesson
      *
-     * @param  int  $id
+     * @param int $course
+     * @param int $lesson
+     * @param int $question
      * @return \Illuminate\Http\Response
      */
     public function show($course, $lesson, $question)
@@ -47,9 +51,11 @@ class LessonQuestionsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new question and answers of the specific lesson.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param int $course
+     * @param int $lesson
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $course, $lesson)
@@ -96,10 +102,12 @@ class LessonQuestionsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update specific question and answers of the specific lesson.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param int $course
+     * @param int $lesson
+     * @param int $question
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $course, $lesson, $question)
@@ -142,9 +150,11 @@ class LessonQuestionsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete specific question with answers of specific lesson.
      *
-     * @param  int  $id
+     * @param int $course
+     * @param int $lesson
+     * @param int $question
      * @return \Illuminate\Http\Response
      */
     public function destroy($course, $lesson, $question)

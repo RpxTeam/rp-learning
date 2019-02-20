@@ -12,7 +12,7 @@ use App\User;
 class TeamController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display All Teams.
      *
      * @return \Illuminate\Http\Response
      */
@@ -33,9 +33,9 @@ class TeamController extends Controller
     }
     
     /**
-     * Display the specified resource.
+     * Display specific Team.
      *
-     * @param  int  $id
+     * @param  int  $team
      * @return \Illuminate\Http\Response
      */
     public function show($team)
@@ -71,7 +71,7 @@ class TeamController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new team
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -89,10 +89,10 @@ class TeamController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update specific team
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $team
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $team)
@@ -110,12 +110,12 @@ class TeamController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * delete specific team
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($team)
     {
         $team = Team::findOrFail($team);
 
@@ -127,6 +127,12 @@ class TeamController extends Controller
         return response()->json(204);
     }
 
+    /**
+     * Add n user to the team
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function add(Request $request){
         $data = json_decode($request->getContent(), true);
         
@@ -148,6 +154,12 @@ class TeamController extends Controller
         return response()->json(204);
     }
 
+    /**
+     * Remove n user of the team
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function remove(Request $request){
 
         $data = json_decode($request->getContent(), true);

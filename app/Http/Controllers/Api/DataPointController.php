@@ -15,6 +15,13 @@ use App\Level;
 
 class DataPointController extends Controller
 {
+     /**
+     * register course points to specific user
+     *
+     * @param  int  $user
+     * @param  int  $course
+     * @return \Illuminate\Http\Response
+     */
     public function course($user, $course){
         $user = User::findOrFail($user);
         $course = Course::findOrFail($course);
@@ -26,6 +33,14 @@ class DataPointController extends Controller
         return response()->json(204);
     }
 
+     /**
+     * register lesson points to specific user
+     *
+     * @param  int  $user
+     * @param  int  $course
+     * @param  int  $lesson
+     * @return \Illuminate\Http\Response
+     */
     public function lesson($user, $course, $lesson){
         $user = User::findOrFail($user);
         $course = Course::findOrFail($course);
@@ -38,6 +53,14 @@ class DataPointController extends Controller
         return response()->json(204);
     }
 
+     /**
+     * register quiz points to specific user
+     *
+     * @param  int  $user
+     * @param  int  $course
+     * @param  int  $quiz
+     * @return \Illuminate\Http\Response
+     */
     public function quiz($user, $course, $quiz){
         $user = User::findOrFail($user);
         $course = Course::findOrFail($course);
@@ -50,6 +73,13 @@ class DataPointController extends Controller
         return response()->json(204);
     }
 
+     /**
+     * display total points of specific user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $user
+     * @return \Illuminate\Http\Response
+     */
     public function user($user){
         $user = User::findOrFail($user);
 
@@ -65,6 +95,15 @@ class DataPointController extends Controller
         return response()->json(['count' => $count,'total' => $total], 200);
     }
 
+     /**
+     * check if user complete final quiz
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $user
+     * @param  int  $course
+     * @param  int  $quiz
+     * @return \Illuminate\Http\Response
+     */
     public function final($user, $course, $quiz){
         $user = User::findOrFail($user);
         $course = Course::findOrFail($course);

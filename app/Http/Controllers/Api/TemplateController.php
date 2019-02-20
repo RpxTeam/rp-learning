@@ -11,7 +11,7 @@ use App\Template;
 class TemplateController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all templates.
      *
      * @return \Illuminate\Http\Response
      */
@@ -29,9 +29,9 @@ class TemplateController extends Controller
 
 
     /**
-     * Display the specified resource.
+     * Display specific template.
      *
-     * @param  int  $id
+     * @param  int  $template
      * @return \Illuminate\Http\Response
      */
     public function show($template)
@@ -46,7 +46,7 @@ class TemplateController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new template.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -65,10 +65,10 @@ class TemplateController extends Controller
 
     
     /**
-     * Update the specified resource in storage.
+     * Update specific template
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $template
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $template)
@@ -86,9 +86,9 @@ class TemplateController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete specific template
      *
-     * @param  int  $id
+     * @param  int  $template
      * @return \Illuminate\Http\Response
      */
     public function destroy($template)

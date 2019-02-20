@@ -9,6 +9,12 @@ use App\Level;
 
 class LevelsController extends Controller
 {
+    /**
+     * Create Levels with each points required
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function makeLevels(Request $request){
         
         if($request->has('points') && $request->points != null){

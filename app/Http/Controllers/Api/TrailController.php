@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 class TrailController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all trails
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,7 +22,7 @@ class TrailController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display specific trail.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -33,7 +33,7 @@ class TrailController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new trail.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -44,7 +44,7 @@ class TrailController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update specific trail.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -56,7 +56,7 @@ class TrailController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete speficic trail
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

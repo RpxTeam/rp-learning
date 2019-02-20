@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\DB;
 class DataCourseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all course registers of specific user
      *
+     * @param int $user
      * @return \Illuminate\Http\Response
      */
     public function index($user)
@@ -32,9 +33,10 @@ class DataCourseController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display specific course registers of specific user
      *
-     * @param  int  $id
+     * @param int $user
+     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function show($user,$course)
@@ -49,9 +51,10 @@ class DataCourseController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create new course register of specific user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param int $user
+     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function store($user,$course)
@@ -76,10 +79,11 @@ class DataCourseController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Update specifict course register of specific user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param int $user
+     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request,$user,$course)
@@ -98,7 +102,7 @@ class DataCourseController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * do nothing
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

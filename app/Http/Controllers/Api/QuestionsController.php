@@ -15,8 +15,10 @@ use Validator;
 class QuestionsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all questions with all the answers
      *
+     * @param int $course
+     * @param int $quiz
      * @return \Illuminate\Http\Response
      */
     public function index($course, $quiz)
@@ -41,9 +43,11 @@ class QuestionsController extends Controller
     }
         
     /**
-     * Display the specified resource.
+     * Display specific question with all the answers
      *
-     * @param  int  $id
+     * @param int $course
+     * @param int $quiz
+     * @param int $question
      * @return \Illuminate\Http\Response
      */
     public function show($course, $quiz, $question)
@@ -58,9 +62,11 @@ class QuestionsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new question with the answers
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param int $course
+     * @param int $quiz
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $course, $quiz)
@@ -113,10 +119,12 @@ class QuestionsController extends Controller
     }
     
     /**
-     * Update the specified resource in storage.
+     * Update specific question and all answers
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param int $course
+     * @param int $quiz
+     * @param int $question
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $course, $quiz, $question)
@@ -159,9 +167,11 @@ class QuestionsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
+     * Delete specific question and answers
+     * 
+     * @param int $course
+     * @param int $quiz
+     * @param int $question
      * @return \Illuminate\Http\Response
      */
     public function destroy($course, $quiz, $question)

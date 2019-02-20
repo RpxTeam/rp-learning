@@ -12,7 +12,7 @@ use Validator;
 class CoursesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all courses
      *
      * @return \Illuminate\Http\Response
      */
@@ -35,7 +35,7 @@ class CoursesController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display specific course
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -60,7 +60,7 @@ class CoursesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create new course
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -109,7 +109,7 @@ class CoursesController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update specific course
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -157,7 +157,7 @@ class CoursesController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete Specific course
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

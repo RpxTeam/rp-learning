@@ -14,8 +14,10 @@ use App\Certification;
 class CertificationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display certification of specific course of specific user if user complete the course.
      *
+     * @param int $user
+     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function show($user, $course)
@@ -47,9 +49,11 @@ class CertificationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store image of certification of user of specific course completed
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param int $user
+     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $user, $course)

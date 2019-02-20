@@ -14,9 +14,12 @@ use App\Answer;
 class LessonAnswersController extends Controller
 {
    /**
-     * Store a newly created resource in storage.
+     * Store new answer of specific question of lesson.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param int $course
+     * @param int $lesson
+     * @param int $question
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request,$course, $lesson, $question)
@@ -36,10 +39,13 @@ class LessonAnswersController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update specific answer of specific question of lesson.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param int $course
+     * @param int $lesson
+     * @param int $question
+     * @param int $answer
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request,$course, $lesson, $question, $answer)
@@ -56,9 +62,12 @@ class LessonAnswersController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * delete specific answer of specific question of lesson.
      *
-     * @param  int  $id
+     * @param int $course
+     * @param int $lesson
+     * @param int $question
+     * @param int $answer
      * @return \Illuminate\Http\Response
      */
     public function destroy($course, $lesson, $question, $answer)
