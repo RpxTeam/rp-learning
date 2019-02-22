@@ -101,7 +101,7 @@ class Page extends React.Component {
                                     </CardActionArea>
                                     <CardContentStyle>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            {course.title.substring(0, 20)}
+                                            {course.title.length >= 20 ? course.title.substring(0, 20) : course.title}
                                             {course.title.length >= 20 ? ' [...]' : null }
                                         </Typography>
                                         <Typography component="p">
