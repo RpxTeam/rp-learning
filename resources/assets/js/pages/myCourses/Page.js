@@ -1,22 +1,41 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
-import {
-    Button,
-    Container,
-    Header,
-    Icon,
-    Segment,
-    Image, Progress
-} from 'semantic-ui-react'
-import PageHeader from '../../common/pageHeader'
-import Menu from '../../common/menu'
+import Navigation from '../../common/navigation'
+import { API_URL } from "../../common/url-types"
 import Banner from '../../components/Banner'
-import Card from '../../components/Card'
-import Footer from '../../common/mainFooter'
-import {API_URL} from "../../common/url-types";
-import {Redirect} from "react-router-dom";
-import Grid from '../../components/Grid';
+import styled from 'styled-components'
+
+import {
+    Typography,
+    Grid,
+    Card,
+    CardContent,
+    CardActions,
+    CardActionArea,
+    Button,
+    Collapse,
+    Divider
+} from '@material-ui/core'
+
+const Image = styled.div`
+    background-position: center center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    height: 150px;
+    display: block;
+`
+
+const CardContentStyle = styled(CardContent)`
+    min-height: 105px;
+`
+
+const Container = styled(Grid)`
+    max-width: 1024px;
+    margin: 0 auto!important;
+    padding: 0 15px;
+    width: 100%!important;
+`
 
 class Page extends React.Component {
     constructor(props) {
@@ -31,6 +50,7 @@ class Page extends React.Component {
         axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses`)
         .then(res => {
             const courses = Object.values(res.data);
+            console.log(courses);
             this.setState({ courses: courses });
         })
     };
@@ -67,57 +87,47 @@ class Page extends React.Component {
         }
         return (
             <div>
-                <Menu />
+                <Navigation />
                 <main className="fadeIn animated">
                     <Banner title="Meus Cursos" icon="courses">
                         <p>Essa é a sua biblioteca de cursos, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet commodi delectus, excepturi ipsum dolor sit amet.</p>
                     </Banner>
-                    <Grid>
-                        { courses.map((course) => 
-                            <Card
-                                id={course.id}
-                                key={course.id}
-                                name={course.title}
-                                image={course.image}
-                                category="Categoria"
-                                onClick={this.viewCourse.bind(this, course.id)}
-                                type=""
-                                defaultHeight={0}
-                            />
-                            )
+                    <Container container spacing={40}>
+                        {courses.map((course) =>
+                            <Grid item md={4} sm={12} xs={12} key={course.id}>
+                                <Card>
+                                    <CardActionArea onClick={this.viewCourse.bind(this, course.id)}>
+                                        <Image style={{ backgroundImage: `url(${course.image})` }} />
+                                    </CardActionArea>
+                                    <CardContentStyle>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            {course.title.substring(0, 20)}
+                                            {course.title.length >= 20 ? ' [...]' : null }
+                                        </Typography>
+                                        <Typography component="p">
+                                            {course.description.substring(0, 140)}
+                                            {course.description.length >= 140 ? ' [...]' : null }
+                                        </Typography>
+                                    </CardContentStyle>
+                                    <Divider />
+                                    <CardActions disableActionSpacing>
+                                        {/* <IconButton aria-label="Add to favorites">
+                                            <FavoriteIcon />
+                                        </IconButton> */}
+                                        <Button size="small" color="primary" onClick={this.viewCourse.bind(this, course.id)}>
+                                            Detalhes
+                                        </Button>
+                                    </CardActions>
+                                    <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                                        <CardContent>
+
+                                        </CardContent>
+                                    </Collapse>
+                                </Card>
+                            </Grid>
+                        )
                         }
-                    </Grid>
-                    {/* <Segment vertical textAlign='center' style={{minHeight: '100vh'}}>
-                        <Container>
-                            <Card.Group itemsPerRow={3}>
-                                { courses.map((course) =>
-                                    <Card color='red' key={course.id}>
-                                        {course.image ?
-                                            <Image src={course.image} />
-                                            : null }
-                                        <Card.Content>
-                                            <Card.Header>{ course.title }</Card.Header>
-                                            <Card.Meta>
-                                                <span className='date'>Criado em { this.formatDate(course.created_at) }</span>
-                                            </Card.Meta>
-                                            <Card.Description>{ course.description }</Card.Description>
-                                        </Card.Content>
-                                        <Card.Content extra>
-                                            <Progress percent={course.progress != null ? parseFloat(course.progress).toFixed(0) : 0} autoSuccess size='tiny'>
-                                                {course.lesson_complete} / {course.total_lesson}
-                                            </Progress>
-                                            <div className='ui buttons'>
-                                                <Button basic color='green' onClick={this.viewCourse.bind(this, course.id)}>
-                                                    Detalhes
-                                                </Button>
-                                            </div>
-                                        </Card.Content>
-                                    </Card>
-                                )
-                                }
-                            </Card.Group>
-                        </Container>
-                    </Segment> */}
+                    </Container>
                 </main>
             </div>
         );

@@ -65,8 +65,8 @@ export class Card extends Component {
                                 <i className="icon-lotus"></i>
                             </div>
                             <div className="status">
-                                <p>Nv. Lótus 1</p>
-                                <p><small>150/600 atividades</small></p>
+                                <p>Nível {this.props.level ? this.props.level : 0}</p>
+                                {/* <p><small>150/600 atividades</small></p> */}
                             </div>
                         </div>
                         <div className="right">
@@ -111,20 +111,12 @@ export class Card extends Component {
                                         }
                                         {this.props.progress ?
                                             <div className="percent">
-                                                {/* @if ($mycourse->progress === null) */}
-                                                <p>0% </p>
-                                                {/* @else */}
-                                                {/* <p>number_format($mycourse->progress, 0, '.', '') %</p> */}
-                                                {/* @endif */}
+                                                <p>{this.props.progress}% </p>
                                             </div>
                                         : null }
                                     </div>
                                     <div className="progress-bar">
-                                        {/* @if ($mycourse->progress === null) */}
                                         <div className="bar" style={{width: this.props.progress}}></div>
-                                        {/* @else */}
-                                        {/* <div className="bar" style="width: {{ number_format($mycourse->progress, 0, '.', '') }}%;"></div> */}
-                                        {/* @endif */}
                                     </div>
                                 </div>
                             </Content>
@@ -156,8 +148,9 @@ Card.propTypes = {
     collapsed: PropTypes.bool,
     padding: PropTypes.string,
     link: PropTypes.string,
-    progress: PropTypes.number,
-    description: PropTypes.string
+    progress: PropTypes.string,
+    description: PropTypes.string,
+    level: PropTypes.number
 };
 
 export default Card;

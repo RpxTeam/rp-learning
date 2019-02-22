@@ -18,7 +18,6 @@ class LessonController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function index($course)
@@ -37,8 +36,7 @@ class LessonController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $course
-     * @param int $lesson
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($course,$lesson)
@@ -63,46 +61,16 @@ class LessonController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request,$course)
     {
-        // if($request->hasFile('content')){
-        //     $validator = Validator::make($request->all(),[
-        //         'order' => 'nullable|numeric',
-        //         'title' => 'required|string|max:255',
-        //         'description' => 'nullable|string',
-        //         'type' => 'nullable|string',
-        //         'content' => 'nullable|file',
-        //         'mime' => 'nullable|string'
-        //     ],[
-        //         'title.required' => 'O campo título está vazio.',
-        //     ]);
-        // }else{
-        //     $validator = Validator::make($request->all(),[
-        //         'order' => 'nullable|numeric',
-        //         'title' => 'required|string|max:255',
-        //         'description' => 'nullable|string',
-        //         'type' => 'nullable|string',
-        //         'content' => 'nullable|string',
-        //         'mime' => 'nullable|string'
-        //     ],[
-        //         'title.required' => 'O campo título está vazio.'
-        //     ]);
-        // }
+    //     if($request->file('content')->isValid()){
+	// 	dd('a');
+	// }else{
+	// 	dd($request->content);
+	// }
 
-        // if($validator->fails()){
-        //         return response()->json($validator->errors(), 400);
-        // }
-        
-        // if(Storage::disk('local')->put('video.mp4', $request->content)){
-        //     dd('a');
-
-        // }else{
-        //     dd('b');
-        // }
-        
         try{
             if($request->slug == null){
                 $request->slug = str_slug($request->title);
@@ -131,8 +99,7 @@ class LessonController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param int $course
-     * @param int $lesson
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $course, $lesson)
@@ -169,12 +136,12 @@ class LessonController extends Controller
 
         try{
             if($request->hasFile('content') && $request->file('content')->isValid()) {
-                Lesson::whereId($lesson->id)->update($request->except(['_method']));
+                Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
                 Lesson::updateFileLesson($request,$lesson);
             }else if($request->type == 'text'){
                 Lesson::whereId($lesson->id)->update($request->All());
             }else{
-                Lesson::whereId($lesson->id)->update($request->except(['_method']));
+                Lesson::whereId($lesson->id)->update($request->except(['_method','content']));
             }
         }catch(ModelNotFoundException $e){
             return response()->json(400);
@@ -188,8 +155,7 @@ class LessonController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $course
-     * @param int $lesson
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($course, $lesson)

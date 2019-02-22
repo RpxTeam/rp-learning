@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Course;
-use App\Lesson;
 use App\Answer;
+use App\Lesson;
 use App\Question;
 use Validator;
 
@@ -28,7 +28,11 @@ class LessonQuestionsController extends Controller
 
         $question = Question::lessonQuestion($course->id, $lesson->id);
 
-        return response()->json($question, 200);
+        if($question != null) {
+            return response()->json($question, 200);
+        } else {
+            return response()->json(400);
+        }
     }
 
     /**
@@ -91,7 +95,7 @@ class LessonQuestionsController extends Controller
     
     $question = Question::create($data['question']);
 
-    foreach($data['answers'] as $answer){
+    foreach($data['question']['answers'] as $answer){
         $a = Answer::create($answer);
         DB::table('question_answer')->insert([
             'question_id' => $question->id,

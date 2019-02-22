@@ -4,29 +4,24 @@ import axios from 'axios'
 import {
     Form,
 } from 'semantic-ui-react'
-import {
-    DateInput,
-    TimeInput,
-    DateTimeInput,
-    DatesRangeInput
-} from 'semantic-ui-calendar-react';
+import FilePreview from 'react-preview-file';
+
 import Admin from '../../Admin'
 import { Redirect } from "react-router-dom";
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Card from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
+
+import {
+    Grid,
+    TextField,
+    Card,
+    Button
+} from '@material-ui/core'
 import Message from '../../../../components/Message';
 import styled from 'styled-components';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import Fab from '@material-ui/core/Fab';
-// import ExpandLess from '@material-ui/icons/ExpandLess';
-// import ExpandMore from '@material-ui/icons/ExpandMore';
-// import Input from '@material-ui/core/Input';
-// import InputLabel from '@material-ui/core/InputLabel';
-// import FormControl from '@material-ui/core/FormControl';
-// import Chip from '@material-ui/core/Chip';
-// import Select from '@material-ui/core/Select';
+
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { InlineDatePicker } from 'material-ui-pickers';
+import brLocale from 'date-fns/locale/pt-BR';
 
 const CardContainer = styled(Card)`
     padding: 10px 20px;
@@ -49,12 +44,13 @@ class Page extends React.Component {
             lessons: {
 
             },
-            start_date: '',
-            end_date: '',
+            start_date: new Date(),
+            end_date: new Date(),
             datesRange: '',
             courseID: '',
             courseEdit: false,
             author: '',
+            image: ''
         }
         this.openMessage = this.openMessage.bind(this);
     };
@@ -88,50 +84,68 @@ class Page extends React.Component {
         });
     };
 
-    handleChangeDate = (event, { name, value }) => {
+    handleChangeDate = (field, date) => {
         this.setState({
-            datesRange: value
+            [field]: date
         })
     };
 
     handleSubmit = event => {
         event.preventDefault();
 
-        if(!this.state.title || !this.state.datesRange || !this.state.description || !this.state.duration) {
-            this.setState({ message: {
-                ...this.state,
-                open: true,
-                text: 'Existem campos vázios'
-            } })
+        if (!this.state.title) {
+            this.openMessage('Título está vázio');
+        } else if(!this.state.start_date) {
+            this.openMessage('Data de início vázia');
+        } else if(!this.state.end_date) {
+            this.openMessage('Data de término vázia');
+        } else if(!this.state.description) {
+            this.openMessage('Descrição vázia');
+        } else if(!this.state.duration) {
+            this.openMessage('Duração vázia');
+        } else if(this.state.duration < 1) {
+            this.openMessage('Duração não pode ser menor que 1 hora');
         } else {
-            const date = this.state.datesRange.split(' ');
-            const start_date = this.formatDate(date[0]);
-            const end_date = this.formatDate(date[2]);
-
-            axios.post(`${API_URL}/api/courses`, {
-                title: this.state.title,
-                slug: this.state.slug,
-                description: this.state.description,
-                start_date: start_date,
-                end_date: end_date,
-                duration: this.state.duration
-            }).then(res => {
-                this.setState({
-                    error: false,
-                    success: true,
-                    courseID: res.data,
-                    courseEdit: true
-                });
-                this.openMessage({ text: 'Curso criado com sucesso'})
-            }).catch(error => {
-                this.setState({
-                    error: true,
-                    success: false
-                })
-                this.openMessage({ text: error.message})
-            });
+            this.submitCourse();
         }
     };
+
+    submitCourse = () => {
+        const start_date = this.formatDate(this.state.start_date);
+            const end_date = this.formatDate(this.state.end_date);
+
+            if (this.state.image.name) {
+                this.fileUpload();
+            } else {
+                axios.post(`${API_URL}/api/courses`, {
+                    title: this.state.title,
+                    slug: this.state.slug,
+                    description: this.state.description,
+                    start_date: start_date,
+                    end_date: end_date,
+                    duration: this.state.duration,
+                    image: this.state.image.file
+                }).then(res => {
+                    this.setState({
+                        error: false,
+                        success: true,
+                        courseID: res.data,
+                    });
+                    this.openMessage('Curso criado com sucesso!');
+                    setTimeout(function () {
+                        this.setState({
+                            courseEdit: true
+                        })
+                    }.bind(this), 2000);
+                }).catch(error => {
+                    this.setState({
+                        error: true,
+                        success: false
+                    })
+                    this.openMessage(error.message)
+                });
+            }
+    }
 
     handleDelete = () => {
         console.log('delete');
@@ -172,11 +186,10 @@ class Page extends React.Component {
     };
 
     formatDate = (date) => {
-        const oldDate = date.split('/');
         let day, month, year;
-        day = oldDate[0];
-        month = oldDate[1];
-        year = oldDate[2];
+        day = date.getDate();
+        month = date.getMonth() + 1;
+        year = date.getFullYear();
         const newDate = year + '-' + month + '-' + day;
 
         return newDate
@@ -184,11 +197,12 @@ class Page extends React.Component {
 
     changeAuthors = (e, { value }) => this.setState({ authors: value })
 
-    openMessage = newState => () => {
+    openMessage = (newState) => {
         this.setState({
             message: {
+                ...this.state.message,
                 open: true,
-                ...newState
+                text: newState
             }
         });
     };
@@ -202,8 +216,60 @@ class Page extends React.Component {
         });
     }
 
+    onChangeFile = (event) => {
+        const file = event.target.files[0];
+        if (file.type === 'image/jpeg' || file.type === 'image/png') {
+            this.setState({
+                image: {
+                    file: file,
+                    name: file.name
+                }
+            });
+        }
+    };
+
+    fileUpload = () => {
+        const formData = new FormData();
+
+        const start_date = this.formatDate(this.state.start_date);
+        const end_date = this.formatDate(this.state.end_date);
+
+        formData.append('title', this.state.title);
+        formData.append('description', this.state.description);
+        formData.append('duration', this.state.duration);
+        formData.append('image', this.state.image.file);
+        formData.append('mime', this.state.image.file.type);
+        formData.append('start_date', start_date);
+        formData.append('end_date', end_date);
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+
+        axios.post(`${API_URL}/api/courses`, formData, config)
+            .then((res) => {
+                console.log(res.data);
+                this.setState({
+                    error: false,
+                    success: true,
+                    courseID: res.data
+                });
+                this.openMessage('Curso criado com sucesso');
+                setTimeout(function () {
+                    this.setState({
+                        courseEdit: true
+                    })
+                }.bind(this), 2000);
+            })
+            .catch((error) => {
+                this.openMessage(error.message);
+            });
+    };
+
     render() {
-        const { message, authors, options } = this.state;
+        const { message, authors, options, image } = this.state;
         if (this.state.courseEdit === true) {
             return <Redirect to={'/admin/courses/' + this.state.courseID} />
         }
@@ -261,8 +327,36 @@ class Page extends React.Component {
                                     type={'number'}
                                     fullWidth
                                 />
-
-                                <Form.Field>
+                                <br /><br />
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <Grid container spacing={8}>
+                                        <Grid item md={6} xs={12}>
+                                            <InlineDatePicker
+                                                keyboard
+                                                variant="outlined"
+                                                label="Data de Início"
+                                                value={this.state.start_date}
+                                                onChange={this.handleChangeDate.bind(this, 'start_date')}
+                                                format='dd/MM/yy'
+                                                mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
+                                                locale={brLocale}
+                                            />
+                                        </Grid>
+                                        <Grid item md={6} xs={12}>
+                                            <InlineDatePicker
+                                                keyboard
+                                                variant="outlined"
+                                                label="Data de Término"
+                                                value={this.state.end_date}
+                                                onChange={this.handleChangeDate.bind(this, 'end_date')}
+                                                format='dd/MM/yy'
+                                                mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
+                                                locale={brLocale}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </MuiPickersUtilsProvider>
+                                {/* <Form.Field>
                                     <label>Data
                                         <DatesRangeInput
                                             name="datesRange"
@@ -273,7 +367,8 @@ class Page extends React.Component {
                                             closable={true}
                                             onChange={this.handleChangeDate} />
                                     </label>
-                                </Form.Field>
+                                </Form.Field> */}
+
                                 {this.state.createAuthor ?
                                     <React.Fragment>
                                         <Form.Field>
@@ -291,6 +386,22 @@ class Page extends React.Component {
                                             <Button onClick={this.createAuthor.bind(this, this.state.author)} style={{ width: '100%' }}>Adicionar Autor</Button>
                                         </Form.Field>
                                     </React.Fragment>
+                                    : null}
+                            </CardContainer>
+                            <br />
+                            <CardContainer>
+                                <Button
+                                    variant="contained"
+                                    component='label'
+                                >
+                                    IMAGEM
+                                    <input type="file" style={{ display: 'none' }} onChange={this.onChangeFile} />
+                                </Button>
+                                <br /><br />
+                                {image.name ?
+                                    <FilePreview file={image.file}>
+                                        {(preview) => <img src={preview} />}
+                                    </FilePreview>
                                     : null}
                             </CardContainer>
                             <br />

@@ -1,38 +1,18 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { API_URL } from "../../../../common/url-types";
-import PropTypes from 'prop-types'
-// import {
-//     Button,
-//     Icon,
-//     Table,
-//     Grid,
-//     Menu,
-//     Message,
-//     Confirm
-// } from 'semantic-ui-react'
 import Admin from '../../Admin'
 import axios from 'axios'
 
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
-import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
 import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -41,7 +21,10 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import Message from '../../../../components/Message';
 import Card from '@material-ui/core/Card';
-import { Grid, MenuItem } from '@material-ui/core';
+
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
+}
 
 class Page extends React.Component {
     constructor(props) {
@@ -59,6 +42,7 @@ class Page extends React.Component {
                 horizontal: 'center',
                 text: 'Snackbar its works'
             },
+            view: false
         };
 
         this.handleDelete = this.handleDelete.bind(this);
@@ -135,8 +119,18 @@ class Page extends React.Component {
         });
     }
 
+    viewCourse = id => () => {
+        axios.get(`${API_URL}/api/courses/${id}`)
+            .then(res => {
+                const course = res.data;
+                this.setState({
+                    course: course
+                });
+            });
+    };
+
     render() {
-        const { message, courses } = this.state;
+        const { message, courses, view } = this.state;
         return (
             <Admin heading='Cursos' createLink='/admin/courses/create'>
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
@@ -164,32 +158,7 @@ class Page extends React.Component {
                             <TableRow>
                                 <TableCell> Nome</TableCell>
                                 <TableCell>Duração</TableCell>
-                                <TableCell>Ações</TableCell>
-                                {/* {rows.map(
-                                row => (
-                                    <TableCell
-                                        key={row.id}
-                                        numeric={row.numeric}
-                                        padding={row.disablePadding ? 'none' : 'default'}
-                                        sortDirection={orderBy === row.id ? order : false}
-                                    >
-                                        <Tooltip
-                                            title="Sort"
-                                            placement={row.numeric ? 'bottom-end' : 'bottom-start'}
-                                            enterDelay={300}
-                                        >
-                                            <TableSortLabel
-                                                active={orderBy === row.id}
-                                                direction={order}
-                                                onClick={createSortHandler(row.id)}
-                                            >
-                                                {row.label}
-                                            </TableSortLabel>
-                                        </Tooltip>
-                                    </TableCell>
-                                ),
-                                this,
-                            )} */}
+                                <TableCell align={'right'}>Ações</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -197,10 +166,13 @@ class Page extends React.Component {
                                 <TableRow key={course.id}>
                                     <TableCell><Button component={Link} to={'/admin/courses/' + course.id}>{course.title}</Button></TableCell>
                                     <TableCell>{course.duration}</TableCell>
-                                    <TableCell>
-                                        <IconButton size="small" color="primary" aria-label="Delete" component={Link} to={'/courses/' + course.id + '/details'}>
-                                            <RemoveRedEye />
+                                    <TableCell align={'right'}>
+                                        <IconButton size="small" aria-label="Edit" component={Link} to={'/admin/courses/' + course.id}>
+                                            <EditIcon />
                                         </IconButton>
+                                        {/* <IconButton size="small" color="primary" aria-label="Delete" onClick={this.viewCourse(course.id)}>
+                                            <RemoveRedEye />
+                                        </IconButton> */}
                                         <IconButton size="small" color="secondary" aria-label="Add" onClick={this.handleConfirm.bind(this, course.id)} value={course.id}>
                                             <DeleteIcon />
                                         </IconButton>
@@ -210,6 +182,17 @@ class Page extends React.Component {
                         </TableBody>
                     </Table>
                 </Card>
+
+                <Dialog
+                    fullScreen
+                    open={view}
+                    onClose={this.handleClose}
+                    TransitionComponent={Transition}
+                >
+                    <DialogContent>
+                        
+                    </DialogContent>
+                </Dialog>
             </Admin>
         );
     }

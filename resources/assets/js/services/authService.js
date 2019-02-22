@@ -1,10 +1,11 @@
 import Http from '../Http'
 import * as action from '../store/actions'
+import { API_URL } from '../common/url-types'
 
 export function login(credentials) {
     return dispatch => (
         new Promise((resolve, reject) => {
-            Http.post('api/auth/login', credentials)
+            Http.post(API_URL + '/api/auth/login', credentials)
                 .then(res => {
                     dispatch(action.authLogin(res.data));
                     return resolve();
@@ -29,7 +30,7 @@ export function login(credentials) {
 export function socialLogin(data) {
     return dispatch => (
         new Promise((resolve, reject) => {
-            Http.post(`../api/auth/login/${data.social}/callback${data.params}`)
+            Http.post(`${API_URL}/api/auth/login/${data.social}/callback${data.params}`)
                 .then(res => {
                     dispatch(action.authLogin(res.data));
                     return resolve();
@@ -54,7 +55,7 @@ export function socialLogin(data) {
 export function resetPassword(credentials) {
     return dispatch => (
         new Promise((resolve, reject) => {
-            Http.post('../api/password/email', credentials)
+            Http.post(`${API_URL}/api/password/email`, credentials)
                 .then(res => {
                     return resolve(res.data);
                 })
@@ -78,7 +79,7 @@ export function resetPassword(credentials) {
 export function updatePassword(credentials) {
     return dispatch => (
         new Promise((resolve, reject) => {
-            Http.post('../../api/password/reset', credentials)
+            Http.post(`${API_URL}/api/password/reset`, credentials)
                 .then(res => {
                     const statusCode = res.data.status;
                     if (statusCode == 202) {
@@ -110,7 +111,7 @@ export function updatePassword(credentials) {
 export function register(credentials) {
     return dispatch => (
         new Promise((resolve, reject) => {
-            Http.post('api/auth/register', credentials)
+            Http.post(`${API_URL}/api/auth/register`, credentials)
                 .then(res => {
                     console.log(res.data);
                     return resolve(res.data);

@@ -37,7 +37,8 @@ Button.PropTypes = {
     title: PropTypes.string,
     onClick: PropTypes.func,
     type: PropTypes.string,
-    icon: PropTypes.string
+    icon: PropTypes.string,
+    
 }
 
 export default Button

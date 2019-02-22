@@ -121,5 +121,4 @@ class DataPointController extends Controller
             return response()->json(200);
         }
     }
-
 }

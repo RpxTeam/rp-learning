@@ -1,45 +1,73 @@
 import React from 'react'
 import axios from 'axios'
 import { API_URL } from "../../../../common/url-types";
-import {
-    Grid,
-    Form,
-    Input,
-    TextArea,
-    Button,
-    Icon,
-    Select,
-    Message
-} from 'semantic-ui-react'
 import Admin from '../../Admin'
+import { Grid, FormControl, FormHelperText, Select, TextField, Card, Button, MenuItem } from '@material-ui/core';
+import Message from '../../../../components/Message';
+import styled from 'styled-components';
+
+const CardContainer = styled(Card)`
+    padding: 10px 20px;
+`;
 
 class Page extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            redirect: false,
             user: {
-                name: 'dasdsadas'
+                name: '',
+                email: '',
+                role_id: ''
             },
-            edit: false
+            edit: false,
+            message: {
+                type: '',
+                open: false,
+                vertical: 'top',
+                horizontal: 'center',
+                text: 'Snackbar its works'
+            },
+            profiles: [
+                {
+                    value: 3,
+                    label: 'Aluno',
+                },
+                {
+                    value: 2,
+                    label: 'Instrutor',
+                },
+                {
+                    value: 1,
+                    label: 'Administrador',
+                }
+            ],
+            profile: {
+                value: 1,
+                label: 'Administrador',
+            }
         }
 
         this.handleEdit = this.handleEdit.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
 
-    componentDidMount () {
+    getData = () => {
         const userID = this.props.match.params.id
 
-        axios.get(`${ API_URL }/api/users/${userID}`)
-        .then(res => {
-            const user = res.data;
-            this.setState({ user: user });
-            console.log(this.state.user)
-        })
+        axios.get(`${API_URL}/api/users/${userID}`)
+            .then(res => {
+                const user = res.data;
+                this.setState({ user: user });
+            })
+    }
+
+    componentDidMount() {
+        this.getData();
     }
 
     handleEdit = (event) => {
-        if(this.state.edit) {
+        if (this.state.edit) {
             this.setState({
                 edit: false
             })
@@ -51,7 +79,14 @@ class Page extends React.Component {
     }
 
     handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
+        console.log(event.target.name)
+        console.log(event.target.value);
+        // this.setState((prevState) => ({
+        //     user: {
+        //         ...prevState.user,
+        //         [event.target.name]: event.target.value
+        //     }
+        // }));
     }
 
     handleSubmit = event => {
@@ -59,9 +94,10 @@ class Page extends React.Component {
         const userID = this.props.match.params.id
 
         axios.put(`${API_URL}/api/users/${userID}`, {
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password
+            name: this.state.user.name,
+            email: this.state.user.email,
+            password: this.state.user.password,
+            role_id: this.state.user.profile
         }).then(res => {
             console.log(res);
             console.log(res.data);
@@ -80,74 +116,111 @@ class Page extends React.Component {
         })
     }
 
+    openMessage = newState => () => {
+        this.setState({
+            message: {
+                open: true,
+                ...newState
+            }
+        });
+    };
+
+    closeMessage = () => {
+        this.setState({
+            message: {
+                ...this.state.message,
+                open: false
+            }
+        });
+    }
+
     render() {
+        const { message, profiles, profile, user } = this.state;
+        if (this.state.redirect === true) {
+            return <Redirect to={'/admin/users/'} />
+        }
         return (
             <Admin heading={"Usuários"}>
-                {this.state.message ?
-                <Message success={this.state.success} negative={this.state.error}>
-                    <Message.Header>{this.state.success ? 'Sucesso' : "Erro" }</Message.Header>
-                    <p>
-                        {this.state.message}
-                    </p>
-                </Message>
-                : null }
-                <Grid.Row>
-                    <Grid.Column width={16}>
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Group widths='equal'>
-                                <Form.Field
-                                    id='input-control-name'
-                                    control={Input}
-                                    label='Nome Completo'
-                                    placeholder={this.state.user.name}
-                                    name="name"
-                                    onChange={this.handleChange}
-                                    value={this.state.user.name}
-                                />
-                                <Form.Field
-                                    id='input-control-email'
-                                    control={Input}
-                                    label='Email'
-                                    name="email"
-                                    placeholder={this.state.user.email}
-                                    onChange={this.handleChange}
-                                    defaultValue={this.state.user.email}
-                                />
-                                <Input
-                                    placeholder='Name'
-                                    value={this.state.user.name}
-                                    onChange={this.handleChange}
-                                    name="name"
-                                />
-                                <Form.Field
-                                    id='input-control-password'
-                                    type='password'
-                                    control={Input}
-                                    label='Senha'
-                                    name="password"
-                                    // placeholder={this.state.user.password}
-                                    value={this.state.user.password}
-                                    onChange={this.handleChange}
-                                />
-                                {/* <Form.Field
-                                    id='input-control-confirmpassword'
-                                    type='password'
-                                    control={Input}
-                                    label='Confirmar senha'
-                                    name="confirm-password"
-                                    placeholder='Confirmar Senha'
-                                    onChange={this.handleChange}
-                                /> */}
-                            </Form.Group>
-                            <Form.Field
-                                id='button-control-confirm'
-                                control={Button}
-                                content='Atualizar'
-                                positive
-                            />
-                        </Form>
-                    </Grid.Column>
-                </Grid.Row>
+                <Message text={message.text} open={message.open} close={this.closeMessage} />
+                <Grid container spacing={16}>
+                    <Grid item xs={12} md={9}>
+                        <form onSubmit={this.handleSubmit}>
+                            <CardContainer>
+                                <Grid container spacing={8}>
+                                    <Grid item md={12}>
+                                        <TextField
+                                            id="input-name"
+                                            label="Nome"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            name="name"
+                                            fullWidth
+                                            value={user.name}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item md={4}>
+                                        <TextField
+                                            id="input-role"
+                                            select
+                                            label="Perfil"
+                                            onChange={this.handleChange}
+                                            helperText="Por favor escolha o perfil"
+                                            margin="normal"
+                                            variant="outlined"
+                                            fullWidth
+                                            name='role_id'
+                                            value={user.role_id}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        >
+                                            {profiles.map(profile => (
+                                                <MenuItem key={profile.value} value={profile.value}>
+                                                    {profile.label}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                    <Grid item md={4}>
+                                        <TextField
+                                            id="input-email"
+                                            label="Email"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            name="email"
+                                            fullWidth
+                                            defaultValue={user.email}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item md={4}>
+                                        <TextField
+                                            id="input-password"
+                                            label="Senha"
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                            variant="outlined"
+                                            name="password"
+                                            fullWidth
+                                            placeholder={'Senha'}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </CardContainer>
+                            <Button variant="contained" color={'primary'} type={'submit'} style={{ width: '100%' }}>Criar</Button>
+                        </form>
+                    </Grid>
+                </Grid>
             </Admin>
         );
     }

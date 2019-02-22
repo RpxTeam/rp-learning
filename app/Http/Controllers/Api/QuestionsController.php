@@ -91,6 +91,7 @@ class QuestionsController extends Controller
         
         $data = json_decode($request->getContent(), true);
 
+        // dd($data);
         if($data['question']['course_id'] == null){
             $data['question']['course_id'] = $course->id;
         }

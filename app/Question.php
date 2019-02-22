@@ -76,12 +76,16 @@ class Question extends Model
                     ->where('lesson_id', $lesson)
                     ->first();
         
-        $question = Question::findOrFail($question->id);
+        if(!empty($question)) {
+            $question = Question::findOrFail($question->id);
 
-        $answers = Question::onlyAnswers($question->id);
+            $answers = Question::onlyAnswers($question->id);
 
-        $question->setAttribute('answers',$answers);
+            $question->setAttribute('answers',$answers);
 
-        return $question;
+            return $question;
+        } else {
+            return null;
+        }
     }
 }

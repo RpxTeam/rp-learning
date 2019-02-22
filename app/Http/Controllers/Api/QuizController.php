@@ -196,7 +196,7 @@ class QuizController extends Controller
      * @param  int  $course
      * @return \Illuminate\Http\Response
      */
-    public function activeteFinal($course){
+    public function activateFinal($course){
         $course = Course::findOrFail($course);
 
         $questions = DB::table('questions')
@@ -212,7 +212,7 @@ class QuizController extends Controller
      * @param  int  $course
      * @return \Illuminate\Http\Response
      */
-    public function deactivateFinal($course){
+    public function desactivateFinal($course){
         $course = Course::findOrFail($course);
 
         $questions = DB::table('questions')
@@ -236,5 +236,45 @@ class QuizController extends Controller
         Question::whereId($question->id)->update($request->all());
 
         return response()->json(204);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function quizFinalActive($course)
+    {
+        $course = Course::findOrFail($course);
+        
+        $quiz = DB::table('course_quiz')
+                    ->leftjoin('quizzes', 'course_quiz.quiz_id', 'quizzes.id')
+                    ->where('course_id', $course->id)
+                    ->first();
+        
+        if(empty($quiz)){
+            return response()->json(400);
+        }else{
+            return response()->json($quiz->active, 200);
+        }
+    }
+
+    public function courseQuestions($course, $question){
+        $course = Course::findOrFail($course);
+
+        $question = Question::findOrFail($question);
+
+        $question = DB::table('questions')
+                    ->where('course_id',$course->id)
+                    ->where('id',$question->id)
+                    ->first();
+
+        $question = Question::questionAnswers($question->id);
+
+        if(!empty($question)){
+            return response()->json($question, 200);
+        }else{
+            return response()->json(400);
+        }
     }
 }
