@@ -13,8 +13,9 @@ use App\Answer;
 class QuizController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all quizzes of the specific course.
      *
+     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function index($course)
@@ -33,9 +34,10 @@ class QuizController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display specific quiz of the specific course.
      *
-     * @param  int  $id
+     * @param  int  $course
+     * @param  int  $quiz
      * @return \Illuminate\Http\Response
      */
     public function show($course, $quiz)
@@ -56,8 +58,9 @@ class QuizController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new quiz of the specific course.
      *
+     * @param  int  $course
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -76,10 +79,11 @@ class QuizController extends Controller
     }
     
     /**
-     * Update the specified resource in storage.
+     * Update specific quiz of the specific course.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $course
+     * @param  int  $quiz
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $course, $quiz)
@@ -93,9 +97,10 @@ class QuizController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete specific quiz with all questions and answers of the specific course.
      *
-     * @param  int  $id
+     * @param  int  $course
+     * @param  int  $quiz
      * @return \Illuminate\Http\Response
      */
     public function destroy($course, $quiz)
@@ -138,6 +143,12 @@ class QuizController extends Controller
         //204: No content. When an action was executed successfully, but there is no content to return.
     }
 
+    /**
+     * Display all questions with answers of final quiz of specific course.
+     *
+     * @param  int  $course
+     * @return \Illuminate\Http\Response
+     */
     public function final($course){
         $course = Course::findOrFail($course);
 
@@ -159,6 +170,12 @@ class QuizController extends Controller
         }
     }
 
+    /**
+     * Display all questions of specific course.
+     *
+     * @param  int  $course
+     * @return \Illuminate\Http\Response
+     */
     public function questions($course){
         $course = Course::findOrFail($course);
 
@@ -173,6 +190,12 @@ class QuizController extends Controller
         }
     }
 
+    /**
+     * Activate Final quiz
+     *
+     * @param  int  $course
+     * @return \Illuminate\Http\Response
+     */
     public function activateFinal($course){
         $course = Course::findOrFail($course);
 
@@ -183,6 +206,12 @@ class QuizController extends Controller
         return response()->json(204);
     }
 
+    /**
+     * Deactivate Final quiz
+     *
+     * @param  int  $course
+     * @return \Illuminate\Http\Response
+     */
     public function desactivateFinal($course){
         $course = Course::findOrFail($course);
 
@@ -193,6 +222,13 @@ class QuizController extends Controller
         return response()->json(204);
     }
 
+    /**
+     * Update specific question of specific course
+     *
+     * @param  int  $course
+     * @param  int  $question
+     * @return \Illuminate\Http\Response
+     */
     public function updateQuestion(Request $request, $course, $question){
         $course = Course::findOrFail($course);
         $question = Question::findOrFail($question);

@@ -18,6 +18,7 @@ class LessonController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function index($course)
@@ -36,7 +37,8 @@ class LessonController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $course
+     * @param int $lesson
      * @return \Illuminate\Http\Response
      */
     public function show($course,$lesson)
@@ -61,6 +63,7 @@ class LessonController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request,$course)
@@ -128,7 +131,8 @@ class LessonController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param int $course
+     * @param int $lesson
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $course, $lesson)
@@ -184,7 +188,8 @@ class LessonController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $course
+     * @param int $lesson
      * @return \Illuminate\Http\Response
      */
     public function destroy($course, $lesson)

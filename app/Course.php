@@ -28,22 +28,42 @@ class Course extends Model
 
     public static function userCourse($user){
         $courses = DB::table('data_courses')
-        ->leftJoin('courses','data_courses.course_id','=','courses.id')
-        ->where('data_courses.user_id','=',$user)
+        ->where('user_id','=',$user)
         ->get();
         
+        $data = collect();
+
         foreach($courses as $course){
-            if($course->image != null){
-                $course->image = Storage::url($course->image);
+            $c = DB::table('courses')->where('id',$course->course_id)->first();
+            if($c){
+                $course->title = $c->title;
+                $course->slug = $c->slug;
+                $course->introduction = $c->introduction;
+                $course->description = $c->description;
+                $course->duration = $c->duration;
+                $course->image = $c->image;
+                $course->mime = $c->mime;
+                $course->instructor = $c->instructor;
+                $course->start_date = $c->start_date;
+                $course->end_date = $c->end_date;
+                $course->quiz = $c->quiz;
+                // $course->template_id = $c->template_id;
+                // $course->status = $c->status;
+
+                if($course->image != null){
+                    $course->image = Storage::url($course->image);
+                }
+                $course->total_lesson = DB::table('course_lesson')->where('course_id',$course->course_id)->count();
+                $course->lesson_complete = DB::table('data_lessons')
+                ->where('user_id',$user)
+                ->where('course_id',$course->course_id)
+                ->whereNotNull('finish')
+                ->count();
+
+                $data->push($course);
             }
-            $course->total_lesson = DB::table('course_lesson')->where('course_id',$course->id)->count();
-            $course->lesson_complete = DB::table('data_lessons')
-                                        ->where('user_id',$user)
-                                        ->where('course_id',$course->id)
-                                        ->whereNotNull('finish')
-                                        ->count();
         }
-        return $courses;
+        return $data;
     }
 
     public static function uploadImageCourse(Request $request, Course $course){
@@ -57,8 +77,8 @@ class Course extends Model
     public static function updateImageCourse(Request $request, Course $course){
         $filename = $course->id . '-' . str_slug($course->title) . '.' . $request->file('image')->getClientOriginalExtension();
         $filepath = 'courses/images/' . $filename;
-        if(Storage::exists($filepath)){
-            Storage::delete($filepath);
+        if(Storage::exists($course->image)){
+            Storage::delete($course->image);
         }
         $request->file('image')->storeAs('courses/images', $filename);
         $course->image =  $filepath;

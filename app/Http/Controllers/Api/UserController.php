@@ -20,6 +20,12 @@ class UserController extends Controller
         $this->user = $user;
     }
 
+    /**
+     * register user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function register(Request $request){
         $user = $this->user->create([
             'name' => $request->get('name'),
@@ -31,6 +37,12 @@ class UserController extends Controller
 
     }
 
+    /**
+     * login
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function login(Request $request){
         $credentials = $request->only('email', 'password');
         $token = null;
@@ -50,7 +62,7 @@ class UserController extends Controller
     }
 
      /**
-     * Display a listing of the resource.
+     * Display all users.
      *
      * @return \Illuminate\Http\Response
      */
@@ -71,7 +83,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display specific user. 
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -93,7 +105,7 @@ class UserController extends Controller
     }
     
     /**
-     * Store a newly created resource in storage.
+     * Store a new user on database
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -143,7 +155,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update specific user
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -192,7 +204,7 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete specific user.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

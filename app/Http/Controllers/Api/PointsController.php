@@ -10,7 +10,7 @@ use App\DataPoint;
 class PointsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display All Types of Points
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,9 +23,9 @@ class PointsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display specific type of point.
      *
-     * @param  int  $id
+     * @param  int  $point
      * @return \Illuminate\Http\Response
      */
     public function show($point)
@@ -38,7 +38,7 @@ class PointsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new type of Point.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -55,10 +55,10 @@ class PointsController extends Controller
     }
     
     /**
-     * Update the specified resource in storage.
+     * Update type of point.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $point
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $point)
@@ -77,9 +77,9 @@ class PointsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete Specific type of point.
      *
-     * @param  int  $id
+     * @param  int  $point
      * @return \Illuminate\Http\Response
      */
     public function destroy($point)

@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\DB;
 class DataLessonController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all lessons registers of specific course of specific user.
      *
+     * @param int $user
+     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function index($user,$course)
@@ -29,9 +31,11 @@ class DataLessonController extends Controller
     }
     
     /**
-     * Display the specified resource.
+     * Display specific lessons registers of specific course of specific user.
      *
-     * @param  \App\DataLesson  $dataLesson
+     * @param int $user
+     * @param int $course
+     * @param int $lesson
      * @return \Illuminate\Http\Response
      */
     public function show($user,$course,$lesson)
@@ -50,6 +54,9 @@ class DataLessonController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param int $user
+     * @param int $course
+     * @param int $lesson
      * @return \Illuminate\Http\Response
      */
     public function store($user,$course,$lesson)
@@ -76,7 +83,9 @@ class DataLessonController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\DataLesson  $dataLesson
+     * @param int $user
+     * @param int $course
+     * @param int $lesson
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request,$user,$course,$lesson)

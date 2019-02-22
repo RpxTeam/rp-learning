@@ -108,3 +108,11 @@ Route::get('users/{user}/certification', 'Api\CertificationController@user');
 Route::get('users/{user}/courses/{course}/certification', 'Api\CertificationController@show');
 Route::post('users/{user}/courses/{course}/certification/', 'Api\CertificationController@store');
 Route::resource('certification/templates', 'Api\TemplateController');
+
+//Team routes
+Route::resource('teams', 'Api\TeamController');
+Route::post('teams/add', 'Api\TeamController@add');
+Route::post('teams/remove', 'Api\TeamController@remove');
+
+//Trail routes
+Route::resource('trails', 'Api\TrailController');
