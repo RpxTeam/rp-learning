@@ -31,7 +31,8 @@ import {
     ListItemIcon,
     ListItemText,
     Card,
-    Typography
+    Typography,
+    Divider
 } from '@material-ui/core'
 
 import AudioTrack from '@material-ui/icons/AudioTrack'
@@ -42,19 +43,63 @@ import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import CheckCircle from '@material-ui/icons/CheckCircle'
 
 import styled from 'styled-components';
+import Loader from '../../components/Loader';
+
+const LoaderContainer = styled.div`
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    z-index: 1;
+    border: 1px solid #EEE;
+`
 
 const Container = styled(Grid)`
     margin: 0 -16px!important;
     background: #eeeeee;
-    padding: 0 15px;
+    padding: null 15px;
+    min-height: 80vh;
+`
+
+const LeftBar = styled(Grid)`
+    background: #fff;
+`
+
+const CardLessons = styled(Card)`
+    box-shadow: none!important;
 `
 
 const Lesson = styled.div`
-    padding: 30px 15px;
+    padding: 30px;
+    max-width: 70%;
+    margin: 30px auto 0;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    position: relative;
+    @media(max-width: 1450px) {
+        max-width: 100%;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        padding: 20px 0 10px;
+    }
     p {
         display: block;
-        font-size: 16px;
+        font-size: 1em;
         line-height: 1.5em;
+        color: #000;
+    }
+    li {
+        font-size: 1em;
+        line-height: 1.5em;
+        font-weight: 300;
+        margin-left: 20px;
     }
     img {
         margin-top: 15px;
@@ -64,7 +109,7 @@ const Lesson = styled.div`
         text-align: center;
     }
     iframe[frameborder] {
-        width: 650px;
+        width: 100%;
         height: 450px;
         margin: 15px 0;
     }
@@ -86,7 +131,13 @@ const Lesson = styled.div`
             height: 350px;
         }
     }
+`;
+
+const LessonContainer = styled(Grid)`
+    position: relative;
+    min-height: 100%;
 `
+
 function Transition(props) {
     return <Slide direction="up" {...props} />;
 }
@@ -129,7 +180,8 @@ class Page extends React.Component {
             finalQuestions: [],
             finalChooses: [],
             finalAnswers: [],
-            dialogQuizFinal: false
+            dialogQuizFinal: false,
+            loading: true
         }
 
         this.openMessage = this.openMessage.bind(this);
@@ -144,6 +196,11 @@ class Page extends React.Component {
                     this.setState({ course: course, progress: progress });
                     this.getQuizId();
                     this.verifyFinalComplete();
+                    this.setState({
+                        loading: false
+                    }
+                    )
+                    console.log(progress)
                 } else {
                     this.setState({ onCourse: true })
                 }
@@ -178,6 +235,7 @@ class Page extends React.Component {
                     lessonsCount: lessons.length,
                     endLessons: endLessons.length,
                 });
+                this.renderLesson();
             });
 
     };
@@ -264,14 +322,23 @@ class Page extends React.Component {
                     lessonsCount: lessons.length,
                     endLessons: endLessons.length,
                 });
+                this.renderLesson();
             });
     };
 
     getLesson = (id) => {
+        this.setState({
+            loading: true
+        });
+
         axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${id}`)
             .then(res => {
                 const lesson = res.data.lessons;
                 this.setState({ lesson: lesson })
+                this.setState({
+                    loading: false
+                });
+                this.renderLesson();
             });
     };
 
@@ -333,8 +400,11 @@ class Page extends React.Component {
                 this.updateLevel(this.state.user.id, this.state.courseID, id);
 
                 this.handleNextStep();
-            });
 
+                if(this.state.progress >= 98 && this.state.quiz === false) {
+                    this.openModal();
+                }
+            });
     };
 
     updateLevel = (user, course, lesson) => {
@@ -358,9 +428,6 @@ class Page extends React.Component {
             .then(() => {
                 this.setState({ progress: progress });
                 this.openMessage('Lição Finalizada com sucesso');
-                if (progress === 100) {
-                    this.openModal();
-                }
             }
             );
     };
@@ -546,6 +613,8 @@ class Page extends React.Component {
             })
             this.cancelFinal();
             this.openMessage('Quiz Finalizado com Sucesso!');
+
+            this.openModal();
         } else {
             this.openMessage('Respostas Erradas');
         }
@@ -599,6 +668,21 @@ class Page extends React.Component {
         })
     }
 
+    renderLesson = () => {
+        document.querySelectorAll( 'oembed[url]' ).forEach( element => {
+            // Create the <a href="..." class="embedly-card"></a> element that Embedly uses
+            // to discover the media.
+            const iframe = document.createElement( 'iframe' );
+            let url = element.getAttribute('url');
+            iframe.setAttribute( 'src', url );
+            iframe.setAttribute( 'frameborder', '0' );
+            iframe.setAttribute( 'allowfullscreen', '1' );
+            iframe.setAttribute(  'allow' , 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' );
+
+            element.appendChild( iframe );
+        } );
+    }
+
     render() {
         const { course, modal, courseID, lessons, lesson, endLessons, progress, activeLesson, question, chooses, message } = this.state;
         if (this.state.onCourse === true) {
@@ -618,31 +702,39 @@ class Page extends React.Component {
                     />
                     <Container container spacing={16}>
                         {lessons ?
-                            <Grid item md={3} sm={12} xs={12}>
-                                <Card>
+                            <LeftBar item md={3} sm={12} xs={12}>
+                                <CardLessons>
                                     <List>
                                         {lessons.map((lesson, index) => (
-                                            <ListItem key={index} button onClick={this.getLesson.bind(this, lesson.id)}>
-                                                <ListItemIcon>
-                                                    {lesson.view != null ?
-                                                        <CheckCircle color="primary" />
-                                                        : this.formatIcons(lesson.type)}
-                                                </ListItemIcon>
-                                                <ListItemText>
-                                                    {lesson.title}
-                                                </ListItemText>
-                                            </ListItem>
+                                            <React.Fragment key={index}>
+                                                <ListItem button onClick={this.getLesson.bind(this, lesson.id)}>
+                                                    <ListItemIcon>
+                                                        {lesson.view != null ?
+                                                            <CheckCircle color="primary" />
+                                                            : this.formatIcons(lesson.type)}
+                                                    </ListItemIcon>
+                                                    <ListItemText>
+                                                        {lesson.title}
+                                                    </ListItemText>
+                                                </ListItem>
+                                                <Divider />
+                                            </React.Fragment>
                                         ))}
                                     </List>
-                                </Card>
+                                </CardLessons>
                                 <br />
-                                {this.state.finalQuiz && this.state.progress > 98 ?
+                                {(this.state.finalQuiz && this.state.progress > "98") || (this.state.finalQuiz && this.state.progress > 98) ?
                                     <Button variant="contained" fullWidth size="large" onClick={this.openFinal} color="primary">Realizar teste final</Button>
                                     : null}
-                            </Grid>
+                            </LeftBar>
                             : null}
                         {lesson ?
-                            <Grid item md={9} sm={12} xs={12}>
+                            <LessonContainer item md={9} sm={12} xs={12}>
+                                {this.state.loading ?
+                                    <LoaderContainer>
+                                        <Loader />
+                                    </LoaderContainer>
+                                    : null}
                                 <Lesson>
                                     {lesson.type === 'text' ?
                                         <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
@@ -677,11 +769,12 @@ class Page extends React.Component {
                                         </div>
                                         : null}
                                     {lesson.view ? null :
-                                        <Grid container justify="flex-end">
+                                        <Grid container justify="center" style={{ marginTop: 50 }}>
                                             <Button
                                                 variant="contained"
                                                 color="primary"
                                                 size="large"
+                                                style={{ padding: '15px 50px', fontSize: 16 }}
                                                 onClick={lesson.question ? this.openQuiz.bind(this, lesson.id) : this.endLesson.bind(this, lesson.id)}
                                             >
                                                 Finalizar Lição
@@ -689,7 +782,7 @@ class Page extends React.Component {
                                         </Grid>
                                     }
                                 </Lesson>
-                            </Grid>
+                            </LessonContainer>
                             : null}
                     </Container>
                 </main>

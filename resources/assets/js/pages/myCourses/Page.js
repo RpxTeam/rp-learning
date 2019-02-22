@@ -50,7 +50,6 @@ class Page extends React.Component {
         axios.get(`${ API_URL }/api/users/${this.props.user.id}/courses`)
         .then(res => {
             const courses = Object.values(res.data);
-            console.log(courses);
             this.setState({ courses: courses });
         })
     };
@@ -93,8 +92,8 @@ class Page extends React.Component {
                         <p>Essa é a sua biblioteca de cursos, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet commodi delectus, excepturi ipsum dolor sit amet.</p>
                     </Banner>
                     <Container container spacing={40}>
-                        {courses.map((course) =>
-                            <Grid item md={4} sm={12} xs={12} key={course.id}>
+                        {courses.map((course, index) =>
+                            <Grid item md={4} sm={12} xs={12} key={index}>
                                 <Card>
                                     <CardActionArea onClick={this.viewCourse.bind(this, course.id)}>
                                         <Image style={{ backgroundImage: `url(${course.image})` }} />

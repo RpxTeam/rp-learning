@@ -51,13 +51,10 @@ import CheckCircle from '@material-ui/icons/CheckCircle';
 import styled from 'styled-components';
 
 // Editor
-import { EditorState, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import draftToHtml from 'draftjs-to-html';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-// import CKEditor from "@ckeditor/ckeditor5-react";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
+// Date
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import { InlineDatePicker } from 'material-ui-pickers';
@@ -65,12 +62,6 @@ import brLocale from 'date-fns/locale/pt-BR';
 
 const CardContainer = styled(Card)`
     padding: 10px 20px;
-`;
-
-const BtnSwitch = styled(FormControlLabel)`
-    span {
-        font-size: 16px;
-    }
 `;
 
 class Page extends React.Component {
@@ -139,7 +130,6 @@ class Page extends React.Component {
             scrolled: false,
             idQuestion: null,
             editAnswer: null,
-            editorState: EditorState.createEmpty(),
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -388,6 +378,8 @@ class Page extends React.Component {
     }
 
     submitLesson = (type, quiz) => {
+        let count = this.state.lessons.length;
+        console.log(count);
         if (type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
             if (quiz) {
                 this.fileUpload('', true);
@@ -395,12 +387,7 @@ class Page extends React.Component {
                 this.fileUpload();
             }
         } else {
-            let content;
-            if(type === 'text') {
-                content = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
-            } else {
-                content = this.state.lesson.content
-            }
+            let content = this.state.lesson.content;
             const lesson = {
                 type: this.state.modal.type,
                 title: this.state.lesson.title,
@@ -475,35 +462,34 @@ class Page extends React.Component {
             }
             axios.put(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}`, lessonUpdate).then(res => {
                 this.openMessage('Lição atualizada com sucesso');
-                console.log(res);
-                // if (quiz) {
-                //     if (question) {
-                //         console.log(this.state.idQuestion);
-                //         console.log(res.data);
-                //         this.updateQuiz(res.data, this.state.idQuestion);
-                //     } else {
-                //         this.createQuiz(res.data);
-                //     }
-                // }
-                // this.setState({
-                //     lesson: {
-                //         ...this.state.lesson,
-                //         type: '',
-                //         title: '',
-                //         content: ''
-                //     },
-                //     question: {
-                //         course_id: null,
-                //         lesson_id: null,
-                //         text: '',
-                //         active: true,
-                //         answers: [
-                //         ]
-                //     },
-                //     questionField: ''
-                // });
-                // this.closeModal();
-                // this.loadingLessons();
+                if (quiz) {
+                    if (question) {
+                        console.log(this.state.idQuestion);
+                        console.log(res.data);
+                        this.updateQuiz(res.data, this.state.idQuestion);
+                    } else {
+                        this.createQuiz(res.data);
+                    }
+                }
+                this.setState({
+                    lesson: {
+                        ...this.state.lesson,
+                        type: '',
+                        title: '',
+                        content: ''
+                    },
+                    question: {
+                        course_id: null,
+                        lesson_id: null,
+                        text: '',
+                        active: true,
+                        answers: [
+                        ]
+                    },
+                    questionField: ''
+                });
+                this.closeModal();
+                this.loadingLessons();
             }).catch(error => {
                 this.openMessage(error.message)
             });
@@ -565,14 +551,25 @@ class Page extends React.Component {
                 if (lessons.length > 6) {
                     this.setState({ scrolled: true });
                 }
+                
+                // const newLessons = lessons.sort(function(a, b) {
+                //     if(a.order < b.order) return -1;
+                //     if(a.order > b.order) return 1;
+                //     return 0;
+                // });
+                
+                // console.log(newLessons);
             });
     };
 
-    handleEditor = (editorState) => {
-        console.log(editorState);
-        // const data = editor.getData();
+    handleEditor = (event, editor) => {
+        const data = editor.getData();
+        console.log(data);
         this.setState({
-            editorState
+            lesson: {
+                ...this.state.lesson,
+                content: data
+            }
         });
     };
 
@@ -1408,17 +1405,7 @@ class Page extends React.Component {
                             }}
                         />
                         {this.state.modal.type === 'text' ?
-                        <React.Fragment>
-                            <Editor
-                                initialEditorState={this.state.editorState}
-                                editorState={this.state.editorState}
-                                onEditorStateChange={this.handleEditor}
-                                toolbar={{
-                                    image: { uploadCallback: this.uploadImageEditor, alt: { present: true, mandatory: true } },
-                                }}
-                            />
-                        </React.Fragment>
-                            /* <CKEditor
+                            <CKEditor
                                 editor={ClassicEditor}
                                 data={this.state.lesson.content}
                                 onInit={editor => {
@@ -1428,10 +1415,10 @@ class Page extends React.Component {
                                 onChange={this.handleEditor}
                                 config={
                                     {
-                                        removePlugins: ['Link', 'ImageUpload']
+                                        removePlugins: ['Link', 'ImageUpload'],
                                     }
                                 }
-                            /> */
+                            />
                             : null}
                         {this.state.modal.type === 'webcontent' ?
                             <TextField

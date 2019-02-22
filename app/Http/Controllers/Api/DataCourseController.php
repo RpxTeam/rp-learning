@@ -23,8 +23,6 @@ class DataCourseController extends Controller
         ->where('view','=',1)
         ->where('progress','>', -1);
 
-        dd($mycourses);
-
         if($mycourses == null || $mycourses->isEmpty()){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.

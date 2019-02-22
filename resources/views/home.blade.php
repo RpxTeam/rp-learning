@@ -10,6 +10,20 @@
         {{--  <link rel="stylesheet" href="{{asset('css/app.css')}}">  --}}
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
         <title>RP Learning</title>
+        <script>
+            document.querySelectorAll( 'oembed[url]' ).forEach( element => {
+                // Create the <a href="..." class="embedly-card"></a> element that Embedly uses
+                // to discover the media.
+                const iframe = document.createElement( 'iframe' );
+                var url = element.getAttribute('url');
+                iframe.setAttribute( 'src', url );
+                iframe.setAttribute( 'frameborder', '0' );
+                iframe.setAttribute( 'allowfullscreen', '1' );
+                iframe.setAttribute(  'allow' , 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' );
+        
+                element.appendChild( iframe );
+            } );
+        </script>
     </head>
     <body>
         <div id='app' style="height: 100%;"></div>
