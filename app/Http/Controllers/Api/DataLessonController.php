@@ -6,6 +6,7 @@ Use App\User;
 Use App\Course;
 Use App\Lesson;
 use App\DataLesson;
+use App\DataCourse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,8 @@ class DataLessonController extends Controller
         ->where('course_id','=',$course->id);
 
         $lessons = Lesson::userLessons($user,$course->id);
+
+        DataCourse::verifyDataLesson($user,$course->id);
 
         return response()->json(array('course'=>$mycourse,'lessons'=>$lessons),200);
     }
