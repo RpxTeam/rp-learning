@@ -6,7 +6,10 @@ import Admin from '../../Admin'
 
 import FilePreview from 'react-preview-file';
 
-import { Redirect } from "react-router-dom";
+import "video-react/dist/video-react.css";
+import { Player } from 'video-react';
+import ReactPlayer from 'react-player'
+
 import {
     Grid,
     TextField,
@@ -40,6 +43,7 @@ import {
 
 import Message from '../../../../components/Message';
 import EditIcon from '@material-ui/icons/Edit';
+import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 import DeleteIcon from '@material-ui/icons/Delete';
 import QuestionAnswer from '@material-ui/icons/QuestionAnswer';
 import VideoCam from '@material-ui/icons/VideoCam';
@@ -62,6 +66,40 @@ import brLocale from 'date-fns/locale/pt-BR';
 
 const CardContainer = styled(Card)`
     padding: 10px 20px;
+`;
+
+const Audio = styled.audio`
+    margin: auto;
+    width: 500px;
+    display: block;
+    @media(max-width: 500px) {
+        width: 100%;
+    }
+`;
+
+const Lesson = styled(TableRow)`
+    cursor: move
+`;
+
+const TitlePreview = styled(DialogTitle)`
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px!important;
+`;
+
+const PreviewContent = styled(DialogContent)`
+    iframe[frameborder] {
+        width: 100%;
+        height: 450px;
+    }
+    p {
+        padding-bottom: 10px;
+    }
+`;
+
+const PreviewButtons = styled(DialogActions)`
+    border-top: 1px solid #ddd;
+    padding-top: 30px;
 `;
 
 class Page extends React.Component {
@@ -130,6 +168,7 @@ class Page extends React.Component {
             scrolled: false,
             idQuestion: null,
             editAnswer: null,
+            view: false
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -261,15 +300,15 @@ class Page extends React.Component {
 
         if (!this.state.course.title) {
             this.openMessage('Título está vázio');
-        } else if(!this.state.course.start_date) {
+        } else if (!this.state.course.start_date) {
             this.openMessage('Data de início vázia');
-        } else if(!this.state.course.end_date) {
+        } else if (!this.state.course.end_date) {
             this.openMessage('Data de término vázia');
-        } else if(!this.state.course.description) {
+        } else if (!this.state.course.description) {
             this.openMessage('Descrição vázia');
-        } else if(!this.state.course.duration) {
+        } else if (!this.state.course.duration) {
             this.openMessage('Duração vázia');
-        } else if(this.state.course.duration < 1) {
+        } else if (this.state.course.duration < 1) {
             this.openMessage('Duração não pode ser menor que 1 hora');
         } else {
 
@@ -379,7 +418,6 @@ class Page extends React.Component {
 
     submitLesson = (type, quiz) => {
         let count = this.state.lessons.length;
-        console.log(count);
         if (type === 'video-internal' || type === 'audio' || type === 'doc' || type === 'pdf') {
             if (quiz) {
                 this.fileUpload('', true);
@@ -453,8 +491,6 @@ class Page extends React.Component {
                 }
             });
         } else {
-            console.log(this.state.courseID);
-            console.log(id);
             const lessonUpdate = {
                 type: this.state.modal.type,
                 title: this.state.lesson.title,
@@ -464,8 +500,6 @@ class Page extends React.Component {
                 this.openMessage('Lição atualizada com sucesso');
                 if (quiz) {
                     if (question) {
-                        console.log(this.state.idQuestion);
-                        console.log(res.data);
                         this.updateQuiz(res.data, this.state.idQuestion);
                     } else {
                         this.createQuiz(res.data);
@@ -551,20 +585,19 @@ class Page extends React.Component {
                 if (lessons.length > 6) {
                     this.setState({ scrolled: true });
                 }
-                
+
                 // const newLessons = lessons.sort(function(a, b) {
                 //     if(a.order < b.order) return -1;
                 //     if(a.order > b.order) return 1;
                 //     return 0;
                 // });
-                
+
                 // console.log(newLessons);
             });
     };
 
     handleEditor = (event, editor) => {
         const data = editor.getData();
-        console.log(data);
         this.setState({
             lesson: {
                 ...this.state.lesson,
@@ -599,7 +632,8 @@ class Page extends React.Component {
                 file: null,
                 name: ''
             },
-            editAnswer: null
+            editAnswer: null,
+            view: false
         })
     }
 
@@ -1070,6 +1104,86 @@ class Page extends React.Component {
         console.log(file)
     }
 
+
+    viewLesson = (type, id) => {
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}`)
+            .then(res => {
+                const lesson = res.data;
+                this.setState({
+                    lesson: lesson,
+                    view: true
+                });
+                if (lesson.type === 'text') {
+                    this.renderLesson();
+                }
+                if (lesson.type === 'video-internal' || lesson.type === 'audio' || lesson.type === 'doc' || lesson.type === 'pdf') {
+                    const archive = lesson.content.split('/');
+                    const archiveCount = archive.length - 1;
+                    this.setState({
+                        file: {
+                            type: lesson.type,
+                            name: archive[archiveCount],
+                        }
+                    })
+                }
+
+                axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons/${id}/questions`)
+                    .then(res => {
+                        if (res.data !== 400) {
+                            const question = res.data;
+                            console.log(question);
+                            this.setState({
+                                question: question,
+                                hasQuiz: true,
+                                questionField: question.text,
+                                quiz: true,
+                                idQuestion: question.id,
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        this.openMessage(error.message)
+                    })
+            });
+    };
+
+    renderLesson = () => {
+        document.querySelectorAll('oembed[url]').forEach(element => {
+            const iframe = document.createElement('iframe');
+            iframe.setAttribute('frameborder', '0');
+            let url = element.getAttribute('url');
+            if (url.indexOf('watch?v=') !== -1) {
+                const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+                let match = url.match(regExp);
+                let id = (match && match[7].length == 11) ? match[7] : false;
+
+                iframe.setAttribute('allowfullscreen', '1');
+                iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
+
+                url = 'https://www.youtube.com/embed/' + id;
+            } else if (url.indexOf('vimeo.com') !== -1) {
+                const regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/
+                let match = url.match(regExp);
+                let id = match[5];
+                iframe.setAttribute('webkitallowfullscreen', '');
+                iframe.setAttribute('mozallowfullscreen', '');
+                iframe.setAttribute('allowfullscreen', '');
+                url = 'https://player.vimeo.com/video/' + id + '?color=1da891&title=0&byline=0&portrait=0';
+            }
+
+            iframe.setAttribute('src', url);
+
+            element.appendChild(iframe);
+        });
+    }
+
+    onDragStart = e => {
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/html", e.target.parentNode);
+        e.dataTransfer.setDragImage(e.target.parentNode, 20, 20);
+        console.log(e.target);
+    };
+
     render() {
         const { course, lessons, lesson, message, menu, edit, modal, quiz, question, answerField, questionField, quizCreated, activeQuiz } = this.state;
         return (
@@ -1153,11 +1267,18 @@ class Page extends React.Component {
                                         <Table>
                                             <TableBody>
                                                 {lessons.map((lesson) =>
-                                                    <TableRow key={lesson.id}>
+                                                    <Lesson
+                                                        key={lesson.id}
+                                                        draggable
+                                                        onDragStart={this.onDragStart}
+                                                    >
                                                         <TableCell>
                                                             {lesson.title}
                                                         </TableCell>
                                                         <TableCell align={'right'}>
+                                                            <IconButton aria-label="Edit" onClick={this.viewLesson.bind(this, lesson.type, lesson.id)}>
+                                                                <RemoveRedEye />
+                                                            </IconButton>
                                                             <IconButton aria-label="Edit" onClick={this.editLesson.bind(this, lesson.type, lesson.id)}>
                                                                 <EditIcon />
                                                             </IconButton>
@@ -1165,7 +1286,7 @@ class Page extends React.Component {
                                                                 <DeleteIcon />
                                                             </IconButton>
                                                         </TableCell>
-                                                    </TableRow>
+                                                    </Lesson>
                                                 )
                                                 }
                                             </TableBody>
@@ -1386,10 +1507,10 @@ class Page extends React.Component {
                     open={modal.open}
                     maxWidth="md"
                     fullWidth
-                    aria-labelledby="confirmation-dialog-title"
+                    aria-labelledby="dialog-lesson-title"
                     variant="outlined"
                 >
-                    <DialogTitle id="confirmation-dialog-title">Criar lição</DialogTitle>
+                    <DialogTitle id="dialog-lesson-title">Lição</DialogTitle>
                     <DialogContent>
                         <TextField
                             label="Título"
@@ -1397,8 +1518,8 @@ class Page extends React.Component {
                             onChange={this.updateLesson}
                             margin="normal"
                             variant="outlined"
-                            placeholder={this.state.lesson.title}
-                            value={this.state.lesson.title}
+                            placeholder={lesson.title}
+                            value={lesson.title}
                             fullWidth
                             InputLabelProps={{
                                 shrink: true,
@@ -1407,7 +1528,7 @@ class Page extends React.Component {
                         {this.state.modal.type === 'text' ?
                             <CKEditor
                                 editor={ClassicEditor}
-                                data={this.state.lesson.content}
+                                data={lesson.content}
                                 onInit={editor => {
                                     // You can store the "editor" and use when it is needed.
                                     console.log('Editor is ready to use!', editor);
@@ -1425,7 +1546,7 @@ class Page extends React.Component {
                                 label="Conteúdo Web"
                                 name="web-content"
                                 onChange={this.updateLesson}
-                                value={this.state.lesson.content}
+                                value={lesson.content}
                                 margin="normal"
                                 variant="outlined"
                                 fullWidth
@@ -1442,7 +1563,7 @@ class Page extends React.Component {
                                 margin="normal"
                                 variant="outlined"
                                 fullWidth
-                                value={this.state.lesson.content}
+                                value={lesson.content}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -1579,6 +1700,52 @@ class Page extends React.Component {
                             </Button>
                         }
                     </DialogActions>
+                </Dialog>
+
+                <Dialog
+                    open={this.state.view}
+                    maxWidth="md"
+                    fullWidth
+                    aria-labelledby="lesson-title"
+                    onClose={this.handleCancel}
+                >
+                    <TitlePreview id="lesson-title">{lesson.title}</TitlePreview>
+                    <PreviewContent>
+                        {lesson.type === 'text' ?
+                            <div dangerouslySetInnerHTML={{ __html: lesson.content }}></div>
+                            : null}
+                        {lesson.type === 'video-internal' ?
+                            <Player
+                                playsInline
+                                poster="/assets/poster.png"
+                                src={API_URL + '/api/courses/' + course.id + '/lessons/' + lesson.id + '/media'}
+                            />
+                            : null}
+                        {lesson.type === 'video-external' ?
+                            <div className="video-external">
+                                <ReactPlayer url={lesson.content} controls width={'100%'} height={450} />
+                            </div>
+                            : null}
+                        {lesson.type === 'ppt' ?
+                            lesson.content
+                            : null}
+                        {lesson.type === 'doc' || lesson.type === 'pdf' ?
+                            <iframe src={lesson.content + '#toolbar=0'} width="100%" height="700px"></iframe>
+                            : null}
+                        {lesson.type === 'audio' ?
+                            <div className="audio">
+                                <Audio controls controlsList="nodownload">
+                                    <source
+                                        src={API_URL + '/api/courses/' + course.id + '/lessons/' + lesson.id + '/media'}
+                                        type={lesson.mime}
+                                    />
+                                    Your browser does not support the audio element.
+                                </Audio>
+                            </div>
+                            : null}
+                    </PreviewContent>
+                    <PreviewButtons>
+                    </PreviewButtons>
                 </Dialog>
             </Admin>
         );

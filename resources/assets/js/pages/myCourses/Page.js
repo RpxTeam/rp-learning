@@ -89,7 +89,7 @@ class Page extends React.Component {
                 <Navigation />
                 <main className="fadeIn animated">
                     <Banner title="Meus Cursos" icon="courses">
-                        <p>Essa é a sua biblioteca de cursos, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet commodi delectus, excepturi ipsum dolor sit amet.</p>
+                        <p>Essa é a sua biblioteca de cursos.</p>
                     </Banner>
                     <Container container spacing={40}>
                         {courses.map((course, index) =>
