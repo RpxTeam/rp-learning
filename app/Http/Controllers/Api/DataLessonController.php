@@ -28,7 +28,7 @@ class DataLessonController extends Controller
 
         $lessons = Lesson::userLessons($user,$course->id);
 
-        DataCourse::verifyDataLesson($user,$course->id);
+        // DataCourse::verifyDataLesson($user,$course->id);
 
         return response()->json(array('course'=>$mycourse,'lessons'=>$lessons),200);
     }
