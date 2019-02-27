@@ -108,7 +108,7 @@ class QuizController extends Controller
         $course = Course::findOrFail($course);
         $quiz = Quiz::findOrFail($quiz);
 
-        $questions = Question::quizQuestions($quiz->id);
+        $questions = Question::quizQuestions($course->id,$quiz->id);
         
         foreach($questions as $question){
             
