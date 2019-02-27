@@ -20,7 +20,7 @@ class CoursesController extends Controller
     {
         try{
             $courses = Course::All()->each(function($course){
-                if(!$course->image){
+                if($course->image){
                     $course->image = Storage::url($course->image);
                 }
                 $course->setAttribute('favorited',Course::getFavoriteCount($course->id));
@@ -46,7 +46,7 @@ class CoursesController extends Controller
             $course = Course::where('id', $course)
                             ->orWhere('slug', $course)
                             ->firstOrFail();
-            if(!$course->image){
+            if($course->image){
                 $course->image = Storage::url($course->image);
             }
             $course->setAttribute('favorited',Course::getFavoriteCount($course->id));
