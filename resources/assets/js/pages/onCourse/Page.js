@@ -235,7 +235,6 @@ class Page extends React.Component {
                     lessonsCount: lessons.length,
                     endLessons: endLessons.length,
                 });
-                this.renderLesson();
             });
 
     };
@@ -322,7 +321,6 @@ class Page extends React.Component {
                     lessonsCount: lessons.length,
                     endLessons: endLessons.length,
                 });
-                this.renderLesson();
             });
     };
 
@@ -669,15 +667,30 @@ class Page extends React.Component {
     }
 
     renderLesson = () => {
-        document.querySelectorAll( 'oembed[url]' ).forEach( element => {
-            // Create the <a href="..." class="embedly-card"></a> element that Embedly uses
-            // to discover the media.
+        document.querySelectorAll( 'oembed[url]' ).forEach( element => {            
             const iframe = document.createElement( 'iframe' );
-            let url = element.getAttribute('url');
-            iframe.setAttribute( 'src', url );
             iframe.setAttribute( 'frameborder', '0' );
-            iframe.setAttribute( 'allowfullscreen', '1' );
-            iframe.setAttribute(  'allow' , 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' );
+            let url = element.getAttribute('url');
+            if(url.indexOf('watch?v=') !== -1) {
+                const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+                let match = url.match(regExp);
+                let id = (match&&match[7].length==11)? match[7] : false;
+                
+                iframe.setAttribute( 'allowfullscreen', '1' );
+                iframe.setAttribute(  'allow' , 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' );
+
+                url = 'https://www.youtube.com/embed/' + id;
+            } else if(url.indexOf('vimeo.com') !== -1) {
+                const regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/
+                let match = url.match(regExp);
+                let id = match[5];
+                iframe.setAttribute( 'webkitallowfullscreen', '' );
+                iframe.setAttribute( 'mozallowfullscreen', '' );
+                iframe.setAttribute( 'allowfullscreen', '' );
+                url = 'https://player.vimeo.com/video/'+ id +'?color=1da891&title=0&byline=0&portrait=0';
+            }
+
+            iframe.setAttribute( 'src', url );
 
             element.appendChild( iframe );
         } );
@@ -804,7 +817,7 @@ class Page extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.closeModal} color="primary">
+                        <Button component={Link} to="/my-courses" color="primary">
                             OK
                         </Button>
                     </DialogActions>
