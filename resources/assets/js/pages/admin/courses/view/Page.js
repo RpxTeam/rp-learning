@@ -57,6 +57,7 @@ import styled from 'styled-components';
 // Editor
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 
 // Date
 import DateFnsUtils from '@date-io/date-fns';
@@ -1536,6 +1537,8 @@ class Page extends React.Component {
                                 onChange={this.handleEditor}
                                 config={
                                     {
+                                        // plugins: [Alignment],
+                                        toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ],
                                         removePlugins: ['Link', 'ImageUpload'],
                                     }
                                 }

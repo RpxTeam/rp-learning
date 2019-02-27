@@ -184,7 +184,7 @@ class Page extends React.Component {
 
         axios.post(`${API_URL}/api/certification/templates`, formData, config)
             .then(res => {
-                console.log(res);
+                // console.log(res);
 
                 this.openMessage('Certificado enviado com sucesso.');
 
@@ -222,10 +222,10 @@ class Page extends React.Component {
                                     <Button size="small" color="primary" onClick={this.viewCertificate(certificate.id)}>
                                         Visualizar
                                 </Button>
-                                    {certificate.user_id === user.id ?
+                                    {certificate.user_id == user.id ?
                                         <Button size="small" color="primary" onClick={this.deleteCertificate(certificate.id)}>
                                             Excluir
-                                    </Button>
+                                        </Button>
                                         : null}
                                 </CardActions>
                             </Card>
