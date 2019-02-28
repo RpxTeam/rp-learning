@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\DataLesson;
 use App\Course;
 use App\User;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +48,7 @@ class DataCourse extends Model
         ->where('course_lesson.course_id','=',$course->id)
         ->get();
         foreach($lessons as $lesson){
-            DataCouse::updateDataLesson($user->id, $course->id, $lesson->id);
+            DataCourse::updateDataLesson($user->id, $course->id, $lesson->lesson_id);
         }
     }
 

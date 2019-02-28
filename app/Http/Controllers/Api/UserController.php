@@ -70,7 +70,7 @@ class UserController extends Controller
     {
         try{
             $users = User::All()->each(function($user){
-                if($user->image != null){
+                if($user->image){
                     $user->image = Storage::url($user->image);
                 }
             });
@@ -92,7 +92,7 @@ class UserController extends Controller
     {
         try{
             $user = User::findOrFail($id);
-            if($user->image != null){
+            if($user->image){
                 $user->image = Storage::url($user->image);
             }
             //Mail::to('email@email.com')->send(new teste());
@@ -135,7 +135,7 @@ class UserController extends Controller
         }
 
         try{
-            if($request->role_id == null){
+            if(!$request->role_id){
                 $request['role_id'] = 3;
             }
             if($request->hasFile('image') && $request->file('image')->isValid()) {

@@ -95,12 +95,14 @@ Route::delete('courses/{course}/lessons/{lesson}/questions/{question}/answers/{a
 Route::post('upload','Api\UploadController@upload');
 
 //DataCourse routes
-Route::resource('users/{user}/courses', 'Api\DataCourseController');
+Route::get('users/{user}/courses', 'Api\DataCourseController@index');
+Route::get('users/{user}/courses/{course}', 'Api\DataCourseController@show');
 Route::post('users/{user}/courses/{course}', 'Api\DataCourseController@store');
 Route::put('users/{user}/courses/{course}', 'Api\DataCourseController@update');
 
 //DataLesson routes
-Route::resource('users/{user}/courses/{course}/lessons', 'Api\DataLessonController');
+Route::get('users/{user}/courses/{course}/lessons/', 'Api\DataLessonController@index');
+Route::get('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@show');
 Route::post('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@store');
 Route::put('users/{user}/courses/{course}/lessons/{lesson}', 'Api\DataLessonController@update');
 
