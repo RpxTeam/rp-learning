@@ -80,8 +80,8 @@ class Lesson extends Model
     public static function updateFileLesson(Request $request, Lesson $lesson){
         $filename = $lesson->id . '-' . str_slug($lesson->title) . '.' . $request->file('content')->getClientOriginalExtension();
         $filepath = 'lessons/content/' . $filename;
-        if(Storage::exists($$lesson->content)){
-            Storage::delete($$lesson->content);
+        if(Storage::exists($lesson->content)){
+            Storage::delete($lesson->content);
         }
         $request->file('content')->storeAs('lessons/content', $filename);
         $lesson->content =  $filepath;

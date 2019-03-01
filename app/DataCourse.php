@@ -80,4 +80,39 @@ class DataCourse extends Model
             }
         }
     }
+
+    public static function views($course){
+        $views = DataCourse::where('course_id', $course)->count();
+
+        return $views;
+    }
+
+    public static function started($course){
+        $data = DB::table('data_courses')
+                        ->where('course_id', $course)
+                        ->where('progress','<=', 0)
+                        ->count();
+
+        return $data;
+    }
+
+    public static function onGoing($course){
+        $data = DB::table('data_courses')
+                        ->where('course_id', $course)
+                        ->where('progress','>', 0)
+                        ->where('progress','<', 100)
+                        ->count();
+
+        return $data;
+    }
+
+    public static function finished($course){
+        $data = DB::table('data_courses')
+                        ->where('course_id', $course)
+                        ->where('progress', 100)
+                        ->count();
+
+        return $data;
+    }
+
 }
