@@ -42,7 +42,7 @@ Route::resource('authors', 'Api\AuthorsController');
 Route::resource('points', 'Api\PointsController');
 
 //DataPoints routes
-Route::get('users/points', 'Api\UsersController@points');
+Route::get('leaderboard', 'Api\UsersController@points');
 Route::get('users/{user}/points', 'Api\DataPointController@user');
 Route::get('users/{user}/courses/{course}/quiz/{quiz}/points', 'Api\DataPointController@final');
 Route::post('users/{user}/courses/{course}/points', 'Api\DataPointController@course');
@@ -76,12 +76,14 @@ Route::resource('courses', 'Api\CoursesController');
 Route::get('courses/{course}', 'Api\CoursesController@show');
 Route::get('courses/{course}/authors', 'Api\AuthorsController@list');
 Route::post('courses/{course}/authors', 'Api\AuthorsController@courseAuthor');
+Route::post('courses/order', 'Api\CoursesController@order');
 
 //Lesson routes
 Route::resource('courses/{course}/lessons', 'Api\LessonController');
 Route::get('courses/{course}/lessons', 'Api\LessonController@index');
 Route::get('courses/{course}/lessons/{lesson}', 'Api\LessonController@show');
 Route::get('courses/{course}/lessons/{lesson}/media','Api\LessonController@media');
+Route::post('courses/{course}/lessons/order', 'Api\LessonController@order');
 
 //Lesson Question route
 Route::resource('courses/{course}/lessons/{lesson}/questions', 'Api\LessonQuestionsController');
@@ -119,3 +121,6 @@ Route::post('teams/remove', 'Api\TeamController@remove');
 
 //Trail routes
 Route::resource('trails', 'Api\TrailController');
+
+//Dashboard routes
+Route::get('dashboard', 'Api\DashboardController@index');

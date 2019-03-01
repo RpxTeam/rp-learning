@@ -222,4 +222,25 @@ class LessonController extends Controller
        
     }
 
+    /**
+     * Order list of lessons
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function order(Request $request,$course){
+        $course = Course::findOrFail($course);
+        if($request->lessons){
+            $data = $request->json()->all();
+            $i = 1;
+            foreach($data['lessons'] as $lesson){
+                Lesson::whereId($lesson->id)->update(['order'=> $i]);
+                $i++;
+            }
+            return response()->json(204);
+        }else{
+            return response()->json(400);
+        }
+    }
+
 }

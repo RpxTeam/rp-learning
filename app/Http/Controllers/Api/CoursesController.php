@@ -26,6 +26,7 @@ class CoursesController extends Controller
                 $course->setAttribute('favorited',Course::getFavoriteCount($course->id));
                 $course->setAttribute('viewed',Course::getViewCount($course->id));
             });
+            $courses = $courses->orderByDesc('id');
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
@@ -176,5 +177,25 @@ class CoursesController extends Controller
         }
         return response()->json(204);
         //204: No content. When an action was executed successfully, but there is no content to return.
+    }
+
+    /**
+     * Order list of courses
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function order(Request $request){
+        if($request->courses){
+            $data = $request->json()->all();
+            $i = 1;
+            foreach($data['courses'] as $course){
+                Course::whereId($course->id)->update(['order'=> $i]);
+                $i++;
+            }
+            return response()->json(204);
+        }else{
+            return response()->json(400);
+        }
     }
 }
