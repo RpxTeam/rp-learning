@@ -1538,7 +1538,7 @@ class Page extends React.Component {
                                 config={
                                     {
                                         // plugins: [Alignment],
-                                        toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ],
+                                        // toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ],
                                         removePlugins: ['Link', 'ImageUpload'],
                                     }
                                 }
