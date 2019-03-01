@@ -61,10 +61,8 @@ class Lesson extends Model
             ->where('lesson_id',$lesson->id)
             ->first();
 
-            if($question != null){
+            if($question){
                 $lesson->question = $question->id; 
-            }else{
-                $lesson->question = null;
             }
         }
 

@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\DataLesson;
 use App\Course;
-use App\DataCourse;
 use App\User;
 use Illuminate\Support\Facades\DB;
 
@@ -48,13 +48,36 @@ class DataCourse extends Model
         ->where('course_lesson.course_id','=',$course->id)
         ->get();
         foreach($lessons as $lesson){
-            DataLesson::updateOrCreate([
-                'user_id' => $user->id,
-                'course_id' => $course->id,
-                'lesson_id' => $lesson->lesson_id,
-            ],[
-                'updated_at' => now(),
-            ]);
+            DataCourse::updateDataLesson($user->id, $course->id, $lesson->lesson_id);
+        }
+    }
+
+    public static function updateDataLesson($user,$course,$lesson){
+        DataLesson::updateOrCreate([
+            'user_id' => $user,
+            'course_id' => $course,
+            'lesson_id' => $lesson,
+        ],[
+            'updated_at' => now(),
+        ]);
+    }
+
+    public static function verifyDataLesson($user, $course){
+        $lessons = DB::table('course_lesson')->where('course_id',$course)->get();
+        $total = DB::table('data_lessons')->where('user_id',$user)->where('course_id',$course)->count();
+
+        if($lessons->count() != $total){
+            foreach($lessons as $lesson){
+                $l = DB::table('data_lessons')
+                ->where('user_id',$user)
+                ->where('course_id',$course)
+                ->where('lesson_id',$lesson->lesson_id)
+                ->first();
+                
+                if(!$l){
+                    DataCourse::updateDataLesson($user,$course,$lesson->lesson_id);
+                }
+            }
         }
     }
 }

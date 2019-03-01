@@ -108,7 +108,7 @@ class QuizController extends Controller
         $course = Course::findOrFail($course);
         $quiz = Quiz::findOrFail($quiz);
 
-        $questions = Question::quizQuestions($quiz->id);
+        $questions = Question::quizQuestions($course->id,$quiz->id);
         
         foreach($questions as $question){
             
@@ -239,8 +239,9 @@ class QuizController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Show if course is activate
      *
+     * @param int $course
      * @return \Illuminate\Http\Response
      */
     public function quizFinalActive($course)
@@ -259,6 +260,13 @@ class QuizController extends Controller
         }
     }
 
+    /**
+     * Get all questions with answers of specific course.
+     *
+     * @param int $course
+     * @param int $question
+     * @return \Illuminate\Http\Response
+     */
     public function courseQuestions($course, $question){
         $course = Course::findOrFail($course);
 

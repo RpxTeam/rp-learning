@@ -12,6 +12,7 @@ use App\Course;
 use App\Lesson;
 use App\Quiz;
 use App\Level;
+use App\Point;
 
 class DataPointController extends Controller
 {
@@ -83,16 +84,9 @@ class DataPointController extends Controller
     public function user($user){
         $user = User::findOrFail($user);
 
-        $total = DB::table('data_points')
-                    ->leftjoin('points', 'data_points.point_id','=','points.id')
-                    ->where('user_id',$user->id)
-                    ->sum('point');
-
-        $count = DB::table('data_points')
-                    ->where('user_id', $user->id)
-                    ->count();
+        $data = Point::details($user->id);
         
-        return response()->json(['count' => $count,'total' => $total], 200);
+        return response()->json($data, 200);
     }
 
      /**
@@ -121,4 +115,6 @@ class DataPointController extends Controller
             return response()->json(200);
         }
     }
+
+    
 }

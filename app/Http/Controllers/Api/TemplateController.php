@@ -19,7 +19,7 @@ class TemplateController extends Controller
     {
         $templates = Template::All()->each(function($template){
 
-            if($template->image != null){
+            if($template->image){
                 $template->image = Storage::url($template->image);
             }
         });
@@ -38,7 +38,7 @@ class TemplateController extends Controller
     {
         $template = Template::findOrFail($template);
 
-        if($template->image != null){
+        if($template->image){
             $template->image = Storage::url($template->image);
         }
 
