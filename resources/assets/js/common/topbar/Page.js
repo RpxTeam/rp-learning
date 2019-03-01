@@ -4,9 +4,12 @@ import PropTypes from 'prop-types'
 import * as actions from '../../store/actions'
 import styled from 'styled-components';
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import {
+    AppBar,
+    Grid,
+    Toolbar,
+    Typography,
+} from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -50,39 +53,41 @@ class Page extends React.Component {
         );
         return (
             <AppBar position={this.props.position} className={this.props.className}>
-                <Toolbar>
-                    <Typography variant="h6" color="inherit" className={classes.grow}>
-                        LMS
+                <Grid className={classes.container}>
+                    <Toolbar className={classes.bar}>
+                        <Typography variant="h6" color="inherit" className={classes.grow}>
+                            LMS
                     </Typography>
-                    <div>
-                        <IconButton
-                            aria-owns={open ? 'menu-appbar' : undefined}
-                            aria-haspopup="true"
-                            onClick={this.handleMenu}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={this.state.anchorEl}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={open}
-                            onClose={this.handleClose}
-                        >
-                            <MenuItem component={Link} to={'/courses'}>Voltar para cursos</MenuItem>
-                            <MenuItem component={Link} to={'/profile'}>Perfil</MenuItem>
-                            <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
-                        </Menu>
-                    </div>
-                </Toolbar>
+                        <div>
+                            <IconButton
+                                aria-owns={open ? 'menu-appbar' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleMenu}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={this.state.anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={open}
+                                onClose={this.handleClose}
+                            >
+                                <MenuItem component={Link} to={'/courses'}>Voltar para cursos</MenuItem>
+                                <MenuItem component={Link} to={'/profile'}>Perfil</MenuItem>
+                                <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
+                            </Menu>
+                        </div>
+                    </Toolbar>
+                </Grid>
             </AppBar>
         );
     }

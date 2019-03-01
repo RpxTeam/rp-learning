@@ -330,7 +330,7 @@ class Page extends React.Component {
                                 <br /><br />
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <Grid container spacing={8}>
-                                        <Grid item md={6} xs={12}>
+                                        <Grid item xl={6} sm={12} xs={12}>
                                             <InlineDatePicker
                                                 keyboard
                                                 variant="outlined"
@@ -342,7 +342,7 @@ class Page extends React.Component {
                                                 locale={brLocale}
                                             />
                                         </Grid>
-                                        <Grid item md={6} xs={12}>
+                                        <Grid item xl={6} sm={12} xs={12}>
                                             <InlineDatePicker
                                                 keyboard
                                                 variant="outlined"
@@ -356,18 +356,6 @@ class Page extends React.Component {
                                         </Grid>
                                     </Grid>
                                 </MuiPickersUtilsProvider>
-                                {/* <Form.Field>
-                                    <label>Data
-                                        <DatesRangeInput
-                                            name="datesRange"
-                                            dateFormat='DD/MM/YYYY'
-                                            placeholder="Início - Término"
-                                            value={this.state.datesRange}
-                                            iconPosition="left"
-                                            closable={true}
-                                            onChange={this.handleChangeDate} />
-                                    </label>
-                                </Form.Field> */}
 
                                 {this.state.createAuthor ?
                                     <React.Fragment>

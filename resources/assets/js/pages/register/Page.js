@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link, Redirect} from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ReeValidate from 'ree-validate'
 import AuthService from '../../services'
@@ -25,6 +25,21 @@ import styled from 'styled-components';
 
 const CardContainer = styled(Card)`
     padding: 10px 20px;
+`;
+
+const Field = styled(TextField)`
+    > div {
+        padding: 0;
+        svg {
+            margin-left: 15px;
+        }
+        button {
+            margin-right: 10px;
+            svg {
+                margin-left: 0;
+            }
+        }
+    }
 `;
 
 class Page extends React.Component {
@@ -54,7 +69,8 @@ class Page extends React.Component {
             message: {
                 open: false,
                 message: ''
-            }
+            },
+            showPassword: false,
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -65,32 +81,32 @@ class Page extends React.Component {
         const name = event.target.name;
         const value = event.target.value;
         const { errors } = this.validator;
-        const {credentials} = this.state;
+        const { credentials } = this.state;
         credentials[name] = value;
 
         this.validator.validate(name, value)
             .then(() => {
-                this.setState({errors, credentials})
+                this.setState({ errors, credentials })
             });
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
-        const {credentials} = this.state;
+        const { credentials } = this.state;
 
         this.validator.validateAll(credentials)
             .then(success => {
                 if (success) {
                     // Manually verify the password confirmation fields
-                    if(this.passwordConfirmation(credentials)){
+                    if (this.passwordConfirmation(credentials)) {
 
                         this.setState({
                             isLoading: true
                         });
                         this.submit(credentials);
                     }
-                    else{
+                    else {
                         const responseError = {
                             isError: true,
                             code: 401,
@@ -98,7 +114,7 @@ class Page extends React.Component {
                         };
 
                         this.openMessage("Oops! Password confirmation didn't match");
-                        this.setState({responseError});
+                        this.setState({ responseError });
                     }
 
                 }
@@ -106,18 +122,18 @@ class Page extends React.Component {
     }
 
 
-    passwordConfirmation(credentials){
-        if(credentials.password == credentials.password_confirmation){
+    passwordConfirmation(credentials) {
+        if (credentials.password == credentials.password_confirmation) {
             return true;
         }
-        else{
+        else {
             return false;
         }
     }
 
     submit(credentials) {
         this.props.dispatch(AuthService.register(credentials))
-            .then((result)  => {
+            .then((result) => {
                 this.setState({
                     isLoading: false,
                     credentials: {
@@ -126,7 +142,7 @@ class Page extends React.Component {
                         password: '',
                         password_confirmation: ''
                     },
-                    responseError : {
+                    responseError: {
                         isError: false,
                         code: '',
                         text: ''
@@ -140,13 +156,13 @@ class Page extends React.Component {
                 }.bind(this), 2000);
 
             })
-            .catch(({error, statusCode}) => {
+            .catch(({ error, statusCode }) => {
                 const responseError = {
                     isError: true,
                     code: statusCode,
                     text: error
                 };
-                this.setState({responseError});
+                this.setState({ responseError });
                 this.setState({
                     isLoading: false
                 });
@@ -172,6 +188,12 @@ class Page extends React.Component {
         })
     }
 
+    handleClickShowPassword = () => {
+        this.setState({
+            showPassword: !this.state.showPassword
+        });
+    };
+
     componentDidMount() {
         this.setState({
             isLoading: false
@@ -180,12 +202,12 @@ class Page extends React.Component {
 
     render() {
         if (this.props.isAuthenticated) {
-            return <Redirect to='/' replace/>
+            return <Redirect to='/' replace />
         }
         if (this.state.isSuccess) {
-            return <Redirect to='/login' replace/>
+            return <Redirect to='/login' replace />
         }
-        const {message, errors} = this.state;
+        const { message, errors } = this.state;
         return (
             <div>
                 <Snackbar
@@ -243,7 +265,7 @@ class Page extends React.Component {
                                             name="email"
                                             fullWidth
                                         />
-                                        <TextField
+                                        <Field
                                             error={errors.has('password')}
                                             id="input-password"
                                             label="Password"
@@ -251,11 +273,20 @@ class Page extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             fullWidth
-                                            type='text'
+                                            type={this.state.showPassword ? 'text' : 'password'}
                                             value={this.state.password}
                                             name="password"
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
+                                                            {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
+                                            }}
                                         />
-                                        <TextField
+                                        <Field
                                             error={errors.has('password_confirmation')}
                                             id="input-confirm-password"
                                             label="Confirmar Senha"
@@ -263,9 +294,18 @@ class Page extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             fullWidth
-                                            type='text'
+                                            type={this.state.showPassword ? 'text' : 'password'}
                                             value={this.state.password_confirmation}
                                             name="password_confirmation"
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
+                                                            {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
+                                            }}
                                         />
                                     </CardContainer>
                                 </Grid>

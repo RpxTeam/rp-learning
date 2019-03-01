@@ -31,6 +31,21 @@ const CardContainer = styled(Card)`
     padding: 10px 20px;
 `;
 
+const Field = styled(TextField)`
+    > div {
+        padding: 0;
+        svg {
+            margin-left: 15px;
+        }
+        button {
+            margin-right: 10px;
+            svg {
+                margin-left: 0;
+            }
+        }
+    }
+`;
+
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -166,7 +181,7 @@ class Page extends React.Component {
                             <Grid container justify={'center'}>
                                 <Grid item md={4}>
                                     <CardContainer>
-                                        <TextField
+                                        <Field
                                             error={errors.has('email')}
                                             id="input-email"
                                             label="Email"
@@ -183,7 +198,7 @@ class Page extends React.Component {
                                                 ),
                                             }}
                                         />
-                                        <TextField
+                                        <Field
                                             error={errors.has('password')}
                                             id="input-password"
                                             label="Password"

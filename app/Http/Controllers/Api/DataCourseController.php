@@ -32,7 +32,7 @@ class DataCourseController extends Controller
                     $mycourses->forget($mycourse);
                 }
             }
-            $mycourses = $mycourses->orderByDesc('id');
+            $mycourses->sortByDesc('id');
             return response()->json($mycourses,200);
             //200: OK. The standard success code and default option.
         }

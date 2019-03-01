@@ -688,6 +688,16 @@ class Page extends React.Component {
                 iframe.setAttribute( 'mozallowfullscreen', '' );
                 iframe.setAttribute( 'allowfullscreen', '' );
                 url = 'https://player.vimeo.com/video/'+ id +'?color=1da891&title=0&byline=0&portrait=0';
+            } else {
+                const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+                let match = url.match(regExp);
+                console.log(match);
+                // let id = (match&&match[7].length==11)? match[7] : false;
+                
+                // iframe.setAttribute( 'allowfullscreen', '1' );
+                iframe.setAttribute(  'allow' , 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' );
+
+                url = 'https://www.youtube.com/embed/' + id;
             }
 
             iframe.setAttribute( 'src', url );

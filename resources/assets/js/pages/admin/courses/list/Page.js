@@ -52,6 +52,7 @@ class Page extends React.Component {
         axios.get(`${API_URL}/api/courses`)
             .then(res => {
                 const courses = res.data;
+                console.log(courses)
                 this.setState({ courses: courses });
             });
     }
@@ -162,6 +163,7 @@ class Page extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
+                        {console.log(courses)}
                             {courses.map((course) =>
                                 <TableRow key={course.id}>
                                     <TableCell><Button component={Link} to={'/admin/courses/' + course.id}>{course.title}</Button></TableCell>

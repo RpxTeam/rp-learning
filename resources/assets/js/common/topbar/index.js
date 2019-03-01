@@ -5,6 +5,13 @@ import {connect} from 'react-redux'
 const styles = {
     root: {
         flexGrow: 1,
+        height: '100%',
+    },
+    container: {
+        height: '100%',
+        width: '100%',
+        maxWidth: 1140,
+        margin: '0 auto'
     },
     grow: {
         flexGrow: 1,

@@ -26,7 +26,7 @@ class CoursesController extends Controller
                 $course->setAttribute('favorited',Course::getFavoriteCount($course->id));
                 $course->setAttribute('viewed',Course::getViewCount($course->id));
             });
-            $courses = $courses->orderByDesc('id');
+            $courses->sortByDesc('id');
         }catch(ModelNotFoundException $e){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.

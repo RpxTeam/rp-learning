@@ -50,6 +50,7 @@ import VideoCam from '@material-ui/icons/VideoCam';
 import VideoLibrary from '@material-ui/icons/VideoLibrary';
 import AudioTrack from '@material-ui/icons/AudioTrack';
 import LibraryBooks from '@material-ui/icons/LibraryBooks';
+import InboxIcon from '@material-ui/icons/Inbox';
 import AddIcon from '@material-ui/icons/Add';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import styled from 'styled-components';
@@ -1361,14 +1362,14 @@ class Page extends React.Component {
                                     Áudio
                                             </ListItemText>
                             </MenuItem>
-                            {/* <MenuItem onClick={this.openModal('doc')}>
-                                            <ListItemIcon>
-                                                <InboxIcon />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                Documento
-                                            </ListItemText>
-                                        </MenuItem> */}
+                            <MenuItem onClick={this.openModal('doc')}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Documento
+                                </ListItemText>
+                            </MenuItem>
                             {quizCreated ? null :
                                 <div>
                                     <Divider />
@@ -1589,7 +1590,13 @@ class Page extends React.Component {
                                     </Grid>
                                     <Grid item md={6}>
                                         <Typography variant="overline" gutterBottom>
-                                            Formatos aceitos: mp4, webm, ogg, ogv, avi, mpeg, mpg, mov, wmv, 3gp, flv. Max file size: 20 MB
+                                            Formatos aceitos: 
+                                            {this.state.modal.type === 'video-internal' ?
+                                                'mp4, webm, ogg, ogv, avi, mpeg, mpg, mov, wmv, 3gp, flv. Tamanho máximo: 2 MB' : null
+                                            }
+                                            {this.state.modal.type === 'doc' ?
+                                                'Pdf. Tamanho máximo: 2 MB' : null
+                                            }
                                         </Typography>
                                     </Grid>
                                 </Grid>
