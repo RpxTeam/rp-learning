@@ -7,7 +7,8 @@ import {
     Toolbar,
     Typography,
     withStyles,
-    Link
+    Link,
+    Paper
 } from '@material-ui/core'
 
 const drawerWidth = 240;
@@ -39,6 +40,13 @@ const styles = theme => ({
         color: 'white',
         fontSize: '1.15rem',
         textDecoration: 'underline'
+    },
+    paper: {
+        ...theme.mixins.gutters(),
+        padding: theme.spacing.unit,
+        background: '#2196f3',
+        color: '#FFFFFF',
+        fontSize: '10px'
     }
 });
 
@@ -71,12 +79,14 @@ class Banner extends React.Component {
                                 <Typography variant="h4" gutterBottom className={classes.name}>
                                     {this.props.userName}
                                 </Typography>
-                                <Link className={classes.link} href={'/'}>Perfil</Link>
+                                <Link className={classes.link} href={'/profile'}>Perfil</Link>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item>
-                        dasdsadsa
+                        <Paper className={classes.paper}>
+                            {this.props.role}
+                        </Paper>
                     </Grid>
                 </Grid>
             </div>
@@ -85,7 +95,8 @@ class Banner extends React.Component {
 }
 
 Banner.propTypes = {
-    userName: PropTypes.string
+    userName: PropTypes.string,
+    role: PropTypes.string
 }
 
 export default withStyles(styles)(Banner);

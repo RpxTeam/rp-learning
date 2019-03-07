@@ -20,6 +20,9 @@ const styles = {
         marginLeft: -12,
         marginRight: 20,
     },
+    logo: {
+        width: '120px'
+    }
 };
 
 // import component

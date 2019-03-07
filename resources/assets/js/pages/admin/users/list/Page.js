@@ -5,25 +5,18 @@ import { API_URL } from "../../../../common/url-types";
 import Admin from '../../Admin'
 import axios from 'axios'
 
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
+import {
+    Grid,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TablePagination,
+    TableRow,
+    TableSortLabel,
+} from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
-import Fab from '@material-ui/core/Fab';
-import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -31,7 +24,6 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import Message from '../../../../components/Message';
 import Card from '@material-ui/core/Card';
-import { Grid, MenuItem } from '@material-ui/core';
 
 class Page extends React.Component {
     constructor(props) {
@@ -123,6 +115,9 @@ class Page extends React.Component {
                     </Button>
                     </DialogActions>
                 </Dialog>
+                <Grid container justify="flex-end" style={{ marginBottom: 15 }}>
+                    <Button color="primary" variant="contained" component={Link} to="/admin/users/create">Criar</Button>
+                </Grid>
                 <Card>
                     <Table>
                         <TableHead>

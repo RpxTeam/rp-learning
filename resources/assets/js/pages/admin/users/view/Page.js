@@ -5,10 +5,7 @@ import Admin from '../../Admin'
 import { Grid, FormControl, FormHelperText, Select, TextField, Card, Button, MenuItem } from '@material-ui/core';
 import Message from '../../../../components/Message';
 import styled from 'styled-components';
-
-const CardContainer = styled(Card)`
-    padding: 10px 20px;
-`;
+import CardContainer from '../../components/CardContainer'
 
 class Page extends React.Component {
     constructor(props) {
@@ -81,12 +78,6 @@ class Page extends React.Component {
     handleChange = event => {
         console.log(event.target.name)
         console.log(event.target.value);
-        // this.setState((prevState) => ({
-        //     user: {
-        //         ...prevState.user,
-        //         [event.target.name]: event.target.value
-        //     }
-        // }));
     }
 
     handleSubmit = event => {
@@ -142,85 +133,82 @@ class Page extends React.Component {
         return (
             <Admin heading={"Usuários"}>
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
-                <Grid container spacing={16}>
-                    <Grid item xs={12} md={9}>
-                        <form onSubmit={this.handleSubmit}>
-                            <CardContainer>
-                                <Grid container spacing={8}>
-                                    <Grid item md={12}>
-                                        <TextField
-                                            id="input-name"
-                                            label="Nome"
-                                            onChange={this.handleChange}
-                                            margin="normal"
-                                            variant="outlined"
-                                            name="name"
-                                            fullWidth
-                                            value={user.name}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-                                    </Grid>
-                                    <Grid item md={4}>
-                                        <TextField
-                                            id="input-role"
-                                            select
-                                            label="Perfil"
-                                            onChange={this.handleChange}
-                                            helperText="Por favor escolha o perfil"
-                                            margin="normal"
-                                            variant="outlined"
-                                            fullWidth
-                                            name='role_id'
-                                            value={user.role_id}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        >
-                                            {profiles.map(profile => (
-                                                <MenuItem key={profile.value} value={profile.value}>
-                                                    {profile.label}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                    <Grid item md={4}>
-                                        <TextField
-                                            id="input-email"
-                                            label="Email"
-                                            onChange={this.handleChange}
-                                            margin="normal"
-                                            variant="outlined"
-                                            name="email"
-                                            fullWidth
-                                            defaultValue={user.email}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-                                    </Grid>
-                                    <Grid item md={4}>
-                                        <TextField
-                                            id="input-password"
-                                            label="Senha"
-                                            onChange={this.handleChange}
-                                            margin="normal"
-                                            variant="outlined"
-                                            name="password"
-                                            fullWidth
-                                            placeholder={'Senha'}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </CardContainer>
-                            <Button variant="contained" color={'primary'} type={'submit'} style={{ width: '100%' }}>Criar</Button>
-                        </form>
-                    </Grid>
-                </Grid>
+                <form onSubmit={this.handleSubmit}>
+                    <CardContainer>
+                        <Grid container spacing={8}>
+                            <Grid item md={12}>
+                                <TextField
+                                    id="input-name"
+                                    label="Nome"
+                                    onChange={this.handleChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    name="name"
+                                    fullWidth
+                                    value={user.name}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item md={4}>
+                                <TextField
+                                    id="input-role"
+                                    select
+                                    label="Perfil"
+                                    onChange={this.handleChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    fullWidth
+                                    name='role_id'
+                                    value={user.role_id}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                >
+                                    {profiles.map(profile => (
+                                        <MenuItem key={profile.value} value={profile.value}>
+                                            {profile.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                            <Grid item md={4}>
+                                <TextField
+                                    id="input-email"
+                                    label="Email"
+                                    onChange={this.handleChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    name="email"
+                                    fullWidth
+                                    defaultValue={user.email}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item md={4}>
+                                <TextField
+                                    id="input-password"
+                                    label="Senha"
+                                    onChange={this.handleChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    name="password"
+                                    fullWidth
+                                    placeholder={'Senha'}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid container spacing={8} justify="flex-end">
+                            <Button variant="contained" color={'primary'} type={'submit'}>Atualizar</Button>
+                        </Grid>
+                    </CardContainer>
+                </form>
             </Admin>
         );
     }

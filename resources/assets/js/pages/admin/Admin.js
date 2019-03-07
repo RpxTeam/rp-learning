@@ -2,21 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
 import Topbar from '../../common/topbar'
+import Banner from './components/banner'
+import { withStyles } from '@material-ui/core/styles'
 
-import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import School from '@material-ui/icons/School';
-import Dashboard from '@material-ui/icons/Dashboard';
-import People from '@material-ui/icons/People';
-import LocalLibrary from '@material-ui/icons/LocalLibrary';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Banner from './components/banner';
+import {
+    Grid,
+    Card,
+    CardHeader,
+    List,
+    ListItem,
+    ListItemText,
+    Divider
+} from '@material-ui/core'
 
 const drawerWidth = 240;
 
@@ -64,14 +61,84 @@ class Admin extends React.Component {
     render() {
         const { classes, user } = this.props;
 
+        let role;
+        switch (user.role_id) {
+            case 1:
+                role = 'Administrador';
+                break;
+            case 2:
+                role = 'Instrutor';
+                break;
+            case '1':
+                role = 'Administrador';
+                break;
+            case '2':
+                role = 'Instrutor';
+                break;
+            default:
+                role = 'Aluno';
+                break;
+        }
+
         return (
             <div className={classes.root}>
-                <Topbar position="relative" className={classes.appBar} />
+                <Topbar position="static" className={classes.appBar} />
                 <Banner
                     userName={user.name}
+                    role={role}
                 />
                 <main className={classes.content + ' fadeIn animated'}>
-                    {this.props.children}
+                    <Grid container spacing={40}>
+                        <Grid item sm={9}>
+                            {this.props.children}
+                        </Grid>
+                        <Grid item sm={3}>
+                            <Card>
+                                <CardHeader title="Minha conta"></CardHeader>
+                                <List dense={true}>
+                                    <Divider />
+                                    <ListItem button component={Link} to={'/dashboard'}>
+                                        <ListItemText
+                                            primary="Dashboard"
+                                        />
+                                    </ListItem>
+                                    {user.role_id === '1' || user.role_id === 1 ?
+                                        <React.Fragment>
+                                            <Divider />
+                                            <ListItem button component={Link} to={'/admin/users'} n>
+                                                <ListItemText
+                                                    primary="Usuários"
+                                                />
+                                            </ListItem>
+                                        </React.Fragment>
+                                        : null}
+                                    <Divider />
+                                    {console.log(user)}
+                                    {user.role_id !== '3' || user.role_id !== 3 ?
+                                        <React.Fragment>
+                                            <ListItem button component={Link} to={'/admin/courses'}>
+                                                <ListItemText
+                                                    primary="Cursos"
+                                                />
+                                            </ListItem>
+                                            <Divider />
+                                            <ListItem button component={Link} to={'/admin/certificates'}>
+                                                <ListItemText
+                                                    primary="Certificados"
+                                                />
+                                            </ListItem>
+                                        </React.Fragment>
+                                    : null}
+                                    <Divider />
+                                    <ListItem button variant="contained" component={Link} to={'/admin/users'} n>
+                                        <ListItemText
+                                            primary="Logout"
+                                        />
+                                    </ListItem>
+                                </List>
+                            </Card>
+                        </Grid>
+                    </Grid>
                 </main>
             </div>
         );

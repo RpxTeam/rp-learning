@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 import { API_URL } from "../../../common/url-types"
 import Admin from '../Admin'
 import {
@@ -10,8 +11,12 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    CardHeader
+    CardHeader,
+    CardActions,
+    Button
 } from '@material-ui/core'
+
+import AddIcon from '@material-ui/icons/Add'
 
 class Page extends React.Component {
     constructor(props) {
@@ -38,6 +43,7 @@ class Page extends React.Component {
     }
 
     render() {
+        const { user } = this.props;
         const { users, courses } = this.state;
         return (
             <Admin heading="Painel de Controle">
@@ -61,32 +67,43 @@ class Page extends React.Component {
                                     )}
                                 </TableBody>
                             </Table>
+                            <CardActions>
+                                <Button component={Link} color="primary" variant="contained" to="/admin/courses">
+                                    Ver Todos
+                                </Button>
+                                <Button component={Link} variant="contained" to="/admin/courses/create">
+                                    Criar novo
+                                    <AddIcon />
+                                </Button>
+                            </CardActions>
                         </Card>
                     </Grid>
-                    <Grid item sm={6}>
-                        <Card>
-                            <CardHeader title="Ranking"></CardHeader>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Nome</TableCell>
-                                        <TableCell>Pontos</TableCell>
-                                        <TableCell>Level</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {console.log(users)}
-                                    {users.map((user, index) =>
-                                        <TableRow key={index}>
-                                            <TableCell>{user.name}</TableCell>
-                                            <TableCell>{user.points}</TableCell>
-                                            <TableCell>{user.level}</TableCell>
+                    {user.role_id === '1' || user.role_id === 1 ?
+                        <Grid item sm={6}>
+                            <Card>
+                                <CardHeader title="Ranking"></CardHeader>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Nome</TableCell>
+                                            <TableCell>Pontos</TableCell>
+                                            <TableCell>Level</TableCell>
                                         </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </Card>
-                    </Grid>
+                                    </TableHead>
+                                    <TableBody>
+                                        {console.log(users)}
+                                        {users.map((user, index) =>
+                                            <TableRow key={index}>
+                                                <TableCell>{user.name}</TableCell>
+                                                <TableCell>{user.points}</TableCell>
+                                                <TableCell>{user.level}</TableCell>
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </Card>
+                        </Grid>
+                    : null }
                 </Grid>
             </Admin>
         );

@@ -13,14 +13,19 @@ import {
     Grid,
     TextField,
     Card,
-    Button
+    Button,
+    AppBar,
+    Tabs,
+    Tab,
+    Typography,
+    CardActions
 } from '@material-ui/core'
 import Message from '../../../../components/Message';
 import styled from 'styled-components';
 
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { InlineDatePicker } from 'material-ui-pickers';
+import { DatePicker } from 'material-ui-pickers';
 import brLocale from 'date-fns/locale/pt-BR';
 
 const CardContainer = styled(Card)`
@@ -50,7 +55,8 @@ class Page extends React.Component {
             courseID: '',
             courseEdit: false,
             author: '',
-            image: ''
+            image: '',
+            tab: 0
         }
         this.openMessage = this.openMessage.bind(this);
     };
@@ -95,15 +101,15 @@ class Page extends React.Component {
 
         if (!this.state.title) {
             this.openMessage('Título está vázio');
-        } else if(!this.state.start_date) {
+        } else if (!this.state.start_date) {
             this.openMessage('Data de início vázia');
-        } else if(!this.state.end_date) {
+        } else if (!this.state.end_date) {
             this.openMessage('Data de término vázia');
-        } else if(!this.state.description) {
+        } else if (!this.state.description) {
             this.openMessage('Descrição vázia');
-        } else if(!this.state.duration) {
+        } else if (!this.state.duration) {
             this.openMessage('Duração vázia');
-        } else if(this.state.duration < 1) {
+        } else if (this.state.duration < 1) {
             this.openMessage('Duração não pode ser menor que 1 hora');
         } else {
             this.submitCourse();
@@ -112,39 +118,39 @@ class Page extends React.Component {
 
     submitCourse = () => {
         const start_date = this.formatDate(this.state.start_date);
-            const end_date = this.formatDate(this.state.end_date);
+        const end_date = this.formatDate(this.state.end_date);
 
-            if (this.state.image.name) {
-                this.fileUpload();
-            } else {
-                axios.post(`${API_URL}/api/courses`, {
-                    title: this.state.title,
-                    slug: this.state.slug,
-                    description: this.state.description,
-                    start_date: start_date,
-                    end_date: end_date,
-                    duration: this.state.duration,
-                    image: this.state.image.file
-                }).then(res => {
-                    this.setState({
-                        error: false,
-                        success: true,
-                        courseID: res.data,
-                    });
-                    this.openMessage('Curso criado com sucesso!');
-                    setTimeout(function () {
-                        this.setState({
-                            courseEdit: true
-                        })
-                    }.bind(this), 2000);
-                }).catch(error => {
-                    this.setState({
-                        error: true,
-                        success: false
-                    })
-                    this.openMessage(error.message)
+        if (this.state.image.name) {
+            this.fileUpload();
+        } else {
+            axios.post(`${API_URL}/api/courses`, {
+                title: this.state.title,
+                slug: this.state.slug,
+                description: this.state.description,
+                start_date: start_date,
+                end_date: end_date,
+                duration: this.state.duration,
+                image: this.state.image.file
+            }).then(res => {
+                this.setState({
+                    error: false,
+                    success: true,
+                    courseID: res.data,
                 });
-            }
+                this.openMessage('Curso criado com sucesso!');
+                setTimeout(function () {
+                    this.setState({
+                        courseEdit: true
+                    })
+                }.bind(this), 2000);
+            }).catch(error => {
+                this.setState({
+                    error: true,
+                    success: false
+                })
+                this.openMessage(error.message)
+            });
+        }
     }
 
     handleDelete = () => {
@@ -268,8 +274,12 @@ class Page extends React.Component {
             });
     };
 
+    changeTab = (event, tab) => {
+        this.setState({ tab });
+    };
+
     render() {
-        const { message, authors, options, image } = this.state;
+        const { message, authors, options, image, tab } = this.state;
         if (this.state.courseEdit === true) {
             return <Redirect to={'/admin/courses/' + this.state.courseID} />
         }
@@ -277,126 +287,117 @@ class Page extends React.Component {
             <Admin heading="Create">
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
                 <form>
-                    <Grid container spacing={16}>
-                        <Grid item xs={12} md={9}>
-                            <CardContainer>
-                                <TextField
-                                    id="input-title"
-                                    label="Título"
-                                    onChange={this.handleChange}
-                                    margin="normal"
-                                    variant="outlined"
-                                    name="title"
-                                    fullWidth
-                                />
-                                <TextField
-                                    id="input-description"
-                                    label="Descrição"
-                                    name="description"
-                                    onChange={this.handleChange}
-                                    margin="normal"
-                                    variant="outlined"
-                                    rows={8}
-                                    multiline={true}
-                                    rowsMax={10}
-                                    fullWidth
-                                />
-                            </CardContainer>
-                        </Grid>
-
-                        <Grid item xs={12} md={3}>
-                            <CardContainer>
-
-                                <TextField
-                                    id="input-slug"
-                                    label="Slug"
-                                    name="slug"
-                                    onChange={this.handleChange}
-                                    margin="normal"
-                                    variant="outlined"
-                                    fullWidth
-                                />
-
-                                <TextField
-                                    id="input-duration"
-                                    label="Duração (horas)"
-                                    name="duration"
-                                    onChange={this.handleChange}
-                                    margin="normal"
-                                    variant="outlined"
-                                    type={'number'}
-                                    fullWidth
-                                />
-                                <br /><br />
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <Grid container spacing={8}>
-                                        <Grid item xl={6} sm={12} xs={12}>
-                                            <InlineDatePicker
-                                                keyboard
-                                                variant="outlined"
-                                                label="Data de Início"
-                                                value={this.state.start_date}
-                                                onChange={this.handleChangeDate.bind(this, 'start_date')}
-                                                format='dd/MM/yy'
-                                                mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
-                                                locale={brLocale}
-                                            />
-                                        </Grid>
-                                        <Grid item xl={6} sm={12} xs={12}>
-                                            <InlineDatePicker
-                                                keyboard
-                                                variant="outlined"
-                                                label="Data de Término"
-                                                value={this.state.end_date}
-                                                onChange={this.handleChangeDate.bind(this, 'end_date')}
-                                                format='dd/MM/yy'
-                                                mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
-                                                locale={brLocale}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                </MuiPickersUtilsProvider>
-
-                                {this.state.createAuthor ?
-                                    <React.Fragment>
-                                        <Form.Field>
-                                            <TextField
-                                                id="input-author"
-                                                label="Autor"
-                                                name="author"
-                                                onChange={this.handleChange}
-                                                margin="normal"
-                                                variant="outlined"
-                                                fullWidth
-                                            />
-                                        </Form.Field>
-                                        <Form.Field>
-                                            <Button onClick={this.createAuthor.bind(this, this.state.author)} style={{ width: '100%' }}>Adicionar Autor</Button>
-                                        </Form.Field>
-                                    </React.Fragment>
-                                    : null}
-                            </CardContainer>
+                    <AppBar position="static" color="default">
+                        <Tabs value={tab} onChange={this.changeTab}>
+                            <Tab label="Curso" />
+                        </Tabs>
+                    </AppBar>
+                    {tab === 0 &&
+                        <CardContainer>
+                            <TextField
+                                id="input-title"
+                                label="Título"
+                                onChange={this.handleChange}
+                                margin="normal"
+                                variant="outlined"
+                                name="title"
+                                fullWidth
+                            />
+                            <TextField
+                                id="input-description"
+                                label="Descrição"
+                                name="description"
+                                onChange={this.handleChange}
+                                margin="normal"
+                                variant="outlined"
+                                rows={8}
+                                multiline={true}
+                                rowsMax={10}
+                                fullWidth
+                            />
                             <br />
-                            <CardContainer>
-                                <Button
-                                    variant="contained"
-                                    component='label'
-                                >
-                                    IMAGEM
+                            <Grid container spacing={40}>
+                                <Grid item sm={5}>
+                                    <TextField
+                                        id="input-duration"
+                                        label="Duração (horas)"
+                                        name="duration"
+                                        onChange={this.handleChange}
+                                        margin="normal"
+                                        variant="outlined"
+                                        type={'number'}
+                                        fullWidth
+                                    />
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <DatePicker
+                                            keyboard
+                                            fullWidth
+                                            variant="outlined"
+                                            label="Data de Início"
+                                            value={this.state.start_date}
+                                            onChange={this.handleChangeDate.bind(this, 'start_date')}
+                                            format='dd/MM/yy'
+                                            mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
+                                            locale={brLocale}
+                                            style={{ margin: '12px 0', width: 'calc(100% - 14px)' }}
+                                        />
+                                    </MuiPickersUtilsProvider>
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <DatePicker
+                                            keyboard
+                                            fullWidth
+                                            variant="outlined"
+                                            label="Data de Término"
+                                            value={this.state.end_date}
+                                            onChange={this.handleChangeDate.bind(this, 'end_date')}
+                                            format='dd/MM/yy'
+                                            mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
+                                            locale={brLocale}
+                                            style={{ margin: '12px 0', width: 'calc(100% - 14px)' }}
+                                        />
+                                    </MuiPickersUtilsProvider>
+
+                                    {this.state.createAuthor ?
+                                        <React.Fragment>
+                                            <Form.Field>
+                                                <TextField
+                                                    id="input-author"
+                                                    label="Autor"
+                                                    name="author"
+                                                    onChange={this.handleChange}
+                                                    margin="normal"
+                                                    variant="outlined"
+                                                    fullWidth
+                                                />
+                                            </Form.Field>
+                                            <Form.Field>
+                                                <Button onClick={this.createAuthor.bind(this, this.state.author)} style={{ width: '100%' }}>Adicionar Autor</Button>
+                                            </Form.Field>
+                                        </React.Fragment>
+                                        : null}
+                                </Grid>
+                                <Grid item sm={7}>
+                                    <br />
+                                    <Button
+                                        variant="contained"
+                                        component='label'
+                                    >
+                                        IMAGEM
                                     <input type="file" style={{ display: 'none' }} onChange={this.onChangeFile} />
-                                </Button>
-                                <br /><br />
-                                {image.name ?
-                                    <FilePreview file={image.file}>
-                                        {(preview) => <img src={preview} />}
-                                    </FilePreview>
-                                    : null}
-                            </CardContainer>
-                            <br />
-
-                            <Button variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit} style={{ width: '100%' }}>Criar</Button>
-                        </Grid>
-                    </Grid>
+                                    </Button>
+                                    <br /><br />
+                                    {image.name ?
+                                        <FilePreview file={image.file}>
+                                            {(preview) => <img src={preview} />}
+                                        </FilePreview>
+                                        : null}
+                                </Grid>
+                            </Grid>
+                            <CardActions style={{ justifyContent: 'flex-end' }}>
+                                <Button variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit}>Criar</Button>
+                            </CardActions>
+                        </CardContainer>
+                    }
                 </form>
             </Admin>
         );

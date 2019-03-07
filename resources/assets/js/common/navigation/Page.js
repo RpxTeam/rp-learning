@@ -81,8 +81,7 @@ class Page extends React.Component {
                         </div>
                         {isAuthenticated ?
                             <React.Fragment>
-                                <Fab
-                                    variant="extended"
+                                <Button
                                     color="primary"
                                     aria-owns={Boolean(menu) ? 'menu-appbar' : undefined}
                                     aria-haspopup="true"
@@ -90,7 +89,7 @@ class Page extends React.Component {
                                 >
                                     <AccountCircle />
                                     {user.name}
-                                </Fab>
+                                </Button>
                                 <Menu
                                     id="menu-appbar"
                                     anchorEl={menu}

@@ -14,36 +14,13 @@ export class Banner extends Component {
                     this.props.internal ?
                         <div className="banner-course">
                             <div className="gridD">
-                                {/* <div className="back-button">
-                                    <Link to={'/courses'}><i className="icon-arrow-left"></i></Link>
-                                </div> */}
                                 <h1>{this.props.title}</h1>
-                                {/* <div className="rating">
-                                <div className="stars">
-                                    <i className="icon-star-o"></i>
-                                    <i className="icon-star-o"></i>
-                                    <i className="icon-star-o"></i>
-                                    <i className="icon-star-o"></i>
-                                    <i className="icon-star"></i>
-                                </div>
-                                <p>87% dos alunos recomendam esse curso.</p>
-                            </div> */}
                             </div>
                         </div>
                         :
                         <div className="banner">
                             <div className="gridD">
-                                {this.props.icon ?
-                                    <div className="icon-bg">
-                                        <i className={"icon-" + this.props.icon}></i>
-                                    </div>
-                                : null}
                                 <div className="title">
-                                    {/* {this.props.icon ?
-                                        <div className="icon">
-                                            <i className={"icon-" + this.props.icon}></i>
-                                        </div>
-                                    : null } */}
                                     <div className="info">
                                         <h2>{this.props.title}</h2>
                                         {this.props.children}

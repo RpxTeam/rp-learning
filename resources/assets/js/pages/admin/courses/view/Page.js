@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { API_URL } from "../../../../common/url-types";
 import Admin from '../../Admin'
 
+import styled from 'styled-components';
+
 import FilePreview from 'react-preview-file';
 
 import "video-react/dist/video-react.css";
@@ -22,10 +24,12 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
+    ListItemAvatar,
     ListItemSecondaryAction,
     Table,
     TableBody,
     TableCell,
+    Avatar,
     TableHead,
     TableRow,
     IconButton,
@@ -38,7 +42,10 @@ import {
     Divider,
     FormGroup,
     FormControlLabel,
-    Switch
+    Switch,
+    AppBar,
+    Tabs,
+    Tab
 } from '@material-ui/core'
 
 import Message from '../../../../components/Message';
@@ -46,14 +53,16 @@ import EditIcon from '@material-ui/icons/Edit';
 import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 import DeleteIcon from '@material-ui/icons/Delete';
 import QuestionAnswer from '@material-ui/icons/QuestionAnswer';
-import VideoCam from '@material-ui/icons/VideoCam';
-import VideoLibrary from '@material-ui/icons/VideoLibrary';
-import AudioTrack from '@material-ui/icons/AudioTrack';
-import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import InboxIcon from '@material-ui/icons/Inbox';
 import AddIcon from '@material-ui/icons/Add';
-import CheckCircle from '@material-ui/icons/CheckCircle';
-import styled from 'styled-components';
+
+
+import AudioTrack from '@material-ui/icons/AudioTrack'
+import LibraryBooks from '@material-ui/icons/LibraryBooks'
+import VideoLibrary from '@material-ui/icons/VideoLibrary'
+import VideoCam from '@material-ui/icons/VideoCam'
+import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
+import CheckCircle from '@material-ui/icons/CheckCircle'
 
 // Editor
 import CKEditor from "@ckeditor/ckeditor5-react";
@@ -63,7 +72,7 @@ import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 // Date
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { InlineDatePicker } from 'material-ui-pickers';
+import { DatePicker } from 'material-ui-pickers';
 import brLocale from 'date-fns/locale/pt-BR';
 
 const CardContainer = styled(Card)`
@@ -80,7 +89,7 @@ const Audio = styled.audio`
 `;
 
 const Lesson = styled(TableRow)`
-    cursor: move
+    ${'' /* cursor: move */}
 `;
 
 const TitlePreview = styled(DialogTitle)`
@@ -170,7 +179,8 @@ class Page extends React.Component {
             scrolled: false,
             idQuestion: null,
             editAnswer: null,
-            view: false
+            view: false,
+            tab: 0
         };
 
         this.handleEditor = this.handleEditor.bind(this);
@@ -1186,51 +1196,178 @@ class Page extends React.Component {
         console.log(e.target);
     };
 
+    changeTab = (event, tab) => {
+        this.setState({ tab });
+    };
+
+    formatIcons = (type) => {
+        switch (type) {
+            case 'text':
+                return <LibraryBooks />
+                break;
+            case 'video-internal':
+                return <VideoLibrary />
+                break;
+            case 'pdf':
+                return <InsertDriveFile />
+                break;
+            case 'video-external':
+                return <VideoCam />
+                break;
+            default:
+                return <AudioTrack />
+        }
+    };
+
     render() {
-        const { course, lessons, lesson, message, menu, edit, modal, quiz, question, answerField, questionField, quizCreated, activeQuiz } = this.state;
+        const { course, lessons, lesson, message, menu, edit, modal, quiz, question, answerField, questionField, quizCreated, activeQuiz, tab } = this.state;
         return (
             <Admin heading={"Cursos"}>
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
                 <form>
-                    <Grid container spacing={16}>
-                        <Grid item xs={12} md={9}>
-                            <CardContainer>
-                                <Grid>
-                                    <TextField
-                                        disabled={edit}
-                                        id="input-title"
-                                        label="Título"
-                                        onChange={this.updateCourse}
-                                        margin="normal"
-                                        variant="outlined"
-                                        name="title"
-                                        placeholder={course.title}
-                                        value={course.title}
-                                        fullWidth
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                    />
-                                    <TextField
-                                        disabled={edit}
-                                        id="input-description"
-                                        label="Descrição"
-                                        name="description"
-                                        onChange={this.updateCourse}
-                                        margin="normal"
-                                        variant="outlined"
-                                        rows={8}
-                                        multiline={true}
-                                        rowsMax={10}
-                                        value={course.description}
-                                        fullWidth
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                    />
+                    <AppBar position="static" color="default">
+                        <Tabs value={tab} onChange={this.changeTab}>
+                            <Tab label="Curso" />
+                            <Tab label="Lições" />
+                        </Tabs>
+                    </AppBar>
+                    {tab === 0 &&
+                        <CardContainer>
+                            <Grid container spacing={8} justify="flex-end">
+                                <Grid item>
+                                    <Button variant="contained" size="small" aria-label="Salvar" onClick={this.handleEdit}>
+                                        <EditIcon />
+                                    </Button>
                                 </Grid>
-                            </CardContainer>
-                            <br /><br />
+                            </Grid>
+                            <TextField
+                                disabled={edit}
+                                id="input-title"
+                                label="Título"
+                                onChange={this.updateCourse}
+                                margin="normal"
+                                variant="outlined"
+                                name="title"
+                                placeholder={course.title}
+                                value={course.title}
+                                fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <TextField
+                                disabled={edit}
+                                id="input-description"
+                                label="Descrição"
+                                name="description"
+                                onChange={this.updateCourse}
+                                margin="normal"
+                                variant="outlined"
+                                rows={8}
+                                multiline={true}
+                                rowsMax={10}
+                                value={course.description}
+                                fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <br />
+                            <Grid container spacing={40}>
+                                <Grid item sm={5}>
+                                    <TextField
+                                        disabled={edit}
+                                        id="input-slug"
+                                        label="Slug"
+                                        name="slug"
+                                        onChange={this.updateCourse}
+                                        margin="normal"
+                                        variant="outlined"
+                                        placeholder={course.slug}
+                                        value={course.slug ? course.slug : ''}
+                                        fullWidth
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                    <TextField
+                                        disabled={edit}
+                                        id="input-duration"
+                                        label="Duração (horas)"
+                                        name="duration"
+                                        onChange={this.updateCourse}
+                                        margin="normal"
+                                        variant="outlined"
+                                        type='number'
+                                        value={course.duration}
+                                        fullWidth
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <DatePicker
+                                            keyboard
+                                            fullWidth
+                                            variant="outlined"
+                                            label="Data de Início"
+                                            value={course.start_date}
+                                            onChange={this.handleChangeDate.bind(this, 'start_date')}
+                                            format='dd/MM/yy'
+                                            mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
+                                            locale={brLocale}
+                                            disabled={edit}
+                                            style={{ margin: '12px 0', width: 'calc(100% - 14px)' }}
+                                        />
+                                    </MuiPickersUtilsProvider>
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <DatePicker
+                                            keyboard
+                                            fullWidth
+                                            variant="outlined"
+                                            label="Data de Término"
+                                            value={course.end_date}
+                                            onChange={this.handleChangeDate.bind(this, 'end_date')}
+                                            format='dd/MM/yy'
+                                            mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
+                                            locale={brLocale}
+                                            disabled={edit}
+                                            style={{ margin: '12px 0', width: 'calc(100% - 14px)' }}
+                                        />
+                                    </MuiPickersUtilsProvider>
+                                </Grid>
+                                <Grid item sm={7}>
+                                    <br />
+                                    <Button
+                                        variant="contained"
+                                        component='label'
+                                        disabled={edit}
+                                    >
+                                        IMAGEM
+                                        <input type="file" style={{ display: 'none' }} onChange={this.changeImage} />
+                                    </Button>
+                                    <br /><br />
+                                    {this.state.imageEdit ?
+                                        <FilePreview file={this.state.image.file}>
+                                            {(preview) => <img src={preview} />}
+                                        </FilePreview>
+                                        : <img src={course.image} />}
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={8} justify="flex-end">
+                                <Grid item>
+                                    <Button variant="contained" size="small" aria-label="Salvar" onClick={this.handleEdit}>
+                                        <EditIcon />
+                                    </Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button disabled={edit} variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit}>Atualizar</Button>
+                                </Grid>
+                            </Grid>
+                        </CardContainer>
+                    }
+                    {tab === 1 &&
+                        <CardContainer>
                             <Grid container spacing={8} justify="flex-end" alignItems="center">
                                 {quizCreated ?
                                     <Grid item>
@@ -1244,9 +1381,9 @@ class Page extends React.Component {
                                             }
                                             label={activeQuiz ? 'Desativar Quiz Final' : 'Ativar Quiz Final'}
                                         />
-                                        <Fab variant="extended" size="small" aria-label="Salvar" component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
+                                        <Button variant="contained" size="small" aria-label="Salvar" component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
                                             <EditIcon /> Quiz
-                                        </Fab>
+                                        </Button>
                                     </Grid>
                                     : null}
                                 <Grid item>
@@ -1262,40 +1399,35 @@ class Page extends React.Component {
                                 </Grid>
                             </Grid>
                             <br />
-                            <Grid container spacing={8}>
-                                <Grid item xs={12} md={12}>
-                                    <CardContainer>
-                                        <CardHeader title="Lições"></CardHeader>
-                                        <Table>
-                                            <TableBody>
-                                                {lessons.map((lesson) =>
-                                                    <Lesson
-                                                        key={lesson.id}
-                                                        draggable
-                                                        onDragStart={this.onDragStart}
-                                                    >
-                                                        <TableCell>
-                                                            {lesson.title}
-                                                        </TableCell>
-                                                        <TableCell align={'right'}>
-                                                            <IconButton aria-label="Edit" onClick={this.viewLesson.bind(this, lesson.type, lesson.id)}>
-                                                                <RemoveRedEye />
-                                                            </IconButton>
-                                                            <IconButton aria-label="Edit" onClick={this.editLesson.bind(this, lesson.type, lesson.id)}>
-                                                                <EditIcon />
-                                                            </IconButton>
-                                                            <IconButton color="secondary" aria-label="Delete" style={{ margin: '0 5px' }} value={lesson.id} onClick={this.handleConfirm.bind(this, lesson.id)}>
-                                                                <DeleteIcon />
-                                                            </IconButton>
-                                                        </TableCell>
-                                                    </Lesson>
-                                                )
-                                                }
-                                            </TableBody>
-                                        </Table>
-                                    </CardContainer>
-                                </Grid>
-                            </Grid>
+                            <CardHeader title="Lições"></CardHeader>
+                            <List>
+                                {lessons.map((lesson, index) =>
+                                    <React.Fragment key={index}>
+                                        <ListItem>
+                                            <ListItemAvatar>
+                                                <Avatar>
+                                                    {this.formatIcons(lesson.type)}
+                                                </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary={lesson.title}
+                                            />
+                                            <ListItemSecondaryAction>
+                                                <IconButton aria-label="Edit" onClick={this.viewLesson.bind(this, lesson.type, lesson.id)}>
+                                                    <RemoveRedEye />
+                                                </IconButton>
+                                                <IconButton aria-label="Edit" onClick={this.editLesson.bind(this, lesson.type, lesson.id)}>
+                                                    <EditIcon />
+                                                </IconButton>
+                                                <IconButton color="secondary" aria-label="Delete" style={{ margin: '0 5px' }} value={lesson.id} onClick={this.handleConfirm.bind(this, lesson.id)}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </ListItemSecondaryAction>
+                                        </ListItem>
+                                        <Divider />
+                                    </React.Fragment>
+                                )}
+                            </List>
                             {this.state.scrolled ?
                                 <React.Fragment>
                                     <br /><br />
@@ -1328,159 +1460,63 @@ class Page extends React.Component {
                                     </Grid>
                                 </React.Fragment>
                                 : null}
-                        </Grid>
-                        <Menu id='menu-lessons' anchorEl={menu.open} open={Boolean(menu.open)} onClose={this.closeMenu}>
-                            <MenuItem onClick={this.openModal('text')}>
-                                <ListItemIcon>
-                                    <LibraryBooks />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Texto
+                            <Menu id='menu-lessons' anchorEl={menu.open} open={Boolean(menu.open)} onClose={this.closeMenu}>
+                                <MenuItem onClick={this.openModal('text')}>
+                                    <ListItemIcon>
+                                        <LibraryBooks />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        Texto
                                             </ListItemText>
-                            </MenuItem>
-                            <MenuItem onClick={this.openModal('video-internal')}>
-                                <ListItemIcon>
-                                    <VideoLibrary />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Vídeo Interno
+                                </MenuItem>
+                                <MenuItem onClick={this.openModal('video-internal')}>
+                                    <ListItemIcon>
+                                        <VideoLibrary />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        Vídeo Interno
                                             </ListItemText>
-                            </MenuItem>
-                            <MenuItem onClick={this.openModal('video-external')}>
-                                <ListItemIcon>
-                                    <VideoCam />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Vídeo Externo
+                                </MenuItem>
+                                <MenuItem onClick={this.openModal('video-external')}>
+                                    <ListItemIcon>
+                                        <VideoCam />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        Vídeo Externo
                                             </ListItemText>
-                            </MenuItem>
-                            <MenuItem onClick={this.openModal('audio')}>
-                                <ListItemIcon>
-                                    <AudioTrack />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Áudio
+                                </MenuItem>
+                                <MenuItem onClick={this.openModal('audio')}>
+                                    <ListItemIcon>
+                                        <AudioTrack />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        Áudio
                                             </ListItemText>
-                            </MenuItem>
-                            <MenuItem onClick={this.openModal('doc')}>
-                                <ListItemIcon>
-                                    <InboxIcon />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    Documento
+                                </MenuItem>
+                                <MenuItem onClick={this.openModal('doc')}>
+                                    <ListItemIcon>
+                                        <InboxIcon />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        Documento
                                 </ListItemText>
-                            </MenuItem>
-                            {quizCreated ? null :
-                                <div>
-                                    <Divider />
-                                    <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
-                                        <ListItemIcon>
-                                            <QuestionAnswer />
-                                        </ListItemIcon>
-                                        <ListItemText>
-                                            Quiz Final
+                                </MenuItem>
+                                {quizCreated ? null :
+                                    <div>
+                                        <Divider />
+                                        <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
+                                            <ListItemIcon>
+                                                <QuestionAnswer />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Quiz Final
                                     </ListItemText>
-                                    </MenuItem>
-                                </div>
-                            }
-                        </Menu>
-                        <Grid item xs={12} md={3}>
-                            <CardContainer>
-                                <TextField
-                                    disabled={edit}
-                                    id="input-slug"
-                                    label="Slug"
-                                    name="slug"
-                                    onChange={this.updateCourse}
-                                    margin="normal"
-                                    variant="outlined"
-                                    placeholder={course.slug}
-                                    value={course.slug ? course.slug : ''}
-                                    fullWidth
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                                <TextField
-                                    disabled={edit}
-                                    id="input-duration"
-                                    label="Duração (horas)"
-                                    name="duration"
-                                    onChange={this.updateCourse}
-                                    margin="normal"
-                                    variant="outlined"
-                                    type='number'
-                                    value={course.duration}
-                                    fullWidth
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                                <br /><br />
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <Grid container spacing={8}>
-                                        <Grid item xl={6} lg={12} md={12} xs={12}>
-                                            <InlineDatePicker
-                                                keyboard
-                                                variant="outlined"
-                                                label="Data de Início"
-                                                value={course.start_date}
-                                                onChange={this.handleChangeDate.bind(this, 'start_date')}
-                                                format='dd/MM/yy'
-                                                mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
-                                                locale={brLocale}
-                                                disabled={edit}
-                                                style={{ width: 'calc(100% - 14px)' }}
-                                            />
-                                        </Grid>
-                                        <br />
-                                        <Grid item xl={6} lg={12} md={12} xs={12}>
-                                            <InlineDatePicker
-                                                keyboard
-                                                variant="outlined"
-                                                label="Data de Término"
-                                                value={course.end_date}
-                                                onChange={this.handleChangeDate.bind(this, 'end_date')}
-                                                format='dd/MM/yy'
-                                                mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/]}
-                                                locale={brLocale}
-                                                disabled={edit}
-                                                style={{ width: 'calc(100% - 14px)' }}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                </MuiPickersUtilsProvider>
-                            </CardContainer>
-                            <br />
-                            <CardContainer>
-                                <Button
-                                    variant="contained"
-                                    component='label'
-                                    disabled={edit}
-                                >
-                                    IMAGEM
-                                <input type="file" style={{ display: 'none' }} onChange={this.changeImage} />
-                                </Button>
-                                <br /><br />
-                                {this.state.imageEdit ?
-                                    <FilePreview file={this.state.image.file}>
-                                        {(preview) => <img src={preview} />}
-                                    </FilePreview>
-                                    : <img src={course.image} />}
-                            </CardContainer>
-                            <br />
-                            <Grid container spacing={8}>
-                                <Grid item xs={6} md={3}>
-                                    <Button variant="contained" size="small" aria-label="Salvar" onClick={this.handleEdit}>
-                                        <EditIcon />
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={6} md={9}>
-                                    <Button disabled={edit} variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit} style={{ width: '100%' }}>Atualizar</Button>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
+                                        </MenuItem>
+                                    </div>
+                                }
+                            </Menu>
+                        </CardContainer>
+                    }
                 </form>
 
                 <Dialog
@@ -1590,7 +1626,7 @@ class Page extends React.Component {
                                     </Grid>
                                     <Grid item md={6}>
                                         <Typography variant="overline" gutterBottom>
-                                            Formatos aceitos: 
+                                            Formatos aceitos:
                                             {this.state.modal.type === 'video-internal' ?
                                                 'mp4, webm, ogg, ogv, avi, mpeg, mpg, mov, wmv, 3gp, flv. Tamanho máximo: 2 MB' : null
                                             }

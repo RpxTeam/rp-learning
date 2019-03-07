@@ -52,12 +52,14 @@ class Page extends React.Component {
             </span>
         );
         return (
-            <AppBar position={this.props.position} className={this.props.className}>
+            <AppBar color="default" position={this.props.position} className={this.props.className}>
                 <Grid className={classes.container}>
                     <Toolbar className={classes.bar}>
-                        <Typography variant="h6" color="inherit" className={classes.grow}>
-                            LMS
-                    </Typography>
+                        <Typography variant="div" color="inherit" className={classes.grow}>
+                            <Link to="/">
+                                <img src="/img/logo.png" className={classes.logo} />
+                            </Link>
+                        </Typography>
                         <div>
                             <IconButton
                                 aria-owns={open ? 'menu-appbar' : undefined}

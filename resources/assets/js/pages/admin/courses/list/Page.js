@@ -4,23 +4,25 @@ import { API_URL } from "../../../../common/url-types";
 import Admin from '../../Admin'
 import axios from 'axios'
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Dialog from '@material-ui/core/Dialog';
-import Button from '@material-ui/core/Button';
-import Message from '../../../../components/Message';
-import Card from '@material-ui/core/Card';
+import {
+    Grid,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    IconButton,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Dialog,
+    Button,
+    Card
+} from '@material-ui/core'
+
+import DeleteIcon from '@material-ui/icons/Delete'
+import EditIcon from '@material-ui/icons/Edit'
+import Message from '../../../../components/Message'
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
@@ -153,6 +155,9 @@ class Page extends React.Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
+                <Grid container justify="flex-end" style={{ marginBottom: 15 }}>
+                    <Button color="primary" variant="contained" component={Link} to="/admin/courses/create">Criar</Button>
+                </Grid>
                 <Card>
                     <Table>
                         <TableHead>

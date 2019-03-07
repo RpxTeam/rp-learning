@@ -215,7 +215,7 @@ class Page extends React.Component {
                 </Grid>
                 <Grid container spacing={40}>
                     {certificates.map((certificate, index) =>
-                        <Grid item xl={3} lg={4} md={6} sm={12} key={index}>
+                        <Grid item md={6} sm={12} key={index}>
                             <Card>
                                 <Image style={{ backgroundImage: `url(${certificate.image})` }}></Image>
                                 <CardActions>
