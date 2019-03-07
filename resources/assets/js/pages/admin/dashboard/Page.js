@@ -28,9 +28,29 @@ class Page extends React.Component {
     }
 
     getData = () => {
-        axios.get(`${API_URL}/api/dashboard`)
+        let role;
+        console.log(this.props.user.role_id)
+        switch (this.props.user.role_id) {
+            case '1':
+                role = 'admin'
+                break;
+            case '2':
+                role = 'instructor'
+                break;
+            case 1:
+                role = 'admin'
+                break;
+            case 2:
+                role = 'instructor'
+                break;
+            default:
+                role = 'student'
+                break;
+        }
+        axios.get(`${API_URL}/api/dashboard/${role}/${this.props.user.id}`)
             .then(res => {
                 const { data } = res;
+                console.log(data);
                 this.setState({
                     users: data.leaderboard,
                     courses: data.courses
@@ -50,7 +70,7 @@ class Page extends React.Component {
                 <Grid container spacing={40}>
                     <Grid item sm={6}>
                         <Card>
-                            <CardHeader title="Cursos"></CardHeader>
+                            <CardHeader title={user.role_id === '1' || user.role_id === 1 ? 'Cursos' : 'Meus cursos'}></CardHeader>
                             <Table>
                                 <TableHead>
                                     <TableRow>
@@ -59,12 +79,19 @@ class Page extends React.Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {courses.map((course, index) =>
-                                        <TableRow key={index}>
-                                            <TableCell>{course.title}</TableCell>
-                                            <TableCell>{course.duration}</TableCell>
+                                    {courses.length > 0 ?
+                                        courses.map((course, index) =>
+                                            <TableRow key={index}>
+                                                <TableCell>{course.title}</TableCell>
+                                                <TableCell>{course.duration}</TableCell>
+                                            </TableRow>
+                                        )
+                                        :
+                                        <TableRow>
+                                            <TableCell>Você ainda não tem cursos criados</TableCell>
+                                            <TableCell></TableCell>
                                         </TableRow>
-                                    )}
+                                    }
                                 </TableBody>
                             </Table>
                             <CardActions>
@@ -103,7 +130,7 @@ class Page extends React.Component {
                                 </Table>
                             </Card>
                         </Grid>
-                    : null }
+                        : null}
                 </Grid>
             </Admin>
         );

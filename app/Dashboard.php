@@ -23,4 +23,17 @@ class Dashboard extends Model
 
         return $courses;
     }
+
+    public static function latestUsers($n){
+        $users = User::orderBy('id', 'desc')->take($n)->get();
+
+        return $users;
+    }
+
+    public static function instructorCourses($user){
+        $courses = Course::where('user_id',$user)->orderBy('end_date')->get();
+        
+        return $courses;
+    }
+
 }

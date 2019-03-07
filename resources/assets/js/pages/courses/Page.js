@@ -143,9 +143,6 @@ class Page extends React.Component {
                                     </CardContentStyle>
                                     <Divider />
                                     <CardActions disableActionSpacing>
-                                        {/* <IconButton aria-label="Add to favorites">
-                                            <FavoriteIcon />
-                                        </IconButton> */}
                                         <Button size="small" color="primary" onClick={this.viewCourse.bind(this, course.id)}>
                                             Detalhes
                                         </Button>
