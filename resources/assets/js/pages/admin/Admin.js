@@ -113,8 +113,18 @@ class Admin extends React.Component {
                                         </React.Fragment>
                                         : null}
                                     <Divider />
-                                    {console.log(user)}
-                                    {user.role_id !== '3' || user.role_id !== 3 ?
+
+                                    {user.role_id === '3' || user.role_id === 3 ?
+                                        <React.Fragment>
+                                            <ListItem button component={Link} to={'/my-courses'}>
+                                                <ListItemText
+                                                    primary="Meus Cursos"
+                                                />
+                                            </ListItem>
+                                            <Divider />
+                                        </React.Fragment>
+                                        : null}
+                                    {user.role_id != '3' || user.role_id != 3 ?
                                         <React.Fragment>
                                             <ListItem button component={Link} to={'/admin/courses'}>
                                                 <ListItemText
@@ -127,9 +137,9 @@ class Admin extends React.Component {
                                                     primary="Certificados"
                                                 />
                                             </ListItem>
+                                            <Divider />
                                         </React.Fragment>
-                                    : null}
-                                    <Divider />
+                                        : null}
                                     <ListItem button variant="contained" component={Link} to={'/admin/users'} n>
                                         <ListItemText
                                             primary="Logout"

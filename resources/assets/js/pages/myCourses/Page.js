@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import Navigation from '../../common/navigation'
 import { API_URL } from "../../common/url-types"
+import Admin from '../admin/Admin'
 import Banner from '../../components/Banner'
 import styled from 'styled-components'
 
@@ -85,12 +86,8 @@ class Page extends React.Component {
             return <Redirect to={'/courses/' + this.state.courseID + '/details'} />
         }
         return (
-            <div>
-                <Navigation />
+            <Admin>
                 <main className="fadeIn animated">
-                    <Banner title="Meus Cursos" icon="courses">
-                        <p>Essa é a sua biblioteca de cursos.</p>
-                    </Banner>
                     <Container container spacing={40}>
                         {courses.map((course, index) =>
                             <Grid item md={4} sm={12} xs={12} key={index}>
@@ -128,7 +125,7 @@ class Page extends React.Component {
                         }
                     </Container>
                 </main>
-            </div>
+            </Admin>
         );
     }
 }

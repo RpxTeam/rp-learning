@@ -12,11 +12,15 @@ import {
     TableRow,
     TableCell,
     CardHeader,
+    CardContent,
     CardActions,
-    Button
+    Button,
+    Fab,
+    Tooltip
 } from '@material-ui/core'
 
 import AddIcon from '@material-ui/icons/Add'
+import NoteIcon from '@material-ui/icons/Note'
 
 class Page extends React.Component {
     constructor(props) {
@@ -95,13 +99,22 @@ class Page extends React.Component {
                                 </TableBody>
                             </Table>
                             <CardActions>
-                                <Button component={Link} color="primary" variant="contained" to="/admin/courses">
-                                    Ver Todos
+                                {user.role_id === '1' || user.role_id === 1 ?
+                                    <Button component={Link} color="primary" variant="contained" to="/admin/courses">
+                                        Ver Todos
                                 </Button>
+                                    :
+                                    <Button component={Link} color="primary" variant="contained" to="/my-courses">
+                                        Ver Todos
+                                </Button>
+                                }
+
+                                {user.role_id != '3' || user.role_id != 3 ?
                                 <Button component={Link} variant="contained" to="/admin/courses/create">
                                     Criar novo
                                     <AddIcon />
                                 </Button>
+                                : null }
                             </CardActions>
                         </Card>
                     </Grid>
@@ -128,6 +141,51 @@ class Page extends React.Component {
                                         )}
                                     </TableBody>
                                 </Table>
+                            </Card>
+                        </Grid>
+                        : null}
+                    {user.role_id === '3' || user.role_id === 3 ?
+                        <Grid item sm={6}>
+                            <Card>
+                                <CardHeader title="Recompensas"></CardHeader>
+                                <CardContent>
+                                    <Tooltip title="Certificado 1" aria-label="Certificado 1">
+                                        <Fab color="default" style={{ margin: '0 4px' }}>
+                                            <NoteIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                    <Tooltip title="Certificado 2" aria-label="Certificado 2">
+                                        <Fab color="default" style={{ margin: '0 4px' }}>
+                                            <NoteIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                    <Tooltip title="Certificado 3" aria-label="Certificado 3">
+                                        <Fab color="default" style={{ margin: '0 4px' }}>
+                                            <NoteIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                </CardContent>
+                            </Card>
+                            <br />
+                            <Card>
+                                <CardHeader title="Certificados"></CardHeader>
+                                <CardContent>
+                                    <Tooltip title="Certificado 1" aria-label="Certificado 1">
+                                        <Fab color="default" style={{ margin: '0 4px' }}>
+                                            <NoteIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                    <Tooltip title="Certificado 2" aria-label="Certificado 2">
+                                        <Fab color="default" style={{ margin: '0 4px' }}>
+                                            <NoteIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                    <Tooltip title="Certificado 3" aria-label="Certificado 3">
+                                        <Fab color="default" style={{ margin: '0 4px' }}>
+                                            <NoteIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                </CardContent>
                             </Card>
                         </Grid>
                         : null}

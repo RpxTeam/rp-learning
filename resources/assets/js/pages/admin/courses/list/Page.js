@@ -134,6 +134,9 @@ class Page extends React.Component {
 
     render() {
         const { message, courses, view } = this.state;
+        if (this.props.user.id === 3 || this.props.user.id === "3") {
+            return <Redirect to={'/dashboard/'} />
+        }
         return (
             <Admin heading='Cursos' createLink='/admin/courses/create'>
                 <Message text={message.text} open={message.open} close={this.closeMessage} />

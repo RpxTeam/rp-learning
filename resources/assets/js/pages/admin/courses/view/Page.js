@@ -1221,6 +1221,9 @@ class Page extends React.Component {
 
     render() {
         const { course, lessons, lesson, message, menu, edit, modal, quiz, question, answerField, questionField, quizCreated, activeQuiz, tab } = this.state;
+        if (this.props.user.id === 3 || this.props.user.id === "3") {
+            return <Redirect to={'/dashboard/'} />
+        }
         return (
             <Admin heading={"Cursos"}>
                 <Message text={message.text} open={message.open} close={this.closeMessage} />

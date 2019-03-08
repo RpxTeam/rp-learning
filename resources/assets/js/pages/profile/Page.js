@@ -179,7 +179,7 @@ class Page extends React.Component {
                         </Grid>
                         <Grid container spacing={8} alignItems="center">
                             <Grid item sm={2} align="right">
-                                <label>Nome Completo</label>
+                                <label>Senha</label>
                             </Grid>
                             <Grid item sm={8}>
                                 <TextField

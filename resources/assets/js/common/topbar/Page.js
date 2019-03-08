@@ -9,6 +9,8 @@ import {
     Grid,
     Toolbar,
     Typography,
+    Button,
+    Divider
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -59,6 +61,9 @@ class Page extends React.Component {
                             <Link to="/">
                                 <img src="/img/logo.png" className={classes.logo} />
                             </Link>
+                            <Button component={Link} to={'/'} color="inherit">Home</Button>
+                            <Button component={Link} to={'/courses'} color="inherit">Cursos</Button>
+                            <Button component={Link} to={'/my-courses'} color="inherit">Meus Cursos</Button>
                         </Typography>
                         <div>
                             <IconButton

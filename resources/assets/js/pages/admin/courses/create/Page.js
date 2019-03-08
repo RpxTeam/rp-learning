@@ -283,6 +283,9 @@ class Page extends React.Component {
         if (this.state.courseEdit === true) {
             return <Redirect to={'/admin/courses/' + this.state.courseID} />
         }
+        if (this.props.user.id === 3 || this.props.user.id === "3") {
+            return <Redirect to={'/dashboard/'} />
+        }
         return (
             <Admin heading="Create">
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
