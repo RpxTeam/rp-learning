@@ -52,40 +52,41 @@ class Page extends React.Component {
         axios.get(`${API_URL}/api/users`)
             .then(res => {
                 const users = res.data;
+                console.log(users);
                 this.setState({ users: users });
             })
     }
 
-    handleDelete = (event) => {
-        let userID = event.target.value;
-        if (confirm('Tem certeza que deseja deletar?')) {
-            axios.delete(`${API_URL}/api/users/${userID}`)
-                .then(res => {
-                    console.log(res);
-                    console.log(res.data);
-                    this.setState({
-                        message: 'Usuário deletado',
-                        error: false,
-                        success: true,
-                    });
-                })
-
-            const users = this.state.users;
-            let newUsers = users.filter(user => {
-                if (user.id != userID) {
-                    return users != userID
-                }
-            });
-            this.setState({
-                users: newUsers
+    handleDelete = () => {
+        let id = this.state.user;
+        axios.delete(`${API_URL}/api/users/${id}`)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                this.setState({
+                    message: 'Usuário deletado',
+                    error: false,
+                    success: true,
+                    open: false
+                });
             })
-        }
+
+        const users = this.state.users;
+        let newUsers = users.filter(user => {
+            if (user.id != id) {
+                return users != id
+            }
+        });
+        this.setState({
+            users: newUsers
+        })
     }
 
     show = () => this.setState({ open: true });
     close = () => this.setState({ open: false });
 
     handleConfirm = (value) => {
+        console.log(value);
         this.setState({
             user: value,
             open: true
@@ -96,7 +97,7 @@ class Page extends React.Component {
         const { users, message} = this.state;
         return (
             <Admin heading='Usuários' createLink='/admin/users/create'>
-                <Message text={message.text} open={message.open} close={this.closeMessage} />
+                <Message text={message.text} open={message.open} close={this.close} />
                 <Dialog
                     open={this.state.open}
                     maxWidth="xs"
@@ -107,7 +108,7 @@ class Page extends React.Component {
                         Você tem certeza que deseja excluir?
                 </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleCancel} color="primary">
+                        <Button onClick={this.close} color="primary">
                             Cancel
                     </Button>
                         <Button onClick={this.handleDelete} color="primary">

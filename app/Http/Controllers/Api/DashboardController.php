@@ -37,9 +37,9 @@ class DashboardController extends Controller
         $onGoing = 0;
         $finished = 0;
         foreach($courses as $course){
-            $course->setAttribute('started',DataCourse::started($course->id));
-            $course->setAttribute('onGoing',DataCourse::onGoing($course->id));
-            $course->setAttribute('finished',DataCourse::finished($course->id));
+            $course->setAttribute('started', DataCourse::started($course->id));
+            $course->setAttribute('onGoing', DataCourse::onGoing($course->id));
+            $course->setAttribute('finished', DataCourse::finished($course->id));
             
             $started += $course->started;
             $onGoing += $course->onGoing;

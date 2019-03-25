@@ -207,7 +207,6 @@ class Page extends React.Component {
                         this.setState({
                             quiz_id: res.data
                         });
-                        console.log('Quiz criado');
                     }
                     );
                 } else {
@@ -546,7 +545,7 @@ class Page extends React.Component {
         const question = this.state.question;
         axios.post(`${API_URL}/api/courses/${this.state.courseID}/lessons/${idLesson}/questions`, { question })
             .then(res => {
-                console.log(res);
+                // console.log(res);
             });
     }
 
@@ -554,7 +553,7 @@ class Page extends React.Component {
         const question = this.state.question;
         axios.put(`${API_URL}/api/courses/${this.state.courseID}/lessons/${idLesson}/questions/${idQuestion}`, { question })
             .then(res => {
-                console.log(res);
+                // console.log(res);
             });
     }
 
@@ -931,7 +930,6 @@ class Page extends React.Component {
                     .then(res => {
                         if (res.data !== 400) {
                             const question = res.data;
-                            console.log(question);
                             this.setState({
                                 question: question,
                                 hasQuiz: true,
@@ -949,7 +947,6 @@ class Page extends React.Component {
 
     formatDate = (date) => {
         let day, month, year;
-        console.log(date);
         day = date.getDate();
         month = date.getMonth() + 1;
         year = date.getFullYear();
@@ -1019,8 +1016,6 @@ class Page extends React.Component {
         } else {
             this.openMessage('Insira a pergunta');
         }
-
-        console.log(question);
 
     }
 
@@ -1113,7 +1108,7 @@ class Page extends React.Component {
     }
 
     uploadImageEditor = (file) => {
-        console.log(file)
+        // console.log(file)
     }
 
 
@@ -1143,7 +1138,6 @@ class Page extends React.Component {
                     .then(res => {
                         if (res.data !== 400) {
                             const question = res.data;
-                            console.log(question);
                             this.setState({
                                 question: question,
                                 hasQuiz: true,
@@ -1193,7 +1187,6 @@ class Page extends React.Component {
         e.dataTransfer.effectAllowed = "move";
         e.dataTransfer.setData("text/html", e.target.parentNode);
         e.dataTransfer.setDragImage(e.target.parentNode, 20, 20);
-        console.log(e.target);
     };
 
     changeTab = (event, tab) => {
