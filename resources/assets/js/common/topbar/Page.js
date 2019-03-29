@@ -42,7 +42,7 @@ class Page extends React.Component {
 
 
     render() {
-        const { classes, user } = this.props;
+        const { classes, user, isAuthenticated } = this.props;
         const { auth, anchorEl } = this.state;
         const open = Boolean(anchorEl);
         this.avatar = (
@@ -56,41 +56,52 @@ class Page extends React.Component {
                 <Grid className={classes.container}>
                     <Toolbar className={classes.bar}>
                         <Typography variant="div" color="inherit" className={classes.grow}>
-                            <Link to="/">
+                            <Link to="/" className={classes.logoContainer}>
                                 <img src="/img/logo.png" className={classes.logo} />
                             </Link>
                             <Button component={Link} to={'/'} color="inherit">Home</Button>
                             <Button component={Link} to={'/courses'} color="inherit">Cursos</Button>
                             <Button component={Link} to={'/my-courses'} color="inherit">Meus Cursos</Button>
                         </Typography>
-                        <div>
-                            <IconButton
-                                aria-owns={open ? 'menu-appbar' : undefined}
-                                aria-haspopup="true"
-                                onClick={this.handleMenu}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={this.state.anchorEl}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={open}
-                                onClose={this.handleClose}
-                            >
-                                <MenuItem component={Link} to={'/courses'}>Voltar para cursos</MenuItem>
-                                <MenuItem component={Link} to={'/profile'}>Perfil</MenuItem>
-                                <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
-                            </Menu>
-                        </div>
+                        {isAuthenticated ?
+                            <React.Fragment>
+                                <div>
+                                    <Button
+                                        aria-owns={open ? 'menu-appbar' : undefined}
+                                        aria-haspopup="true"
+                                        onClick={this.handleMenu}
+                                        color="inherit"
+                                    >
+                                        <AccountCircle />
+                                        <span style={{marginLeft: 10}}>{user.name}</span>
+                                    </Button>
+                                    <Menu
+                                        id="menu-appbar"
+                                        anchorEl={this.state.anchorEl}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={open}
+                                        onClose={this.handleClose}
+                                    >
+                                        <MenuItem component={Link} to={'/courses'}>Voltar para cursos</MenuItem>
+                                        <MenuItem component={Link} to={'/profile'}>Perfil</MenuItem>
+                                        <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
+                                    </Menu>
+                                </div>
+                            </React.Fragment>
+                            :
+                            <React.Fragment>
+                                <Button component={Link} to={'/login'} color="inherit">Login</Button>
+                                |
+                                    <Button component={Link} to={'/register'} color="inherit">Registrar</Button>
+                            </React.Fragment>
+                        }
                     </Toolbar>
                 </Grid>
             </AppBar>

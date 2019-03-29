@@ -108,16 +108,16 @@ class Page extends React.Component {
                         Você tem certeza que deseja excluir?
                 </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.close} color="primary">
+                        <Button onClick={this.close} color="secondary">
                             Cancel
                     </Button>
-                        <Button onClick={this.handleDelete} color="primary">
+                        <Button onClick={this.handleDelete} color="secondary">
                             Ok
                     </Button>
                     </DialogActions>
                 </Dialog>
                 <Grid container justify="flex-end" style={{ marginBottom: 15 }}>
-                    <Button color="primary" variant="contained" component={Link} to="/admin/users/create">Criar</Button>
+                    <Button color="secondary" variant="contained" component={Link} to="/admin/users/create">Criar</Button>
                 </Grid>
                 <Card>
                     <Table>

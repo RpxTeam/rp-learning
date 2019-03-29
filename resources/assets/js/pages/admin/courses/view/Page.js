@@ -1357,7 +1357,7 @@ class Page extends React.Component {
                                     </Button>
                                 </Grid>
                                 <Grid item>
-                                    <Button disabled={edit} variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit}>Atualizar</Button>
+                                    <Button disabled={edit} variant="contained" color={'secondary'} type={'submit'} onClick={this.handleSubmit}>Atualizar</Button>
                                 </Grid>
                             </Grid>
                         </CardContainer>
@@ -1371,7 +1371,7 @@ class Page extends React.Component {
                                             control={
                                                 <Switch
                                                     onChange={this.toggleQuiz(this.state.quiz_id)}
-                                                    color='primary'
+                                                    color='secondary'
                                                     checked={activeQuiz ? true : false}
                                                 />
                                             }
@@ -1388,7 +1388,7 @@ class Page extends React.Component {
                                         aria-haspopup="true"
                                         onClick={this.openMenu}
                                         variant="contained"
-                                        color="primary"
+                                        color="secondary"
                                     >
                                         Adicionar lição
                                     </Button>
@@ -1406,7 +1406,7 @@ class Page extends React.Component {
                                                 </Avatar>
                                             </ListItemAvatar>
                                             <ListItemText
-                                                primary={lesson.title}
+                                                secondary={lesson.title}
                                             />
                                             <ListItemSecondaryAction>
                                                 <IconButton aria-label="Edit" onClick={this.viewLesson.bind(this, lesson.type, lesson.id)}>
@@ -1434,7 +1434,7 @@ class Page extends React.Component {
                                                     control={
                                                         <Switch
                                                             onChange={this.toggleQuiz(this.state.quiz_id)}
-                                                            color='primary'
+                                                            color='secondary'
                                                             checked={activeQuiz ? true : false}
                                                         />
                                                     }
@@ -1448,7 +1448,7 @@ class Page extends React.Component {
                                                 aria-haspopup="true"
                                                 onClick={this.openMenu}
                                                 variant="contained"
-                                                color="primary"
+                                                color="secondary"
                                             >
                                                 Adicionar lição
                                             </Button>
@@ -1525,10 +1525,10 @@ class Page extends React.Component {
                         Você tem certeza que deseja excluir?
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleCancel} color="primary">
+                        <Button onClick={this.handleCancel} color="secondary">
                             Cancelar
                         </Button>
-                        <Button onClick={this.handleDelete} color="primary">
+                        <Button onClick={this.handleDelete} color="secondary">
                             Ok
                         </Button>
                     </DialogActions>
@@ -1641,7 +1641,7 @@ class Page extends React.Component {
                                         checked={quiz ? true : false}
                                         onChange={this.handleCheck}
                                         value={quiz}
-                                        color="primary"
+                                        color="secondary"
                                     />
                                 }
                                 label="Quiz"
@@ -1686,7 +1686,7 @@ class Page extends React.Component {
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={1}>
-                                        <Fab color="primary" aria-label="Add" size="small" onClick={this.addAnswer}>
+                                        <Fab color="secondary" aria-label="Add" size="small" onClick={this.addAnswer}>
                                             <AddIcon />
                                         </Fab>
                                     </Grid>
@@ -1697,7 +1697,7 @@ class Page extends React.Component {
                                         <List dense={true} key={'answer' + index}>
                                             <ListItem key={answer.id}>
                                                 <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
-                                                    <CheckCircle color={answer.correct === 1 || answer.correct === "1" || answer.correct === true ? 'primary' : 'secondary'} />
+                                                    <CheckCircle color={answer.correct === 1 || answer.correct === "1" || answer.correct === true ? 'secondary' : 'secondary'} />
                                                 </IconButton>
                                                 {this.state.editAnswer === answer.id ?
                                                     <TextField
@@ -1709,7 +1709,7 @@ class Page extends React.Component {
                                                     />
                                                     :
                                                     <ListItemText
-                                                        primary={answer.text}
+                                                        secondary={answer.text}
                                                     />
                                                 }
                                                 <ListItemSecondaryAction>
@@ -1729,15 +1729,15 @@ class Page extends React.Component {
                             : null}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={modal.edit ? this.cancelEdit : this.handleCancel} color="primary">
+                        <Button onClick={modal.edit ? this.cancelEdit : this.handleCancel} color="secondary">
                             Cancel
                         </Button>
                         {modal.edit ?
-                            <Button variant="contained" onClick={this.handleEditLesson.bind(this, modal.type, lesson.id)} color="primary">
+                            <Button variant="contained" onClick={this.handleEditLesson.bind(this, modal.type, lesson.id)} color="secondary">
                                 Salvar
                             </Button>
                             :
-                            <Button variant="contained" onClick={this.handleSubmitLesson.bind(this, modal.type)} color="primary">
+                            <Button variant="contained" onClick={this.handleSubmitLesson.bind(this, modal.type)} color="secondary">
                                 Criar
                             </Button>
                         }

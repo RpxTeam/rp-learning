@@ -5,6 +5,8 @@ import axios from 'axios'
 import AuthService from '../../services'
 import Navigation from '../../common/navigation'
 import Banner from '../../components/Banner'
+import About from '../../components/About'
+import Footer from '../../components/Footer';
 import styled from 'styled-components'
 
 import {
@@ -16,8 +18,10 @@ import {
     CardActionArea,
     Button,
     Collapse,
-    Divider
+    Divider,
+    Menu
 } from '@material-ui/core'
+import Topbar from '../../common/topbar';
 
 const Image = styled.div`
     background-position: center center;
@@ -123,11 +127,12 @@ class Page extends React.Component {
         }
         return (
             <React.Fragment>
-                <Navigation />
+                <Topbar position="static" />
                 <main className="fadeIn animated">
-                    <Banner title="Bem vindo ao RP Learning" icon="logo">
-                        <p>Seja bem-vindo(a) ao RP Learning – Cursos  com certificado de conclusão válido para: atividades extracurriculares, avaliações de empresas, provas de títulos, concursos públicos, enriquecer o seu currículo e muito mais!</p>
+                    <Banner title="Bem vindo a Plataforma de cursos" icon="logo" size="large" image={'/images/banner.jpg'}>
+                        <p>Seja bem-vindo(a) a Plataforma de cursos – Cursos  com certificado de conclusão válido para: atividades extracurriculares, avaliações de empresas, provas de títulos, concursos públicos, enriquecer o seu currículo e muito mais!</p>
                     </Banner>
+                    <About />
                     <Container container spacing={40}>
                         {courses.map((course) =>
                             <Grid item md={4} sm={12} xs={12} key={course.id}>
@@ -165,6 +170,7 @@ class Page extends React.Component {
                         }
                     </Container>
                 </main>
+                <Footer />
             </React.Fragment>
         );
     }

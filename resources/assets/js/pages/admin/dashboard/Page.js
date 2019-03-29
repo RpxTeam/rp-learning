@@ -100,11 +100,11 @@ class Page extends React.Component {
                             </Table>
                             <CardActions>
                                 {user.role_id === '1' || user.role_id === 1 ?
-                                    <Button component={Link} color="primary" variant="contained" to="/admin/courses">
+                                    <Button component={Link} color="secondary" variant="contained" to="/admin/courses">
                                         Ver Todos
                                 </Button>
                                     :
-                                    <Button component={Link} color="primary" variant="contained" to="/my-courses">
+                                    <Button component={Link} color="secondary" variant="contained" to="/my-courses">
                                         Ver Todos
                                 </Button>
                                 }

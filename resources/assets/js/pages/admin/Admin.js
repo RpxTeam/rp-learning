@@ -14,12 +14,15 @@ import {
     ListItemText,
     Divider
 } from '@material-ui/core'
+import Footer from '../../components/Footer';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
     root: {
         height: '100%',
+        display: 'flex',
+        flexDirection: 'column'
     },
     appBar: {
     },
@@ -40,6 +43,7 @@ const styles = theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing.unit * 3,
+        width: '100%',
         maxWidth: 1140,
         margin: '0 auto',
     },
@@ -137,19 +141,14 @@ class Admin extends React.Component {
                                                     primary="Certificados"
                                                 />
                                             </ListItem>
-                                            <Divider />
                                         </React.Fragment>
                                         : null}
-                                    <ListItem button variant="contained" component={Link} to={'/admin/users'} n>
-                                        <ListItemText
-                                            primary="Logout"
-                                        />
-                                    </ListItem>
                                 </List>
                             </Card>
                         </Grid>
                     </Grid>
                 </main>
+                <Footer />
             </div>
         );
     }

@@ -18,7 +18,7 @@ const styles = theme => ({
     },
     banner: {
         padding: '15px 0',
-        background: '#42A4F5'
+        background: '#9c0204'
     },
     container: {
         height: '100%',
@@ -44,7 +44,7 @@ const styles = theme => ({
     paper: {
         ...theme.mixins.gutters(),
         padding: theme.spacing.unit,
-        background: '#2196f3',
+        background: '#df0203',
         color: '#FFFFFF',
         fontSize: '10px'
     }
