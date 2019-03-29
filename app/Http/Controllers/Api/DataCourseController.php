@@ -23,12 +23,12 @@ class DataCourseController extends Controller
         ->where('view','=',1)
         ->where('progress','>', -1);
 
-        if($mycourses == null || $mycourses->isEmpty()){
+        if(!$mycourses){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
         }else{
             foreach($mycourses as $mycourse){
-                if(Course::where('id', $mycourse->course_id)->exists()){
+                if(!Course::where('id', $mycourse->course_id)->exists()){
                     $mycourses->forget($mycourse);
                 }
             }
