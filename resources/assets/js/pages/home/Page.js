@@ -127,13 +127,13 @@ class Page extends React.Component {
         }
         return (
             <React.Fragment>
-                <Topbar position="static" />
+                <Navigation position="static" />
                 <main className="fadeIn animated">
                     <Banner title="Bem vindo a Plataforma de cursos" icon="logo" size="large" image={'/images/banner.jpg'}>
                         <p>Seja bem-vindo(a) a Plataforma de cursos – Cursos  com certificado de conclusão válido para: atividades extracurriculares, avaliações de empresas, provas de títulos, concursos públicos, enriquecer o seu currículo e muito mais!</p>
                     </Banner>
                     <About />
-                    <Container container spacing={40}>
+                    <Container container spacing={40} style={{ padding: '40px 0' }}>
                         {courses.map((course) =>
                             <Grid item md={4} sm={12} xs={12} key={course.id}>
                                 <Card>

@@ -733,7 +733,7 @@ class Page extends React.Component {
                                                 <ListItem button onClick={this.getLesson.bind(this, lesson.id)}>
                                                     <ListItemIcon>
                                                         {lesson.view != null ?
-                                                            <CheckCircle color="primary" />
+                                                            <CheckCircle color="secondary" />
                                                             : this.formatIcons(lesson.type)}
                                                     </ListItemIcon>
                                                     <ListItemText>
@@ -747,7 +747,7 @@ class Page extends React.Component {
                                 </CardLessons>
                                 <br />
                                 {(this.state.finalQuiz && this.state.progress > "98") || (this.state.finalQuiz && this.state.progress > 98) ?
-                                    <Button variant="contained" fullWidth size="large" onClick={this.openFinal} color="primary">Realizar teste final</Button>
+                                    <Button variant="contained" fullWidth size="large" onClick={this.openFinal} color="secondary">Realizar teste final</Button>
                                     : null}
                             </LeftBar>
                             : null}
@@ -795,7 +795,7 @@ class Page extends React.Component {
                                         <Grid container justify="center" style={{ marginTop: 50 }}>
                                             <Button
                                                 variant="contained"
-                                                color="primary"
+                                                color="secondary"
                                                 size="large"
                                                 style={{ padding: '15px 50px', fontSize: 16 }}
                                                 onClick={lesson.question ? this.openQuiz.bind(this, lesson.id) : this.endLesson.bind(this, lesson.id)}
@@ -827,7 +827,7 @@ class Page extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button component={Link} to="/my-courses" color="primary">
+                        <Button component={Link} to="/my-courses" color="secondary">
                             OK
                         </Button>
                     </DialogActions>
@@ -850,7 +850,7 @@ class Page extends React.Component {
                                     <FormControlLabel
                                         key={choose.id}
                                         control={
-                                            <Checkbox checked={choose.correct} color={'primary'} onChange={this.handleCheckQuiz(choose.id)} />
+                                            <Checkbox checked={choose.correct} color={'secondary'} onChange={this.handleCheckQuiz(choose.id)} />
                                         }
                                         label={choose.text}
                                     />
@@ -859,7 +859,7 @@ class Page extends React.Component {
                         </FormControl>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.endQuiz.bind(this, this.state.currentLesson)} color="primary" autoFocus>
+                        <Button onClick={this.endQuiz.bind(this, this.state.currentLesson)} color="secondary" autoFocus>
                             Enviar
                         </Button>
                     </DialogActions>
@@ -890,7 +890,7 @@ class Page extends React.Component {
                                                 <FormControlLabel
                                                     key={choose.id}
                                                     control={
-                                                        <Checkbox color={'primary'} onChange={this.handleCheckFinal(choose.id)} />
+                                                        <Checkbox color={'secondary'} onChange={this.handleCheckFinal(choose.id)} />
                                                     }
                                                     label={choose.text}
                                                 />
@@ -902,10 +902,10 @@ class Page extends React.Component {
                         </FormControl>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.cancelFinal} color="primary" autoFocus>
+                        <Button onClick={this.cancelFinal} color="secondary" autoFocus>
                             Cancelar
                             </Button>
-                        <Button variant="contained" onClick={this.endFinal.bind(this)} color="primary" autoFocus>
+                        <Button variant="contained" onClick={this.endFinal.bind(this)} color="secondary" autoFocus>
                             Enviar
                             </Button>
                     </DialogActions>

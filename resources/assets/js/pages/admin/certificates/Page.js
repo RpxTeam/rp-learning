@@ -210,7 +210,7 @@ class Page extends React.Component {
                 <Message text={message.text} open={message.open} close={this.closeMessage} />
                 <Grid container spacing={40} justify={'flex-end'}>
                     <Grid item>
-                        <Button color='primary' variant='contained' onClick={this.createCertificate}>Incluir certificado</Button>
+                        <Button color='secondary' variant='contained' onClick={this.createCertificate}>Incluir certificado</Button>
                     </Grid>
                 </Grid>
                 <Grid container spacing={40}>
@@ -219,11 +219,11 @@ class Page extends React.Component {
                             <Card>
                                 <Image style={{ backgroundImage: `url(${certificate.image})` }}></Image>
                                 <CardActions>
-                                    <Button size="small" color="primary" onClick={this.viewCertificate(certificate.id)}>
+                                    <Button size="small" color="secondary" onClick={this.viewCertificate(certificate.id)}>
                                         Visualizar
                                 </Button>
                                     {certificate.user_id == user.id ?
-                                        <Button size="small" color="primary" onClick={this.deleteCertificate(certificate.id)}>
+                                        <Button size="small" color="secondary" onClick={this.deleteCertificate(certificate.id)}>
                                             Excluir
                                         </Button>
                                         : null}

@@ -119,7 +119,7 @@ class Page extends React.Component {
 
         return (
             <React.Fragment>
-                <Navigation />
+                <Navigation position="static" />
                 <main className="fadeIn animated">
                     <Banner title="Biblioteca" icon="course">
                         <p>Aqui está a biblioteca de cursos.</p>

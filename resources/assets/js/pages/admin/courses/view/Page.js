@@ -64,10 +64,9 @@ import VideoCam from '@material-ui/icons/VideoCam'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import CheckCircle from '@material-ui/icons/CheckCircle'
 
-// Editor
+// CKEditor
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 
 // Date
 import DateFnsUtils from '@date-io/date-fns';
@@ -1562,7 +1561,7 @@ class Page extends React.Component {
                         {this.state.modal.type === 'text' ?
                             <CKEditor
                                 editor={ClassicEditor}
-                                data={lesson.content}
+                                data={this.state.lesson.content}
                                 onInit={editor => {
                                     // You can store the "editor" and use when it is needed.
                                     console.log('Editor is ready to use!', editor);
@@ -1570,9 +1569,7 @@ class Page extends React.Component {
                                 onChange={this.handleEditor}
                                 config={
                                     {
-                                        // plugins: [Alignment],
-                                        // toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ],
-                                        removePlugins: ['Link', 'ImageUpload'],
+                                        removePlugins: ['Link', 'ImageUpload', 'MediaEmbed']
                                     }
                                 }
                             />

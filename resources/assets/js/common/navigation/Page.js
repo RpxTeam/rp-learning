@@ -17,33 +17,14 @@ import {
 } from '@material-ui/core'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 
-const Logo = styled.a`
-    max-width: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-    &:hover {
-        background: transparent;
-    }
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-`;
-
-const Container = styled(Grid)`
-    width: 100%;
-    max-width: 1024px;
-    margin: 0 auto;
-`
-
 class Page extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            menu: null
-        }
+            auth: true,
+            anchorEl: null,
+        };
+
         this.handleLogout = this.handleLogout.bind(this);
     }
 
@@ -53,73 +34,79 @@ class Page extends React.Component {
     }
 
     handleMenu = event => {
-        this.setState({ menu: event.currentTarget });
+        this.setState({ anchorEl: event.currentTarget });
     };
 
     handleClose = () => {
-        this.setState({ menu: null });
+        this.setState({ anchorEl: null });
     };
 
 
     render() {
+        const { classes, user, isAuthenticated } = this.props;
+        const { auth, anchorEl } = this.state;
+        const open = Boolean(anchorEl);
         this.avatar = (
             <span>
                 <Image avatar src={require('../../../images/avatar/boy.png')}
-                    verticalAlign='middle' /> {this.props.user === '' || this.props.user !== null ? this.props.user.name : null}
+                    verticalAlign='middle' /> {this.props.user.name}
             </span>
         );
-        const { menu } = this.state;
-        const { isAuthenticated, user } = this.props;
         return (
-            <AppBar position="static" color={'default'} style={{ borderBottom: '1px solid #CCC' }}>
-                <Container>
-                    <Toolbar>
-                        <div style={{ flexGrow: 1 }}>
+            <AppBar color="default" position={'static'} className={this.props.className}>
+                <Grid className={classes.container}>
+                    <Toolbar className={classes.bar}>
+                        <Typography variant="display1" color="inherit" className={classes.grow}>
+                            <Link to="/" className={classes.logoContainer}>
+                                <img src="/img/logo.png" className={classes.logo} />
+                            </Link>
                             <Button component={Link} to={'/'} color="inherit">Home</Button>
                             <Button component={Link} to={'/courses'} color="inherit">Cursos</Button>
                             <Button component={Link} to={'/my-courses'} color="inherit">Meus Cursos</Button>
-                        </div>
+                        </Typography>
                         {isAuthenticated ?
                             <React.Fragment>
-                                <Button
-                                    color="primary"
-                                    aria-owns={Boolean(menu) ? 'menu-appbar' : undefined}
-                                    aria-haspopup="true"
-                                    onClick={this.handleMenu}
-                                >
-                                    <AccountCircle />
-                                    {user.name}
-                                </Button>
-                                <Menu
-                                    id="menu-appbar"
-                                    anchorEl={menu}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    open={Boolean(menu)}
-                                    onClose={this.handleClose}
-                                >
-                                    {user.role_id <= 2 || user.role_id <= "2" ?
+                                <div>
+                                    <Button
+                                        aria-owns={open ? 'menu-appbar' : undefined}
+                                        aria-haspopup="true"
+                                        onClick={this.handleMenu}
+                                        color="inherit"
+                                    >
+                                        <AccountCircle />
+                                        <span style={{marginLeft: 10}}>{user.name}</span>
+                                    </Button>
+                                    <Menu
+                                        id="menu-appbar"
+                                        anchorEl={this.state.anchorEl}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={open}
+                                        onClose={this.handleClose}
+                                    >
+                                        {user.role_id === "1" || user.role_id === 1 ? 
                                         <MenuItem component={Link} to={'/dashboard'}>Dashboard</MenuItem>
-                                        : null}
-                                    <MenuItem component={Link} to={'/profile'}>Profile</MenuItem>
-                                    <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
-                                </Menu>
+                                        : null }
+                                        <MenuItem component={Link} to={'/profile'}>Perfil</MenuItem>
+                                        <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
+                                    </Menu>
+                                </div>
                             </React.Fragment>
                             :
-                                <React.Fragment>
-                                    <Button component={Link} to={'/login'} color="inherit">Login</Button>
-                                    |
+                            <React.Fragment>
+                                <Button component={Link} to={'/login'} color="inherit">Login</Button>
+                                |
                                     <Button component={Link} to={'/register'} color="inherit">Registrar</Button>
-                                </React.Fragment>
-                            }
+                            </React.Fragment>
+                        }
                     </Toolbar>
-                </Container>
+                </Grid>
             </AppBar>
         );
     }
@@ -127,6 +114,8 @@ class Page extends React.Component {
 
 Page.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    position: PropTypes.string.isRequired
 };
 
 export default Page;
