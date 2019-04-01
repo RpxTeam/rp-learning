@@ -14,14 +14,20 @@ const styles = {
         margin: '0 auto'
     },
     grow: {
+        display: 'flex',
         flexGrow: 1,
+        alignItems: 'center',
     },
     menuButton: {
         marginLeft: -12,
         marginRight: 20,
     },
+    logoContainer: {
+        display: 'inline-block',
+        marginRight: 20,
+    },
     logo: {
-        width: '120px'
+        width: '180px'
     }
 };
 

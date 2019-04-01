@@ -316,7 +316,7 @@ class Page extends React.Component {
                                 </div>
                                 <br />
                                 <div>
-                                    <Button component={Link} to='/login' variant="contained" color="default">Login</Button>
+                                    Já é cadastrado? <Link to="/login">Login</Link>
                                 </div>
                             </div>
                         </form>

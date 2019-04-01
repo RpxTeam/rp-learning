@@ -397,7 +397,7 @@ class Page extends React.Component {
                                 </Grid>
                             </Grid>
                             <CardActions style={{ justifyContent: 'flex-end' }}>
-                                <Button variant="contained" color={'primary'} type={'submit'} onClick={this.handleSubmit}>Criar</Button>
+                                <Button variant="contained" color={'secondary'} type={'submit'} onClick={this.handleSubmit}>Criar</Button>
                             </CardActions>
                         </CardContainer>
                     }

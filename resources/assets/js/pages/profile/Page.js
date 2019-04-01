@@ -57,8 +57,7 @@ class Page extends React.Component {
             courseID: '',
             viewCourse: false,
             points: 0,
-            userID: this.props.user.id,
-            user: {},
+            user: this.props.user,
             image: {
                 name: '',
                 file: null
@@ -67,20 +66,13 @@ class Page extends React.Component {
     }
 
     getData = () => {
-        axios.get(`${API_URL}/api/users/1/points`)
+        axios.get(`${API_URL}/api/users/${this.state.user.id}/points`)
             .then(res => {
                 const points = res.data;
                 this.setState({
                     points: points.total
                 });
-            })
-        axios.get(`${API_URL}/api/users/${this.state.userID}`)
-            .then(res => {
-                const user = res.data;
-                this.setState({
-                    user: user
-                })
-            })
+            });
     }
 
     componentDidMount() {

@@ -142,7 +142,7 @@ class Page extends React.Component {
                                     label="Nome"
                                     onChange={this.handleChange}
                                     margin="normal"
-                                    variant="outlined"
+                                    secondary="outlined"
                                     name="name"
                                     fullWidth
                                     value={user.name}
@@ -158,7 +158,7 @@ class Page extends React.Component {
                                     label="Perfil"
                                     onChange={this.handleChange}
                                     margin="normal"
-                                    variant="outlined"
+                                    secondary="outlined"
                                     fullWidth
                                     name='role_id'
                                     value={user.role_id}
@@ -179,7 +179,7 @@ class Page extends React.Component {
                                     label="Email"
                                     onChange={this.handleChange}
                                     margin="normal"
-                                    variant="outlined"
+                                    secondary="outlined"
                                     name="email"
                                     fullWidth
                                     defaultValue={user.email}
@@ -194,7 +194,7 @@ class Page extends React.Component {
                                     label="Senha"
                                     onChange={this.handleChange}
                                     margin="normal"
-                                    variant="outlined"
+                                    secondary="outlined"
                                     name="password"
                                     fullWidth
                                     placeholder={'Senha'}
@@ -205,7 +205,7 @@ class Page extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid container spacing={8} justify="flex-end">
-                            <Button variant="contained" color={'primary'} type={'submit'}>Atualizar</Button>
+                            <Button secondary="contained" color={'primary'} type={'submit'}>Atualizar</Button>
                         </Grid>
                     </CardContainer>
                 </form>

@@ -68,16 +68,12 @@ class Page extends React.Component {
             axios.get(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`)
                 .then(res => {
                     const { data } = res;
+                    console.log(data);
+                    this.setState({ course: data });
                     if (!data.view) {
-                        axios.post(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`);
-                        axios.put(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`, { view: 1 });
+                        axios.post(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`, { view: 1 });
                     }
                     this.setState({ progress: data.progress });
-                });
-            axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
-                .then(res => {
-                    const course = res.data;
-                    this.setState({ course: course });
                 });
         } else {
             axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
@@ -97,6 +93,7 @@ class Page extends React.Component {
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons`)
             .then(res => {
                 const lessons = res.data;
+                console.log(lessons);
                 this.setState({ lessons: lessons, lessonsCount: lessons.length });
             });
     };

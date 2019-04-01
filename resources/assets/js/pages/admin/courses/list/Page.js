@@ -150,16 +150,16 @@ class Page extends React.Component {
                         Você tem certeza que deseja excluir?
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleCancel} color="primary">
+                        <Button onClick={this.handleCancel} color="secondary">
                             Cancel
                         </Button>
-                        <Button onClick={this.handleDelete} color="primary">
+                        <Button onClick={this.handleDelete} color="secondary">
                             Ok
                         </Button>
                     </DialogActions>
                 </Dialog>
                 <Grid container justify="flex-end" style={{ marginBottom: 15 }}>
-                    <Button color="primary" variant="contained" component={Link} to="/admin/courses/create">Criar</Button>
+                    <Button color="secondary" variant="contained" component={Link} to="/admin/courses/create">Criar</Button>
                 </Grid>
                 <Card>
                     <Table>
@@ -180,7 +180,7 @@ class Page extends React.Component {
                                         <IconButton size="small" aria-label="Edit" component={Link} to={'/admin/courses/' + course.id}>
                                             <EditIcon />
                                         </IconButton>
-                                        {/* <IconButton size="small" color="primary" aria-label="Delete" onClick={this.viewCourse(course.id)}>
+                                        {/* <IconButton size="small" color="secondary" aria-label="Delete" onClick={this.viewCourse(course.id)}>
                                             <RemoveRedEye />
                                         </IconButton> */}
                                         <IconButton size="small" color="secondary" aria-label="Add" onClick={this.handleConfirm.bind(this, course.id)} value={course.id}>

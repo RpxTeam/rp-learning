@@ -427,7 +427,7 @@ class Page extends React.Component {
                             control={
                                 <Switch
                                     onChange={this.toggleAll}
-                                    color='primary'
+                                    color='secondary'
                                     value={activateAll}
                                     checked={activateAll}
                                 />
@@ -436,7 +436,7 @@ class Page extends React.Component {
                         />
                     </Grid>
                     <Grid item xs={3} align='right'>
-                        <Button variant="contained" color="primary" onClick={this.openModal('quiz')}>
+                        <Button variant="contained" color="secondary" onClick={this.openModal('quiz')}>
                             Criar Nova Pergunta
                         </Button>
                         <br /><br />
@@ -454,11 +454,11 @@ class Page extends React.Component {
                                             <ListItem>
                                                 <Switch
                                                     onChange={this.handleToggle(question.id)}
-                                                    color='primary'
+                                                    color='secondary'
                                                     value={question.id}
                                                     checked={question.active === 1 || question.active === "1" || question.active === true ? true : false}
                                                 />
-                                                <ListItemText primary={question.text} secondary={question.created_at} />
+                                                <ListItemText secondary={question.text} secondary={question.created_at} />
                                                 <ListItemSecondaryAction>
                                                     <IconButton aria-label="Edit" onClick={this.openModal('edit', question.id)}>
                                                         <EditIcon />
@@ -521,7 +521,7 @@ class Page extends React.Component {
                                 />
                             </Grid>
                             <Grid item xs={12} md={1}>
-                                <Fab color="primary" aria-label="Add" size="small" onClick={this.addAnswer}>
+                                <Fab color="secondary" aria-label="Add" size="small" onClick={this.addAnswer}>
                                     <AddIcon />
                                 </Fab>
                             </Grid>
@@ -532,7 +532,7 @@ class Page extends React.Component {
                                 <List dense={true} key={answer.id}>
                                     <ListItem key={answer.id}>
                                         <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
-                                            <CheckCircle color={answer.correct === "1" || answer.correct === 1 ? 'primary' : 'secondary'} />
+                                            <CheckCircle color={answer.correct === "1" || answer.correct === 1 ? 'secondary' : 'secondary'} />
                                         </IconButton>
                                         {this.state.editAnswer === answer.id ?
                                             <TextField
@@ -544,7 +544,7 @@ class Page extends React.Component {
                                             />
                                         : 
                                             <ListItemText
-                                                primary={answer.text}
+                                                secondary={answer.text}
                                             />
                                         }
                                         <ListItemSecondaryAction>
@@ -562,14 +562,14 @@ class Page extends React.Component {
                             : null}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.closeModal} color="primary">
+                        <Button onClick={this.closeModal} color="secondary">
                             Cancelar
                         </Button>
                         <Button
-                            color='primary'
+                            color='secondary'
                             variant='contained'
                             onClick={this.state.editQuestion ? this.handleEditQuestion.bind(this, this.state.modal.type) : this.handleSubmitQuestion.bind(this, this.state.modal.type)}
-                            color="primary">
+                            color="secondary">
                             {this.state.editQuestion ? 'Salvar' : 'Criar'}
                         </Button>
                     </DialogActions>
