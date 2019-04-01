@@ -1694,7 +1694,7 @@ class Page extends React.Component {
                                         <List dense={true} key={'answer' + index}>
                                             <ListItem key={answer.id}>
                                                 <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
-                                                    <CheckCircle color={answer.correct === 1 || answer.correct === "1" || answer.correct === true ? 'secondary' : 'secondary'} />
+                                                    <CheckCircle color={answer.correct === 1 || answer.correct === "1" || answer.correct === true ? 'primary' : 'secondary'} />
                                                 </IconButton>
                                                 {this.state.editAnswer === answer.id ?
                                                     <TextField

@@ -200,7 +200,6 @@ class Page extends React.Component {
                         loading: false
                     }
                     )
-                    console.log(progress)
                 } else {
                     this.setState({ onCourse: true })
                 }
@@ -375,33 +374,38 @@ class Page extends React.Component {
                 let percentLesson = 100 / this.state.lessonsCount;
                 let progress = parseFloat(course.progress) + parseFloat(percentLesson);
                 progress = progress.toFixed(0);
+                console.log(progress);
                 if (progress >= 98) {
                     progress = 100;
                     this.updateLevel(this.state.user.id, this.state.courseID);
                 }
                 this.setState({ course: course });
                 this.updateProgress(progress);
-            });
 
-        const day = new Date();
-        const month = day.getMonth() + 1;
-        const finish = day.getFullYear() + '-' + month + '-' + day.getDate();
-
-        axios.put(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${id}`, {
-            view: 1,
-            finish: finish
-        })
-            .then(res => {
-                this.getLessons();
-                this.getLesson(id);
-
-                this.updateLevel(this.state.user.id, this.state.courseID, id);
-
-                this.handleNextStep();
-
-                if(this.state.progress >= 98 && this.state.quiz === false) {
+                if (progress >= 98 && this.state.quiz === false) {
                     this.openModal();
+                    axios.post(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/certification`)
+                    .then(res => {
+                        console.log(res);
+                    })
                 }
+
+                const day = new Date();
+                const month = day.getMonth() + 1;
+                const finish = day.getFullYear() + '-' + month + '-' + day.getDate();
+
+                axios.put(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/lessons/${id}`, {
+                    view: 1,
+                    finish: finish
+                })
+                    .then(res => {
+                        this.getLessons();
+                        this.getLesson(id);
+
+                        this.updateLevel(this.state.user.id, this.state.courseID, id);
+
+                        this.handleNextStep();
+                    });
             });
     };
 
@@ -667,43 +671,43 @@ class Page extends React.Component {
     }
 
     renderLesson = () => {
-        document.querySelectorAll( 'oembed[url]' ).forEach( element => {            
-            const iframe = document.createElement( 'iframe' );
-            iframe.setAttribute( 'frameborder', '0' );
+        document.querySelectorAll('oembed[url]').forEach(element => {
+            const iframe = document.createElement('iframe');
+            iframe.setAttribute('frameborder', '0');
             let url = element.getAttribute('url');
-            if(url.indexOf('watch?v=') !== -1) {
+            if (url.indexOf('watch?v=') !== -1) {
                 const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
                 let match = url.match(regExp);
-                let id = (match&&match[7].length==11)? match[7] : false;
-                
-                iframe.setAttribute( 'allowfullscreen', '1' );
-                iframe.setAttribute(  'allow' , 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' );
+                let id = (match && match[7].length == 11) ? match[7] : false;
+
+                iframe.setAttribute('allowfullscreen', '1');
+                iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
 
                 url = 'https://www.youtube.com/embed/' + id;
-            } else if(url.indexOf('vimeo.com') !== -1) {
+            } else if (url.indexOf('vimeo.com') !== -1) {
                 const regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/
                 let match = url.match(regExp);
                 let id = match[5];
-                iframe.setAttribute( 'webkitallowfullscreen', '' );
-                iframe.setAttribute( 'mozallowfullscreen', '' );
-                iframe.setAttribute( 'allowfullscreen', '' );
-                url = 'https://player.vimeo.com/video/'+ id +'?color=1da891&title=0&byline=0&portrait=0';
+                iframe.setAttribute('webkitallowfullscreen', '');
+                iframe.setAttribute('mozallowfullscreen', '');
+                iframe.setAttribute('allowfullscreen', '');
+                url = 'https://player.vimeo.com/video/' + id + '?color=1da891&title=0&byline=0&portrait=0';
             } else {
                 const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
                 let match = url.match(regExp);
                 console.log(match);
                 // let id = (match&&match[7].length==11)? match[7] : false;
-                
+
                 // iframe.setAttribute( 'allowfullscreen', '1' );
-                iframe.setAttribute(  'allow' , 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' );
+                iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
 
                 url = 'https://www.youtube.com/embed/' + id;
             }
 
-            iframe.setAttribute( 'src', url );
+            iframe.setAttribute('src', url);
 
-            element.appendChild( iframe );
-        } );
+            element.appendChild(iframe);
+        });
     }
 
     render() {
@@ -825,6 +829,10 @@ class Page extends React.Component {
                             <img src='/images/conclusion.jpg' style={{ display: 'block', margin: '0 auto' }} />
                             Você concluiu o curso de {course.title}
                         </DialogContentText>
+                        <br />
+                        <Grid container justify="center">
+                            <Button variant="contained" color="primary" component={Link} href="_blank" to="/public/storage/certification/template/1-template.png">Ver certificado</Button>
+                        </Grid>
                     </DialogContent>
                     <DialogActions>
                         <Button component={Link} to="/my-courses" color="secondary">

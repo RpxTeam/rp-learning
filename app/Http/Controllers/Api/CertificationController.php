@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Course;
 use App\User;
 use App\Certification;
+use App\Template;
 
 class CertificationController extends Controller
 {
@@ -61,14 +62,16 @@ class CertificationController extends Controller
         $user = User::findOrFail($user);
         $course = Course::findOrFail($course);
 
-        if($request->hasFile('image') && $request->file('image')->isValid()){
+        //if($request->hasFile('image') && $request->file('image')->isValid()){
             $certificate = Certification::create($request->All() + ['user_id' => $user->id, 'course_id' => $course->id]);
-            Certification::uploadImageCertification($request, $certificate);
-
-            return response()->json($certificate->id,200);
-        }else {
-            return response()->json(400);
-        }
+            // Certification::uploadImageCertification($request, $certificate);
+            $t = Template::findOrFail(1);
+            
+            return response()->json(Storage::url($t->image),200);
+        //     return response()->json($certificate->id,200);
+        // }else {
+        //     return response()->json(400);
+        // }
     }
 
     public function user($user){

@@ -19,11 +19,7 @@ class Page extends React.Component {
             },
             edit: false,
             message: {
-                type: '',
                 open: false,
-                vertical: 'top',
-                horizontal: 'center',
-                text: 'Snackbar its works'
             },
             profiles: [
                 {
@@ -47,6 +43,7 @@ class Page extends React.Component {
 
         this.handleEdit = this.handleEdit.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.openMessage = this.openMessage.bind(this)
     }
 
     getData = () => {
@@ -76,8 +73,12 @@ class Page extends React.Component {
     }
 
     handleChange = event => {
-        console.log(event.target.name)
-        console.log(event.target.value);
+        this.setState({
+            user: {
+                ...this.state.user,
+                [event.target.name]: event.target.value
+            }
+        });
     }
 
     handleSubmit = event => {
@@ -91,14 +92,8 @@ class Page extends React.Component {
             role_id: this.state.user.profile
         }).then(res => {
             console.log(res);
-            console.log(res.data);
-            this.setState({
-                message: 'Usuário atualizado com sucesso',
-                error: false,
-                success: true,
-            });
+            this.openMessage('Usuário atualizado com sucesso');
         }).catch(error => {
-            console.log(error.message)
             this.setState({
                 message: error.message,
                 error: true,
@@ -107,11 +102,12 @@ class Page extends React.Component {
         })
     }
 
-    openMessage = newState => () => {
+    openMessage = (newState) => {
         this.setState({
             message: {
+                ...this.state.message,
                 open: true,
-                ...newState
+                text: newState
             }
         });
     };
@@ -182,7 +178,7 @@ class Page extends React.Component {
                                     secondary="outlined"
                                     name="email"
                                     fullWidth
-                                    defaultValue={user.email}
+                                    value={user.email}
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
