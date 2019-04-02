@@ -13,6 +13,137 @@ use App\Point;
 
 class DashboardController extends Controller
 {
+    public function dashboard($id){
+        $user = User::findOrFail($id);
+
+        $courses = DB::table('data_courses')
+                    ->leftJoin('courses','data_courses.course_id','=','courses.id')
+                    ->where('data_courses.user_id', $user->id)
+                    ->get();
+
+        $certifications= DB::table('certifications')
+                            ->where('user_id', $user->id)
+                            ->get();
+
+        $points = Point::total($user->id);
+
+        $position = Dashboard::rankPosition($user->id);
+        
+        //admin
+        if($user->role_id == 1){
+            $leaderboard = Dashboard::leaderboard();
+            $latest_courses = Dashboard::latestCourses(5);
+            $latest_users = Dashboard::latestUsers(5);
+            $total_courses = Course::count();
+            $total_users = User::count();
+            $never_execute_user = Dashboard::rankusers()->where('courses_count',0)->count();
+            $rank_courses = Dashboard::rankCourses();
+            $finish_courses = Dashboard::totalCoursesFinish()->count();
+            $never_execute = $rank_courses->where('executes', 0)->count();
+            $not_finish = Dashboard::notFinishCourses()->count();
+
+            return response()->json([
+                'id' => $user->id,
+                'courses' => $courses,
+                'started' => $courses->where('progress','>',0),
+                'finished' => $courses->where('progress',100),
+                'certifications' => $certifications,
+                'level' => $user->level,
+                'points' => $points,
+                'position' => $position,
+                'user_data' => [
+                    'ranking' => $leaderboard,
+                    'latest_users' => $latest_users,
+                    'total_users' => $total_users,
+                    'never_execute' => $never_execute_user,
+                ],
+                'course_data' => [
+                    'total_courses' => $total_courses,
+                    'latest_courses' => $latest_courses,
+                    'rank_courses' => $rank_courses,
+                    'finish'=> $finish_courses,
+                    'not_finish' => $not_finish,
+                    'never_execute' => $never_execute,
+                ],
+            ],200);
+
+        //instructor
+        }else if($user->role_id == 2){
+            
+            $mycourses = Dashboard::instructorCourses($user->id);
+
+            $started = 0;
+            $onGoing = 0;
+            $finished = 0;
+            foreach($mycourses as $course){
+                $course->setAttribute('started', DataCourse::started($course->id));
+                $course->setAttribute('onGoing', DataCourse::onGoing($course->id));
+                $course->setAttribute('finished', DataCourse::finished($course->id));
+                
+                $started += $course->started;
+                $onGoing += $course->onGoing;
+                $finished += $course->finished;
+            }
+
+            return response()->json([
+                'id' => $user->id,
+                'courses' => $courses,
+                'started' => $courses->where('progress','>',0),
+                'finished' => $courses->where('progress',100),
+                'certifications' => $certifications,
+                'level' => $user->level,
+                'points' => $points,
+                'position' => $position,
+                'course_data' => [
+                    'mycourses' => $mycourses,
+                    'total' => $mycourses->count(),
+                    'started' => $started,
+                    'onGoing' => $onGoing,
+                    'finished' => $finished,
+                ],
+            ],200);
+
+        //student
+        }else{
+
+            return response()->json([
+                'id' => $user->id,
+                'courses' => $courses,
+                'started' => $courses->where('progress','>',0),
+                'finished' => $courses->where('progress',100),
+                'certifications' => $certifications,
+                'level' => $user->level,
+                'points' => $points,
+                'position' => $position,
+            ], 200);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function admin(){
         $leaderboard = Dashboard::leaderboard();
         $courses = Dashboard::latestCourses(5);
