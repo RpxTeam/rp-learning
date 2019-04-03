@@ -135,8 +135,8 @@ class DashboardController extends Controller
             'level' => $user->level,
             'points' => $points,
             'position' => $position,
-            'courses' => $courses,
-            'users' => $users,
+            'latest_courses' => $courses,
+            'latest_users' => $users,
             'totalCourses' => $totalCourses,
             'totalUsers' => $totalUsers
         ], 200);
