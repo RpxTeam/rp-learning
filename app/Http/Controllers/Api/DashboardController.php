@@ -134,6 +134,8 @@ class DashboardController extends Controller
         $position = Dashboard::rankPosition($user->id);
         $leaderboard = Dashboard::leaderboard();
 
+        
+
         $data = array(
             'leaderboard'=> $leaderboard,
             'level' => $user->level,
@@ -145,6 +147,7 @@ class DashboardController extends Controller
             'totalCourses' => $totalCourses,
             'totalUsers' => $totalUsers
         );
+
         return response()->json($data, 200);
     }
 

@@ -16,20 +16,23 @@ class Dashboard extends Model
             $user->setAttribute('points', Point::total($user->id));
             $user->toArray();
         });
-
+        // $users = $users->sortByDesc('points');
         $users = $users->sortByDesc('points')->toArray();
+        
         return $users;
     }
 
     public static function latestCourses($n){
         $data = collect();
-        $courses = Course::orderBy('id', 'desc')->take($n)->get()->toArray();
+        $courses = Course::orderBy('id', 'desc')->take($n)->get();
+        // $courses = Course::orderBy('id', 'desc')->take($n)->get()->toArray();
 
         return $courses;
     }
 
     public static function latestUsers($n){
-        $users = User::orderBy('id', 'desc')->take($n)->get()->toArray();
+        $users = User::orderBy('id', 'desc')->take($n)->get();
+        // $users = User::orderBy('id', 'desc')->take($n)->get()->toArray();
 
         return $users;
     }
