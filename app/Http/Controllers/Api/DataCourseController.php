@@ -20,7 +20,6 @@ class DataCourseController extends Controller
     public function index($user)
     {
         $mycourses = Course::userCourse($user)
-        ->where('view','=',1)
         ->where('progress','>', -1);
 
         if(!$mycourses){
@@ -32,9 +31,13 @@ class DataCourseController extends Controller
                     $mycourses->forget($mycourse);
                 }
             }
-            $mycourses->sortByDesc('id');
-            return response()->json($mycourses,200);
-            //200: OK. The standard success code and default option.
+            if(!$mycourses){
+                return response()->json(400);
+            }else{
+                $mycourses->sortByDesc('id');
+                return response()->json($mycourses,200);
+                //200: OK. The standard success code and default option.
+            }
         }
     }
 
