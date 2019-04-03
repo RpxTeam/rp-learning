@@ -41,7 +41,7 @@ class DashboardController extends Controller
             $finish_courses = Dashboard::totalCoursesFinish()->count();
             $never_execute = $rank_courses->where('executes', 0)->count();
             $not_finish = Dashboard::notFinishCourses()->count();
-
+            
         $data = array(
             'leaderboard'=> $leaderboard,
             'level' => $user->level,
@@ -53,7 +53,7 @@ class DashboardController extends Controller
             'total_courses' => $total_courses,
             'total_users' => $total_users,
             'user_never_execute' => $never_execute_user,
-            'rank_courses' => $rank_courses,
+            'rank_courses' => $rank_courses->toArray(),
             'course_finish'=> $finish_courses,
             'course_not_finish' => $not_finish,
             'course_never_execute' => $never_execute,
@@ -81,28 +81,28 @@ class DashboardController extends Controller
 
             $data = array(
                 'id' => $user->id,
-                'courses' => $mycourses,
+                'courses' => $mycourses->toArray(),
                 'total' => $mycourses->count(),
                 'total_started' => $started,
                 'total_onGoing' => $onGoing,
                 'total_finished' => $finished,
             );
-    
+
             return response()->json($data, 200);
 
         //student
         }else{
             $data = array(
                 'id' => $user->id,
-                'courses' => $courses,
-                'started' => $courses->where('progress','>',0),
-                'finished' => $courses->where('progress',100),
-                'certifications' => $certifications,
+                'courses' => $courses->toArray(),
+                'started' => $courses->where('progress','>',0)->toArray(),
+                'finished' => $courses->where('progress',100)->toArray(),
+                'certifications' => $certifications->toArray(),
                 'level' => $user->level,
                 'points' => $points,
                 'position' => $position,
             );
-
+            
             return response()->json($data, 200);
         }
     }
