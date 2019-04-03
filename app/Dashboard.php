@@ -14,26 +14,28 @@ class Dashboard extends Model
     public static function leaderboard(){
         $users = User::All()->each(function($user){
             $user->setAttribute('points', Point::total($user->id));
+            $user->toArray();
         });
 
-        $users = $users->sortByDesc('points');
+        $users = $users->sortByDesc('points')->toArray();
         return $users;
     }
 
     public static function latestCourses($n){
-        $courses = Course::orderBy('id', 'desc')->take($n)->get();
+        $data = collect();
+        $courses = Course::orderBy('id', 'desc')->take($n)->get()->toArray();
 
         return $courses;
     }
 
     public static function latestUsers($n){
-        $users = User::orderBy('id', 'desc')->take($n)->get();
+        $users = User::orderBy('id', 'desc')->take($n)->get()->toArray();
 
         return $users;
     }
 
     public static function instructorCourses($user){
-        $courses = Course::where('user_id',$user)->orderBy('end_date')->get();
+        $courses = Course::where('user_id',$user)->orderBy('end_date')->get()->toArray();
         
         return $courses;
     }
@@ -83,10 +85,14 @@ class Dashboard extends Model
     }
 
     public static function rankPosition($user){
-        $rank = Dashboard::leaderboard();
+        $rank = User::All()->each(function($user){
+            $user->setAttribute('points', Point::total($user->id));
+        });
+
+        $rank = $rank->sortByDesc('points')->toArray();
         $i = 1;
         foreach($rank as $r){
-            if($r->id == $user){
+            if($r['id'] == $user){
                 return $i;
             }
             $i++;

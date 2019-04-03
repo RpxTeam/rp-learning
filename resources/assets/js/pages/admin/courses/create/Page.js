@@ -40,9 +40,6 @@ class Page extends React.Component {
             success: false,
             message: {
                 open: false,
-                vertical: 'top',
-                horizontal: 'center',
-                text: 'Snackbar its works'
             },
             authors: [],
             options: [],

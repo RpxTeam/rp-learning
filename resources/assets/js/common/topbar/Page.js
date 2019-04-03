@@ -55,7 +55,7 @@ class Page extends React.Component {
             <AppBar color="default" position={this.props.position} className={this.props.className}>
                 <Grid className={classes.container}>
                     <Toolbar className={classes.bar}>
-                        <Typography variant="div" color="inherit" className={classes.grow}>
+                        <Typography variant="display1" color="inherit" className={classes.grow}>
                             <Link to="/" className={classes.logoContainer}>
                                 <img src="/img/logo.png" className={classes.logo} />
                             </Link>
@@ -89,7 +89,9 @@ class Page extends React.Component {
                                         open={open}
                                         onClose={this.handleClose}
                                     >
+                                        {user.role_id === "1" || user.role_id === 1 ? 
                                         <MenuItem component={Link} to={'/courses'}>Voltar para cursos</MenuItem>
+                                        : null }
                                         <MenuItem component={Link} to={'/profile'}>Perfil</MenuItem>
                                         <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
                                     </Menu>

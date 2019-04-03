@@ -175,7 +175,9 @@ class Page extends React.Component {
                 <main className="fadeIn animated" id="login-page" style={{ alignItems: 'center' }}>
                     <div className="center">
                         <div id="logo">
-                            <img src={require('../../../img/logo.png')} alt="" />
+                            <Link to={"/"}>
+                                <img src="/img/logo.png" />
+                            </Link>
                         </div>
                         <form onSubmit={this.handleSubmit}>
                             <Grid container justify={'center'}>
@@ -229,7 +231,7 @@ class Page extends React.Component {
                             </Grid>
                             <div className="btns btns-center">
                                 <div>
-                                    <Button type='submit' variant="contained" color="primary">Entrar</Button>
+                                    <Button type='submit' variant="contained" color="secondary">Entrar</Button>
                                 </div>
                                 <br />
                                 <div>

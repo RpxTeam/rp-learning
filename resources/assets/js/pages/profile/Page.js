@@ -185,7 +185,7 @@ class Page extends React.Component {
                         </Grid>
                         <br />
                         <Grid container spacing={8} justify="center">
-                            <Button variant="contained" color="primary" onClick={this.saveChanges}>Salvar alterações</Button>
+                            <Button variant="contained" color="secondary" onClick={this.saveChanges}>Salvar alterações</Button>
                         </Grid>
                     </form>
                 </CardContainer>

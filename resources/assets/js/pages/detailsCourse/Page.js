@@ -68,22 +68,25 @@ class Page extends React.Component {
             axios.get(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`)
                 .then(res => {
                     const { data } = res;
-                    console.log(data);
-                    this.setState({ course: data });
                     if (!data.view) {
-                        axios.post(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`, { view: 1 });
+                        axios.post(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {
+                            view: 1
+                        });
                     }
+                    this.getCourse();
                     this.setState({ progress: data.progress });
-                });
-        } else {
-            axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
-                .then(res => {
-                    const course = res.data;
-                    this.setState({ course: course });
                 });
         }
         this.getLessons();
     };
+
+    getCourse = () => {
+        axios.get(`${API_URL}/api/courses/${this.state.courseID}`)
+            .then(res => {
+                const course = res.data;
+                this.setState({ course: course });
+            });
+    }
 
     componentDidMount() {
         this.getData();
@@ -93,7 +96,6 @@ class Page extends React.Component {
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/lessons`)
             .then(res => {
                 const lessons = res.data;
-                console.log(lessons);
                 this.setState({ lessons: lessons, lessonsCount: lessons.length });
             });
     };
@@ -174,8 +176,8 @@ class Page extends React.Component {
                             <Tabs
                                 value={value}
                                 onChange={this.handleChange}
-                                indicatorColor="primary"
-                                textColor="primary"
+                                indicatorColor="secondary"
+                                textColor="secondary"
                             >
                                 <Tab label="Detalhes" />
                                 {/* <Tab label="Avaliações" /> */}
@@ -251,7 +253,7 @@ class Page extends React.Component {
                                         </List>
                                     </Card>
                                 </Grid>
-                                <Button variant='contained' size="large" color='primary' style={{ marginTop: '20px' }} onClick={this.startCourse}>{isAuthenticated ? progress != null ? "Continuar Curso" : "Iniciar Curso" : "Iniciar Curso"}</Button>
+                                <Button variant='contained' size="large" color='secondary' style={{ marginTop: '20px' }} onClick={this.startCourse}>{isAuthenticated ? progress != null ? "Continuar Curso" : "Iniciar Curso" : "Iniciar Curso"}</Button>
                             </Grid>
                         </Grid>
                     </Container>

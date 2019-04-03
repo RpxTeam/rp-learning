@@ -69,10 +69,7 @@ class Page extends React.Component {
             email: this.state.email,
             password: this.state.password,
             role_id: this.state.profile
-        })
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
+        }).then(res => {
                 this.setState({
                     message: {
                         open: true,
@@ -87,7 +84,6 @@ class Page extends React.Component {
                     })
                 }.bind(this), 2000);
             }).catch(error => {
-                console.log(error.message)
                 this.setState({
                     message: error.message,
                     error: true,
@@ -96,11 +92,12 @@ class Page extends React.Component {
             })
     }
 
-    openMessage = newState => () => {
+    openMessage = (newState) => {
         this.setState({
             message: {
+                ...this.state.message,
                 open: true,
-                ...newState
+                text: newState
             }
         });
     };
@@ -187,7 +184,7 @@ class Page extends React.Component {
                         </Grid>
                     </CardContainer>
                 </form>
-            </Admin >
+            </Admin>
         );
     }
 }

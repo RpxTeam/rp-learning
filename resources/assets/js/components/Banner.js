@@ -51,7 +51,7 @@ export class Banner extends Component {
                     this.props.internal ?
                     <div className="banner-course">
                         <div className="gridD">
-                            <h1>{this.props.title}</h1>
+                            <h1 style={{color: "#9c0204"}}>{this.props.title}</h1>
                         </div>
                     </div>
                     :

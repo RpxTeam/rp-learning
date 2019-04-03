@@ -44,10 +44,10 @@ class DashboardController extends Controller
 
             return response()->json([
                 'id' => $user->id,
-                'courses' => $courses,
-                'started' => $courses->where('progress','>',0),
-                'finished' => $courses->where('progress',100),
-                'certifications' => $certifications,
+                'courses' => $courses->toArray(),
+                'started' => $courses->where('progress','>',0)->toArray(),
+                'finished' => $courses->where('progress',100)->toArray(),
+                'certifications' => $certifications->toArray(),
                 'level' => $user->level,
                 'points' => $points,
                 'position' => $position,
@@ -119,40 +119,22 @@ class DashboardController extends Controller
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function admin(){
+    public function admin($id){
+        $user = User::findOrFail($id);
         $leaderboard = Dashboard::leaderboard();
         $courses = Dashboard::latestCourses(5);
         $users = Dashboard::latestUsers(5);
         $totalCourses = Course::count();
         $totalUsers = User::count();
+        $points = Point::total($user->id);
+        $position = Dashboard::rankPosition($user->id);
+        $leaderboard = Dashboard::leaderboard();
 
         return response()->json([
             'leaderboard'=> $leaderboard,
+            'level' => $user->level,
+            'points' => $points,
+            'position' => $position,
             'courses' => $courses,
             'users' => $users,
             'totalCourses' => $totalCourses,
@@ -163,6 +145,10 @@ class DashboardController extends Controller
     public function instructor($id){
         $user = User::findOrFail($id);
         $courses = Dashboard::instructorCourses($user->id);
+        $leaderboard = Dashboard::leaderboard();
+        $points = Point::total($user->id);
+        $position = Dashboard::rankPosition($user->id);
+        $leaderboard = Dashboard::leaderboard();
 
         $started = 0;
         $onGoing = 0;
@@ -179,6 +165,10 @@ class DashboardController extends Controller
         // lista de usuarios*
 
         return response()->json([
+            'leaderboard'=> $leaderboard,
+            'level' => $user->level,
+            'points' => $points,
+            'position' => $position,
             'courses' => $courses,
             'started' => $started,
             'onGoing' => $onGoing,
@@ -192,19 +182,25 @@ class DashboardController extends Controller
 
         $courses = DB::table('data_courses')
                     ->leftJoin('courses','data_courses.course_id','=','courses.id')
-                    ->where('user_id', $user->id)
-                    ->get();
+                    ->where('data_courses.user_id', $user->id)
+                    ->get()->toArray();
 
         $certifications= DB::table('certifications')
                             ->where('user_id', $user->id)
-                            ->get();
+                            ->get()->toArray();
+
 
         $points = Point::total($user->id);
+        $position = Dashboard::rankPosition($user->id);
+        $leaderboard = Dashboard::leaderboard();
 
         return response()->json([
+            'leaderboard'=> $leaderboard,
             'courses' => $courses,
             'certifications' => $certifications,
+            'level' => $user->level,
             'points' => $points,
+            'position' => $position,
         ], 200);
     }
 }
