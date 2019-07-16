@@ -106,6 +106,7 @@ class Page extends React.Component {
                 if (res.data.progress === null) {
                     this.updateCourse();
                 }
+                
                 this.setState({ onCourse: true });
             });
     };
@@ -113,6 +114,7 @@ class Page extends React.Component {
     updateCourse = () => {
         axios.put(`${API_URL}/api/users/${this.props.user.id}/courses/${this.state.courseID}`, {
             progress: 0,
+            view: 1
         })
             .then(res => {
                 this.setState({ onCourse: true });
