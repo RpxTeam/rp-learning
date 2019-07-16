@@ -9,7 +9,7 @@ class ForgotPasswordRequest extends FormRequest
 {
     public function rules()
     {
-        return Config::get('email' => 'required|email');
+        return Config::get(['email' => 'required|email']);
     }
 
     public function authorize()
