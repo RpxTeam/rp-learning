@@ -1,0 +1,133 @@
++-----------+-----------------------------------------------------------------------------+-------------------+------------------------------------------------------------------+--------------+
+| Method    | URI                                                                         | Name              | Action                                                           | Middleware   |
++-----------+-----------------------------------------------------------------------------+-------------------+------------------------------------------------------------------+--------------+
+| POST      | api/auth/login                                                              |                   | App\Http\Controllers\Auth\LoginController@login                  | api          |
+| POST      | api/auth/login/{social}/callback                                            |                   | App\Http\Controllers\Auth\LoginController@handleProviderCallback | api          |
+| POST      | api/auth/register                                                           |                   | App\Http\Controllers\Auth\RegisterController@register            | api          |
+| GET|HEAD  | api/authors                                                                 | authors.index     | App\Http\Controllers\Api\AuthorsController@index                 | api          |
+| POST      | api/authors                                                                 | authors.store     | App\Http\Controllers\Api\AuthorsController@store                 | api          |
+| GET|HEAD  | api/authors/create                                                          | authors.create    | App\Http\Controllers\Api\AuthorsController@create                | api          |
+| DELETE    | api/authors/{author}                                                        | authors.destroy   | App\Http\Controllers\Api\AuthorsController@destroy               | api          |
+| PUT|PATCH | api/authors/{author}                                                        | authors.update    | App\Http\Controllers\Api\AuthorsController@update                | api          |
+| GET|HEAD  | api/authors/{author}                                                        | authors.show      | App\Http\Controllers\Api\AuthorsController@show                  | api          |
+| GET|HEAD  | api/authors/{author}/edit                                                   | authors.edit      | App\Http\Controllers\Api\AuthorsController@edit                  | api          |
+| POST      | api/certification/templates                                                 | templates.store   | App\Http\Controllers\Api\TemplateController@store                | api          |
+| GET|HEAD  | api/certification/templates                                                 | templates.index   | App\Http\Controllers\Api\TemplateController@index                | api          |
+| GET|HEAD  | api/certification/templates/create                                          | templates.create  | App\Http\Controllers\Api\TemplateController@create               | api          |
+| DELETE    | api/certification/templates/{template}                                      | templates.destroy | App\Http\Controllers\Api\TemplateController@destroy              | api          |
+| GET|HEAD  | api/certification/templates/{template}                                      | templates.show    | App\Http\Controllers\Api\TemplateController@show                 | api          |
+| PUT|PATCH | api/certification/templates/{template}                                      | templates.update  | App\Http\Controllers\Api\TemplateController@update               | api          |
+| GET|HEAD  | api/certification/templates/{template}/edit                                 | templates.edit    | App\Http\Controllers\Api\TemplateController@edit                 | api          |
+| POST      | api/courses                                                                 | courses.store     | App\Http\Controllers\Api\CoursesController@store                 | api          |
+| GET|HEAD  | api/courses                                                                 | courses.index     | App\Http\Controllers\Api\CoursesController@index                 | api          |
+| GET|HEAD  | api/courses/create                                                          | courses.create    | App\Http\Controllers\Api\CoursesController@create                | api          |
+| POST      | api/courses/order                                                           |                   | App\Http\Controllers\Api\CoursesController@order                 | api          |
+| DELETE    | api/courses/{course}                                                        | courses.destroy   | App\Http\Controllers\Api\CoursesController@destroy               | api          |
+| GET|HEAD  | api/courses/{course}                                                        |                   | App\Http\Controllers\Api\CoursesController@show                  | api          |
+| PUT|PATCH | api/courses/{course}                                                        | courses.update    | App\Http\Controllers\Api\CoursesController@update                | api          |
+| GET|HEAD  | api/courses/{course}/active                                                 |                   | App\Http\Controllers\Api\QuizController@quizFinalActive          | api          |
+| POST      | api/courses/{course}/authors                                                |                   | App\Http\Controllers\Api\AuthorsController@courseAuthor          | api          |
+| GET|HEAD  | api/courses/{course}/authors                                                |                   | App\Http\Controllers\Api\AuthorsController@list                  | api          |
+| GET|HEAD  | api/courses/{course}/edit                                                   | courses.edit      | App\Http\Controllers\Api\CoursesController@edit                  | api          |
+| GET|HEAD  | api/courses/{course}/final                                                  |                   | App\Http\Controllers\Api\QuizController@final                    | api          |
+| POST      | api/courses/{course}/final/activate                                         |                   | App\Http\Controllers\Api\QuizController@activateFinal            | api          |
+| POST      | api/courses/{course}/final/desactivate                                      |                   | App\Http\Controllers\Api\QuizController@desactivateFinal         | api          |
+| GET|HEAD  | api/courses/{course}/lessons                                                |                   | App\Http\Controllers\Api\LessonController@index                  | api          |
+| POST      | api/courses/{course}/lessons                                                | lessons.store     | App\Http\Controllers\Api\LessonController@store                  | api          |
+| GET|HEAD  | api/courses/{course}/lessons/create                                         | lessons.create    | App\Http\Controllers\Api\LessonController@create                 | api          |
+| POST      | api/courses/{course}/lessons/order                                          |                   | App\Http\Controllers\Api\LessonController@order                  | api          |
+| GET|HEAD  | api/courses/{course}/lessons/{lesson}                                       |                   | App\Http\Controllers\Api\LessonController@show                   | api          |
+| PUT|PATCH | api/courses/{course}/lessons/{lesson}                                       | lessons.update    | App\Http\Controllers\Api\LessonController@update                 | api          |
+| DELETE    | api/courses/{course}/lessons/{lesson}                                       | lessons.destroy   | App\Http\Controllers\Api\LessonController@destroy                | api          |
+| GET|HEAD  | api/courses/{course}/lessons/{lesson}/edit                                  | lessons.edit      | App\Http\Controllers\Api\LessonController@edit                   | api          |
+| GET|HEAD  | api/courses/{course}/lessons/{lesson}/media                                 |                   | App\Http\Controllers\Api\LessonController@media                  | api          |
+| POST      | api/courses/{course}/lessons/{lesson}/questions                             | questions.store   | App\Http\Controllers\Api\LessonQuestionsController@store         | api          |
+| GET|HEAD  | api/courses/{course}/lessons/{lesson}/questions                             | questions.index   | App\Http\Controllers\Api\LessonQuestionsController@index         | api          |
+| GET|HEAD  | api/courses/{course}/lessons/{lesson}/questions/create                      | questions.create  | App\Http\Controllers\Api\LessonQuestionsController@create        | api          |
+| GET|HEAD  | api/courses/{course}/lessons/{lesson}/questions/{question}                  | questions.show    | App\Http\Controllers\Api\LessonQuestionsController@show          | api          |
+| DELETE    | api/courses/{course}/lessons/{lesson}/questions/{question}                  | questions.destroy | App\Http\Controllers\Api\LessonQuestionsController@destroy       | api          |
+| PUT|PATCH | api/courses/{course}/lessons/{lesson}/questions/{question}                  | questions.update  | App\Http\Controllers\Api\LessonQuestionsController@update        | api          |
+| POST      | api/courses/{course}/lessons/{lesson}/questions/{question}/answers          |                   | App\Http\Controllers\Api\LessonAnswersController@store           | api          |
+| DELETE    | api/courses/{course}/lessons/{lesson}/questions/{question}/answers/{answer} |                   | App\Http\Controllers\Api\LessonAnswersController@destroy         | api          |
+| PUT       | api/courses/{course}/lessons/{lesson}/questions/{question}/answers/{answer} |                   | App\Http\Controllers\Api\LessonAnswersController@update          | api          |
+| GET|HEAD  | api/courses/{course}/lessons/{lesson}/questions/{question}/edit             | questions.edit    | App\Http\Controllers\Api\LessonQuestionsController@edit          | api          |
+| GET|HEAD  | api/courses/{course}/questions                                              |                   | App\Http\Controllers\Api\QuizController@questions                | api          |
+| GET|HEAD  | api/courses/{course}/questions/{question}                                   |                   | App\Http\Controllers\Api\QuizController@courseQuestions          | api          |
+| PUT       | api/courses/{course}/questions/{question}                                   |                   | App\Http\Controllers\Api\QuizController@updateQuestion           | api          |
+| GET|HEAD  | api/courses/{course}/quiz                                                   | quiz.index        | App\Http\Controllers\Api\QuizController@index                    | api          |
+| POST      | api/courses/{course}/quiz                                                   | quiz.store        | App\Http\Controllers\Api\QuizController@store                    | api          |
+| GET|HEAD  | api/courses/{course}/quiz/create                                            | quiz.create       | App\Http\Controllers\Api\QuizController@create                   | api          |
+| PUT|PATCH | api/courses/{course}/quiz/{quiz}                                            | quiz.update       | App\Http\Controllers\Api\QuizController@update                   | api          |
+| GET|HEAD  | api/courses/{course}/quiz/{quiz}                                            | quiz.show         | App\Http\Controllers\Api\QuizController@show                     | api          |
+| DELETE    | api/courses/{course}/quiz/{quiz}                                            | quiz.destroy      | App\Http\Controllers\Api\QuizController@destroy                  | api          |
+| GET|HEAD  | api/courses/{course}/quiz/{quiz}/edit                                       | quiz.edit         | App\Http\Controllers\Api\QuizController@edit                     | api          |
+| GET|HEAD  | api/courses/{course}/quiz/{quiz}/questions                                  | questions.index   | App\Http\Controllers\Api\QuestionsController@index               | api          |
+| POST      | api/courses/{course}/quiz/{quiz}/questions                                  | questions.store   | App\Http\Controllers\Api\QuestionsController@store               | api          |
+| GET|HEAD  | api/courses/{course}/quiz/{quiz}/questions/create                           | questions.create  | App\Http\Controllers\Api\QuestionsController@create              | api          |
+| DELETE    | api/courses/{course}/quiz/{quiz}/questions/{question}                       | questions.destroy | App\Http\Controllers\Api\QuestionsController@destroy             | api          |
+| PUT|PATCH | api/courses/{course}/quiz/{quiz}/questions/{question}                       | questions.update  | App\Http\Controllers\Api\QuestionsController@update              | api          |
+| GET|HEAD  | api/courses/{course}/quiz/{quiz}/questions/{question}                       | questions.show    | App\Http\Controllers\Api\QuestionsController@show                | api          |
+| POST      | api/courses/{course}/quiz/{quiz}/questions/{question}/answers               |                   | App\Http\Controllers\Api\AnswersController@store                 | api          |
+| DELETE    | api/courses/{course}/quiz/{quiz}/questions/{question}/answers/{answer}      |                   | App\Http\Controllers\Api\AnswersController@destroy               | api          |
+| PUT       | api/courses/{course}/quiz/{quiz}/questions/{question}/answers/{answer}      |                   | App\Http\Controllers\Api\AnswersController@update                | api          |
+| GET|HEAD  | api/courses/{course}/quiz/{quiz}/questions/{question}/edit                  | questions.edit    | App\Http\Controllers\Api\QuestionsController@edit                | api          |
+| GET|HEAD  | api/dashboard/admin/{id}                                                    |                   | App\Http\Controllers\Api\DashboardController@admin               | api          |
+| GET|HEAD  | api/dashboard/instructor/{id}                                               |                   | App\Http\Controllers\Api\DashboardController@instructor          | api          |
+| GET|HEAD  | api/dashboard/student/{id}                                                  |                   | App\Http\Controllers\Api\DashboardController@student             | api          |
+| GET|HEAD  | api/dashboard/{id}                                                          |                   | App\Http\Controllers\Api\DashboardController@dashboard           | api          |
+| GET|HEAD  | api/hello                                                                   |                   | Closure                                                          | api,jwt.auth |
+| GET|HEAD  | api/leaderboard                                                             |                   | App\Http\Controllers\Api\UserController@points                   | api          |
+| POST      | api/levels                                                                  |                   | App\Http\Controllers\Api\LevelsController@makeLevels             | api          |
+| POST      | api/password/email                                                          |                   | App\Http\Controllers\Auth\ForgotPasswordController@getResetToken | api,guest    |
+| POST      | api/password/reset                                                          |                   | App\Http\Controllers\Auth\ResetPasswordController@reset          | api,guest    |
+| POST      | api/points                                                                  | points.store      | App\Http\Controllers\Api\PointsController@store                  | api          |
+| GET|HEAD  | api/points                                                                  | points.index      | App\Http\Controllers\Api\PointsController@index                  | api          |
+| GET|HEAD  | api/points/create                                                           | points.create     | App\Http\Controllers\Api\PointsController@create                 | api          |
+| GET|HEAD  | api/points/{point}                                                          | points.show       | App\Http\Controllers\Api\PointsController@show                   | api          |
+| DELETE    | api/points/{point}                                                          | points.destroy    | App\Http\Controllers\Api\PointsController@destroy                | api          |
+| PUT|PATCH | api/points/{point}                                                          | points.update     | App\Http\Controllers\Api\PointsController@update                 | api          |
+| GET|HEAD  | api/points/{point}/edit                                                     | points.edit       | App\Http\Controllers\Api\PointsController@edit                   | api          |
+| GET|HEAD  | api/teams                                                                   | teams.index       | App\Http\Controllers\Api\TeamController@index                    | api          |
+| POST      | api/teams                                                                   | teams.store       | App\Http\Controllers\Api\TeamController@store                    | api          |
+| POST      | api/teams/add                                                               |                   | App\Http\Controllers\Api\TeamController@add                      | api          |
+| GET|HEAD  | api/teams/create                                                            | teams.create      | App\Http\Controllers\Api\TeamController@create                   | api          |
+| POST      | api/teams/remove                                                            |                   | App\Http\Controllers\Api\TeamController@remove                   | api          |
+| DELETE    | api/teams/{team}                                                            | teams.destroy     | App\Http\Controllers\Api\TeamController@destroy                  | api          |
+| PUT|PATCH | api/teams/{team}                                                            | teams.update      | App\Http\Controllers\Api\TeamController@update                   | api          |
+| GET|HEAD  | api/teams/{team}                                                            | teams.show        | App\Http\Controllers\Api\TeamController@show                     | api          |
+| GET|HEAD  | api/teams/{team}/edit                                                       | teams.edit        | App\Http\Controllers\Api\TeamController@edit                     | api          |
+| GET|HEAD  | api/trails                                                                  | trails.index      | App\Http\Controllers\Api\TrailController@index                   | api          |
+| POST      | api/trails                                                                  | trails.store      | App\Http\Controllers\Api\TrailController@store                   | api          |
+| GET|HEAD  | api/trails/create                                                           | trails.create     | App\Http\Controllers\Api\TrailController@create                  | api          |
+| PUT|PATCH | api/trails/{trail}                                                          | trails.update     | App\Http\Controllers\Api\TrailController@update                  | api          |
+| DELETE    | api/trails/{trail}                                                          | trails.destroy    | App\Http\Controllers\Api\TrailController@destroy                 | api          |
+| GET|HEAD  | api/trails/{trail}                                                          | trails.show       | App\Http\Controllers\Api\TrailController@show                    | api          |
+| GET|HEAD  | api/trails/{trail}/edit                                                     | trails.edit       | App\Http\Controllers\Api\TrailController@edit                    | api          |
+| POST      | api/upload                                                                  |                   | App\Http\Controllers\Api\UploadController@upload                 | api          |
+| POST      | api/users                                                                   | users.store       | App\Http\Controllers\Api\UserController@store                    | api          |
+| GET|HEAD  | api/users                                                                   | users.index       | App\Http\Controllers\Api\UserController@index                    | api          |
+| GET|HEAD  | api/users/create                                                            | users.create      | App\Http\Controllers\Api\UserController@create                   | api          |
+| PUT|PATCH | api/users/{user}                                                            | users.update      | App\Http\Controllers\Api\UserController@update                   | api          |
+| DELETE    | api/users/{user}                                                            | users.destroy     | App\Http\Controllers\Api\UserController@destroy                  | api          |
+| GET|HEAD  | api/users/{user}                                                            | users.show        | App\Http\Controllers\Api\UserController@show                     | api          |
+| GET|HEAD  | api/users/{user}/certification                                              |                   | App\Http\Controllers\Api\CertificationController@user            | api          |
+| GET|HEAD  | api/users/{user}/courses                                                    |                   | App\Http\Controllers\Api\DataCourseController@index              | api          |
+| PUT       | api/users/{user}/courses/{course}                                           |                   | App\Http\Controllers\Api\DataCourseController@update             | api          |
+| POST      | api/users/{user}/courses/{course}                                           |                   | App\Http\Controllers\Api\DataCourseController@store              | api          |
+| GET|HEAD  | api/users/{user}/courses/{course}                                           |                   | App\Http\Controllers\Api\DataCourseController@show               | api          |
+| GET|HEAD  | api/users/{user}/courses/{course}/certification                             |                   | App\Http\Controllers\Api\CertificationController@show            | api          |
+| POST      | api/users/{user}/courses/{course}/certification                             |                   | App\Http\Controllers\Api\CertificationController@store           | api          |
+| GET|HEAD  | api/users/{user}/courses/{course}/lessons                                   |                   | App\Http\Controllers\Api\DataLessonController@index              | api          |
+| PUT       | api/users/{user}/courses/{course}/lessons/{lesson}                          |                   | App\Http\Controllers\Api\DataLessonController@update             | api          |
+| POST      | api/users/{user}/courses/{course}/lessons/{lesson}                          |                   | App\Http\Controllers\Api\DataLessonController@store              | api          |
+| GET|HEAD  | api/users/{user}/courses/{course}/lessons/{lesson}                          |                   | App\Http\Controllers\Api\DataLessonController@show               | api          |
+| POST      | api/users/{user}/courses/{course}/lessons/{lesson}/points                   |                   | App\Http\Controllers\Api\DataPointController@lesson              | api          |
+| POST      | api/users/{user}/courses/{course}/points                                    |                   | App\Http\Controllers\Api\DataPointController@course              | api          |
+| GET|HEAD  | api/users/{user}/courses/{course}/quiz/{quiz}/final                         |                   | App\Http\Controllers\Api\DataPointController@final               | api          |
+| POST      | api/users/{user}/courses/{course}/quiz/{quiz}/points                        |                   | App\Http\Controllers\Api\DataPointController@quiz                | api          |
+| GET|HEAD  | api/users/{user}/courses/{course}/quiz/{quiz}/points                        |                   | App\Http\Controllers\Api\DataPointController@final               | api          |
+| GET|HEAD  | api/users/{user}/edit                                                       | users.edit        | App\Http\Controllers\Api\UserController@edit                     | api          |
+| GET|HEAD  | api/users/{user}/points                                                     |                   | App\Http\Controllers\Api\DataPointController@user                | api          |
+| GET|HEAD  | redirect/{social}                                                           |                   | App\Http\Controllers\Auth\LoginController@socialLogin            | web          |
+| GET|HEAD  | {slug}                                                                      |                   | Closure                                                          | web          |
++-----------+-----------------------------------------------------------------------------+-------------------+------------------------------------------------------------------+--------------+
