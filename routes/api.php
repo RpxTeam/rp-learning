@@ -25,7 +25,7 @@ Route::group(['prefix'=> 'auth'],function(){
     Route::post('/login/{social}/callback','Auth\LoginController@handleProviderCallback')->where('social','twitter|facebook|linkedin|google');
 });
 
-Route::middleware(['jwt_auth'])->group(function(){
+Route::middleware(['jwt.auth'])->group(function(){
    Route::get('/hello',function(){
        return "Cool dude";
    });
@@ -42,7 +42,7 @@ Route::resource('authors', 'Api\AuthorsController');
 Route::resource('points', 'Api\PointsController');
 
 //DataPoints routes
-Route::get('leaderboard', 'Api\UsersController@points');
+Route::get('leaderboard', 'Api\UserController@points');
 Route::get('users/{user}/points', 'Api\DataPointController@user');
 Route::get('users/{user}/courses/{course}/quiz/{quiz}/points', 'Api\DataPointController@final');
 Route::post('users/{user}/courses/{course}/points', 'Api\DataPointController@course');
