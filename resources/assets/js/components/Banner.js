@@ -12,7 +12,7 @@ export class Banner extends Component {
             background-image: url(${this.props.image ? this.props.image : ''});
             background-position: center center;
             background-repeat: no-repeat;
-            background-color: #9c0204;
+            background-color: #6496c8;
             background-size: cover;
             &::before {
                 content: '';
@@ -51,7 +51,7 @@ export class Banner extends Component {
                     this.props.internal ?
                     <div className="banner-course">
                         <div className="gridD">
-                            <h1 style={{color: "#9c0204"}}>{this.props.title}</h1>
+                            <h1 style={{color: "#6496c8"}}>{this.props.title}</h1>
                         </div>
                     </div>
                     :

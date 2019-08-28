@@ -82,7 +82,7 @@ class Banner extends React.Component {
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Card>
-                            <div className={classes.image} style={{ backgroundColor: '#9c0204' }}>
+                            <div className={classes.image} style={{ backgroundColor: '#6496c8' }}>
                                 <div className={classes.icon} style={{ backgroundImage: `url(${'images/icons/aprendizado.png'})` }}></div>
                             </div>
                             <CardContent className={classes.content}>
@@ -127,7 +127,7 @@ class Banner extends React.Component {
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Card>
-                            <div className={classes.image} style={{ backgroundColor: '#9c0204' }}>
+                            <div className={classes.image} style={{ backgroundColor: '#6496c8' }}>
                                 <div className={classes.icon} style={{ backgroundImage: `url(${'images/icons/carreira.png'})` }}></div>
                             </div>
                             <CardContent className={classes.content}>
@@ -165,7 +165,7 @@ class Banner extends React.Component {
                                     Sucesso
                                 </Typography>
                                 <Typography component="p" className={classes.p}>
-                                    1221321
+                                    Conquiste o reconhecimento que você merece mantendo-se sempre atualizado e informado!
                                 </Typography>
                             </CardContent>
                         </Card>

@@ -18,7 +18,7 @@ const styles = theme => ({
     },
     banner: {
         padding: '15px 0',
-        background: '#9c0204'
+        background: '#6496c8'
     },
     container: {
         height: '100%',

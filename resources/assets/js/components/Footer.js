@@ -9,7 +9,7 @@ const styles = theme => ({
     root: {
         padding: '10px 0',
         textAlign: 'center',
-        background: '#9c0204'
+        background: '#6496c8'
     },
     paragraph: {
         color: '#ffffff'

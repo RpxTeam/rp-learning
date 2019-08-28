@@ -39,7 +39,7 @@ class ForgotPasswordController extends Controller
         if ($request->wantsJson()) {
             $user = User::where('email', $request->input('email'))->first();
             if (!$user) {
-                return response()->json(['status','Email with reset link sent successfully'],200);
+                return response()->json(['status','Email not found!'],200);
             }
             $this->sendResetLinkEmail($request);
             return response()->json(['status','Email with reset link sent successfully'],200);

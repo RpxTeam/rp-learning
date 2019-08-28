@@ -1,22 +1,48 @@
 import React from 'react'
-import {
-    Button,
-    Divider,
-    Dimmer,
-    Form,
-    Grid,
-    Header,
-    Icon,
-    Loader,
-    Message,
-    Segment} from 'semantic-ui-react'
 import {Link, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ReeValidate from 'ree-validate'
 import AuthService from '../../services'
 import PageHeader from '../../common/pageHeader'
 import Navigation from '../../common/navigation'
-import Footer from '../../common/mainFooter'
+import Footer from '../../components/Footer'
+
+
+import Message from '../../components/Message';
+import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Lock from '@material-ui/icons/Lock';
+import Person from '@material-ui/icons/Person';
+
+import styled from 'styled-components';
+
+const CardContainer = styled(Card)`
+    padding: 10px 20px;
+`;
+
+const Field = styled(TextField)`
+    > div {
+        padding: 0;
+        svg {
+            margin-left: 15px;
+        }
+        button {
+            margin-right: 10px;
+            svg {
+                margin-left: 0;
+            }
+        }
+    }
+`;
 
 class Page extends React.Component {
     constructor(props) {
@@ -92,6 +118,24 @@ class Page extends React.Component {
             })
     }
 
+    openMessage = (message) => {
+        this.setState({
+            message: {
+                open: true,
+                text: message
+            }
+        })
+    }
+
+    closeMessage = () => {
+        this.setState({
+            message: {
+                open: false,
+                text: ''
+            }
+        })
+    }
+
     componentDidMount(){
         this.setState({
             isLoading: false
@@ -111,8 +155,12 @@ class Page extends React.Component {
 
         return (
             <div>
-                <Navigation/>
-                <main className="fadeIn animated">
+                <main className="fadeIn animated" id="forgot-password-page" style={{ alignItems: 'center' }}>
+                    <div id="logo">
+                        <Link to={"/"}>
+                            <img src="/img/logo.png" />
+                        </Link>
+                    </div>
                     <PageHeader heading="login"/>
                     <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
                         <Dimmer active inverted>
@@ -162,7 +210,6 @@ class Page extends React.Component {
                         </Grid.Column>
                     </Grid>
                 </main>
-                <Footer/>
             </div>
         );
     }
