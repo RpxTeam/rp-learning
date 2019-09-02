@@ -24,6 +24,7 @@ import Lock from '@material-ui/icons/Lock';
 import Person from '@material-ui/icons/Person';
 
 import styled from 'styled-components';
+import { height } from 'window-size';
 
 const CardContainer = styled(Card)`
     padding: 10px 20px;
@@ -156,13 +157,46 @@ class Page extends React.Component {
         return (
             <div>
                 <main className="fadeIn animated" id="forgot-password-page" style={{ alignItems: 'center' }}>
+                <div className="center">
                     <div id="logo">
                         <Link to={"/"}>
-                            <img src="/img/logo.png" />
+                            <img src="/img/logo.png" style={{maxWidth:500 , height:100}}/>
                         </Link>
                     </div>
-                    <PageHeader heading="login"/>
-                    <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
+
+                    <form onSubmit={this.handleSubmit}>
+                        <Grid container justify={'center'}>
+                            <Grid item md={4}>
+                                <CardContainer>
+                                    <Field
+                                        error={errors.has('email')}
+                                        id="input-email"
+                                        label="Email"
+                                        onChange={this.handleChange}
+                                        margin="normal"
+                                        variant="outlined"
+                                        name="email"
+                                        fullWidth
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <Person />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                </CardContainer>
+                            </Grid>
+                        </Grid>
+                        <div className="btns btns-center">
+                            <div>
+                                <Button type='submit' variant="contained" color="secondary">Enviar</Button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    {/*<Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
                         <Dimmer active inverted>
                             <Loader size='large'>Resetting Password...</Loader>
                         </Dimmer>
@@ -208,7 +242,8 @@ class Page extends React.Component {
                                 New to us? <Link to='/register' replace>Register</Link>
                             </Message>
                         </Grid.Column>
-                    </Grid>
+                    </Grid> */}
+                    </div>
                 </main>
             </div>
         );

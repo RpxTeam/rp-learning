@@ -31,7 +31,18 @@ class DashboardController extends Controller
         
         //admin
         if($user->role_id == 1){
-            $leaderboard = Dashboard::leaderboard();
+            $users = User::All()->each(function($user){
+                $user->setAttribute('points', Point::total($user->id));
+            })->sortByDesc('points');
+            // dd($users);
+            $collectionUsers = collect($users);
+            $leaderboard = [];
+            $collectionUsers->sortByDesc('points');
+            foreach($collectionUsers as $item){
+                $leaderboard[] = $item;
+            }
+            // dd($leaderboard);
+
             $latest_courses = Dashboard::latestCourses(5);
             $latest_users = Dashboard::latestUsers(5);
             $total_courses = Course::count();
@@ -42,7 +53,7 @@ class DashboardController extends Controller
             $never_execute = $rank_courses->where('executes', 0)->count();
             $not_finish = Dashboard::notFinishCourses()->count();
             
-        $data = array(
+            return response()->json(array(
             'leaderboard'=> $leaderboard,
             'level' => $user->level,
             'points' => $points,
@@ -57,9 +68,8 @@ class DashboardController extends Controller
             'course_finish'=> $finish_courses,
             'course_not_finish' => $not_finish,
             'course_never_execute' => $never_execute,
-        );
+        ),200);
 
-        return response()->json($data, 200);
 
         //instructor
         }else if($user->role_id == 2){

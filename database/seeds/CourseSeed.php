@@ -15,21 +15,21 @@ class CourseSeed extends Seeder
         
         $faker = Faker\Factory::create();
        
-        $items = [
-            ['title' => "How To Make a FPS game",
-             'slug' => "how-to-make-a-fps-game",
-             'introduction' => 'Making a FPS Game.',
-             'description' => 'Learn how to make a first person shooter in no-time using the Unity game engine and the FPS Control plugin.',
-             'duration' => 8,
-             'instructor' =>  'Sergio Fukuhara',
-             'start_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 days', 'now')->getTimestamp())->format('Y/m/d'),
-             'end_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+90 days')->getTimestamp())->format('Y/m/d'),
-             'image' => 'exemple/course/course-1.jpg',
-             'mime'=> 'image/jpeg',
-             'created_at' => now(),
-             'updated_at' => now(),
-             'template_id' => 1
-            ],
+        // $items = [
+            // ['title' => "How To Make a FPS game",
+            //  'slug' => "how-to-make-a-fps-game",
+            //  'introduction' => 'Making a FPS Game.',
+            //  'description' => 'Learn how to make a first person shooter in no-time using the Unity game engine and the FPS Control plugin.',
+            //  'duration' => 8,
+            //  'instructor' =>  'Sergio Fukuhara',
+            //  'start_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 days', 'now')->getTimestamp())->format('Y/m/d'),
+            //  'end_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+90 days')->getTimestamp())->format('Y/m/d'),
+            //  'image' => 'exemple/course/course-1.jpg',
+            //  'mime'=> 'image/jpeg',
+            //  'created_at' => now(),
+            //  'updated_at' => now(),
+            //  'template_id' => 1
+            // ],
             // ['title' => "Como fazer um Fliperama com Raspberry Pi",
             //  'slug' => "como-fazer-um-fliperama-com-raspberry-pi",
             //  'introduction' => 'Criando um Fliperama com Raspberry Pi',
@@ -134,27 +134,27 @@ class CourseSeed extends Seeder
             //  'updated_at' => now(),
             // ],
             
-        ];
+        // ];
 
-        foreach ($items as $item) {
-            \App\Course::create($item);
-        }
-
-
-
-        // for($i=0;$i<2;$i++){
-        //     \App\Course::create([
-        //         'title' => $faker->word,
-        //         'slug' => $faker->word,
-        //         'introduction' => $faker->realText($maxNbChars = 200, $indexSize = 2),
-        //         'description' => $faker->realText($maxNbChars = 200, $indexSize = 2),
-        //         'duration' => $faker->randomDigitNotNull,
-        //         'instructor' =>  $faker->name,
-        //         'start_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 days', 'now')->getTimestamp())->format('Y/m/d'),
-        //         'end_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+90 days')->getTimestamp())->format('Y/m/d'),
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ]);
+        // foreach ($items as $item) {
+        //     \App\Course::create($item);
         // }
+
+
+
+        for($i=0;$i<10;$i++){
+            \App\Course::create([
+                'title' => $faker->word,
+                'slug' => $faker->word,
+                'introduction' => $faker->realText($maxNbChars = 200, $indexSize = 2),
+                'description' => $faker->realText($maxNbChars = 200, $indexSize = 2),
+                'duration' => $faker->randomDigitNotNull,
+                'instructor' =>  $faker->name,
+                'start_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('-90 days', 'now')->getTimestamp())->format('Y/m/d'),
+                'end_date' => Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+90 days')->getTimestamp())->format('Y/m/d'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

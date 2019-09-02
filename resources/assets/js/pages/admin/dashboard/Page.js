@@ -116,8 +116,8 @@ class Page extends React.Component {
                                         {users.map((user, index) =>
                                             <TableRow key={index}>
                                                 <TableCell>{user.name}</TableCell>
-                                                <TableCell>{user.points}</TableCell>
-                                                <TableCell>{user.level}</TableCell>
+                                                <TableCell>{user.points == null ? 0 : user.points}</TableCell>
+                                                <TableCell>{user.level == null ? 0 : user.level}</TableCell>
                                             </TableRow>
                                         )}
                                     </TableBody>
