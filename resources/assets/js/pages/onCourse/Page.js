@@ -830,9 +830,9 @@ class Page extends React.Component {
                             Você concluiu o curso de {course.title}
                         </DialogContentText>
                         <br />
-                        <Grid container justify="center">
+                        {/* <Grid container justify="center">
                             <Button variant="contained" color="primary" component={Link} href="_blank" to="/public/storage/certification/template/1-template.png">Ver certificado</Button>
-                        </Grid>
+                        </Grid> */}
                     </DialogContent>
                     <DialogActions>
                         <Button component={Link} to="/my-courses" color="secondary">
