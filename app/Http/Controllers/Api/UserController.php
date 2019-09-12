@@ -163,27 +163,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),[
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'birthday' => 'nullable|date',
-            'adress' => 'nullable|string|max:255',
-            'age' => 'nullable|numeric',
-            'image' => 'nullable|file|max:5000|mimetypes:jpeg,png,jpg',
-            'mime' => 'nullable|string',
-            'level' => 'nullable|numeric',
-            'role_id' => 'nullable|numeric'
-        ],[
-            'name.required' => 'O campo nome está vazio.',
-            'email.required' => 'O campo e-mail está vazio.',
-            'email.unique' => 'O e-mail já utilizado.',
-            'password.required' => 'O senha nome está vazio.',
-        ]);
+        // $validator = Validator::make($request->all(),[
+        //     'name' => 'nullable|string|max:255',
+        //     'email' => 'nullable|string|email|max:255|unique:users',
+        //     'password' => 'nullable|string|min:6',
+        //     'birthday' => 'nullable|date',
+        //     'adress' => 'nullable|string|max:255',
+        //     'age' => 'nullable|numeric',
+        //     'image' => 'nullable|file|max:5000|mimetypes:jpeg,png,jpg',
+        //     'mime' => 'nullable|string',
+        //     'level' => 'nullable|numeric',
+        //     'role_id' => 'nullable|numeric'
+        // ],[
+        //     'email.unique' => 'O e-mail já utilizado.',
+        // ]);
 
-        if($validator->fails()){
-                return response()->json($validator->errors(), 400);
-        }
+        // if($validator->fails()){
+        //         return response()->json($validator->errors(), 400);
+        // }
 
         try{
             $user = User::findOrFail($id);
