@@ -32,7 +32,7 @@ class LevelsController extends Controller
         if($request->has('levelup')){
             $levelUp = $request->levelUp;
         }else{
-            $levelUp = DB::table('points')->where('name','levels')->first();            
+            $levelUp = DB::table('points')->where('name','levels')->first();
         }
         
         Level::setLevel($startPoints,$maxLevel,$levelUp);

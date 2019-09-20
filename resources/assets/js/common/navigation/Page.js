@@ -53,7 +53,7 @@ class Page extends React.Component {
             </span>
         );
         return (
-            <AppBar color="default" position={'static'} className={this.props.className}>
+            <AppBar color="default" position="static" className={this.props.className}>
                 <Grid className={classes.container}>
                     <Toolbar className={classes.bar}>
                         <Typography variant="display1" color="inherit" className={classes.grow}>
@@ -115,7 +115,7 @@ class Page extends React.Component {
 Page.propTypes = {
     dispatch: PropTypes.func.isRequired,
     className: PropTypes.string,
-    position: PropTypes.string.isRequired
+    position: PropTypes.string
 };
 
 export default Page;

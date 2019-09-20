@@ -1626,6 +1626,9 @@ class Page extends React.Component {
                                             {this.state.modal.type === 'doc' ?
                                                 'Pdf. Tamanho máximo: 2 MB' : null
                                             }
+                                            {this.state.modal.type === 'audio' ?
+                                                'mp3. Tamanho máximo: 2 MB' : null
+                                            }
                                         </Typography>
                                     </Grid>
                                 </Grid>
