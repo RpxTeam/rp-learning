@@ -172,7 +172,7 @@ class Page extends React.Component {
                         image={course.image}
                     />
                     <Container container spacing={16} justify="center">
-                        <Grid item md={9}>
+                        <Grid item md={9}>zz
                             <img src={course.image} style={{ width: '100%' }} />
                             <Divider style={{ margin: '20px 0' }} />
                             <Tabs

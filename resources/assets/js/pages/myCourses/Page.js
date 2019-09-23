@@ -93,7 +93,11 @@ class Page extends React.Component {
                             <Grid item md={4} sm={12} xs={12} key={index}>
                                 <Card>
                                     <CardActionArea onClick={this.viewCourse.bind(this, course.id)}>
-                                        <Image style={{ backgroundImage: `url(${course.image})` }} />
+                                        {course.image?
+                                            <Image style={{ backgroundImage: `url(${course.image})` }} />
+                                        :
+                                            <Image style={{ backgroundImage: `url(../../../../../img/logo.png)` }} />
+                                        }
                                     </CardActionArea>
                                     <CardContentStyle>
                                         <Typography gutterBottom variant="h5" component="h2">
