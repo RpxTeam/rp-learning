@@ -1464,14 +1464,14 @@ class Page extends React.Component {
                                         Texto
                                             </ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={this.openModal('video-internal')}>
+                                {/* <MenuItem onClick={this.openModal('video-internal')}>
                                     <ListItemIcon>
                                         <VideoLibrary />
                                     </ListItemIcon>
                                     <ListItemText>
                                         Vídeo Interno
                                             </ListItemText>
-                                </MenuItem>
+                                </MenuItem> */}
                                 <MenuItem onClick={this.openModal('video-external')}>
                                     <ListItemIcon>
                                         <VideoCam />
@@ -1496,7 +1496,7 @@ class Page extends React.Component {
                                         Documento
                                 </ListItemText>
                                 </MenuItem>
-                                {quizCreated ? null :
+                                {/* {quizCreated ? null :
                                     <div>
                                         <Divider />
                                         <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
@@ -1508,7 +1508,7 @@ class Page extends React.Component {
                                     </ListItemText>
                                         </MenuItem>
                                     </div>
-                                }
+                                } */}
                             </Menu>
                         </CardContainer>
                     }

@@ -90,7 +90,7 @@ class Banner extends React.Component {
                                     Aprendizado
                                 </Typography>
                                 <Typography component="p" className={classes.p}>
-                                    Amplie os seus conhecimentos profissionais com os treinamentos do LMS Santander feitos para você.
+                                    Amplie os seus conhecimentos profissionais com os treinamentos do LMS feitos para você.
                                 </Typography>
                             </CardContent>
                         </Card>
@@ -135,7 +135,7 @@ class Banner extends React.Component {
                                     Carreira
                                 </Typography>
                                 <Typography component="p" className={classes.p}>
-                                    Garanta o seu futuro no Banco Santander fazendo todos os treinamentos disponíveis para você.
+                                    Garanta o seu futuro fazendo todos os treinamentos disponíveis para você.
                                 </Typography>
                             </CardContent>
                         </Card>

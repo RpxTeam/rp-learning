@@ -172,7 +172,7 @@ class Page extends React.Component {
                         image={course.image}
                     />
                     <Container container spacing={16} justify="center">
-                        <Grid item md={9}>zz
+                        <Grid item md={9}>
                             <img src={course.image} style={{ width: '100%' }} />
                             <Divider style={{ margin: '20px 0' }} />
                             <Tabs
@@ -240,12 +240,12 @@ class Page extends React.Component {
                                                 </ListItemIcon>
                                                 <ListItemText primary={this.formatDateReverse(course.start_date)} />
                                             </ListItem>
-                                            <ListItem>
+                                            {/* <ListItem>
                                                 <ListItemIcon>
                                                     <Person />
                                                 </ListItemIcon>
                                                 <ListItemText primary={course.instructor} />
-                                            </ListItem>
+                                            </ListItem> */}
                                             <ListItem>
                                                 <ListItemIcon>
                                                     <ViewHeadline />

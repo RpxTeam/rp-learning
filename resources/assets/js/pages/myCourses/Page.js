@@ -89,43 +89,48 @@ class Page extends React.Component {
             <Admin>
                 <main className="fadeIn animated">
                     <Container container spacing={40}>
-                        {courses.map((course, index) =>
-                            <Grid item md={4} sm={12} xs={12} key={index}>
-                                <Card>
-                                    <CardActionArea onClick={this.viewCourse.bind(this, course.id)}>
-                                        {course.image?
-                                            <Image style={{ backgroundImage: `url(${course.image})` }} />
-                                        :
-                                            <Image style={{ backgroundImage: `url(../../../../../img/logo.png)` }} />
-                                        }
-                                    </CardActionArea>
-                                    <CardContentStyle>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            {course.title.length >= 20 ? course.title.substring(0, 20) : course.title}
-                                            {course.title.length >= 20 ? ' [...]' : null }
-                                        </Typography>
-                                        <Typography component="p">
-                                            {course.description.substring(0, 140)}
-                                            {course.description.length >= 140 ? ' [...]' : null }
-                                        </Typography>
-                                    </CardContentStyle>
-                                    <Divider />
-                                    <CardActions disableActionSpacing>
-                                        {/* <IconButton aria-label="Add to favorites">
-                                            <FavoriteIcon />
-                                        </IconButton> */}
-                                        <Button size="small" color="primary" onClick={this.viewCourse.bind(this, course.id)}>
-                                            Detalhes
-                                        </Button>
-                                    </CardActions>
-                                    <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                                        <CardContent>
+                        {courses.length == 0?
+                            <h2>
+                                Você não começou nenhum curso.
+                            </h2>
+                        :
+                            courses.map((course, index) =>
+                                <Grid item md={4} sm={12} xs={12} key={index}>
+                                    <Card>
+                                        <CardActionArea onClick={this.viewCourse.bind(this, course.id)}>
+                                            {course.image?
+                                                <Image style={{ backgroundImage: `url(${course.image})` }} />
+                                            :
+                                                <Image style={{ backgroundImage: `url(../../../../../img/logo.png)` }} />
+                                            }
+                                        </CardActionArea>
+                                        <CardContentStyle>
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {course.title.length >= 20 ? course.title.substring(0, 20) : course.title}
+                                                {course.title.length >= 20 ? ' [...]' : null }
+                                            </Typography>
+                                            <Typography component="p">
+                                                {course.description.substring(0, 140)}
+                                                {course.description.length >= 140 ? ' [...]' : null }
+                                            </Typography>
+                                        </CardContentStyle>
+                                        <Divider />
+                                        <CardActions disableActionSpacing>
+                                            {/* <IconButton aria-label="Add to favorites">
+                                                <FavoriteIcon />
+                                            </IconButton> */}
+                                            <Button size="small" color="primary" onClick={this.viewCourse.bind(this, course.id)}>
+                                                Detalhes
+                                            </Button>
+                                        </CardActions>
+                                        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                                            <CardContent>
 
-                                        </CardContent>
-                                    </Collapse>
-                                </Card>
-                            </Grid>
-                        )
+                                            </CardContent>
+                                        </Collapse>
+                                    </Card>
+                                </Grid>
+                            )
                         }
                     </Container>
                 </main>
