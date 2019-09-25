@@ -71,7 +71,7 @@ const routes = [
     {
         path: '/courses/:id/details',
         exact: true,
-        auth: false,
+        auth: true,
         component: detailCourse
     },
     {
