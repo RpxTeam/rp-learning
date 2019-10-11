@@ -1635,7 +1635,7 @@ class Page extends React.Component {
                             </React.Fragment>
                             : null}
                         <FormGroup row>
-                            <FormControlLabel
+                            {/* <FormControlLabel
                                 control={
                                     <Switch
                                         checked={quiz ? true : false}
@@ -1645,7 +1645,7 @@ class Page extends React.Component {
                                     />
                                 }
                                 label="Quiz"
-                            />
+                            /> */}
                         </FormGroup>
                         {quiz ?
                             <React.Fragment>

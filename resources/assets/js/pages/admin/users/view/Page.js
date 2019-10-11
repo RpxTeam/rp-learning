@@ -38,7 +38,8 @@ class Page extends React.Component {
             profile: {
                 value: 1,
                 label: 'Administrador',
-            }
+            },
+            showPassword: false,
         }
 
         this.handleEdit = this.handleEdit.bind(this)
@@ -121,6 +122,12 @@ class Page extends React.Component {
         });
     }
 
+    handleClickShowPassword = () => {
+        this.setState({
+            showPassword: !this.state.showPassword
+        });
+    };
+
     render() {
         const { message, profiles, profile, user } = this.state;
         if (this.state.redirect === true) {
@@ -193,6 +200,7 @@ class Page extends React.Component {
                                     secondary="outlined"
                                     name="password"
                                     fullWidth
+                                    type='password'
                                     placeholder={'Senha'}
                                     InputLabelProps={{
                                         shrink: true,

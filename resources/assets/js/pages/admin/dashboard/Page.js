@@ -99,7 +99,7 @@ class Page extends React.Component {
                             </CardActions>
                         </Card>
                     </Grid>
-                    {user.role_id === '1' || user.role_id === 1 ?
+                    {/* {user.role_id === '1' || user.role_id === 1 ? */}
                         <Grid item sm={6}>
                             <Card>
                                 <CardHeader title="Ranking"></CardHeader>
@@ -124,8 +124,8 @@ class Page extends React.Component {
                                 </Table>
                             </Card>
                         </Grid>
-                        : null}
-                    {user.role_id === '3' || user.role_id === 3 ?
+                    {/* : null} */}
+                    {/* {user.role_id === '3' || user.role_id === 3 ?
                         <Grid item sm={6}>
                             <Card>
                                 <CardHeader title="Recompensas"></CardHeader>
@@ -169,7 +169,7 @@ class Page extends React.Component {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        : null}
+                        : null} */}
                 </Grid>
             </Admin>
         );

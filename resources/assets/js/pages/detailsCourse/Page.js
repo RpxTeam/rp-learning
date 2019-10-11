@@ -166,14 +166,18 @@ class Page extends React.Component {
             <div id="course-page">
                 <Navigation />
                 <main className="fadeIn animated">
-                    <Banner
-                        internal
-                        title={course.title}
-                        image={course.image}
-                    />
+                        <Banner
+                            internal
+                            title={course.title}
+                            image={course.image}
+                        />
                     <Container container spacing={16} justify="center">
                         <Grid item md={9}>
-                            <img src={course.image} style={{ width: '100%' }} />
+                            {course.image?
+                                <img src={course.image} style={{ width: '100%' }} />
+                            :
+                                <img src={'../../../img/logo.png'} style={{ width: '100%' }} />
+                            }
                             <Divider style={{ margin: '20px 0' }} />
                             <Tabs
                                 value={value}
