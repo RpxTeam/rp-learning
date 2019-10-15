@@ -135,12 +135,12 @@ class Admin extends React.Component {
                                                     primary="Cursos"
                                                 />
                                             </ListItem>
-                                            <Divider />
+                                            {/* <Divider />
                                             <ListItem button component={Link} to={'/admin/certificates'}>
                                                 <ListItemText
                                                     primary="Certificados"
                                                 />
-                                            </ListItem>
+                                            </ListItem> */}
                                         </React.Fragment>
                                         : null}
                                 </List>
