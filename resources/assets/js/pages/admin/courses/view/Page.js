@@ -1496,7 +1496,7 @@ class Page extends React.Component {
                                         Documento
                                 </ListItemText>
                                 </MenuItem>
-                                {/* {quizCreated ? null :
+                                {quizCreated ? null :
                                     <div>
                                         <Divider />
                                         <MenuItem component={Link} to={'/admin/courses/' + course.id + '/quiz'}>
@@ -1508,7 +1508,7 @@ class Page extends React.Component {
                                     </ListItemText>
                                         </MenuItem>
                                     </div>
-                                } */}
+                                }
                             </Menu>
                         </CardContainer>
                     }
@@ -1635,7 +1635,7 @@ class Page extends React.Component {
                             </React.Fragment>
                             : null}
                         <FormGroup row>
-                            {/* <FormControlLabel
+                            <FormControlLabel
                                 control={
                                     <Switch
                                         checked={quiz ? true : false}
@@ -1645,7 +1645,7 @@ class Page extends React.Component {
                                     />
                                 }
                                 label="Quiz"
-                            /> */}
+                            />
                         </FormGroup>
                         {quiz ?
                             <React.Fragment>
