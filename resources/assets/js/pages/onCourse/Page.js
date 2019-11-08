@@ -249,12 +249,14 @@ class Page extends React.Component {
     }
 
     verifyFinalComplete = () => {
-        axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/quiz/${this.state.quiz_id}/final`)
-            .then(res => {
-                if (res.data !== 200) {
-                    this.getFinalQuiz();
-                }
+        if(this.state.quiz_id){
+            axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/quiz/${this.state.quiz_id}/final`)
+                .then(res => {
+                    if (res.data !== 200) {
+                        this.getFinalQuiz();
+                    }
             })
+        }
     }
 
     getFinalQuiz = () => {
@@ -382,14 +384,6 @@ class Page extends React.Component {
                 this.setState({ course: course });
                 this.updateProgress(progress);
 
-                if (progress >= 98 && this.state.quiz === false) {
-                    this.openModal();
-                    axios.post(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/certification`)
-                    .then(res => {
-                        console.log(res);
-                    })
-                }
-
                 const day = new Date();
                 const month = day.getMonth() + 1;
                 const finish = day.getFullYear() + '-' + month + '-' + day.getDate();
@@ -406,6 +400,14 @@ class Page extends React.Component {
 
                         this.handleNextStep();
                     });
+
+                if (progress >= 98 && this.state.quiz === false) {
+                    this.openModal();
+                    axios.post(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/certification`)
+                    .then(res => {
+                        console.log(res);
+                    })
+                }
             });
     };
 
@@ -550,15 +552,17 @@ class Page extends React.Component {
         });
     }
 
+    //finalizar quiz
     endQuiz = (id) => {
         const correctAnswers = this.state.answers;
         let chooses = this.state.chooses;
+        let progress;
         if (JSON.stringify(chooses) === JSON.stringify(correctAnswers)) {
             axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}`)
                 .then(res => {
                     const course = res.data;
                     let percentLesson = 100 / this.state.lessonsCount;
-                    let progress = parseFloat(course.progress) + parseFloat(percentLesson);
+                    progress = parseFloat(course.progress) + parseFloat(percentLesson);
                     progress = progress.toFixed(0);
                     if (progress >= 98) {
                         progress = 100;
@@ -587,6 +591,14 @@ class Page extends React.Component {
 
                     this.closeQuiz();
                 });
+
+            if (progress >= 98 && this.state.course.final) {
+                this.openModal();
+                axios.post(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/certification`)
+                .then(res => {
+                    console.log(res);
+                })
+            }
         } else {
             this.openMessage('Resposta Errada');
         }
@@ -617,6 +629,11 @@ class Page extends React.Component {
             this.openMessage('Quiz Finalizado com Sucesso!');
 
             this.openModal();
+            axios.post(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/certification`)
+                .then(res => {
+                    console.log(res);
+            })
+
         } else {
             this.openMessage('Respostas Erradas');
         }
