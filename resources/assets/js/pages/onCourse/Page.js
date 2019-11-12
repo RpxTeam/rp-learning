@@ -193,6 +193,9 @@ class Page extends React.Component {
                 if (res.data.progress != null) {
                     const progress = res.data.progress;
                     const course = res.data;
+                    if(res.data.quiz === 1 || res.data.quiz === "1"){
+                        this.setState({finalQuiz: true});
+                    }
                     this.setState({ course: course, progress: progress });
                     this.getQuizId();
                     this.verifyFinalComplete();
@@ -266,6 +269,7 @@ class Page extends React.Component {
             })
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/active`)
             .then(res => {
+                console.log(res.data);
                 if ((res.data != null && res.data === 1) || (res.data != null && res.data === "1")) {
                     this.setState({
                         finalQuiz: true

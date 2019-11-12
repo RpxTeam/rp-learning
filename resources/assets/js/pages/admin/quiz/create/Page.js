@@ -296,10 +296,10 @@ class Page extends React.Component {
         const question = this.state.question;
         var newAnswers = question.answers.filter((elem, i, array) => {
             if (elem.id === id) {
-                if (elem.correct === 1 || elem.correct === "1") {
-                    elem.correct = 0;
+                if (elem.correct === 1 || elem.correct === "1" || elem.correct === true) {
+                    elem.correct = false;
                 } else {
-                    elem.correct = 1;
+                    elem.correct = true;
                 }
             }
             return question.answers
@@ -532,7 +532,7 @@ class Page extends React.Component {
                                 <List dense={true} key={answer.id}>
                                     <ListItem key={answer.id}>
                                         <IconButton aria-label="Correct" onClick={this.correctAnswser.bind(this, answer.id)}>
-                                            <CheckCircle color={answer.correct === "1" || answer.correct === 1 ? 'secondary' : 'secondary'} />
+                                        <CheckCircle color={answer.correct === 1 || answer.correct === "1" || answer.correct === true ? 'primary' : 'secondary'} />
                                         </IconButton>
                                         {this.state.editAnswer === answer.id ?
                                             <TextField
