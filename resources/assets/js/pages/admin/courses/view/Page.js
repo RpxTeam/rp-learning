@@ -1104,6 +1104,22 @@ class Page extends React.Component {
                     activeQuiz: !this.state.activeQuiz
                 })
             })
+
+        console.log([event.target.checked,this.state.activeQuiz])
+
+        if(event.target.checked === true){
+            axios.put(`${API_URL}/api/courses/${this.state.course.id}`,{
+                quiz: true
+            }).then(res => {
+                console.log("quiz1")
+            })
+        }else{
+            axios.put(`${API_URL}/api/courses/${this.state.course.id}`,{
+                quiz: false
+            }).then(res => {
+                console.log("quiz0")
+            })
+        }
     }
 
     uploadImageEditor = (file) => {

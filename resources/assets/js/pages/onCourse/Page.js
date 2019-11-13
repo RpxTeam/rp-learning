@@ -194,11 +194,11 @@ class Page extends React.Component {
                     const progress = res.data.progress;
                     const course = res.data;
                     if(res.data.quiz === 1 || res.data.quiz === "1"){
-                        this.setState({finalQuiz: true});
+                        this.setState({finalQuiz: true})
+                        console.log("final1")
                     }
                     this.setState({ course: course, progress: progress });
                     this.getQuizId();
-                    this.verifyFinalComplete();
                     this.setState({
                         loading: false
                     }
@@ -244,22 +244,20 @@ class Page extends React.Component {
     getQuizId = () => {
         axios.get(`${API_URL}/api/courses/${this.state.courseID}/quiz`)
             .then(res => {
-                console.log(res);
                 this.setState({
                     quiz_id: res.data
                 })
+                this.verifyFinalComplete()
             })
     }
 
     verifyFinalComplete = () => {
-        if(this.state.quiz_id){
-            axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/quiz/${this.state.quiz_id}/final`)
-                .then(res => {
-                    if (res.data !== 200) {
-                        this.getFinalQuiz();
-                    }
-            })
-        }
+        axios.get(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/quiz/${this.state.quiz_id}/final`)
+            .then(res => {
+                if (res.data !== 200) {
+                    this.getFinalQuiz();
+                }
+        })
     }
 
     getFinalQuiz = () => {
@@ -405,7 +403,7 @@ class Page extends React.Component {
                         this.handleNextStep();
                     });
 
-                if (progress >= 98 && this.state.quiz === false) {
+                if (progress >= 98 && this.state.quiz === false && this.state.finalQuiz === false) {
                     this.openModal();
                     axios.post(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/certification`)
                     .then(res => {
@@ -596,7 +594,7 @@ class Page extends React.Component {
                     this.closeQuiz();
                 });
 
-            if (progress >= 98 && this.state.course.final) {
+            if (progress >= 98 && this.state.finalQuiz === false) {
                 this.openModal();
                 axios.post(`${API_URL}/api/users/${this.state.user.id}/courses/${this.state.courseID}/certification`)
                 .then(res => {

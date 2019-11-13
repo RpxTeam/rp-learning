@@ -156,13 +156,13 @@ class QuizController extends Controller
                     ->where('active', 1)
                     ->where('course_id',$course->id)
                     ->get();
-
-        if(empty($questions)){
+                    
+        if($questions){
             $data = collect();
 
-        foreach($questions as $question){
-            $data->push(Question::questionAnswers($question->id));
-        }
+            foreach($questions as $question){
+                $data->push(Question::questionAnswers($question->id));
+            }
 
             return response()->json($data, 200);
         }else{

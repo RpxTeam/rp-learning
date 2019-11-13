@@ -119,7 +119,7 @@ class CoursesController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'title' => 'required|string|max:255',
+            'title' => 'nullable|string|max:255',
             'slug' => 'nullable|string',
             'introduction' => 'nullable|string',
             'description' => 'nullable|string',
